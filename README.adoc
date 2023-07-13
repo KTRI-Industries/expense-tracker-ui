@@ -1,0 +1,23 @@
+= Expense Tracker UI
+
+Expense Tracker UI is the front-end for the Expense Tracker application from KTRI Industries.
+The Expense Tracker application allows for easy monitoring of expenses, while also providing insights and analytics into personal and household spending habits.
+
+== The tech stack
+
+Expense Tracker UI is an Angular application created as an link:https://nx.dev/getting-started/tutorials/angular-standalone-tutorial[Nx stand-alone project].
+It uses link:https://ngrx.io/[NgRx] for state management, link:https://jestjs.io/[Jest] for unit testing and link:https://www.cypress.io/[Cypress] for end-to-end testing.
+
+We opted to use Nx because:
+
+- it provides out of the box support for ESLint, Jest and Cypress
+- it offers advanced tooling like caching support for builds, linting and testing, as well as integration with various CI platforms
+
+== Dev Environment setup and deployment
+
+TODO
+
+== Prod environment setup and deployment
+
+TODO
+
