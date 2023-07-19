@@ -14,8 +14,12 @@ We opted to use Nx because:
 - it offers advanced tooling like caching support for builds, linting and testing, as well as integration with various CI platforms
 
 == Dev Environment setup and deployment
+=== Setup for NgRx state management
+To perform the initial configuration for NgRx with standalone app component, the following command was executed:
+[source,shell]
+nx g @nx/angular:ngrx-root-store  --facade=true  --addDevTools=true --project=expense-tracker-ui
 
-TODO
+The above command adds all necessary dependencies and performs initial configuration by registering the store and effects providers in the main app standalone component.
 
 == Prod environment setup and deployment
 
