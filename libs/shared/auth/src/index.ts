@@ -10,3 +10,4 @@ export { AuthActions, AuthFeature, AuthSelectors };
 export * from './lib/lib.routes';
 
 export * from './lib/auth/auth.component';
+export * from './lib/user-info/user-info.component';
