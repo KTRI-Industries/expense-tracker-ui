@@ -1,10 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import {} from '@expense-tracker-ui/shared/auth';
+import { UserInfoComponent } from '@expense-tracker-ui/shared/auth';
 @Component({
   selector: 'expense-tracker-ui-nx-welcome',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, UserInfoComponent],
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -425,6 +426,8 @@ import { CommonModule } from '@angular/common';
             <span> Hello there, </span>
             Welcome expense-tracker-ui 👋
           </h1>
+
+          <expense-tracker-ui-user-info></expense-tracker-ui-user-info>
         </div>
         <!--  HERO  -->
         <div id="hero" class="rounded">
