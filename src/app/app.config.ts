@@ -4,16 +4,19 @@ import {
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthFeature } from '@expense-tracker-ui/shared/auth';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideStoreDevtools({ logOnly: !isDevMode() }),
     provideEffects(),
-    provideStore(),
+    provideStore({ router: routerReducer }),
+    provideRouterStore(),
+    provideState(AuthFeature.authFeature),
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     KeycloakService,
     {
@@ -22,6 +25,7 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [KeycloakService],
     },
+    provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
 

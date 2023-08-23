@@ -8,10 +8,6 @@ import { AuthEffects } from './+state/auth.effects';
 export const authRoutes: Route[] = [
   {
     path: '',
-    component: AuthComponent,
-    providers: [
-      provideState(fromAuth.AUTH_FEATURE_KEY, fromAuth.authReducer),
-      provideEffects(AuthEffects),
-    ],
+    providers: [provideEffects(AuthEffects)],
   },
 ];
