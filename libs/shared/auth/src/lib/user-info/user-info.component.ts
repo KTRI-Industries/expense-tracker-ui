@@ -3,7 +3,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '../../index';
+import { AuthActions } from '../+state/auth.actions';
 
 @Component({
   imports: [CommonModule],

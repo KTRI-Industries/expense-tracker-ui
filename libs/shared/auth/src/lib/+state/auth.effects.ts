@@ -7,7 +7,7 @@ import * as AuthActions from './auth.actions';
 export class AuthEffects {
   private actions$ = inject(Actions);
 
-  init$ = createEffect(() =>
+/*  init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.initAuth),
       switchMap(() => of(AuthActions.loadAuthSuccess({ auth: [] }))),
@@ -16,5 +16,5 @@ export class AuthEffects {
         return of(AuthActions.loadAuthFailure({ error }));
       })
     )
-  );
+  );*/
 }

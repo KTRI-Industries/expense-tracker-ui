@@ -8,9 +8,9 @@ import {
   on,
 } from '@ngrx/store';
 
-import * as AuthActions from './auth.actions';
 import { AuthEntity } from './auth.models';
 import { KeycloakProfile } from 'keycloak-js';
+import { AuthActions } from "./auth.actions";
 
 export const AUTH_FEATURE_KEY = 'auth';
 
@@ -38,15 +38,6 @@ export const initialAuthState: AuthState = authAdapter.getInitialState({
 
 const reducer: ActionReducer<AuthState> = createReducer(
   initialAuthState,
-  on(AuthActions.initAuth, (state) => ({
-    ...state,
-    loaded: false,
-    error: null,
-  })),
-  on(AuthActions.loadAuthSuccess, (state, { auth }) =>
-    authAdapter.setAll(auth, { ...state, loaded: true })
-  ),
-  on(AuthActions.loadAuthFailure, (state, { error }) => ({ ...state, error })),
   on(AuthActions.loginSuccess, (state, { userProfile }) => ({
     ...state,
     userProfile,
