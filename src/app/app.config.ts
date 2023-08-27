@@ -8,12 +8,12 @@ import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakService } from 'keycloak-angular';
-import { AuthFeature } from '@expense-tracker-ui/shared/auth';
+import { AuthEffects, AuthFeature } from '@expense-tracker-ui/shared/auth';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideEffects(),
+    provideEffects(AuthEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),

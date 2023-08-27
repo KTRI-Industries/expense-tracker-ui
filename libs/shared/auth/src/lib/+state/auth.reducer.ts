@@ -1,21 +1,14 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import {
-  Action,
-  ActionReducer,
-  createFeature,
-  createReducer,
-  FeatureConfig,
-  on,
-} from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
 import { AuthEntity } from './auth.models';
 import { KeycloakProfile } from 'keycloak-js';
-import { AuthActions } from "./auth.actions";
+import { AuthActions } from './auth.actions';
 
 export const AUTH_FEATURE_KEY = 'auth';
 
 export interface AuthState extends EntityState<AuthEntity> {
-  selectedId: string | number | null; // which Auth record has been selected
+  // selectedId: string | number | null; // which Auth record has been selected
   loaded: boolean; // has the Auth list been loaded
   error: string | null; // last known error (if any)
   userProfile: KeycloakProfile | null;
@@ -30,29 +23,25 @@ export const authAdapter: EntityAdapter<AuthEntity> =
 
 export const initialAuthState: AuthState = authAdapter.getInitialState({
   // set initial required properties
-  selectedId: null,
+  // selectedId: null,
   loaded: false,
   error: null,
   userProfile: null,
 });
 
-const reducer: ActionReducer<AuthState> = createReducer(
-  initialAuthState,
-  on(AuthActions.loginSuccess, (state, { userProfile }) => ({
-    ...state,
-    userProfile,
-  }))
-);
-
-export function authReducer(
-  state: AuthState | undefined,
-  action: Action
-): AuthState {
-  return reducer(state, action);
-}
-
-const featureConfig: FeatureConfig<string, AuthState> = {
+export const authFeature = createFeature({
   name: 'auth',
-  reducer: reducer,
-};
-export const authFeature = createFeature(featureConfig);
+  reducer: createReducer(
+    initialAuthState,
+    on(AuthActions.retrieveUserProfileSuccess, (state, { userProfile }) => ({
+      ...state,
+      userProfile,
+    }))
+  ),
+  extraSelectors: ({ selectUserProfile }) => ({
+    selectIsLoggedIn: createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile != null
+    ),
+  }),
+});

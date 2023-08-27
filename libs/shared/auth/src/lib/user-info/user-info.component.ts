@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '../+state/auth.actions';
+import { selectIsLoggedIn, selectUserProfile } from '../+state/auth.selectors';
 
 @Component({
   imports: [CommonModule],
@@ -12,27 +12,16 @@ import { AuthActions } from '../+state/auth.actions';
   standalone: true,
 })
 export class UserInfoComponent {
-  public isLoggedIn = false;
-  public userProfile: KeycloakProfile | null = null;
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
+  userProfile$ = this.store.select(selectUserProfile);
 
   constructor(
     private readonly keycloak: KeycloakService,
     private store: Store
   ) {}
 
-  public async ngOnInit() {
-    this.isLoggedIn = await this.keycloak.isLoggedIn();
-
-    if (this.isLoggedIn) {
-      this.userProfile = await this.keycloak.loadUserProfile();
-      this.store.dispatch(
-        AuthActions.loginSuccess({ userProfile: this.userProfile })
-      );
-    }
-  }
-
   public login() {
-    this.keycloak.login();
+    this.store.dispatch(AuthActions.login());
   }
 
   public logout() {
