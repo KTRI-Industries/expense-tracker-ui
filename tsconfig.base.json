@@ -15,7 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@expense-tracker-ui/shared/auth": ["libs/shared/auth/src/index.ts"]
+      "@expense-tracker-ui/shared/auth/data-access": [
+        "libs/shared/auth/data-access/src/index.ts"
+      ],
+      "@expense-tracker-ui/shared/auth/feature-auth": [
+        "libs/shared/auth/feature-auth/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

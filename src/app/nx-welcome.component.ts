@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {} from '@expense-tracker-ui/shared/auth';
-import { UserInfoComponent } from '@expense-tracker-ui/shared/auth';
+import { UserInfoComponent } from '@expense-tracker-ui/shared/auth/feature-auth';
+
 @Component({
   selector: 'expense-tracker-ui-nx-welcome',
   standalone: true,

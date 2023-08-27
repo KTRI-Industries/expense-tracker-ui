@@ -4,7 +4,7 @@ import { NxWelcomeComponent } from './nx-welcome.component';
 import { KeycloakService } from 'keycloak-angular';
 import { from } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '@expense-tracker-ui/shared/auth';
+import { AuthActions } from '@expense-tracker-ui/shared/auth/data-access';
 
 @Component({
   standalone: true,
