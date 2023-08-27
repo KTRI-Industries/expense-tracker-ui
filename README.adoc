@@ -1,4 +1,5 @@
 = Expense Tracker UI
+:toc:
 
 Expense Tracker UI is the front-end for the Expense Tracker application from KTRI Industries.
 The Expense Tracker application allows for easy monitoring of expenses, while also providing insights and analytics into personal and household spending habits.
@@ -24,4 +25,16 @@ The above command adds all necessary dependencies and performs initial configura
 == Prod environment setup and deployment
 
 TODO
+
+== Generate a standalone library
+
+----
+npx nx g @nx/angular:library --name=auth --directory=libs/shared --simpleName=true --standalone=true
+----
+
+== Generate a ngrx feature store for a library
+
+----
+npx nx g @nx/angular:ngrx-feature-store --name=auth --parent=libs/shared/auth/src/lib/lib.routes.ts --barrels=true
+----
 
