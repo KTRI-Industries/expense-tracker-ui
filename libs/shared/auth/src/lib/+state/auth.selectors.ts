@@ -1,8 +1,3 @@
 import { authFeature } from './auth.reducer';
 
-export const {
-  selectLoaded,
-  selectError,
-  selectUserProfile,
-  selectIsLoggedIn,
-} = authFeature;
+export const { selectUserProfile, selectIsLoggedIn } = authFeature;

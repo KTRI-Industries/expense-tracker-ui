@@ -1,36 +1,20 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-
-import { AuthEntity } from './auth.models';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
 
 export const AUTH_FEATURE_KEY = 'auth';
 
-export interface AuthState extends EntityState<AuthEntity> {
-  // selectedId: string | number | null; // which Auth record has been selected
-  loaded: boolean; // has the Auth list been loaded
-  error: string | null; // last known error (if any)
+export interface AuthState {
   userProfile: KeycloakProfile | null;
 }
 
-export interface AuthPartialState {
-  readonly [AUTH_FEATURE_KEY]: AuthState;
-}
-
-export const authAdapter: EntityAdapter<AuthEntity> =
-  createEntityAdapter<AuthEntity>();
-
-export const initialAuthState: AuthState = authAdapter.getInitialState({
+export const initialAuthState: AuthState = {
   // set initial required properties
-  // selectedId: null,
-  loaded: false,
-  error: null,
   userProfile: null,
-});
+};
 
 export const authFeature = createFeature({
-  name: 'auth',
+  name: AUTH_FEATURE_KEY,
   reducer: createReducer(
     initialAuthState,
     on(AuthActions.retrieveUserProfileSuccess, (state, { userProfile }) => ({
