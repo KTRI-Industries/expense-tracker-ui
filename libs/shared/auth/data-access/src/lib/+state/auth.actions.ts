@@ -5,6 +5,7 @@ export const AuthActions = createActionGroup({
   source: 'Auth',
   events: {
     Login: emptyProps(),
+    Logout: emptyProps(),
     'Login Success': emptyProps(),
     'Login Failure': props<{ error: Error }>(),
     'Retrieve User Profile Success': props<{ userProfile: KeycloakProfile }>(),
