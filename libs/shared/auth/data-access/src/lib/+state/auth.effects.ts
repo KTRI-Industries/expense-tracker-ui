@@ -17,6 +17,15 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => of(this.keycloak.logout()))
+      ),
+    { dispatch: false }
+  );
+
   retrieveProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),

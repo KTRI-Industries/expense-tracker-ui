@@ -27,6 +27,6 @@ export class UserInfoComponent {
   }
 
   public logout() {
-    this.keycloak.logout();
+    this.store.dispatch(AuthActions.logout());
   }
 }
