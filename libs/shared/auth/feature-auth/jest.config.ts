@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-auth',
-  preset: '../../../jest.preset.js',
+  displayName: 'shared-auth-feature-auth',
+  preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/shared/auth',
+  coverageDirectory: '../../../../coverage/libs/shared/auth/feature-auth',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

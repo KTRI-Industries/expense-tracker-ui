@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '../+state/auth.actions';
-import { selectIsLoggedIn, selectUserProfile } from '../+state/auth.selectors';
+import {
+  AuthActions,
+  AuthSelectors,
+} from '@expense-tracker-ui/shared/auth/data-access';
 
 @Component({
   imports: [CommonModule],
@@ -12,8 +14,8 @@ import { selectIsLoggedIn, selectUserProfile } from '../+state/auth.selectors';
   standalone: true,
 })
 export class UserInfoComponent {
-  isLoggedIn$ = this.store.select(selectIsLoggedIn);
-  userProfile$ = this.store.select(selectUserProfile);
+  isLoggedIn$ = this.store.select(AuthSelectors.selectIsLoggedIn);
+  userProfile$ = this.store.select(AuthSelectors.selectUserProfile);
 
   constructor(
     private readonly keycloak: KeycloakService,
