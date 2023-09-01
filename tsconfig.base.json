@@ -20,6 +20,9 @@
       ],
       "@expense-tracker-ui/shared/auth/feature-auth": [
         "libs/shared/auth/feature-auth/src/index.ts"
+      ],
+      "@expense-tracker-ui/shared/auth/ui-auth": [
+        "libs/shared/auth/ui-auth/src/index.ts"
       ]
     }
   },
