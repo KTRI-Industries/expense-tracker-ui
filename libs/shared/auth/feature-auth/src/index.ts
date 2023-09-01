@@ -1,1 +1,1 @@
-export * from './lib/user-info/user-info.component';
+export * from './lib/user-info/user-info-container.component';
