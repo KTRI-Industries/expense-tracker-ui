@@ -7,15 +7,21 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import {
   AuthEffects,
   AuthFeature,
 } from '@expense-tracker-ui/shared/auth/data-access';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
     provideEffects(AuthEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
@@ -28,6 +34,12 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [KeycloakService],
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakBearerInterceptor,
+      multi: true,
+    },
+
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
@@ -45,5 +57,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html',
       },
+      enableBearerInterceptor: true,
     });
 }
