@@ -1,11 +1,16 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserInfoContainerComponent } from '@expense-tracker-ui/shared/auth/feature-auth';
+import { KeycloakPlaygroundComponent } from '@expense-tracker-ui/keycloak-playground';
 
 @Component({
   selector: 'expense-tracker-ui-nx-welcome',
   standalone: true,
-  imports: [CommonModule, UserInfoContainerComponent],
+  imports: [
+    CommonModule,
+    UserInfoContainerComponent,
+    KeycloakPlaygroundComponent,
+  ],
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -428,6 +433,8 @@ import { UserInfoContainerComponent } from '@expense-tracker-ui/shared/auth/feat
           </h1>
 
           <expense-tracker-ui-user-info-container></expense-tracker-ui-user-info-container>
+
+          <expense-tracker-ui-keycloak-playground></expense-tracker-ui-keycloak-playground>
         </div>
         <!--  HERO  -->
         <div id="hero" class="rounded">

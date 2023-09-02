@@ -18,14 +18,19 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import {
+  KeycloakPlaygroundEffects,
+  PlayGroundFeature,
+} from '@expense-tracker-ui/keycloak-playground';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    provideEffects(AuthEffects),
+    provideEffects(AuthEffects, KeycloakPlaygroundEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
+    provideState(PlayGroundFeature.playgroundFeature),
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     KeycloakService,
     {

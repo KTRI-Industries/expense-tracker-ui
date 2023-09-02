@@ -3,11 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from './auth.actions';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
   private actions$ = inject(Actions);
+  private keycloak = inject(KeycloakService);
 
   login$ = createEffect(
     () =>
@@ -42,20 +42,4 @@ export class AuthEffects {
       )
     )
   );
-
-  retrieveAdmin$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.retrieveUserProfileSuccess),
-      switchMap((_) =>
-        this.client.get<string>('http://localhost:8080/admin').pipe(
-          map((message: string) => AuthActions.adminCallSuccess({ message })),
-          catchError((error: Error) =>
-            of(AuthActions.adminCallError({ error }))
-          )
-        )
-      )
-    )
-  );
-
-  constructor(private keycloak: KeycloakService, private client: HttpClient) {}
 }

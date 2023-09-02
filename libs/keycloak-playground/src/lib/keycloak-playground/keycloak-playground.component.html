@@ -1,1 +1,5 @@
 <p>keycloak-playground works!</p>
+<button (click)="loadMessage()">Load admin message!</button>
+<ng-container *ngIf="message$ | async as message">
+  <div>{{ message }}</div>
+</ng-container>
