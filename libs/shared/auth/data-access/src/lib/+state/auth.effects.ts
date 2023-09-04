@@ -22,7 +22,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap(() => of(this.keycloak.logout()))
+        tap(() => of(this.keycloak.logout(window.location.origin))) // redirect to base url after logout
       ),
     { dispatch: false }
   );

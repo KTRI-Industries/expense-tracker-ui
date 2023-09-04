@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { AppGuardGuard } from './app-guard.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -7,9 +8,9 @@ export const appRoutes: Route[] = [
       import('@expense-tracker-ui/keycloak-playground').then(
         (m) => m.keycloakPlaygroundRoutes
       ),
-    // canActivate: [AppGuardGuard],
-    // data: {
-    //   roles: ['administrator'],
-    // },
+    canActivate: [AppGuardGuard],
+    data: {
+      roles: ['administrator'],
+    },
   },
 ];
