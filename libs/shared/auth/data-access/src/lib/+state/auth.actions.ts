@@ -4,6 +4,7 @@ import { KeycloakProfile } from 'keycloak-js';
 export const AuthActions = createActionGroup({
   source: 'Auth',
   events: {
+    'Check login': emptyProps(),
     Login: emptyProps(),
     Logout: emptyProps(),
     'Login Success': emptyProps(),
