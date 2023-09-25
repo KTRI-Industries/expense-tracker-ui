@@ -6,8 +6,8 @@ import {
   UrlTree,
 } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
-import { Store } from "@ngrx/store";
-import { AuthActions } from "@expense-tracker-ui/shared/auth/data-access";
+import { Store } from '@ngrx/store';
+import { AuthActions } from '@expense-tracker-ui/shared/auth/data-access';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class AppGuardGuard extends KeycloakAuthGuard {
   ): Promise<boolean | UrlTree> {
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
-      this.store.dispatch(AuthActions.login())
+      this.store.dispatch(AuthActions.login());
     }
 
     // Get the roles required from the route.

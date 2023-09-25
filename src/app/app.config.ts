@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
-    provideRouter(appRoutes, ), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
+    provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,
     {
       provide: APP_INITIALIZER,
