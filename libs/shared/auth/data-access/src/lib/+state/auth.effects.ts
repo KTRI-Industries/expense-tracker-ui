@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, from, map, of, switchMap, tap } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
@@ -6,9 +6,6 @@ import { AuthActions } from './auth.actions';
 
 @Injectable()
 export class AuthEffects {
-  private actions$ = inject(Actions);
-  private keycloak = inject(KeycloakService);
-
   login$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -51,10 +48,12 @@ export class AuthEffects {
           filter((isLoggedin) => isLoggedin),
           map((_) => AuthActions.loginSuccess()),
           catchError((error) =>
-            of(AuthActions.loginFailure({ error: error.message }))
+            of(AuthActions.checkLoginFailure({ error: error.message }))
           )
         )
       )
     )
   );
+
+  constructor(private actions$: Actions, private keycloak: KeycloakService) {}
 }
