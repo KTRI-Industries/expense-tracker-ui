@@ -6,3 +6,5 @@ globalThis.ngJest = {
   },
 };
 import 'jest-preset-angular/setup-jest';
+// TODO could not import it somewhere centrally in the nx repo
+import '@testing-library/jest-dom'
