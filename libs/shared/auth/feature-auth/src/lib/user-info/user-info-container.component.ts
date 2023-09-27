@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
@@ -23,10 +22,7 @@ export class UserInfoContainerComponent {
   isLoggedIn$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   userProfile$ = this.store.select(AuthSelectors.selectUserProfile);
 
-  constructor(
-    private readonly keycloak: KeycloakService,
-    private store: Store
-  ) {}
+  constructor(private store: Store) {}
 
   public onLogin() {
     this.store.dispatch(AuthActions.login());
