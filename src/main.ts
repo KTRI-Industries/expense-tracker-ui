@@ -1,7 +1,15 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { appConfig, ExternalConfiguration } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AppComponent, appConfig).catch((err) =>
-  console.error(err)
-);
+fetch('/assets/app.config.json')
+  .then((response) => response.json())
+  .then((externalConfig) => {
+    bootstrapApplication(AppComponent, {
+      ...appConfig,
+      providers: [
+        ...appConfig.providers,
+        { provide: ExternalConfiguration, useValue: externalConfig },
+      ],
+    }).catch((err) => console.error(err));
+  });

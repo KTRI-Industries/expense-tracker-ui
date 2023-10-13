@@ -1,0 +1,4 @@
+{
+  "allowedOrigins": ["http://localhost"],
+  "basePath": "http://localhost:8080"
+}
