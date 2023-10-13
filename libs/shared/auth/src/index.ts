@@ -5,3 +5,4 @@ export { AuthFeature, AuthSelectors };
 export * from './lib/+state/auth.actions';
 export * from './lib/+state/auth.effects';
 export { UserInfoContainerComponent } from './lib/user-info-container/user-info-container.component';
+export * from './lib/external-configuration';
