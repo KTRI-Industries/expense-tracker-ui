@@ -3,18 +3,22 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakPlaygroundActions } from './keycloak-playground.actions';
+import { ExternalConfiguration } from '@expense-tracker-ui/shared/auth';
 
 @Injectable()
 export class KeycloakPlaygroundEffects {
   private actions$ = inject(Actions);
   private client = inject(HttpClient);
+  private externalConfig = inject(ExternalConfiguration);
 
   retrieveAdmin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(KeycloakPlaygroundActions.adminCall),
       switchMap((_) =>
         this.client
-          .get('http://localhost:8080/admin', { responseType: 'text' })
+          .get(`${this.externalConfig.basePath}/admin`, {
+            responseType: 'text',
+          })
           .pipe(
             map((message: string) =>
               KeycloakPlaygroundActions.adminCallSuccess({ message })
