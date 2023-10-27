@@ -1,0 +1,5 @@
+{
+  "extends": ["config:recommended"],
+  "commitMessage": "chore #15: {{{commitMessagePrefix}}} {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}",
+  "prHourlyLimit": 10
+}
