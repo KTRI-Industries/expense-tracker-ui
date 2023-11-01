@@ -1,10 +1,10 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserInfoContainerComponent } from '@expense-tracker-ui/shared/auth/feature-auth';
+import { UserInfoContainerComponent } from '@expense-tracker-ui/shared/auth';
 // import { KeycloakPlaygroundComponent } from '@expense-tracker-ui/keycloak-playground';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth/data-access';
+import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
 
 @Component({
   selector: 'expense-tracker-ui-nx-welcome',

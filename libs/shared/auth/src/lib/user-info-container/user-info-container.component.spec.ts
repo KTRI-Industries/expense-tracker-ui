@@ -4,7 +4,8 @@ import { render, RenderResult, screen } from '@testing-library/angular';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { provideMockStore } from '@ngrx/store/testing';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth/data-access';
+import { AuthSelectors } from '../../index';
+import '@testing-library/jest-dom';
 
 describe('UserInfoContainerComponent', () => {
   let renderResult: RenderResult<UserInfoContainerComponent>;

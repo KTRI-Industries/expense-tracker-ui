@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '@expense-tracker-ui/shared/auth/data-access';
+import { AuthActions } from '@expense-tracker-ui/shared/auth';
 
 @Injectable({
   providedIn: 'root',
