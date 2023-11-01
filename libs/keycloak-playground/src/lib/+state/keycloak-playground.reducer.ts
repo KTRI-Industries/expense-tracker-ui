@@ -1,10 +1,11 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakPlaygroundActions } from './keycloak-playground.actions';
+import { UserInfo } from '@expense-tracker-ui/api';
 
 export const KEYCLOAK_PLAYGROUND_FEATURE_KEY = 'keycloakPlayground';
 
 export interface KeycloakPlaygroundState {
-  message: string | null;
+  message: UserInfo | null;
 }
 
 export const initialPlaygroundState: KeycloakPlaygroundState = {

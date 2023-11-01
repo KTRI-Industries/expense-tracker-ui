@@ -1,33 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { KeycloakPlaygroundActions } from './keycloak-playground.actions';
-import { ExternalConfiguration } from '@expense-tracker-ui/shared/auth';
+import { KeycloakPlaygroundService } from '../keycloak-playground.service';
+import { UserInfo } from '@expense-tracker-ui/api';
 
 @Injectable()
 export class KeycloakPlaygroundEffects {
     private actions$ = inject(Actions);
-    private client = inject(HttpClient);
-    private externalConfig = inject(ExternalConfiguration);
+    private client = inject(KeycloakPlaygroundService);
 
-    retrieveAdmin$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(KeycloakPlaygroundActions.adminCall),
-            switchMap(() =>
-                this.client
-                    .get(`${this.externalConfig.basePath}/admin`, {
-                        responseType: 'text',
-                    })
-                    .pipe(
-                        map((message: string) =>
-                            KeycloakPlaygroundActions.adminCallSuccess({ message })
-                        ),
-                        catchError((error: Error) =>
-                            of(KeycloakPlaygroundActions.adminCallError({ error }))
-                        )
-                    )
-            )
+  retrieveAdmin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(KeycloakPlaygroundActions.adminCall),
+      switchMap(() =>
+        this.client.getAdmin().pipe(
+          map((message: UserInfo) =>
+            KeycloakPlaygroundActions.adminCallSuccess({ message })
+          ),
+          catchError((error: Error) =>
+            of(KeycloakPlaygroundActions.adminCallError({ error }))
+          )
         )
-    );
+      )
+    )
+  );
 }

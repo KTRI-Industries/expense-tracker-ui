@@ -1,4 +1,9 @@
-import { APP_INITIALIZER, ApplicationConfig, isDevMode } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  importProvidersFrom,
+  isDevMode,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
@@ -6,12 +11,24 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { AuthEffects, AuthFeature } from '@expense-tracker-ui/shared/auth';
+import { AuthEffects, AuthFeature, ExternalConfiguration } from "@expense-tracker-ui/shared/auth";
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import {
+  ApiModule,
+  Configuration,
+  ConfigurationParameters,
+} from '@expense-tracker-ui/api';
+
+export function apiConfigFactory(): Configuration {
+  const params: ConfigurationParameters = {
+    // set configuration parameters here.
+  };
+  return new Configuration(params);
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,10 +47,19 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: KeycloakBearerInterceptor,
+      useClass: KeycloakBearerInterceptor, // TODO investigate why this interceptor has to be provided here, according to docs this should be provided by default
       multi: true,
     },
-
+    {
+      provide: Configuration,
+      useFactory: (externalConfig: ExternalConfiguration) =>
+        new Configuration({
+          basePath: externalConfig.basePath,
+        }),
+      deps: [KeycloakService],
+      multi: false,
+    },
+    importProvidersFrom(ApiModule.forRoot(apiConfigFactory)), // TODO I have no idea what I m doing anymore
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
