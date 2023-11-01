@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { selectMessage } from '../+state/keycloak-playground.selectors';
 import { Observable } from 'rxjs';
 import { KeycloakPlaygroundActions } from '../+state/keycloak-playground.actions';
+import { UserInfo } from '@expense-tracker-ui/api';
 
 @Component({
   selector: 'expense-tracker-ui-keycloak-playground',
@@ -14,7 +15,7 @@ import { KeycloakPlaygroundActions } from '../+state/keycloak-playground.actions
 })
 export class KeycloakPlaygroundComponent {
   store: Store = inject(Store);
-  message$: Observable<string | null> = this.store.select(selectMessage);
+  message$: Observable<UserInfo | null> = this.store.select(selectMessage);
 
   loadMessage() {
     this.store.dispatch(KeycloakPlaygroundActions.adminCall());
