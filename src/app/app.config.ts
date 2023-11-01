@@ -6,10 +6,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import {
-  AuthEffects,
-  AuthFeature,
-} from '@expense-tracker-ui/shared/auth/data-access';
+import { AuthEffects, AuthFeature } from '@expense-tracker-ui/shared/auth';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,

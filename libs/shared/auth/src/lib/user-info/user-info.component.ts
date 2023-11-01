@@ -13,6 +13,6 @@ export class UserInfoComponent {
   @Input() isLoggedIn: boolean | null = false;
   @Input() userProfile: KeycloakProfile | null = null;
 
-  @Output() login = new EventEmitter<any>();
-  @Output() logout = new EventEmitter<any>();
+  @Output() login = new EventEmitter<void>();
+  @Output() logout = new EventEmitter<void>();
 }
