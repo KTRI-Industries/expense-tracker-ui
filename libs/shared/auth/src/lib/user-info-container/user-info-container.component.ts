@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {
-  AuthActions,
-  AuthSelectors,
-} from '@expense-tracker-ui/shared/auth/data-access';
-import { UserInfoComponent } from '@expense-tracker-ui/shared/auth/ui-auth';
+import { AuthActions, AuthSelectors } from '../../index';
+import { UserInfoComponent } from '../user-info/user-info.component';
 
 @Component({
   imports: [CommonModule, UserInfoComponent],
