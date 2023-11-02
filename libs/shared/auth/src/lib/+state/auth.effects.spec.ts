@@ -2,38 +2,42 @@ import { AuthActions } from './auth.actions';
 import { AuthEffects } from './auth.effects';
 import { of } from 'rxjs';
 import { KeycloakProfile } from 'keycloak-js';
+import { KeycloakService } from 'keycloak-angular';
 
 describe('AuthEffects', () => {
+  let keycloakService: KeycloakService;
+  beforeEach(() => {
+    keycloakService = new KeycloakService();
+  });
+
   it('should log in user when login action is triggered', () => {
     // Arrange
     const actions$ = of(AuthActions.login());
-    const keycloakServiceMock = {
-      login: jest.fn(),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'login');
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
 
     // Act
     authEffects.login$.subscribe();
 
     // Assert
-    expect(keycloakServiceMock.login).toHaveBeenCalled();
+    expect(keycloakService.login).toHaveBeenCalled();
   });
 
   it('should log out user and redirect to base url when logout action is triggered', () => {
     // Arrange
     const actions$ = of(AuthActions.logout());
-    const keycloakServiceMock = {
-      logout: jest.fn(),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'logout');
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
 
     // Act
     authEffects.logout$.subscribe();
 
     // Assert
-    expect(keycloakServiceMock.logout).toHaveBeenCalledWith(
-      window.location.origin
-    );
+    expect(keycloakService.logout).toHaveBeenCalledWith(window.location.origin);
   });
 
   it('should retrieve user profile after successful login', () => {
@@ -45,10 +49,11 @@ describe('AuthEffects', () => {
       // Fill in other properties as needed
     };
     const actions$ = of(AuthActions.loginSuccess());
-    const keycloakServiceMock = {
-      loadUserProfile: jest.fn().mockResolvedValue(userProfile),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'loadUserProfile');
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
+
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
       userProfile,
     });
@@ -63,10 +68,11 @@ describe('AuthEffects', () => {
   it('should check if user is logged in and dispatch loginSuccess action if true', () => {
     // Arrange
     const actions$ = of(AuthActions.checkLogin());
-    const keycloakServiceMock = {
-      isLoggedIn: jest.fn().mockResolvedValue(true),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'isLoggedIn');
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
+
     const expectedAction = AuthActions.loginSuccess();
 
     // Act
@@ -80,10 +86,10 @@ describe('AuthEffects', () => {
     // Arrange
     const error = new Error('Profile retrieval failed');
     const actions$ = of(AuthActions.loginSuccess());
-    const keycloakServiceMock = {
-      loadUserProfile: jest.fn().mockRejectedValue(error),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'loadUserProfile');
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error: error,
     });
@@ -99,10 +105,12 @@ describe('AuthEffects', () => {
     // Arrange
     const error = new Error('User is not logged in');
     const actions$ = of(AuthActions.checkLogin());
-    const keycloakServiceMock = {
-      isLoggedIn: jest.fn().mockRejectedValue(error),
-    };
-    const authEffects = new AuthEffects(actions$, keycloakServiceMock as any);
+
+    jest.spyOn(keycloakService, 'isLoggedIn');
+
+
+    const authEffects = new AuthEffects(actions$, keycloakService);
+
     const expectedAction = AuthActions.checkLoginFailure({ error: error });
 
     // Act

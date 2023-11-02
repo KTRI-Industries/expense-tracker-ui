@@ -27,7 +27,7 @@ export class AuthEffects {
   retrieveProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      switchMap((_) =>
+      switchMap(() =>
         from(this.keycloak.loadUserProfile()).pipe(
           map((userProfile) =>
             AuthActions.retrieveUserProfileSuccess({ userProfile })
@@ -43,10 +43,10 @@ export class AuthEffects {
   checkLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkLogin),
-      switchMap((_) =>
+      switchMap(() =>
         from(this.keycloak.isLoggedIn()).pipe(
           filter((isLoggedin) => isLoggedin),
-          map((_) => AuthActions.loginSuccess()),
+          map(() => AuthActions.loginSuccess()),
           catchError((error) =>
             of(AuthActions.checkLoginFailure({ error: error.message }))
           )

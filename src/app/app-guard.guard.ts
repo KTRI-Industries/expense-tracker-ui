@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '@expense-tracker-ui/shared/auth';
@@ -16,14 +11,13 @@ export class AppGuardGuard extends KeycloakAuthGuard {
   constructor(
     protected override readonly router: Router,
     protected readonly keycloak: KeycloakService,
-    private store: Store
+    private store: Store,
   ) {
     super(router, keycloak);
   }
 
   public async isAccessAllowed(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
   ): Promise<boolean | UrlTree> {
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {

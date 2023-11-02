@@ -1,6 +1,7 @@
 import { authFeature, AuthState } from './auth.reducer';
 import { AuthActions } from './auth.actions';
 import { selectIsLoggedIn } from './auth.selectors';
+import {Action} from "@ngrx/store";
 
 describe('AuthReducer', () => {
   describe('initial state', () => {
@@ -9,7 +10,7 @@ describe('AuthReducer', () => {
         userProfile: null,
       };
 
-      const actualState = authFeature.reducer(undefined, {} as any);
+      const actualState = authFeature.reducer(undefined, {} as Action);
 
       expect(actualState).toEqual(expectedState);
     });
