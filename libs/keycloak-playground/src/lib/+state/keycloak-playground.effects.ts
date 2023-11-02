@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { KeycloakPlaygroundActions } from './keycloak-playground.actions';
 import { KeycloakPlaygroundService } from '../keycloak-playground.service';
-import { UserInfo } from '@expense-tracker-ui/api';
+import { UserInfo } from "@expense-tracker-ui/api";
 
 @Injectable()
 export class KeycloakPlaygroundEffects {
