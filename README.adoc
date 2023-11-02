@@ -15,8 +15,11 @@ We opted to use Nx because:
 - it offers advanced tooling like caching support for builds, linting and testing, as well as integration with various CI platforms
 
 == Dev Environment setup and deployment
+
 === Setup for NgRx state management
+
 To perform the initial configuration for NgRx with standalone app component, the following command was executed:
+
 [source,shell]
 nx g @nx/angular:ngrx-root-store  --facade=true  --addDevTools=true --project=expense-tracker-ui
 
@@ -38,3 +41,23 @@ npx nx g @nx/angular:library --name=auth --directory=libs/shared --simpleName=tr
 npx nx g @nx/angular:ngrx-feature-store --name=auth --parent=libs/shared/auth/src/lib/lib.routes.ts --barrels=true
 ----
 
+== OpenAPI
+
+For all backend communication OpenAPI standard is used, together with the openapi-generator.
+This has as an advantage that we do not need to manage the API data model twice (backend/frontend).
+We use the generator and the openapi.json file provided by the backend to generate all API http calls as well as the data model in typescript.
+
+The api generated code resides inside the api library, inside the link:libs/api/src/lib/generated/[generated] folder.
+When we need to re-generate we run:
+
+----
+OPEN_API=<path/to/openapi.json> npm run generate:api
+----
+
+This file should normally be under the expense-tracker-parent/expense-tracker-core/ folder and if the parent folder is a sibling directory to the ui folder we can omit the OPEN_API environmental variable:
+
+include::package.json[lines=12]
+
+NOTE: After generation, some files might look like they have changed where in fact only line endings change (LF instead of CRLF).
+It seems that the generator automatically changes all files to LF but this will not be an issue if you commit the files and you have auto-crlf=true in git config.
+If so, all files are committed as LF so there will be no  change in case you try to commit them.
