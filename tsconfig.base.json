@@ -18,9 +18,7 @@
       "@expense-tracker-ui/keycloak-playground": [
         "libs/keycloak-playground/src/index.ts"
       ],
-      "@expense-tracker-ui/shared/auth": [
-        "libs/shared/auth/src/index.ts"
-      ]
+      "@expense-tracker-ui/shared/auth": ["libs/shared/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
