@@ -1,5 +1,6 @@
 {
   "extends": ["config:recommended"],
   "commitMessage": "chore #15: {{{commitMessagePrefix}}} {{{commitMessageAction}}} {{{commitMessageTopic}}} {{{commitMessageExtra}}} {{{commitMessageSuffix}}}",
-  "prHourlyLimit": 10
+  "prHourlyLimit": 10,
+  "rebaseWhen": "behind-base-branch"
 }
