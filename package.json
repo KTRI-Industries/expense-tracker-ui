@@ -28,7 +28,7 @@
     "@ngrx/store": "17.0.0-rc.0",
     "@ngrx/store-devtools": "17.0.0-rc.0",
     "@nx/angular": "17.1.1",
-    "keycloak-angular": "14.1.0",
+    "keycloak-angular": "15.0.0",
     "keycloak-js": "22.0.5",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
