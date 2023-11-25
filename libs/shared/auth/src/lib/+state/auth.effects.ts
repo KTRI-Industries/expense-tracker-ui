@@ -44,7 +44,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.checkLogin),
       switchMap(() =>
-        from(this.keycloak.isLoggedIn()).pipe(
+        from([this.keycloak.isLoggedIn()]).pipe(
           filter((isLoggedin) => isLoggedin),
           map(() => AuthActions.loginSuccess()),
           catchError((error) =>
