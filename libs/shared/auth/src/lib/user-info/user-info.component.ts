@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KeycloakProfile } from 'keycloak-js';
+import {TenantAwareKeycloakProfile} from "@expense-tracker-ui/shared/auth";
+
 
 @Component({
   selector: 'expense-tracker-ui-user-info',
@@ -11,7 +12,7 @@ import { KeycloakProfile } from 'keycloak-js';
 })
 export class UserInfoComponent {
   @Input() isLoggedIn: boolean | null = false;
-  @Input() userProfile: KeycloakProfile | null = null;
+  @Input() userProfile: TenantAwareKeycloakProfile | null = null;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();

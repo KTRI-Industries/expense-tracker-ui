@@ -9,7 +9,9 @@ export const AuthActions = createActionGroup({
     Login: emptyProps(),
     Logout: emptyProps(),
     'Login Success': emptyProps(),
-    'Retrieve User Profile Success': props<{ userProfile: KeycloakProfile }>(),
+    'Retrieve User Profile Success': props<{
+      keycloakUserProfile: KeycloakProfile;
+    }>(),
     'Retrieve User Profile Failure': props<{ error: Error }>(),
   },
 });
