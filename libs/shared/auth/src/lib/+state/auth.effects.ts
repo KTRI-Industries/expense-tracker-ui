@@ -10,18 +10,18 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.login),
-        tap(() => of(this.keycloak.login()))
+        tap(() => of(this.keycloak.login())),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap(() => of(this.keycloak.logout(window.location.origin))) // redirect to base url after logout
+        tap(() => of(this.keycloak.logout(window.location.origin))), // redirect to base url after logout
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   retrieveProfile$ = createEffect(() =>
@@ -29,15 +29,17 @@ export class AuthEffects {
       ofType(AuthActions.loginSuccess),
       switchMap(() =>
         from(this.keycloak.loadUserProfile()).pipe(
-          map((userProfile) =>
-            AuthActions.retrieveUserProfileSuccess({ userProfile })
+          map((keycloakUserProfile) =>
+            AuthActions.retrieveUserProfileSuccess({ keycloakUserProfile }),
           ),
           catchError((error) =>
-            of(AuthActions.retrieveUserProfileFailure({ error: error.message }))
-          )
-        )
-      )
-    )
+            of(
+              AuthActions.retrieveUserProfileFailure({ error: error.message }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   checkLogin$ = createEffect(() =>
@@ -48,12 +50,15 @@ export class AuthEffects {
           filter((isLoggedin) => isLoggedin),
           map(() => AuthActions.loginSuccess()),
           catchError((error) =>
-            of(AuthActions.checkLoginFailure({ error: error.message }))
-          )
-        )
-      )
-    )
+            of(AuthActions.checkLoginFailure({ error: error.message })),
+          ),
+        ),
+      ),
+    ),
   );
 
-  constructor(private actions$: Actions, private keycloak: KeycloakService) {}
+  constructor(
+    private actions$: Actions,
+    private keycloak: KeycloakService,
+  ) {}
 }
