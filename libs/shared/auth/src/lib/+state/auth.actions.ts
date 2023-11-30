@@ -13,5 +13,8 @@ export const AuthActions = createActionGroup({
       keycloakUserProfile: KeycloakProfile;
     }>(),
     'Retrieve User Profile Failure': props<{ error: Error }>(),
+    'Generate New Tenant': props<{ email: string }>(),
+    'Generate New Tenant Success': props<{ tenantId: string }>(),
+    'Generate New Tenant Failure': props<{ error: Error }>(),
   },
 });

@@ -1,8 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, from, map, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from './auth.actions';
+import { Store } from '@ngrx/store';
+import { selectUserProfile } from './auth.selectors';
+import { AuthService } from '../auth.service';
+import { Tenant } from '@expense-tracker-ui/api';
 
 @Injectable()
 export class AuthEffects {
@@ -57,8 +70,39 @@ export class AuthEffects {
     ),
   );
 
+  checkTenant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess),
+      withLatestFrom(this.store.select(selectUserProfile)),
+      filter(([_, selectUserProfile]) => selectUserProfile?.tenantId == null),
+      map(([_, selectUserProfile]) =>
+        AuthActions.generateNewTenant({
+          email: selectUserProfile?.email || '',
+        }),
+      ),
+    ),
+  );
+
+  generateTenant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.generateNewTenant),
+      switchMap((action) =>
+        this.authService.generateTenant(action.email).pipe(
+          map((tenant: Tenant) =>
+            AuthActions.generateNewTenantSuccess({ tenantId: tenant.id }),
+          ),
+          catchError((error: Error) =>
+            of(AuthActions.generateNewTenantFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   constructor(
     private actions$: Actions,
     private keycloak: KeycloakService,
+    private authService: AuthService,
+    private store: Store,
   ) {}
 }

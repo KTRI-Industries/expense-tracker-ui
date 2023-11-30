@@ -20,6 +20,10 @@
             "prefix": "expense-tracker-ui",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
         ]
       },
       "extends": [

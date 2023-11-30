@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {TenantAwareKeycloakProfile} from "@expense-tracker-ui/shared/auth";
+import { TenantAwareKeycloakProfile } from '../+state/auth.reducer';
 
 
 @Component({

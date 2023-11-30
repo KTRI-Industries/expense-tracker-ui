@@ -8,6 +8,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/models.ts
+model/tenant.ts
 model/userInfo.ts
 param.ts
 variables.ts
