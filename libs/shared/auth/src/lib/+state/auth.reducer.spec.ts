@@ -1,7 +1,7 @@
 import { authFeature, AuthState } from './auth.reducer';
 import { AuthActions } from './auth.actions';
 import { selectIsLoggedIn } from './auth.selectors';
-import {Action} from "@ngrx/store";
+import { Action } from '@ngrx/store';
 
 describe('AuthReducer', () => {
   describe('initial state', () => {
@@ -32,8 +32,8 @@ describe('AuthReducer', () => {
           userProfile: null,
         },
         AuthActions.retrieveUserProfileSuccess({
-          userProfile: expectedState.userProfile || {},
-        })
+          keycloakUserProfile: expectedState.userProfile || {},
+        }),
       );
 
       expect(actualState).toEqual(expectedState);

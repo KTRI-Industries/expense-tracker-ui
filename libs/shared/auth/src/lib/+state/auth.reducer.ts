@@ -25,6 +25,13 @@ export const authFeature = createFeature({
         userProfile: userProfileWithTenant(keycloakUserProfile),
       }),
     ),
+    on(AuthActions.generateNewTenantSuccess, (state, { tenantId }) => ({
+      ...state,
+      userProfile: {
+        ...state.userProfile,
+        tenantId,
+      },
+    })),
   ),
   extraSelectors: ({ selectUserProfile }) => ({
     selectIsLoggedIn: createSelector(
@@ -37,7 +44,10 @@ export const authFeature = createFeature({
 function userProfileWithTenant(
   userProfile: AttributeAwareKeycloakProfile,
 ): TenantAwareKeycloakProfile {
-  return { ...userProfile, tenantId: userProfile?.attributes[TENANT_ID][0] };
+  return {
+    ...userProfile,
+    tenantId: userProfile?.attributes?.[TENANT_ID]?.[0],
+  };
 }
 
 export interface TenantAwareKeycloakProfile extends KeycloakProfile {
@@ -45,5 +55,5 @@ export interface TenantAwareKeycloakProfile extends KeycloakProfile {
 }
 
 export interface AttributeAwareKeycloakProfile extends KeycloakProfile {
-  attributes?: any;
+  attributes?: Record<string, string[] | undefined>;
 }

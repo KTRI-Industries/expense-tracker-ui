@@ -3,9 +3,13 @@ import { AuthEffects } from './auth.effects';
 import { of } from 'rxjs';
 import { KeycloakProfile } from 'keycloak-js';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthService } from '../auth.service';
+import { createMockStore } from '@ngrx/store/testing';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
+  let authService: AuthService;
+
   beforeEach(() => {
     keycloakService = new KeycloakService();
   });
@@ -16,7 +20,12 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'login');
 
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
 
     // Act
     authEffects.login$.subscribe();
@@ -31,7 +40,12 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'logout');
 
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
 
     // Act
     authEffects.logout$.subscribe();
@@ -52,10 +66,15 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'loadUserProfile');
 
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
-      userProfile,
+      keycloakUserProfile: userProfile,
     });
 
     // Act
@@ -71,7 +90,12 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'isLoggedIn');
 
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
 
     const expectedAction = AuthActions.loginSuccess();
 
@@ -89,7 +113,12 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'loadUserProfile');
 
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error: error,
     });
@@ -108,8 +137,12 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'isLoggedIn');
 
-
-    const authEffects = new AuthEffects(actions$, keycloakService);
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
 
     const expectedAction = AuthActions.checkLoginFailure({ error: error });
 
