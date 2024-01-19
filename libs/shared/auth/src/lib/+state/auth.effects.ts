@@ -15,7 +15,7 @@ import { AuthActions } from './auth.actions';
 import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
-import { Tenant } from '@expense-tracker-ui/api';
+import { TenantDto } from '@expense-tracker-ui/api';
 
 @Injectable()
 export class AuthEffects {
@@ -88,7 +88,7 @@ export class AuthEffects {
       ofType(AuthActions.generateNewTenant),
       switchMap((action) =>
         this.authService.generateTenant(action.email).pipe(
-          map((tenant: Tenant) =>
+          map((tenant: TenantDto) =>
             AuthActions.generateNewTenantSuccess({ tenantId: tenant.id }),
           ),
           catchError((error: Error) =>
