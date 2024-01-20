@@ -1,8 +1,17 @@
 <!-- flex justify-between moves buttons all the way to the right -->
 <mat-toolbar class="sticky-toolbar flex justify-between">
   <span>Expense Tracker</span>
-
-  <button mat-icon-button>
-    <mat-icon>login</mat-icon>
-  </button>
+  <ng-container *ngTemplateOutlet="menu"></ng-container>
 </mat-toolbar>
+
+<ng-template #menu>
+  <!-- space-x-2 keeps space between two buttons close -->
+  <div class="flex space-x-2">
+    <button mat-icon-button>
+      <mat-icon>login</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</ng-template>
