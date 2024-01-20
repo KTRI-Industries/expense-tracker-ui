@@ -1,2 +1,6 @@
-<expense-tracker-ui-nav-menu> </expense-tracker-ui-nav-menu>
+<expense-tracker-ui-nav-menu
+  [isAuthenticated]="isAuthenticated$ | async"
+  [username]="username$ | async"
+>
+</expense-tracker-ui-nav-menu>
 <router-outlet></router-outlet>

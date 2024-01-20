@@ -38,6 +38,10 @@ export const authFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile != null,
     ),
+    selectUserName: createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile?.username,
+    ),
   }),
 });
 
