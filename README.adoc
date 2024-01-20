@@ -32,7 +32,7 @@ TODO
 == Generate a standalone library
 
 ----
-npx nx g @nx/angular:library --name=auth --directory=libs/shared --simpleName=true --standalone=true
+npx nx g @nx/angular:library --name=homepage --directory=libs --simpleName=true --standalone=true --routing=true
 ----
 
 == Generate a ngrx feature store for a library
