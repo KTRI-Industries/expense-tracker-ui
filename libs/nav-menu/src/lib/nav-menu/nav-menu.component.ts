@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
@@ -11,4 +11,7 @@ import { MatIconButton } from '@angular/material/button';
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',
 })
-export class NavMenuComponent {}
+export class NavMenuComponent {
+  @Input() username: string | null | undefined = '';
+  @Input() isAuthenticated: boolean | null | undefined = false;
+}

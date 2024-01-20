@@ -7,10 +7,12 @@
 <ng-template #menu>
   <!-- space-x-2 keeps space between two buttons close -->
   <div class="flex space-x-2">
-    <button mat-icon-button>
+    <!-- pt-2 aligns username with site title -->
+    <span class="pt-2">{{ username }}</span>
+    <button mat-icon-button *ngIf="!isAuthenticated">
       <mat-icon>login</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf="isAuthenticated">
       <mat-icon>logout</mat-icon>
     </button>
   </div>
