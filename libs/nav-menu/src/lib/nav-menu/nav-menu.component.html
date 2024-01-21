@@ -1,5 +1,5 @@
 <!-- flex justify-between moves buttons all the way to the right -->
-<mat-toolbar class="sticky-toolbar flex justify-between">
+<mat-toolbar class="sticky-toolbar flex justify-between mat-elevation-z6">
   <span>Expense Tracker</span>
   <ng-container *ngTemplateOutlet="menu"></ng-container>
 </mat-toolbar>
@@ -9,10 +9,20 @@
   <div class="flex space-x-2">
     <!-- pt-2 aligns username with site title -->
     <span class="pt-2">{{ username }}</span>
-    <button mat-icon-button *ngIf="!isAuthenticated">
+    <button
+      *ngIf="!isAuthenticated"
+      mat-icon-button
+      matTooltip="Login"
+      (click)="onLogin()"
+    >
       <mat-icon>login</mat-icon>
     </button>
-    <button mat-icon-button *ngIf="isAuthenticated">
+    <button
+      *ngIf="isAuthenticated"
+      mat-icon-button
+      matTooltip="Logout"
+      (click)="onLogout()"
+    >
       <mat-icon>logout</mat-icon>
     </button>
   </div>
