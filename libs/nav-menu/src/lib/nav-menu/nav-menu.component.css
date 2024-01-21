@@ -5,6 +5,10 @@
   z-index: 1; /* Ensure that your app's content doesn't overlap the toolbar */
 }
 
+.mat-toolbar {
+  --mat-toolbar-standard-height: 56px; /* Overwrite the height of the toolbar */
+}
+
 /* fix sidenav not showing when logged out*/
 /*mat-sidenav-container {*/
 /*  height: 100%;*/

@@ -1,6 +1,11 @@
 <expense-tracker-ui-nav-menu
   [isAuthenticated]="isAuthenticated$ | async"
   [username]="username$ | async"
+  (login)="onLogin()"
+  (logout)="onLogout()"
 >
 </expense-tracker-ui-nav-menu>
-<router-outlet></router-outlet>
+<!-- container is used to have margins left and right (better for large screens) mx-auto to align to center and some padding for extra space -->
+<div class="container mx-auto px-4 pt-2">
+  <router-outlet></router-outlet>
+</div>

@@ -28,4 +28,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(AuthActions.checkLogin());
   }
+
+  onLogin() {
+    this.store.dispatch(AuthActions.login());
+  }
+
+  onLogout() {
+    this.store.dispatch(AuthActions.logout());
+  }
 }
