@@ -1,25 +1,8 @@
-<!-- expense-tracker-landing.component.html -->
+<expense-tracker-ui-landing-page
+  *ngIf="(isAuthenticated$ | async) === false"
+  (login)="login()"
+></expense-tracker-ui-landing-page>
 
-<section
-  class="min-h-screen flex items-center justify-center bg-cover"
-  style="background-image: url('assets/landing_page_bg.jpg')"
->
-  <div class="max-w-md bg-white p-4 md:p-8 rounded-md shadow-md text-center">
-    <h1 class="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4 text-gray-800">
-      Expense Tracker
-    </h1>
-    <p class="text-sm md:text-lg text-gray-600 mb-4 md:mb-6">
-      Track your expenses with ease.
-    </p>
-
-    <!-- Redirect to Keycloak login/registration screen -->
-    <button mat-raised-button color="primary" (click)="login()">
-      Get Started
-    </button>
-
-    <p class="text-xs md:text-sm text-gray-500">
-      Already have an account?
-      <a mat-button class="text-blue-500" (click)="login()">Login</a>
-    </p>
-  </div>
-</section>
+<ng-container *ngIf="isAuthenticated$ | async"
+  >Welcome to the Expense Tracker UI!<ng-container> </ng-container
+></ng-container>
