@@ -1,7 +1,6 @@
 <section
   class="min-h-screen flex items-center justify-center bg-cover"
-  style="background-image: url('assets/landing_page_bg.jpg')"
->
+  style="background-image: url('assets/landing_page_bg_new.jpg')">
   <div class="max-w-md bg-white p-4 md:p-8 rounded-md shadow-md text-center">
     <h1 class="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4 text-gray-800">
       Expense Tracker
@@ -11,15 +10,15 @@
     </p>
 
     <!-- Redirect to Keycloak login/registration screen -->
-    <button mat-raised-button color="primary" (click)="login.emit()">
+    <button mat-raised-button color="accent" (click)="login.emit()">
       Get Started
     </button>
 
     <p class="text-xs md:text-sm text-gray-500">
       Already have an account?
-      <a mat-button class="text-blue-500" routerLink="" (click)="login.emit()"
-        >Login</a
-      >
+      <a mat-button class="text-blue-500" routerLink="" (click)="login.emit()">
+        Login
+      </a>
     </p>
   </div>
 </section>
