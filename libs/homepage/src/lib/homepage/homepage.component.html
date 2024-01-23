@@ -1,8 +1,7 @@
 <expense-tracker-ui-landing-page
   *ngIf="(isAuthenticated$ | async) === false"
-  (login)="login()"
-></expense-tracker-ui-landing-page>
+  (login)="login()"></expense-tracker-ui-landing-page>
 
-<ng-container *ngIf="isAuthenticated$ | async"
-  >Welcome to the Expense Tracker UI!<ng-container> </ng-container
-></ng-container>
+<ng-container *ngIf="isAuthenticated$ | async">
+  Welcome to the Expense Tracker UI!
+</ng-container>

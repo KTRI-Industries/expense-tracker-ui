@@ -1,4 +1,6 @@
 {
   "singleQuote": true,
-  "endOfLine": "crlf"
+  "endOfLine": "crlf",
+  "htmlWhitespaceSensitivity": "ignore",
+  "bracketSameLine": true
 }
