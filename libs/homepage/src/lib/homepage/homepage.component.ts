@@ -16,7 +16,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 export class HomepageComponent {
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   constructor(private store: Store) {}
-  login() {
+  onLogin() {
     this.store.dispatch(AuthActions.login());
   }
 }
