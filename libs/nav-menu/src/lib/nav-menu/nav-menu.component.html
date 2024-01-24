@@ -1,29 +1,47 @@
 <!-- flex justify-between moves buttons all the way to the right -->
 <mat-toolbar class="sticky-toolbar flex justify-between mat-elevation-z6">
+  <!-- md:hidden hides button on bigger screens-->
+  <button
+    mat-icon-button
+    class="md:hidden"
+    aria-label="Example icon-button with menu icon"
+    (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span>Expense Tracker</span>
-  <ng-container *ngTemplateOutlet="menu"></ng-container>
+  <!-- hidden md:block hides top menu on smaller screens -->
+  <div class="hidden md:block md:flex">
+    <ng-container *ngTemplateOutlet="menu"></ng-container>
+  </div>
 </mat-toolbar>
 
+<mat-sidenav-container>
+  <!-- fixedInViewPort seems to be needed to show the side menu above the main content. fixedTopGap moves the side menu bellow the top menu-->
+  <mat-sidenav fixedInViewport="true" fixedTopGap="56" #sidenav>
+    <mat-nav-list>
+      <ng-container *ngTemplateOutlet="menu"></ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
 <ng-template #menu>
-  <!-- space-x-2 keeps space between two buttons close -->
-  <div class="flex space-x-2">
-    <!-- pt-2 aligns username with site title -->
-    <span class="pt-2">{{ username }}</span>
-    <button
-      *ngIf="!isAuthenticated"
-      mat-icon-button
-      matTooltip="Login"
-      (click)="onLogin()"
-    >
+  <!-- grid-cols-1 lg:grid-cols-2 stacks elements in small screen the one bellow the other and the one besides the other in large ones -->
+  <!-- px-2 for spacing left and right in sidenav menu-->
+  <!-- items-center to align username with buttons on large screens justify-items-center to align items in side menu -->
+  <div
+    class="grid grid-cols-1 lg:grid-cols-2 px-2 items-center justify-items-center">
+    <span>{{ username }}</span>
+    @if (!isAuthenticated) {
+    <button mat-icon-button matTooltip="Login" (click)="onLogin()">
       <mat-icon>login</mat-icon>
     </button>
-    <button
-      *ngIf="isAuthenticated"
-      mat-icon-button
-      matTooltip="Logout"
-      (click)="onLogout()"
-    >
+    } @else {
+    <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
       <mat-icon>logout</mat-icon>
     </button>
+    }
   </div>
 </ng-template>
