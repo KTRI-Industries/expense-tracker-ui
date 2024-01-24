@@ -1,7 +1,6 @@
+@if ((isAuthenticated$ | async) === false) {
 <expense-tracker-ui-landing-page
-  *ngIf="(isAuthenticated$ | async) === false"
   (login)="onLogin()"></expense-tracker-ui-landing-page>
-
-<ng-container *ngIf="isAuthenticated$ | async">
-  Welcome to the Expense Tracker UI!
-</ng-container>
+} @else {
+<ng-container>Welcome to the Expense Tracker UI!</ng-container>
+}
