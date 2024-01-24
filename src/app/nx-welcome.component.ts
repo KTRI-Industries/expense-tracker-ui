@@ -1,10 +1,11 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserInfoContainerComponent } from '@expense-tracker-ui/shared/auth';
-// import { KeycloakPlaygroundComponent } from '@expense-tracker-ui/keycloak-playground';
+import {
+  AuthSelectors,
+  UserInfoContainerComponent,
+} from '@expense-tracker-ui/shared/auth';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
 
 @Component({
   selector: 'expense-tracker-ui-nx-welcome',
@@ -31,15 +32,15 @@ import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
         <!--  WELCOME  -->
         <div id="welcome">
           <h1>
-            <span> Hello there, </span>
+            <span>Hello there,</span>
             Welcome expense-tracker-ui 👋
           </h1>
 
           <expense-tracker-ui-user-info-container></expense-tracker-ui-user-info-container>
           <br />
-          <ng-container *ngIf="isLoggedIn$ | async">
+          @if (isLoggedIn$ | async) {
             <a routerLink="/admin">Go to admin page</a>
-          </ng-container>
+          }
 
           <!--          <expense-tracker-ui-keycloak-playground></expense-tracker-ui-keycloak-playground>-->
           <router-outlet></router-outlet>
