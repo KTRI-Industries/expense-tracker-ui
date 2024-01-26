@@ -10,5 +10,5 @@ export const loadHomepageSuccess = createAction(
 
 export const loadHomepageFailure = createAction(
   '[Homepage/API] Load Homepage Failure',
-  props<{ error: any }>(),
+  props<{ error: Error }>(),
 );

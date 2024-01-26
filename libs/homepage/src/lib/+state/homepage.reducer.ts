@@ -9,7 +9,7 @@ export const HOMEPAGE_FEATURE_KEY = 'homepage';
 export interface HomepageState extends EntityState<HomepageEntity> {
   selectedId?: string | number; // which Homepage record has been selected
   loaded: boolean; // has the Homepage list been loaded
-  error?: string | null; // last known error (if any)
+  error?: Error | string | null; // last known error (if any)
 }
 
 export interface HomepagePartialState {
