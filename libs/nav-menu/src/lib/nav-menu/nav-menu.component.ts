@@ -10,6 +10,7 @@ import {
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
@@ -24,6 +25,7 @@ import { MatNavList } from '@angular/material/list';
     MatNavList,
     MatSidenav,
     MatSidenavContent,
+    RouterLink,
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',

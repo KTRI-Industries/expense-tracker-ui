@@ -18,4 +18,11 @@ export const appRoutes: Route[] = [
       roles: ['administrator'],
     },
   },
+  {
+    path: 'transactions',
+    loadChildren: () =>
+      import('@expense-tracker-ui/transactions').then(
+        (m) => m.transactionsRoutes,
+      ),
+  },
 ];
