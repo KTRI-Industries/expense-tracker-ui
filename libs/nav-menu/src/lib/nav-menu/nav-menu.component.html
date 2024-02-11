@@ -34,7 +34,12 @@
   <div
     class="grid grid-cols-1 md:grid-cols-12 px-2 items-center justify-items-center">
     @if (!isAuthenticated) {
-    <button mat-icon-button matTooltip="Login" (click)="onLogin()">
+    <!--col-span-full because login button is on its own so it should be at the end of the grid -->
+    <button
+      class="col-span-full"
+      mat-icon-button
+      matTooltip="Login"
+      (click)="onLogin()">
       <mat-icon>login</mat-icon>
     </button>
     } @else {
