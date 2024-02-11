@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
   MatSidenav,
@@ -26,6 +26,7 @@ import { RouterLink } from '@angular/router';
     MatSidenav,
     MatSidenavContent,
     RouterLink,
+    MatButton,
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',
