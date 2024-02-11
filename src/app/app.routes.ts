@@ -24,5 +24,9 @@ export const appRoutes: Route[] = [
       import('@expense-tracker-ui/transactions').then(
         (m) => m.transactionsRoutes,
       ),
+    canActivate: [AppGuardGuard],
+    data: {
+      roles: ['users'],
+    },
   },
 ];
