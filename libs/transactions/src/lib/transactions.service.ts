@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class TransactionsServiceService {
+export class TransactionsService {
   private api: TransactionControllerService = inject(
     TransactionControllerService,
   ); // TODO better way to reference the generated code?
