@@ -7,6 +7,6 @@ import * as TransactionsSelectors from './lib/+state/transactions.selectors';
 export * from './lib/+state/transactions.models';
 
 export { TransactionsActions, TransactionsFeature, TransactionsSelectors };
-export * from './lib/lib.routes';
+export * from './lib/transaction.routes';
 
 export * from './lib/transactions/transactions.component';

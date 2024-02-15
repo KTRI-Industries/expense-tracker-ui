@@ -1,22 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, of, switchMap } from 'rxjs';
-import * as TransactionsActions from './transactions.actions';
+import { catchError, map, of, switchMap } from 'rxjs';
+import { TransactionActions } from './transactions.actions';
+import { TransactionsServiceService } from '../../../../homepage/src/lib/transactions-service.service';
+import { PageTransactionDto } from '@expense-tracker-ui/api';
 
 @Injectable()
 export class TransactionsEffects {
   private actions$ = inject(Actions);
+  private client = inject(TransactionsServiceService);
 
-  init$ = createEffect(() =>
+  retrieveTransactions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionsActions.initTransactions),
+      ofType(TransactionActions.initTransactions),
       switchMap(() =>
-        of(TransactionsActions.loadTransactionsSuccess({ transactions: [] })),
+        this.client.getAllTransactions().pipe(
+          map((transactions: PageTransactionDto) =>
+            TransactionActions.loadTransactionsSuccess({ transactions }),
+          ),
+          catchError((error) =>
+            of(TransactionActions.loadTransactionsFailure({ error })),
+          ),
+        ),
       ),
-      catchError((error) => {
-        console.error('Error', error);
-        return of(TransactionsActions.loadTransactionsFailure({ error }));
-      }),
     ),
   );
 }
