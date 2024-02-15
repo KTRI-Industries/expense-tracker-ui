@@ -11,7 +11,11 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { AuthEffects, AuthFeature, ExternalConfiguration } from "@expense-tracker-ui/shared/auth";
+import {
+  AuthEffects,
+  AuthFeature,
+  ExternalConfiguration,
+} from '@expense-tracker-ui/shared/auth';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
@@ -22,6 +26,7 @@ import {
   Configuration,
   ConfigurationParameters,
 } from '@expense-tracker-ui/api';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -59,7 +64,10 @@ export const appConfig: ApplicationConfig = {
       deps: [KeycloakService],
       multi: false,
     },
-    importProvidersFrom(ApiModule.forRoot(apiConfigFactory)), // TODO I have no idea what I m doing anymore
+    importProvidersFrom(
+      ApiModule.forRoot(apiConfigFactory),
+      NgHttpLoaderModule.forRoot(),
+    ), // TODO I have no idea what I m doing anymore
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };

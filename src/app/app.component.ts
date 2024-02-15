@@ -6,10 +6,17 @@ import { Store } from '@ngrx/store';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { NavMenuComponent } from '@expense-tracker-ui/nav-menu';
 import { AsyncPipe } from '@angular/common';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule, NavMenuComponent, AsyncPipe],
+  imports: [
+    NxWelcomeComponent,
+    RouterModule,
+    NavMenuComponent,
+    AsyncPipe,
+    NgHttpLoaderModule,
+  ],
   selector: 'expense-tracker-ui-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
