@@ -6,7 +6,22 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div>Transaction 1 Amount 1</div>
-    <div>Transaction 2 Amount 2</div>
+    <ng-container *ngFor="let transaction of transactions?.content; index as i">
+      <p>
+        <span>No: {{ i + 1 }}</span>
+      </p>
+      <h3>
+        <span>Description: {{ transaction.description }}</span>
+      </h3>
+      <p>
+        <span>Amount: {{ transaction.amount.amount }}</span>
+      </p>
+      <p>
+        <span>Category: {{ transaction.category }}</span>
+      </p>
+      <p>
+        <span>Date: {{ transaction.date }}</span>
+      </p>
+    </ng-container>
   </mat-card-content>
 </mat-card>

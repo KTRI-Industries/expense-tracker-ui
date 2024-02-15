@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatCard,
@@ -7,6 +7,8 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
+import { PageTransactionDto } from '@expense-tracker-ui/api';
+import { MatList, MatListItem } from '@angular/material/list';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -18,8 +20,12 @@ import {
     MatCardTitle,
     MatCardSubtitle,
     MatCardHeader,
+    MatList,
+    MatListItem,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent {}
+export class TransactionsComponent {
+  @Input() transactions: PageTransactionDto | null = null;
+}
