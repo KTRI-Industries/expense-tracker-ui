@@ -6,22 +6,46 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngFor="let transaction of transactions?.content; index as i">
-      <p>
-        <span>No: {{ i + 1 }}</span>
-      </p>
-      <h3>
-        <span>Description: {{ transaction.description }}</span>
-      </h3>
-      <p>
-        <span>Amount: {{ transaction.amount.amount }}</span>
-      </p>
-      <p>
-        <span>Category: {{ transaction.category }}</span>
-      </p>
-      <p>
-        <span>Date: {{ transaction.date }}</span>
-      </p>
-    </ng-container>
+    <mat-table
+      [dataSource]="transactionDatasource || []"
+      class="mat-elevation-z8">
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index" data-label="No."> <!-- data-label needed for responsive-->
+          {{ i + 1 }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Amount">
+          {{ element.amount.amount }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Description">
+          {{ element.description }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Date">
+          {{ element.date }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+        <mat-cell *matCellDef="let element" data-label="Category">
+          {{ element.category }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="transactionColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: transactionColumns"></mat-row>
+    </mat-table>
   </mat-card-content>
 </mat-card>
