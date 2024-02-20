@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>New Transaction</mat-card-title>
+    <mat-card-subtitle>
+      Create a new transaction (income/expense).
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="transactionForm" (ngSubmit)="onCreate()">
+      <formly-form
+        [form]="transactionForm"
+        [fields]="fields"
+        [model]="model"></formly-form>
+    </form>
+  </mat-card-content>
+</mat-card>

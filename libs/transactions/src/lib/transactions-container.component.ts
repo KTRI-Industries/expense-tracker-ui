@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TransactionActions, TransactionsSelectors } from '../../index';
+import { TransactionActions, TransactionsSelectors } from '../index';
 import { AsyncPipe } from '@angular/common';
 import { TransactionsComponent } from './transactions.component';
 

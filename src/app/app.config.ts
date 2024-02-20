@@ -27,6 +27,9 @@ import {
   ConfigurationParameters,
 } from '@expense-tracker-ui/api';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -67,6 +70,9 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       ApiModule.forRoot(apiConfigFactory),
       NgHttpLoaderModule.forRoot(),
+      FormlyModule.forRoot(),
+      FormlyMaterialModule,
+      FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
