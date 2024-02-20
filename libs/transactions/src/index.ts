@@ -10,4 +10,4 @@ export * from './lib/transaction.routes';
 
 export * from './lib/+state/transactions.actions';
 
-export * from './lib/transactions/transactions-container.component';
+export * from './lib/transactions-container.component';

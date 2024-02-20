@@ -11,7 +11,8 @@
       class="mat-elevation-z8">
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
-        <mat-cell *matCellDef="let element; let i = index" data-label="No."> <!-- data-label needed for responsive-->
+        <mat-cell *matCellDef="let element; let i = index" data-label="No.">
+          <!-- data-label needed for responsive-->
           {{ i + 1 }}
         </mat-cell>
       </ng-container>
