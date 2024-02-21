@@ -11,6 +11,8 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { TransactionDto } from '@expense-tracker-ui/api';
+import { mapToFilters } from '../../../formly/src/lib/utils';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -35,6 +37,7 @@ export class TransactionComponent implements OnInit {
   transactionForm = this.fb.group({});
   fields: FormlyFieldConfig[] = [];
   model: any = {};
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -66,16 +69,31 @@ export class TransactionComponent implements OnInit {
           required: true,
         },
       },
-/*      {
+      {
         key: 'category',
-        type: 'chip',
+        type: 'chips',
         props: {
           label: 'Transaction Category',
           placeholder: 'Set transaction category',
+          filters: mapToFilters(TransactionDto.CategoryEnum, categoryLabels),
         },
-      },*/
+      },
     ];
   }
 
   onCreate() {}
 }
+
+export const categoryLabels: Record<TransactionDto.CategoryEnum, string> = {
+  BILL: 'bills',
+  ENTERTAINMENT: 'entertainment',
+  GIFTS: 'gifts',
+  GROCERIES: 'groceries',
+  OTHER: 'other',
+  RESTAURANT: 'restaurant',
+  RENT: 'rent',
+  SALARY: 'salary',
+  SPORT: 'sport',
+  TAXES: 'taxes',
+  TRAVEL: 'travel',
+};
