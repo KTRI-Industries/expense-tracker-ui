@@ -30,6 +30,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { ChipsComponent } from '@expense-tracker-ui/formly';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -70,7 +71,17 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       ApiModule.forRoot(apiConfigFactory),
       NgHttpLoaderModule.forRoot(),
-      FormlyModule.forRoot(),
+      FormlyModule.forRoot({
+        types: [
+          {
+            name: 'chips',
+            component: ChipsComponent,
+            defaultOptions: {
+              defaultValue: [],
+            },
+          },
+        ],
+      }),
       FormlyMaterialModule,
       FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
