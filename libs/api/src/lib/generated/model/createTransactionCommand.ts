@@ -9,38 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Category } from './category';
 import { MonetaryAmount } from './monetaryAmount';
 
 export interface CreateTransactionCommand {
   amount: MonetaryAmount;
   description?: string;
   date: string;
-  category?: CreateTransactionCommand.CategoryEnum;
-}
-export namespace CreateTransactionCommand {
-  export type CategoryEnum =
-    | 'SALARY'
-    | 'RENT'
-    | 'GROCERIES'
-    | 'ENTERTAINMENT'
-    | 'BILL'
-    | 'RESTAURANT'
-    | 'TAXES'
-    | 'SPORT'
-    | 'GIFTS'
-    | 'TRAVEL'
-    | 'OTHER';
-  export const CategoryEnum = {
-    Salary: 'SALARY' as CategoryEnum,
-    Rent: 'RENT' as CategoryEnum,
-    Groceries: 'GROCERIES' as CategoryEnum,
-    Entertainment: 'ENTERTAINMENT' as CategoryEnum,
-    Bill: 'BILL' as CategoryEnum,
-    Restaurant: 'RESTAURANT' as CategoryEnum,
-    Taxes: 'TAXES' as CategoryEnum,
-    Sport: 'SPORT' as CategoryEnum,
-    Gifts: 'GIFTS' as CategoryEnum,
-    Travel: 'TRAVEL' as CategoryEnum,
-    Other: 'OTHER' as CategoryEnum,
-  };
+  category?: Category;
 }

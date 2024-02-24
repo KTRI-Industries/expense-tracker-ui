@@ -8,6 +8,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/category.ts
 model/createTransactionCommand.ts
 model/models.ts
 model/monetaryAmount.ts

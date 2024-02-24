@@ -11,7 +11,7 @@
     "test:all": "nx run-many --all --target=test --configuration=ci",
     "build:stats": "nx build --stats-json",
     "analyze:ui": "webpack-bundle-analyzer dist/expense-tracker-ui/stats.json",
-    "generate:api": "cross-env OPENAPI_PATH=${OPENAPI_PATH:../expense-tracker-parent/expense-tracker-core/openapi.json} openapi-generator-cli generate -i $OPENAPI_PATH -g typescript-angular -o ./libs/api/src/lib/generated",
+    "generate:api": "cross-env OPENAPI_PATH=${OPENAPI_PATH:../expense-tracker-parent/expense-tracker-core/openapi.json} openapi-generator-cli generate -i $OPENAPI_PATH -g typescript-angular -o ./libs/api/src/lib/generated --additional-properties=stringEnums=true",
     "e2e": "nx e2e senik-ui-e2e --watch"
   },
   "private": true,

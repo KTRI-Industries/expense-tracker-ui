@@ -11,8 +11,8 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { TransactionDto } from '@expense-tracker-ui/api';
-import { mapToFilters } from '../../../formly/src/lib/utils';
+import { Category, TransactionDto } from "@expense-tracker-ui/api";
+import { mapToFiltersGeneric } from '@expense-tracker-ui/formly';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -75,7 +75,10 @@ export class TransactionComponent implements OnInit {
         props: {
           label: 'Transaction Category',
           placeholder: 'Set transaction category',
-          filters: mapToFilters(TransactionDto.CategoryEnum, categoryLabels),
+          filters: mapToFiltersGeneric(
+            Category,
+            categoryLabels,
+          ),
         },
       },
     ];
@@ -84,7 +87,7 @@ export class TransactionComponent implements OnInit {
   onCreate() {}
 }
 
-export const categoryLabels: Record<TransactionDto.CategoryEnum, string> = {
+export const categoryLabels: Record<Category, string> = {
   BILL: 'bills',
   ENTERTAINMENT: 'entertainment',
   GIFTS: 'gifts',
