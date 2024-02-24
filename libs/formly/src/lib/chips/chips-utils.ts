@@ -7,7 +7,7 @@ export class ChipsUtils {
   constructor(
     private formControl: FormControl,
     private itemControl: FormControl,
-    private filters: any[],
+    private filters: Record<any, string> | undefined,
   ) {}
 
   /**
@@ -57,13 +57,10 @@ export class ChipsUtils {
    * @returns An array of filtered labels.
    */
   filterLabels(): string[] {
-    return this.filters
-      ?.filter(
-        (filter: any) => !this.formControl?.value?.includes(filter.label),
-      )
-      .filter((filter: any) =>
-        filter.label.includes(this.itemControl.value || ''),
-      )
-      .map((filter: any) => filter.label);
+    return Object.keys(this.filters!)
+      .filter((key) => !this.formControl?.value?.includes(this.filters![key]))
+      .filter((key) =>
+        this.filters![key].includes(this.itemControl.value || ''),
+      );
   }
 }

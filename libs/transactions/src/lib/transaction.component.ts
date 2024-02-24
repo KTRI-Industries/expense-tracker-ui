@@ -11,8 +11,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { Category, TransactionDto } from "@expense-tracker-ui/api";
-import { mapToFiltersGeneric } from '@expense-tracker-ui/formly';
+import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -36,19 +35,27 @@ import { mapToFiltersGeneric } from '@expense-tracker-ui/formly';
 export class TransactionComponent implements OnInit {
   transactionForm = this.fb.group({});
   fields: FormlyFieldConfig[] = [];
-  model: any = {};
+  model: CreateTransactionCommand = {
+    amount: {
+      currency: 'EUR',
+      amount: undefined,
+    },
+    date: '',
+    description: '',
+  };
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.fields = [
       {
-        key: 'amount',
+        key: 'amount.amount',
         type: 'input',
         props: {
           label: 'Transaction Amount',
           placeholder: 'Set transaction amount (positive or negative)',
           required: true,
+          type: 'number',
         },
       },
       {
@@ -75,16 +82,15 @@ export class TransactionComponent implements OnInit {
         props: {
           label: 'Transaction Category',
           placeholder: 'Set transaction category',
-          filters: mapToFiltersGeneric(
-            Category,
-            categoryLabels,
-          ),
+          filters: categoryLabels,
         },
       },
     ];
   }
 
-  onCreate() {}
+  onCreate() {
+    console.log(this.model);
+  }
 }
 
 export const categoryLabels: Record<Category, string> = {
