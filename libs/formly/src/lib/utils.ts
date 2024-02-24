@@ -1,15 +1,14 @@
-import { Category } from "@expense-tracker-ui/api";
+import { Category } from '@expense-tracker-ui/api';
 
 export function mapToFilters(
   enumType: typeof Category,
-  labels: Record<any, any>
+  labels: Record<any, any>,
 ): { value: Category; label: string }[] {
   return Object.keys(enumType).map((key) => {
-    const enumTypeElement: Category =
-      enumType[key as keyof typeof Category];
+    const enumTypeElement: Category = enumType[key as keyof typeof Category];
     return {
       value: enumTypeElement,
-      label: labels[enumTypeElement]
+      label: labels[enumTypeElement],
     };
   });
 }
@@ -26,10 +25,15 @@ export function mapToFilters(
  */
 export function mapToFiltersGeneric<T extends string>(
   enumType: Record<string, T>,
-  labels: Record<T, string>
-): { value: T; label: string }[] {
+  labels: Record<T, string>,
+): Chip<T>[] {
   return Object.keys(enumType).map((key) => ({
     value: enumType[key],
-    label: labels[enumType[key]]
+    label: labels[enumType[key]],
   }));
+}
+
+export interface Chip<T> {
+  value: T;
+  label: string;
 }
