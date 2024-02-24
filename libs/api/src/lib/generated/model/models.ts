@@ -1,3 +1,4 @@
+export * from './category';
 export * from './createTransactionCommand';
 export * from './monetaryAmount';
 export * from './pageTransactionDto';

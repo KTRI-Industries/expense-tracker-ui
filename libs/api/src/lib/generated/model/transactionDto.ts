@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Category } from './category';
 import { MonetaryAmount } from './monetaryAmount';
 
 export interface TransactionDto {
@@ -16,33 +17,6 @@ export interface TransactionDto {
   amount: MonetaryAmount;
   date: string;
   description: string;
-  category?: TransactionDto.CategoryEnum;
+  category?: Category;
   tenantId: string;
-}
-export namespace TransactionDto {
-  export type CategoryEnum =
-    | 'SALARY'
-    | 'RENT'
-    | 'GROCERIES'
-    | 'ENTERTAINMENT'
-    | 'BILL'
-    | 'RESTAURANT'
-    | 'TAXES'
-    | 'SPORT'
-    | 'GIFTS'
-    | 'TRAVEL'
-    | 'OTHER';
-  export const CategoryEnum = {
-    Salary: 'SALARY' as CategoryEnum,
-    Rent: 'RENT' as CategoryEnum,
-    Groceries: 'GROCERIES' as CategoryEnum,
-    Entertainment: 'ENTERTAINMENT' as CategoryEnum,
-    Bill: 'BILL' as CategoryEnum,
-    Restaurant: 'RESTAURANT' as CategoryEnum,
-    Taxes: 'TAXES' as CategoryEnum,
-    Sport: 'SPORT' as CategoryEnum,
-    Gifts: 'GIFTS' as CategoryEnum,
-    Travel: 'TRAVEL' as CategoryEnum,
-    Other: 'OTHER' as CategoryEnum,
-  };
 }
