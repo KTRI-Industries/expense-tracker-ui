@@ -89,7 +89,9 @@ export class TransactionComponent implements OnInit {
   }
 
   onCreate() {
-    console.log(this.model);
+    if (this.transactionForm.valid) {
+      console.log(this.model);
+    }
   }
 }
 

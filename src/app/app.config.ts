@@ -81,6 +81,9 @@ export const appConfig: ApplicationConfig = {
             },
           },
         ],
+        validationMessages: [
+          { name: 'required', message: 'This field is required' },
+        ],
       }),
       FormlyMaterialModule,
       FormlyMatDatepickerModule,
