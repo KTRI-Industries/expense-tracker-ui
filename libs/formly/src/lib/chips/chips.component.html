@@ -1,6 +1,6 @@
 <mat-form-field style="width: 100%">
   <mat-chip-grid #chipGrid aria-label="Category selection">
-    @for (chip of formControl?.value; track chip) {
+    @for (chip of formControl.value; track chip) {
     <mat-chip-row (removed)="remove(chip)">
       {{ chip }}
       <button matChipRemove [attr.aria-label]="'remove ' + chip">
