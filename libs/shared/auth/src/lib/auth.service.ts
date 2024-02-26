@@ -1,6 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APIS, KeycloakIntegrationControllerService, TenantDto } from '@expense-tracker-ui/api';
+import {
+  KeycloakIntegrationControllerService,
+  TenantDto,
+} from '@expense-tracker-ui/api';
 
 @Injectable({
   providedIn: 'root',

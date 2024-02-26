@@ -1,49 +1,34 @@
-import { Action } from '@ngrx/store';
-
-import * as TransactionsActions from './transactions.actions';
-import { TransactionsEntity } from './transactions.models';
 import {
   initialTransactionsState,
-  transactionsReducer,
+  transactionsFeature,
   TransactionsState,
 } from './transactions.reducer';
+import { TransactionActions } from './transactions.actions';
+import { PageTransactionDto } from '@expense-tracker-ui/api';
 
 describe('Transactions Reducer', () => {
-  const createTransactionsEntity = (
-    id: string,
-    name = '',
-  ): TransactionsEntity => ({
-    id,
-    name: name || `name-${id}`,
+  let state: TransactionsState;
+
+  beforeEach(() => {
+    state = {
+      ...initialTransactionsState,
+    };
   });
 
-  describe('valid Transactions actions', () => {
-    it('loadTransactionsSuccess should return the list of known Transactions', () => {
-      const transactions = [
-        createTransactionsEntity('PRODUCT-AAA'),
-        createTransactionsEntity('PRODUCT-zzz'),
-      ];
-      const action = TransactionsActions.loadTransactionsSuccess({
-        transactions,
-      });
+  it('should return the initial state', () => {
+    const action = {} as any;
+    const result = transactionsFeature.reducer(state, action);
 
-      const result: TransactionsState = transactionsReducer(
-        initialTransactionsState,
-        action,
-      );
-
-      expect(result.loaded).toBe(true);
-      expect(result.ids.length).toBe(2);
-    });
+    expect(result).toBe(state);
   });
 
-  describe('unknown action', () => {
-    it('should return the previous state', () => {
-      const action = {} as Action;
+  it('should load transactions successfully', () => {
+    const transactions: PageTransactionDto = {
+      // fill with mock data
+    };
+    const action = TransactionActions.loadTransactionsSuccess({ transactions });
+    const result = transactionsFeature.reducer(state, action);
 
-      const result = transactionsReducer(initialTransactionsState, action);
-
-      expect(result).toBe(initialTransactionsState);
-    });
+    expect(result.transactions).toEqual(transactions);
   });
 });

@@ -7,21 +7,12 @@ describe('ChipsUtils', () => {
   let utils: ChipsUtils;
   let formControl: FormControl;
   let itemControl: FormControl;
-  let filters: any[];
+  let filters: Record<any, string> | undefined;
 
   beforeEach(() => {
     formControl = new FormControl([]);
     itemControl = new FormControl();
-    filters = [
-      {
-        label: 'chip1',
-        value: 'chip1',
-      },
-      {
-        label: 'chip2',
-        value: 'chip2',
-      },
-    ];
+    filters = testLabels;
     utils = new ChipsUtils(formControl, itemControl, filters);
   });
 
@@ -37,7 +28,7 @@ describe('ChipsUtils', () => {
     'should not remove a chip when it does not' +
       ' exist in the form control value',
     () => {
-      formControl.setValue(['chip' + '1', 'chip2']);
+      formControl.setValue(['chip1', 'chip2']);
       utils.remove('chip3');
       expect(formControl.value).toEqual(['chip1', 'chip2']);
     },
@@ -55,13 +46,13 @@ describe('ChipsUtils', () => {
 
   it('should add a chip when a valid value is entered', () => {
     const event = {
-      value: 'chip1',
+      value: 'CHIP1',
       chipInput: { clear: () => {} },
     } as MatChipInputEvent;
 
     utils.add(event);
 
-    expect(formControl.value).toContain('chip1');
+    expect(formControl.value).toContain('CHIP1');
   });
 
   it('should not add a chip when an invalid value is entered', () => {
@@ -81,6 +72,15 @@ describe('ChipsUtils', () => {
     const labels = utils.filterLabels();
 
     expect(labels).not.toContain('chip1');
-    expect(labels).toContain('chip2');
+    expect(labels).toContain('CHIP2');
   });
 });
+
+export const testLabels: Record<TestEnum, string> = {
+  CHIP1: 'chip1',
+  CHIP2: 'chip2',
+};
+export enum TestEnum {
+  Chip1 = 'CHIP1',
+  Chip2 = 'CHIP2',
+}

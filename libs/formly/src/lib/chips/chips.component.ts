@@ -54,7 +54,7 @@ export class ChipsComponent
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
-  private filters: Record<any, string> | undefined;
+  filters: Record<any, string> | undefined;
 
   private chipsUtils: ChipsUtils | undefined;
 
