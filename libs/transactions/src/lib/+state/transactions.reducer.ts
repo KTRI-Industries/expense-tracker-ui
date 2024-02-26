@@ -5,12 +5,12 @@ import { TransactionActions } from './transactions.actions';
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
 
 export interface TransactionsState {
-  transactions: PageTransactionDto | null;
+  transactions: PageTransactionDto | undefined;
   currentTransaction: TransactionDto | null;
 }
 
 export const initialTransactionsState: TransactionsState = {
-  transactions: null,
+  transactions: undefined,
   currentTransaction: null,
 };
 
