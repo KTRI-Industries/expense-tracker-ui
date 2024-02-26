@@ -10,13 +10,11 @@ describe('Transactions Reducer', () => {
   let state: TransactionsState;
 
   beforeEach(() => {
-    state = {
-      ...initialTransactionsState,
-    };
+    state = { ...initialTransactionsState };
   });
 
   it('should return the initial state', () => {
-    const action = {} as any;
+    const action = { type: 'NOOP' } as any;
     const result = transactionsFeature.reducer(state, action);
 
     expect(result).toBe(state);
