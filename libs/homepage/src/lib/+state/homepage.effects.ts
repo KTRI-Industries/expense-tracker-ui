@@ -1,13 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, of, switchMap } from 'rxjs';
-import * as HomepageActions from './homepage.actions';
+import { Actions } from '@ngrx/effects';
 
 @Injectable()
 export class HomepageEffects {
   private actions$ = inject(Actions);
 
-  init$ = createEffect(() =>
+  /*  init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(HomepageActions.initHomepage),
       switchMap(() =>
@@ -18,5 +16,5 @@ export class HomepageEffects {
         return of(HomepageActions.loadHomepageFailure({ error }));
       }),
     ),
-  );
+  );*/
 }

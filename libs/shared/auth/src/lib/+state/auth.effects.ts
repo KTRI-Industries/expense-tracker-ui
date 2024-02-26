@@ -46,9 +46,7 @@ export class AuthEffects {
             AuthActions.retrieveUserProfileSuccess({ keycloakUserProfile }),
           ),
           catchError((error) =>
-            of(
-              AuthActions.retrieveUserProfileFailure({ error: error.message }),
-            ),
+            of(AuthActions.retrieveUserProfileFailure({ error: error })),
           ),
         ),
       ),
@@ -62,9 +60,6 @@ export class AuthEffects {
         from([this.keycloak.isLoggedIn()]).pipe(
           filter((isLoggedin) => isLoggedin),
           map(() => AuthActions.loginSuccess()),
-          catchError((error) =>
-            of(AuthActions.checkLoginFailure({ error: error.message })),
-          ),
         ),
       ),
     ),

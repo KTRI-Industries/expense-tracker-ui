@@ -1,44 +1,51 @@
-import { Action } from '@ngrx/store';
-
-import * as HomepageActions from './homepage.actions';
-import { HomepageEntity } from './homepage.models';
 import {
   homepageReducer,
   HomepageState,
   initialHomepageState,
 } from './homepage.reducer';
+import * as HomepageActions from './homepage.actions';
+import { HomepageEntity } from './homepage.models';
 
 describe('Homepage Reducer', () => {
-  const createHomepageEntity = (id: string, name = ''): HomepageEntity => ({
-    id,
-    name: name || `name-${id}`,
+  let state: HomepageState;
+
+  beforeEach(() => {
+    state = {
+      ...initialHomepageState,
+    };
   });
 
-  describe('valid Homepage actions', () => {
-    it('loadHomepageSuccess should return the list of known Homepage', () => {
-      const homepage = [
-        createHomepageEntity('PRODUCT-AAA'),
-        createHomepageEntity('PRODUCT-zzz'),
-      ];
-      const action = HomepageActions.loadHomepageSuccess({ homepage });
+  it('returns the initial state', () => {
+    const action = {} as any;
+    const result = homepageReducer(state, action);
 
-      const result: HomepageState = homepageReducer(
-        initialHomepageState,
-        action,
-      );
-
-      expect(result.loaded).toBe(true);
-      expect(result.ids.length).toBe(2);
-    });
+    expect(result).toBe(state);
   });
 
-  describe('unknown action', () => {
-    it('should return the previous state', () => {
-      const action = {} as Action;
+  it('handles initHomepage action', () => {
+    const action = HomepageActions.initHomepage();
+    const result = homepageReducer(state, action);
 
-      const result = homepageReducer(initialHomepageState, action);
+    expect(result.loaded).toBe(false);
+    expect(result.error).toBe(null);
+  });
 
-      expect(result).toBe(initialHomepageState);
-    });
+  it('handles loadHomepageSuccess action', () => {
+    const homepage: HomepageEntity[] = [
+      // fill with mock data
+    ];
+    const action = HomepageActions.loadHomepageSuccess({ homepage });
+    const result = homepageReducer(state, action);
+
+    expect(result.loaded).toBe(true);
+    expect(result.ids.length).toBe(homepage.length);
+  });
+
+  it('handles loadHomepageFailure action', () => {
+    const error = new Error('error');
+    const action = HomepageActions.loadHomepageFailure({ error });
+    const result = homepageReducer(state, action);
+
+    expect(result.error).toEqual(error);
   });
 });

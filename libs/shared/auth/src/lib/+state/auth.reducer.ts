@@ -50,7 +50,7 @@ function userProfileWithTenant(
 ): TenantAwareKeycloakProfile {
   return {
     ...userProfile,
-    tenantId: userProfile?.attributes?.[TENANT_ID]?.[0],
+    tenantId: userProfile.attributes?.[TENANT_ID]?.[0],
   };
 }
 

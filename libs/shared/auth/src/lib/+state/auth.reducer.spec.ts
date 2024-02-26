@@ -1,6 +1,6 @@
 import { authFeature, AuthState } from './auth.reducer';
 import { AuthActions } from './auth.actions';
-import { selectIsLoggedIn } from './auth.selectors';
+import { selectIsLoggedIn, selectUserName } from './auth.selectors';
 import { Action } from '@ngrx/store';
 
 describe('AuthReducer', () => {
@@ -38,6 +38,64 @@ describe('AuthReducer', () => {
 
       expect(actualState).toEqual(expectedState);
     });
+
+    it('should handle null TENANT_ID attribute', () => {
+      const initialState: AuthState = {
+        userProfile: null,
+      };
+
+      const userProfile = {
+        id: '1234567890',
+        username: 'test-user',
+        firstName: 'Test',
+        lastName: 'User',
+        attributes: null,
+      };
+
+      const expectedState: AuthState = {
+        userProfile: {
+          ...userProfile,
+          tenantId: undefined,
+        },
+      };
+
+      const actualState = authFeature.reducer(
+        initialState,
+        AuthActions.retrieveUserProfileSuccess({
+          keycloakUserProfile: userProfile,
+        }),
+      );
+
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+
+  describe('generateNewTenantSuccess action', () => {
+    it('should set the tenantId property of userProfile', () => {
+      const initialState: AuthState = {
+        userProfile: {
+          id: '1234567890',
+          username: 'test-user',
+          firstName: 'Test',
+          lastName: 'User',
+        },
+      };
+
+      const tenantId = 'tenant-123';
+      const expectedState: AuthState = {
+        userProfile: {
+          ...initialState.userProfile,
+          tenantId,
+        },
+      };
+
+      const actualState = authFeature.reducer(
+        initialState,
+        AuthActions.generateNewTenantSuccess({ tenantId }),
+      );
+
+      expect(actualState).toEqual(expectedState);
+    });
   });
 
   describe('AuthSelector', () => {
@@ -66,6 +124,25 @@ describe('AuthReducer', () => {
       const isLoggedIn = selectIsLoggedIn.projector(authState.userProfile);
 
       expect(isLoggedIn).toBeFalsy();
+    });
+
+    it('should return undefined username if the userProfile is undefined', () => {
+      const username = selectUserName.projector(null);
+
+      expect(username).toBeUndefined();
+    });
+
+    it('should return the username if the userProfile is defined', () => {
+      const userProfile = {
+        id: '1234567890',
+        username: 'test-user',
+        firstName: 'Test',
+        lastName: 'User',
+      };
+
+      const username = selectUserName.projector(userProfile);
+
+      expect(username).toEqual('test-user');
     });
   });
 });
