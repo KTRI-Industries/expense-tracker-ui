@@ -6,7 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test:coverage": "nx  run-many --all --target=test --codeCoverage=true --skip-nx-cache --output-style=static --coverageReporters='json,lcov,text,clover'",
-    "coverage:aggregate": "istanbul report --dir coverage --include coverage/**/coverage-final.json lcov",
+    "coverage:aggregate": "istanbul report --dir coverage --include coverage/**/coverage-final.json lcov --skip-nx-cache",
     "coverage:all": "npm run test:coverage && npm run coverage:aggregate",
     "test:all": "nx run-many --all --target=test --configuration=ci",
     "build:stats": "nx build --stats-json",
