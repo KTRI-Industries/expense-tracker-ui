@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  CreateTransactionCommand,
   PageTransactionDto,
   TransactionControllerService,
 } from '@expense-tracker-ui/api';
@@ -15,5 +16,9 @@ export class TransactionsService {
 
   getAllTransactions(): Observable<PageTransactionDto> {
     return this.api.retrieve({ page: 0, size: 10, sort: [] });
+  }
+
+  createTransaction(transaction: CreateTransactionCommand) {
+    return this.api.create(transaction);
   }
 }

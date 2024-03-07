@@ -25,5 +25,12 @@ export const transactionsFeature = createFeature({
         transactions,
       }),
     ),
+    on(
+      TransactionActions.createNewTransactionSuccess,
+      (state, { transaction }) => ({
+        ...state,
+        currentTransaction: transaction,
+      }),
+    ),
   ),
 });

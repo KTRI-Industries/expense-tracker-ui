@@ -25,4 +25,20 @@ export class TransactionsEffects {
       ),
     ),
   );
+
+  createTransaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TransactionActions.createNewTransaction),
+      switchMap(({ transaction }) =>
+        this.client.createTransaction(transaction).pipe(
+          map((transaction) =>
+            TransactionActions.createNewTransactionSuccess({ transaction }),
+          ),
+          catchError((error) =>
+            of(TransactionActions.createNewTransactionFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
 }
