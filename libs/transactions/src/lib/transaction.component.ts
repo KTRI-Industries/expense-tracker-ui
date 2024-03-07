@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   MatCard,
   MatCardContent,
@@ -33,6 +33,8 @@ import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
   ],
 })
 export class TransactionComponent implements OnInit {
+  @Output() create = new EventEmitter<CreateTransactionCommand>();
+
   transactionForm = this.fb.group({});
   fields: FormlyFieldConfig[] = [];
   model: CreateTransactionCommand = {
@@ -90,7 +92,14 @@ export class TransactionComponent implements OnInit {
 
   onCreate() {
     if (this.transactionForm.valid) {
-      console.log(this.model);
+      // TODO allow array of categories in the backend to remove this hack
+      const modifiedModel: CreateTransactionCommand = {
+        ...this.model,
+        category: Object.values(Category).find(
+          (c) => c === this.model.category?.[0],
+        ),
+      };
+      this.create.emit(modifiedModel);
     }
   }
 }
