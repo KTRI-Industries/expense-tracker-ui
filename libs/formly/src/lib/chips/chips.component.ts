@@ -1,7 +1,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldTypeConfig } from '@ngx-formly/core';
 import {
   MatChip,
   MatChipGrid,
@@ -20,6 +20,7 @@ import {
   MatOption,
 } from '@angular/material/autocomplete';
 import { ChipsUtils } from './chips-utils';
+import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT IMPORT FROM @ngx-formly/core
 
 /**
  * ChipsComponent is a custom Formly field that allows the user to select multiple options from a dropdown list.

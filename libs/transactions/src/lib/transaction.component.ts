@@ -12,6 +12,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -30,6 +32,8 @@ import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
 })
 export class TransactionComponent implements OnInit {
@@ -52,12 +56,14 @@ export class TransactionComponent implements OnInit {
     this.fields = [
       {
         key: 'amount.amount',
-        type: 'input',
+        type: 'amount-input',
         props: {
-          label: 'Transaction Amount',
+          // label: 'Transaction Amount',
           placeholder: 'Set transaction amount (positive or negative)',
           required: true,
-          type: 'number',
+          attributes: {
+            autocomplete: 'off',
+          },
         },
       },
       {

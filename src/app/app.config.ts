@@ -30,7 +30,14 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { ChipsComponent } from '@expense-tracker-ui/formly';
+import {
+  AmountInputComponent,
+  ChipsComponent,
+} from '@expense-tracker-ui/formly';
+import {
+  NgxCurrencyInputMode,
+  provideEnvironmentNgxCurrency,
+} from 'ngx-currency';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -38,6 +45,21 @@ export function apiConfigFactory(): Configuration {
   };
   return new Configuration(params);
 }
+
+export const customCurrencyMaskConfig = {
+  align: 'right',
+  allowNegative: true,
+  allowZero: true,
+  decimal: ',',
+  precision: 2,
+  prefix: '€ ',
+  suffix: '',
+  thousands: '.',
+  nullable: true,
+  // min: null,
+  // max: null,
+  inputMode: NgxCurrencyInputMode.Financial, // natural has issue with negative values
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -79,6 +101,12 @@ export const appConfig: ApplicationConfig = {
             defaultOptions: {
               defaultValue: [],
             },
+            wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
+          },
+          {
+            name: 'amount-input',
+            component: AmountInputComponent,
+            wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
           },
         ],
         validationMessages: [
@@ -88,6 +116,7 @@ export const appConfig: ApplicationConfig = {
       FormlyMaterialModule,
       FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
+    provideEnvironmentNgxCurrency(customCurrencyMaskConfig),
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
