@@ -57,12 +57,9 @@ describe('AuthService', () => {
     ).mockReturnValue(throwError(error));
 
     let resultError: Error | undefined;
-    service.generateTenant(email).subscribe(
-      () => {},
-      (err) => {
-        resultError = err;
-      }
-    );
+    service.generateTenant(email).subscribe(undefined, (err) => {
+      resultError = err;
+    });
 
     tick();
 

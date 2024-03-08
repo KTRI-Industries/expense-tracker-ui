@@ -6,9 +6,10 @@ import { TransactionsService } from '../transactions.service';
 import { TransactionActions } from './transactions.actions';
 import { PageTransactionDto } from '@expense-tracker-ui/api';
 import { cold, hot } from 'jasmine-marbles';
+import { Action } from '@ngrx/store';
 
 describe('TransactionsEffects', () => {
-  let actions$: Observable<any>;
+  let actions$: Observable<Action>;
   let effects: TransactionsEffects;
   let service: TransactionsService;
 

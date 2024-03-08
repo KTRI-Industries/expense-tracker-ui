@@ -51,6 +51,7 @@ describe('ChipsComponent', () => {
   it('should add a chip when a valid value is entered', () => {
     const event = {
       value: 'CHIP1',
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       chipInput: { clear: () => {} },
     } as MatChipInputEvent;
 
@@ -61,6 +62,7 @@ describe('ChipsComponent', () => {
   it('should not add a chip when an invalid value is entered', () => {
     const event = {
       value: 'chip3',
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       chipInput: { clear: () => {} },
     } as MatChipInputEvent;
 

@@ -10,11 +10,11 @@ export const TransactionActions = createActionGroup({
   events: {
     InitTransactions: emptyProps(),
     'Load Transactions Success': props<{ transactions: PageTransactionDto }>(),
-    'Load Transactions Failure': props<{ error: any }>(),
+    'Load Transactions Failure': props<{ error: Error }>(),
     'Create New Transaction': props<{
       transaction: CreateTransactionCommand;
     }>(),
     'Create New Transaction Success': props<{ transaction: TransactionDto }>(),
-    'Create New Transaction Failure': props<{ error: any }>(),
+    'Create New Transaction Failure': props<{ error: Error }>(),
   },
 });

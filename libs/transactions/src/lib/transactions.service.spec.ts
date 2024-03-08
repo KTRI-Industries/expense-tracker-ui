@@ -52,12 +52,9 @@ describe('TransactionsService', () => {
     jest.spyOn(api, 'retrieve').mockReturnValue(throwError(error));
 
     let resultError: Error | undefined;
-    service.getAllTransactions().subscribe(
-      () => {},
-      (err) => {
-        resultError = err;
-      },
-    );
+    service.getAllTransactions().subscribe(undefined, (err) => {
+      resultError = err;
+    });
 
     tick();
 

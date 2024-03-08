@@ -14,7 +14,7 @@ describe('Transactions Reducer', () => {
   });
 
   it('should return the initial state', () => {
-    const action = { type: 'NOOP' } as any;
+    const action = { type: 'NOOP' };
     const result = transactionsFeature.reducer(state, action);
 
     expect(result).toBe(state);

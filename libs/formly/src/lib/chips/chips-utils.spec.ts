@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ChipsUtils } from '@expense-tracker-ui/formly';
+import { ChipsUtils } from './chips-utils';
 
 describe('ChipsUtils', () => {
   let utils: ChipsUtils;
@@ -47,7 +47,10 @@ describe('ChipsUtils', () => {
   it('should add a chip when a valid value is entered', () => {
     const event = {
       value: 'CHIP1',
-      chipInput: { clear: () => {} },
+      chipInput: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        clear: () => {},
+      },
     } as MatChipInputEvent;
 
     utils.add(event);
@@ -58,7 +61,10 @@ describe('ChipsUtils', () => {
   it('should not add a chip when an invalid value is entered', () => {
     const event = {
       value: 'chip3',
-      chipInput: { clear: () => {} },
+      chipInput: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        clear: () => {},
+      },
     } as MatChipInputEvent;
 
     utils.add(event);
