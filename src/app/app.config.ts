@@ -38,6 +38,7 @@ import {
   NgxCurrencyInputMode,
   provideEnvironmentNgxCurrency,
 } from 'ngx-currency';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -117,6 +118,10 @@ export const appConfig: ApplicationConfig = {
       FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
     provideEnvironmentNgxCurrency(customCurrencyMaskConfig),
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: { duration: 2500, verticalPosition: 'top' },
+    },
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };

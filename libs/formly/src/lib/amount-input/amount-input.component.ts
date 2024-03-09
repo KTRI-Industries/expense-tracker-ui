@@ -22,9 +22,7 @@ import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT I
       currencyMask
       [placeholder]="field.props.placeholder!!"
       [formControl]="formControl"
-      [formlyAttributes]="field"
-      data-lpignore="true" />
-    <!-- data-lpignore needed to hide last pass fields -->
+      [formlyAttributes]="field" />
   `,
   styles: `
       /* Different text align for input value and placeholder*/
