@@ -1,6 +1,5 @@
-<!-- flex justify-between moves buttons all the way to the right -->
-<mat-toolbar class="sticky-toolbar flex justify-between mat-elevation-z6">
-  <!-- md:hidden hides button on bigger screens-->
+<mat-toolbar class="sticky-toolbar mat-elevation-z6">
+  <!-- md:hidden hides burger button on bigger screens-->
   <button
     mat-icon-button
     class="md:hidden"
@@ -9,8 +8,10 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span data-cy="main-title"><a routerLink="/">Expense Tracker</a></span>
-  <!-- hidden md:block hides top menu on smaller screens -->
-  <div class="hidden md:block">
+  <!-- hidden md:flex hides top menu on smaller screens -->
+  <!-- grow  fills any available space   -->
+  <!-- items-center aligns menu items vertically-->
+  <div class="hidden md:flex grow items-center">
     <ng-container *ngTemplateOutlet="menu"></ng-container>
   </div>
 </mat-toolbar>
@@ -18,7 +19,8 @@
 <mat-sidenav-container>
   <!-- fixedInViewPort seems to be needed to show the side menu above the main content. fixedTopGap moves the side menu bellow the top menu-->
   <mat-sidenav fixedInViewport="true" fixedTopGap="56" #sidenav>
-    <mat-nav-list>
+    <!-- flex-col because in sidenav we want the menu elements to be the one above the other -->
+    <mat-nav-list class="flex flex-col">
       <ng-container *ngTemplateOutlet="menu"></ng-container>
     </mat-nav-list>
   </mat-sidenav>
@@ -28,34 +30,21 @@
 </mat-sidenav-container>
 
 <ng-template #menu>
-  <!-- grid-cols-1 md:grid-cols-12 stacks elements in small screen the one bellow the other and the one besides the other in large ones -->
-  <!-- px-2 for spacing left and right in sidenav menu-->
-  <!-- items-center to align username with buttons on large screens justify-items-center to align items in side menu -->
-  <div
-    class="grid grid-cols-1 md:grid-cols-12 px-2 items-center justify-items-center">
-    @if (!isAuthenticated) {
-    <!--col-span-full because login button is on its own so it should be at the end of the grid -->
-    <button
-      class="col-span-full"
-      mat-icon-button
-      matTooltip="Login"
-      (click)="onLogin()">
-      <mat-icon>login</mat-icon>
-    </button>
-    } @else {
-    <!-- md:col-span-10 pushes rest of menu items to the right -->
-    <!-- justify-self-start pushes Transactions item to the left-->
-    <button
-      class="md:col-span-10 justify-self-start"
-      mat-button
-      routerLink="/transactions"
-      (click)="sidenav.close()">
-      Transactions
-    </button>
-    <span>{{ username }}</span>
-    <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-    }
-  </div>
+  @if (!isAuthenticated) {
+  <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
+  <span class="flex-auto"></span>
+  <button mat-icon-button matTooltip="Login" (click)="onLogin()">
+    <mat-icon>login</mat-icon>
+  </button>
+  } @else {
+  <button mat-button routerLink="/transactions" (click)="sidenav.close()">
+    Transactions
+  </button>
+  <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
+  <span class="flex-auto"></span>
+  <span>{{ username }}</span>
+  <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+  }
 </ng-template>
