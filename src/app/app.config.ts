@@ -3,6 +3,7 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   isDevMode,
+  LOCALE_ID,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -39,6 +40,9 @@ import {
   provideEnvironmentNgxCurrency,
 } from 'ngx-currency';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -121,6 +125,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: 2500, verticalPosition: 'top' },
+    },
+    { provide: MAT_DATE_LOCALE, useValue: 'el-GR' },
+    { provide: LOCALE_ID, useValue: 'el-GR' },
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: { dateFormat: 'shortDate' },
     },
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],

@@ -35,7 +35,7 @@
       <ng-container matColumnDef="date">
         <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
         <mat-cell *matCellDef="let element" data-label="Date">
-          {{ element.date }}
+          {{ element.date | date }}
         </mat-cell>
       </ng-container>
 
