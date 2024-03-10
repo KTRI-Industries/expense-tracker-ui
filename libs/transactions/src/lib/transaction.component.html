@@ -6,7 +6,11 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="transactionForm" (ngSubmit)="onCreate()">
+    <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
+    <form
+      class="md:w-6/12"
+      [formGroup]="transactionForm"
+      (ngSubmit)="onCreate()">
       <formly-form
         [form]="transactionForm"
         [fields]="fields"
