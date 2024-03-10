@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { TransactionActions, TransactionsSelectors } from '../index';
 import { AsyncPipe } from '@angular/common';
 import { TransactionsComponent } from './transactions.component';
+import { Observable } from 'rxjs';
+import { PageTransactionDto } from '@expense-tracker-ui/api';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',
@@ -17,7 +19,9 @@ import { TransactionsComponent } from './transactions.component';
   styles: ``,
 })
 export class TransactionsContainerComponent implements OnInit {
-  transactions$ = this.store.select(TransactionsSelectors.selectTransactions);
+  transactions$: Observable<PageTransactionDto | undefined> = this.store.select(
+    TransactionsSelectors.selectTransactions,
+  );
 
   constructor(private store: Store) {}
 
