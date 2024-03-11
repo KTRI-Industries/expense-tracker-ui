@@ -4,6 +4,10 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TransactionsSelectors } from '../index';
 import '@testing-library/jest-dom';
 import { PageTransactionDto } from '@expense-tracker-ui/api';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { LOCALE_ID } from '@angular/core';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 
 describe('TransactionsContainerComponent', () => {
   let renderResult: RenderResult<TransactionsContainerComponent>;
@@ -19,14 +23,14 @@ describe('TransactionsContainerComponent', () => {
       content: [
         {
           transactionId: '1',
-          amount: { amount: 100, currency: 'USD' },
+          amount: { amount: 100, currency: 'EUR' },
           date: '2022-01-01',
           description: 'Test',
           tenantId: 'test',
         },
         {
           transactionId: '2',
-          amount: { amount: 200, currency: 'USD' },
+          amount: { amount: 200, currency: 'EUR' },
           date: '2022-01-01',
           description: 'Test',
           tenantId: 'test',
@@ -39,7 +43,7 @@ describe('TransactionsContainerComponent', () => {
 
     pageTransactionDto.content?.forEach((transaction) => {
       expect(
-        screen.getByText(`${transaction.amount.amount}`),
+        screen.getByText(`${transaction.amount.amount},00 €`),
       ).toBeInTheDocument();
     });
   });
@@ -70,6 +74,13 @@ async function setup(transactions: PageTransactionDto) {
           },
         ],
       }),
+
+      { provide: MAT_DATE_LOCALE, useValue: 'el-GR' },
+      { provide: LOCALE_ID, useValue: 'el-GR' },
+      {
+        provide: DATE_PIPE_DEFAULT_OPTIONS,
+        useValue: { dateFormat: 'shortDate' },
+      }
     ],
   });
 }
