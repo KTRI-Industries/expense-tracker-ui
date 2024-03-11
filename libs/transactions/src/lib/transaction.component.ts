@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -34,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButton,
   ],
 })
 export class TransactionComponent implements OnInit {
@@ -58,7 +60,7 @@ export class TransactionComponent implements OnInit {
         key: 'amount.amount',
         type: 'amount-input',
         props: {
-          // label: 'Transaction Amount',
+          label: 'Transaction Amount',
           placeholder: 'Set transaction amount (positive or negative)',
           required: true,
           attributes: {
