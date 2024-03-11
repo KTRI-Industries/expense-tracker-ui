@@ -46,6 +46,15 @@ export class TransactionsEffects {
     ),
   );
 
+  openTransactionForm$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.openTransactionFrom),
+        tap(() => this.router.navigate(['transactions', 'new'])),
+      ),
+    { dispatch: false },
+  );
+
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,

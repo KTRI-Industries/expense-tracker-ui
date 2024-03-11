@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatCard,
+  MatCardActions,
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
@@ -22,6 +23,7 @@ import {
   MatTable,
   MatTableDataSource,
 } from '@angular/material/table';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -45,6 +47,8 @@ import {
     MatRow,
     MatHeaderRowDef,
     MatRowDef,
+    MatButton,
+    MatCardActions,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
@@ -63,10 +67,15 @@ export class TransactionsComponent implements OnInit {
     'date',
     'category',
   ];
+  @Output() openTransactionForm = new EventEmitter<unknown>();
 
   ngOnInit(): void {
     this.transactionDatasource = new MatTableDataSource(
       this.transactions?.content,
     );
+  }
+
+  onOpenTransactionForm() {
+    this.openTransactionForm.emit();
   }
 }

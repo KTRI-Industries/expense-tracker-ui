@@ -16,5 +16,6 @@ export const TransactionActions = createActionGroup({
     }>(),
     'Create New Transaction Success': props<{ transaction: TransactionDto }>(),
     'Create New Transaction Failure': props<{ error: Error }>(),
+    'Open Transaction From': emptyProps(),
   },
 });

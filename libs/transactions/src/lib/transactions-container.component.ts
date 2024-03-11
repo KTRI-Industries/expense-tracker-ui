@@ -13,7 +13,10 @@ import { PageTransactionDto } from '@expense-tracker-ui/api';
   template: `
     @if (transactions$ | async; as transactions) {
     <expense-tracker-ui-transactions
-      [transactions]="transactions"></expense-tracker-ui-transactions>
+      [transactions]="transactions"
+      (openTransactionForm)="
+        onOpenTransactionForm($event)
+      "></expense-tracker-ui-transactions>
     }
   `,
   styles: ``,
@@ -27,5 +30,9 @@ export class TransactionsContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(TransactionActions.initTransactions());
+  }
+
+  onOpenTransactionForm($event: unknown) {
+    this.store.dispatch(TransactionActions.openTransactionFrom());
   }
 }
