@@ -106,6 +106,10 @@ export class TransactionComponent implements OnInit {
         category: Object.values(Category).find(
           (c) => c === this.model.category?.[0],
         ),
+        amount: {
+          ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
+          amount: this.model.amount.amount,
+        },
       };
       this.create.emit(modifiedModel);
     }
