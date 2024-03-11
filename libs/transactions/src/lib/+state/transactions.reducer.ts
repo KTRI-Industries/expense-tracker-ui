@@ -30,6 +30,7 @@ export const transactionsFeature = createFeature({
       (state, { transaction }) => ({
         ...state,
         currentTransaction: transaction,
+        transactions: undefined, // otherwise the list of transactions won't be updated
       }),
     ),
   ),
