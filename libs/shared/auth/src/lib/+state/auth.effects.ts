@@ -94,12 +94,20 @@ export class AuthEffects {
     ),
   );
 
-  refreshTokenAfterTenantGenerated$ = createEffect(() =>
-    this.actions$.pipe(
+  /**
+   * This is needed because the current token does not have the new tenantId!
+   */
+  refreshTokenAfterTenantGenerated$ = createEffect(
+    () =>
+      this.actions$.pipe(
         ofType(AuthActions.generateNewTenantSuccess),
-        tap(() => this.keycloak.updateToken(-1).then((resp) => console.log(`Token refreshed: ${resp}`))),
-    ),
-      { dispatch: false },
+        tap(() =>
+          this.keycloak
+            .updateToken(-1)
+            .then((resp) => console.log(`Token refreshed: ${resp}`)),
+        ),
+      ),
+    { dispatch: false },
   );
 
   constructor(

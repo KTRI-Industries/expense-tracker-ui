@@ -15,8 +15,8 @@ export class TransactionsEffects {
   retrieveTransactions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionActions.initTransactions),
-      switchMap(() =>
-        this.client.getAllTransactions().pipe(
+      switchMap(({ pageable }) =>
+        this.client.getAllTransactions(pageable).pipe(
           map((transactions: PageTransactionDto) =>
             TransactionActions.loadTransactionsSuccess({ transactions }),
           ),

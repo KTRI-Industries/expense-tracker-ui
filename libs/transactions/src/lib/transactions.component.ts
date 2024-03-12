@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatCard,
@@ -8,7 +15,11 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
-import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
+import {
+  Pageable,
+  PageTransactionDto,
+  TransactionDto,
+} from '@expense-tracker-ui/api';
 import { MatList, MatListItem } from '@angular/material/list';
 import {
   MatCell,
@@ -24,6 +35,7 @@ import {
   MatTableDataSource,
 } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -49,12 +61,27 @@ import { MatButton } from '@angular/material/button';
     MatRowDef,
     MatButton,
     MatCardActions,
+    MatPaginator,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent implements OnInit {
-  @Input() transactions: PageTransactionDto | undefined;
+export class TransactionsComponent implements AfterViewInit {
+  private _transactions: PageTransactionDto | undefined;
+
+  @Input()
+  set transactions(value: PageTransactionDto | undefined) {
+    this._transactions = value;
+
+    // TODO - this is a workaround, we should not be setting the datasource here
+    this.transactionDatasource = new MatTableDataSource(
+      this._transactions?.content,
+    );
+  }
+
+  get transactions(): PageTransactionDto | undefined {
+    return this._transactions;
+  }
 
   protected transactionDatasource:
     | MatTableDataSource<TransactionDto>
@@ -67,9 +94,13 @@ export class TransactionsComponent implements OnInit {
     'date',
     'category',
   ];
-  @Output() openTransactionForm = new EventEmitter<unknown>();
 
-  ngOnInit(): void {
+  @Output() openTransactionForm = new EventEmitter<unknown>();
+  @Output() pageChange = new EventEmitter<Pageable>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
     this.transactionDatasource = new MatTableDataSource(
       this.transactions?.content,
     );
@@ -77,5 +108,11 @@ export class TransactionsComponent implements OnInit {
 
   onOpenTransactionForm() {
     this.openTransactionForm.emit();
+  }
+
+  onPageChange($event: PageEvent) {
+    this.pageChange.emit({
+      page: $event.pageIndex,
+    });
   }
 }

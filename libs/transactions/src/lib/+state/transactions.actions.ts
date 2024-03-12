@@ -1,6 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
   CreateTransactionCommand,
+  Pageable,
   PageTransactionDto,
   TransactionDto,
 } from '@expense-tracker-ui/api';
@@ -8,7 +9,7 @@ import {
 export const TransactionActions = createActionGroup({
   source: 'Transactions',
   events: {
-    InitTransactions: emptyProps(),
+    InitTransactions: props<{ pageable: Pageable }>(),
     'Load Transactions Success': props<{ transactions: PageTransactionDto }>(),
     'Load Transactions Failure': props<{ error: Error }>(),
     'Create New Transaction': props<{

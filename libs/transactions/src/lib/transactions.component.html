@@ -49,6 +49,12 @@
       <mat-header-row *matHeaderRowDef="transactionColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: transactionColumns"></mat-row>
     </mat-table>
+
+    <mat-paginator
+      [pageSize]="5"
+      [length]="transactions?.totalElements"
+      (page)="onPageChange($event)"></mat-paginator>
+
     } @else {
     <p>No transactions found.</p>
     }
