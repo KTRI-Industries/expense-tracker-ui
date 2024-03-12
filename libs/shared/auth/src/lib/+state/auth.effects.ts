@@ -94,6 +94,14 @@ export class AuthEffects {
     ),
   );
 
+  refreshTokenAfterTenantGenerated$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(AuthActions.generateNewTenantSuccess),
+        tap(() => this.keycloak.updateToken(-1).then((resp) => console.log(`Token refreshed: ${resp}`))),
+    ),
+      { dispatch: false },
+  );
+
   constructor(
     private actions$: Actions,
     private keycloak: KeycloakService,
