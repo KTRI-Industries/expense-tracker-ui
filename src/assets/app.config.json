@@ -1,4 +1,5 @@
 {
   "allowedOrigins": ["http://localhost"],
-  "basePath": "http://localhost:8080"
+  "basePath": "http://localhost:8080",
+  "keycloakUrl": "https://keycloak.127.0.0.1.nip.io"
 }

@@ -2,4 +2,5 @@
 export class ExternalConfiguration {
   allowedOrigins: string[] = [];
   basePath = '';
+  keycloakUrl = '';
 }

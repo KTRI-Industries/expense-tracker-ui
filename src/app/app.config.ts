@@ -79,7 +79,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService],
+      deps: [KeycloakService, ExternalConfiguration],
     },
     {
       provide: HTTP_INTERCEPTORS,
@@ -136,11 +136,14 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 
-function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
-    keycloak.init({
+function initializeKeycloak(
+  keycloak: KeycloakService,
+  externalConfig: ExternalConfiguration,
+) {
+  return () => {
+    return keycloak.init({
       config: {
-        url: 'https://keycloak.127.0.0.1.nip.io',
+        url: externalConfig.keycloakUrl,
         realm: 'expense-tracker-realm',
         clientId: 'expense-tracker-ui',
       },
@@ -151,4 +154,5 @@ function initializeKeycloak(keycloak: KeycloakService) {
       },
       enableBearerInterceptor: true,
     });
+  };
 }
