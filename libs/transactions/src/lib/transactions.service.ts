@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {
   CreateTransactionCommand,
+  Pageable,
   PageTransactionDto,
   TransactionControllerService,
 } from '@expense-tracker-ui/api';
@@ -14,8 +15,8 @@ export class TransactionsService {
     TransactionControllerService,
   ); // TODO better way to reference the generated code?
 
-  getAllTransactions(): Observable<PageTransactionDto> {
-    return this.api.retrieve({ page: 0, size: 10, sort: [] });
+  getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
+    return this.api.retrieve({ page: pageable?.page ?? 0, size: 5, sort: [] });
   }
 
   createTransaction(transaction: CreateTransactionCommand) {
