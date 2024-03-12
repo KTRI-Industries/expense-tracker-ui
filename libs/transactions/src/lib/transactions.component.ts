@@ -100,6 +100,8 @@ export class TransactionsComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  pageSize = 5;
+
   ngAfterViewInit(): void {
     this.transactionDatasource = new MatTableDataSource(
       this.transactions?.content,
