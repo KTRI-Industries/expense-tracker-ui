@@ -16,7 +16,11 @@ export class TransactionsService {
   ); // TODO better way to reference the generated code?
 
   getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
-    return this.api.retrieve({ page: pageable?.page ?? 0, size: 5, sort: [] });
+    return this.api.retrieve({
+      page: pageable?.page ?? 0,
+      size: pageable?.size ?? 5,
+      sort: pageable?.sort ?? ['date,desc'],
+    });
   }
 
   createTransaction(transaction: CreateTransactionCommand) {
