@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -66,7 +65,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent implements AfterViewInit {
+export class TransactionsComponent {
   private _transactions: PageTransactionDto | undefined;
 
   @Input()
@@ -101,12 +100,6 @@ export class TransactionsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   pageSize = 5;
-
-  ngAfterViewInit(): void {
-    this.transactionDatasource = new MatTableDataSource(
-      this.transactions?.content,
-    );
-  }
 
   onOpenTransactionForm() {
     this.openTransactionForm.emit();
