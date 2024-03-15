@@ -39,11 +39,15 @@ import {
   NgxCurrencyInputMode,
   provideEnvironmentNgxCurrency,
 } from 'ngx-currency';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar} from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBar,
+} from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
-import {GlobalErrorInterceptor} from "./global-error-interceptor";
+import { GlobalErrorInterceptor } from './global-error-interceptor';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -91,7 +95,7 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalErrorInterceptor,
       multi: true,
-      deps: [MatSnackBar]
+      deps: [MatSnackBar],
     },
     {
       provide: Configuration,
@@ -139,6 +143,7 @@ export const appConfig: ApplicationConfig = {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
       useValue: { dateFormat: 'shortDate' },
     },
+    provideMomentDateAdapter(undefined, { useUtc: true }),
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
