@@ -39,10 +39,11 @@ import {
   NgxCurrencyInputMode,
   provideEnvironmentNgxCurrency,
 } from 'ngx-currency';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar} from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import {GlobalErrorInterceptor} from "./global-error-interceptor";
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -85,6 +86,12 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: KeycloakBearerInterceptor, // TODO investigate why this interceptor has to be provided here, according to docs this should be provided by default
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalErrorInterceptor,
+      multi: true,
+      deps: [MatSnackBar]
     },
     {
       provide: Configuration,
