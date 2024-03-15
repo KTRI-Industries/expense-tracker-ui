@@ -15,6 +15,7 @@ import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import * as moment from 'moment';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -110,6 +111,8 @@ export class TransactionComponent implements OnInit {
           ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
           amount: this.model.amount.amount,
         },
+        // if we send date directly it is sent with timezone and then in backend date in utc is calculated wrongly
+        date: moment(this.model.date).format('YYYY-MM-DDT00:00:00'),
       };
       this.create.emit(modifiedModel);
     }
