@@ -15,7 +15,8 @@ import { Pageable, PageTransactionDto } from '@expense-tracker-ui/api';
     <expense-tracker-ui-transactions
       [transactions]="transactions"
       (openTransactionForm)="onOpenTransactionForm($event)"
-      (pageChange)="onPageChange($event)"></expense-tracker-ui-transactions>
+      (pageChange)="onPageableChange($event)"
+      (sortChange)="onPageableChange($event)"></expense-tracker-ui-transactions>
     }
   `,
   styles: ``,
@@ -37,7 +38,10 @@ export class TransactionsContainerComponent implements OnInit {
     this.store.dispatch(TransactionActions.openTransactionFrom());
   }
 
-  onPageChange($event: Pageable) {
+  /**
+   * Method used both when page changes and when sort changes.
+   */
+  onPageableChange($event: Pageable) {
     this.store.dispatch(
       TransactionActions.initTransactions({ pageable: $event }),
     );

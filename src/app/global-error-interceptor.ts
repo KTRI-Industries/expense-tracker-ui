@@ -7,7 +7,6 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 
 export class GlobalErrorInterceptor implements HttpInterceptor {

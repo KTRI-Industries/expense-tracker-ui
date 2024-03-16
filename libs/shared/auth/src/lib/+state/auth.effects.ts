@@ -72,7 +72,7 @@ export class AuthEffects {
       filter(([_, selectUserProfile]) => selectUserProfile?.tenantId == null),
       map(([_, selectUserProfile]) =>
         AuthActions.generateNewTenant({
-          email: selectUserProfile?.email || '',
+          email: selectUserProfile?.email ?? '',
         }),
       ),
     ),
