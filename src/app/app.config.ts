@@ -35,10 +35,7 @@ import {
   AmountInputComponent,
   ChipsComponent,
 } from '@expense-tracker-ui/formly';
-import {
-  NgxCurrencyInputMode,
-  provideEnvironmentNgxCurrency,
-} from 'ngx-currency';
+
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatSnackBar,
@@ -48,6 +45,7 @@ import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { GlobalErrorInterceptor } from './global-error-interceptor';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -55,21 +53,6 @@ export function apiConfigFactory(): Configuration {
   };
   return new Configuration(params);
 }
-
-export const customCurrencyMaskConfig = {
-  align: 'right',
-  allowNegative: true,
-  allowZero: true,
-  decimal: ',',
-  precision: 2,
-  prefix: '€ ',
-  suffix: '',
-  thousands: '.',
-  nullable: true,
-  // min: null,
-  // max: null,
-  inputMode: NgxCurrencyInputMode.Financial, // natural has issue with negative values
-};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -132,7 +115,10 @@ export const appConfig: ApplicationConfig = {
       FormlyMaterialModule,
       FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
-    provideEnvironmentNgxCurrency(customCurrencyMaskConfig),
+    provideEnvironmentNgxMask({
+      decimalMarker: ',',
+      thousandSeparator: '.',
+    }),
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: 2500, verticalPosition: 'top' },
