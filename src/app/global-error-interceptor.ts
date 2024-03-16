@@ -7,9 +7,14 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 
 export class GlobalErrorInterceptor implements HttpInterceptor {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private keycloak: KeycloakService,
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -17,8 +22,12 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.log(error);
         switch (error.status) {
           case 401:
+          case 403:
+            this.keycloak.logout(); // one scenario to get here is when the refresh token is expired
+            break;
           case 404:
           default:
             this.snackBar.open(error.statusText, 'Close', {
@@ -26,7 +35,7 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
             });
             break;
         }
-        return throwError(() =>error);
+        return throwError(() => error);
       }),
     );
   }

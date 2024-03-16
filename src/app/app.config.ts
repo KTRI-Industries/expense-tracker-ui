@@ -5,7 +5,7 @@ import {
   isDevMode,
   LOCALE_ID,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter, Router} from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -95,7 +95,7 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalErrorInterceptor,
       multi: true,
-      deps: [MatSnackBar],
+      deps: [MatSnackBar, KeycloakService]
     },
     {
       provide: Configuration,
