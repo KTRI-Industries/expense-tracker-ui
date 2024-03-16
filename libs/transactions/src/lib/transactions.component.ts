@@ -35,6 +35,7 @@ import {
 } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -61,6 +62,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
     MatButton,
     MatCardActions,
     MatPaginator,
+    MatSort,
+    MatSortHeader,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
@@ -96,18 +99,43 @@ export class TransactionsComponent {
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
   @Output() pageChange = new EventEmitter<Pageable>();
+  @Output() sortChange = new EventEmitter<Pageable>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   pageSize = 5;
+  currentSort: Sort | undefined;
 
   onOpenTransactionForm() {
     this.openTransactionForm.emit();
   }
 
   onPageChange($event: PageEvent) {
-    this.pageChange.emit({
-      page: $event.pageIndex,
-    });
+    this.pageChange.emit(
+      this.constructPageable(
+        this.currentSort?.active,
+        this.currentSort?.direction,
+        $event.pageIndex,
+      ),
+    );
+  }
+
+  onSortChange($event: Sort) {
+    this.currentSort = $event; // we need to keep somewhere the current sort to use it when the page changes. for the moment keep it in local state
+    this.paginator.firstPage(); // reset paginator to the first page // TODO better way to do this?
+    this.sortChange.emit(
+      this.constructPageable($event.active, $event.direction),
+    );
+  }
+
+  private constructPageable(
+    column = 'date',
+    direction = 'desc',
+    page = 0,
+  ) {
+    return {
+      page: page,
+      sort: [`${column},${direction}`],
+    };
   }
 }

@@ -8,7 +8,10 @@
   <mat-card-content>
     @if (transactions?.content?.length !== 0) {
     <div class="mat-elevation-z8">
-      <mat-table [dataSource]="transactionDatasource || []">
+      <mat-table
+        [dataSource]="transactionDatasource || []"
+        matSort
+        (matSortChange)="onSortChange($event)">
         <ng-container matColumnDef="position">
           <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
           <mat-cell *matCellDef="let element; let i = index" data-label="No.">
@@ -18,21 +21,25 @@
         </ng-container>
 
         <ng-container matColumnDef="amount">
-          <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Amount">
             {{ element.amount.amount | currency: element.amount.currency }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="description">
-          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Description
+          </mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Description">
             {{ element.description }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="date">
-          <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Date
+          </mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Date">
             {{ element.date | date }}
           </mat-cell>
