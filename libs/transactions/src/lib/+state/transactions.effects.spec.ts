@@ -36,7 +36,7 @@ describe('TransactionsEffects', () => {
       // fill with mock data
     };
     jest.spyOn(service, 'getAllTransactions').mockReturnValue(of(transactions));
-    const action = TransactionActions.initTransactions();
+    const action = TransactionActions.initTransactions({} as any);
     const completion = TransactionActions.loadTransactionsSuccess({
       transactions,
     });
@@ -52,7 +52,7 @@ describe('TransactionsEffects', () => {
     jest
       .spyOn(service, 'getAllTransactions')
       .mockReturnValue(throwError(error));
-    const action = TransactionActions.initTransactions();
+    const action = TransactionActions.initTransactions({} as any);
     const completion = TransactionActions.loadTransactionsFailure({ error });
 
     actions$ = hot('-a', { a: action });

@@ -61,6 +61,7 @@ export class ChipsUtils {
       .filter((key) => !this.formControl?.value?.includes(this.filters![key]))
       .filter((key) =>
         this.filters![key].includes(this.itemControl.value || ''),
-      );
+      )
+      .map((key) => this.filters![key]);
   }
 }

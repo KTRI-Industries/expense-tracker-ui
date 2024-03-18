@@ -50,13 +50,13 @@ describe('ChipsComponent', () => {
 
   it('should add a chip when a valid value is entered', () => {
     const event = {
-      value: 'CHIP1',
+      value: 'chip1',
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       chipInput: { clear: () => {} },
     } as MatChipInputEvent;
 
     component.add(event);
-    expect(component.field.formControl.value).toContain('CHIP1');
+    expect(component.field.formControl.value).toContain('chip1');
   });
 
   it('should not add a chip when an invalid value is entered', () => {
@@ -74,6 +74,6 @@ describe('ChipsComponent', () => {
     component.field.formControl.setValue(['chip1']);
     const labels = component.filterLabels();
     expect(labels).not.toContain('chip1');
-    expect(labels).toContain('CHIP2');
+    expect(labels).toContain('chip2');
   });
 });
