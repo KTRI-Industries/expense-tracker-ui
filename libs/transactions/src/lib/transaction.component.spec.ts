@@ -1,0 +1,121 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { categoryLabels, TransactionComponent } from './transaction.component';
+import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
+import { FormlyModule } from '@ngx-formly/core';
+import {
+  AmountInputComponent,
+  ChipsComponent,
+} from '@expense-tracker-ui/formly';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+describe('TransactionComponent', () => {
+  let component: TransactionComponent;
+  let fixture: ComponentFixture<TransactionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        TransactionComponent,
+        ReactiveFormsModule,
+        FormlyMaterialModule,
+        FormlyMatDatepickerModule,
+        NoopAnimationsModule,
+        FormlyModule.forRoot({
+          types: [
+            {
+              name: 'chips',
+              component: ChipsComponent,
+              defaultOptions: {
+                defaultValue: [],
+              },
+              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
+            },
+            {
+              name: 'amount-input',
+              component: AmountInputComponent,
+              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
+            },
+          ],
+          validationMessages: [
+            { name: 'required', message: 'This field is required' },
+          ],
+        }),
+      ],
+      declarations: [],
+      providers: [
+        provideEnvironmentNgxMask({
+          decimalMarker: ',',
+          thousandSeparator: '.',
+        }),
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TransactionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create TransactionComponent', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should initialize form on ngOnInit', () => {
+    component.ngOnInit();
+    expect(component.transactionForm).toBeDefined();
+    expect(component.fields).toBeDefined();
+  });
+
+  it('should emit create event when onCreate is called with valid form', () => {
+    const command: CreateTransactionCommand = {
+      amount: { amount: 100, currency: 'EUR' },
+      date: '2022-01-01',
+      description: 'Test',
+      category: Category.Bill,
+    };
+
+    component.transactionForm.setValue({
+      amount: { amount: command.amount.amount },
+      date: command.date,
+      description: command.description,
+      category: [categoryLabels[command.category!]],
+    });
+
+    // Spy on event emitter
+    jest.spyOn(component.create, 'emit');
+
+    component.onCreate();
+
+    // Assert that event was emitted with correct value
+    expect(component.create.emit).toHaveBeenCalledWith({
+      ...command,
+      date: expect.any(String), // date is transformed in onCreate, so we just check it's a string
+      category: command.category,
+    });
+  });
+
+  it('should not emit create event when onCreate is called with invalid form', () => {
+    const command: CreateTransactionCommand = {
+      amount: { amount: undefined, currency: 'EUR' },
+      date: '2022-01-01',
+      description: 'Test',
+    };
+
+    component.transactionForm.patchValue({
+      amount: { amount: command.amount.amount },
+      date: command.date,
+      description: command.description,
+    });
+
+    // Spy on event emitter
+    jest.spyOn(component.create, 'emit');
+
+    component.onCreate();
+
+    // Assert that event was not emitted
+    expect(component.create.emit).not.toHaveBeenCalled();
+  });
+});

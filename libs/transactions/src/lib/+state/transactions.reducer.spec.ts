@@ -4,7 +4,7 @@ import {
   TransactionsState,
 } from './transactions.reducer';
 import { TransactionActions } from './transactions.actions';
-import { PageTransactionDto } from '@expense-tracker-ui/api';
+import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
 
 describe('Transactions Reducer', () => {
   let state: TransactionsState;
@@ -21,12 +21,30 @@ describe('Transactions Reducer', () => {
   });
 
   it('should load transactions successfully', () => {
-    const transactions: PageTransactionDto = {
-      // fill with mock data
-    };
+    const transactions: PageTransactionDto = {};
     const action = TransactionActions.loadTransactionsSuccess({ transactions });
     const result = transactionsFeature.reducer(state, action);
 
     expect(result.transactions).toEqual(transactions);
+  });
+
+  it('should handle createNewTransactionSuccess action', () => {
+    const mockTransaction: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+      description: 'Test',
+      tenantId: '1',
+    };
+    const action = TransactionActions.createNewTransactionSuccess({
+      transaction: mockTransaction,
+    });
+    const result = transactionsFeature.reducer(state, action);
+
+    expect(result.currentTransaction).toEqual(mockTransaction);
+    expect(result.transactions).toBeUndefined();
   });
 });
