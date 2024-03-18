@@ -35,7 +35,7 @@ describe('AmountInputComponent', () => {
   it('should display placeholder', async () => {
     renderResult = await setup();
 
-    let placeholderText = screen.getByPlaceholderText('Enter amount');
+    const placeholderText = screen.getByPlaceholderText('Enter amount');
 
     expect(placeholderText).toBeInTheDocument();
   });
