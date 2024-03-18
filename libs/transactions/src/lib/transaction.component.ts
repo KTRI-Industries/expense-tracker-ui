@@ -21,7 +21,7 @@ import { MatButton } from '@angular/material/button';
 // the `default as` syntax.
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
+import { default as _rollupMoment } from 'moment';
 const moment = _rollupMoment || _moment;
 
 @Component({
@@ -111,9 +111,7 @@ export class TransactionComponent implements OnInit {
       // TODO allow array of categories in the backend to remove this hack
       const modifiedModel: CreateTransactionCommand = {
         ...this.model,
-        category: Object.values(Category).find(
-          (c) => c === this.model.category?.[0],
-        ),
+        category: this.getCategoryFromLabel(),
         amount: {
           ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
           amount: this.model.amount.amount,
@@ -123,6 +121,12 @@ export class TransactionComponent implements OnInit {
       };
       this.create.emit(modifiedModel);
     }
+  }
+
+  getCategoryFromLabel() {
+    return Object.keys(categoryLabels).find(
+        (key) => categoryLabels[key as Category] === this.model.category?.[0],
+    ) as Category | undefined;
   }
 }
 
