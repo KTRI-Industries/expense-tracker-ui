@@ -11,7 +11,9 @@
  */
 
 export interface SortObject {
-  empty?: boolean;
-  sorted?: boolean;
-  unsorted?: boolean;
+  direction?: string;
+  nullHandling?: string;
+  ascending?: boolean;
+  property?: string;
+  ignoreCase?: boolean;
 }
