@@ -16,5 +16,5 @@ export interface CreateTransactionCommand {
   amount: MonetaryAmount;
   description?: string;
   date: string;
-  category?: Category;
+  category?: Category[];
 }
