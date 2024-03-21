@@ -130,7 +130,7 @@ export class TransactionComponent implements OnInit {
       // TODO allow array of categories in the backend to remove this hack
       const modifiedModel: CreateTransactionCommand = {
         ...this.model,
-        category: this.getCategoryFromLabel(),
+        category: [this.getCategoryFromLabel()!],
         amount: {
           ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
           amount: this.model.amount.amount,
