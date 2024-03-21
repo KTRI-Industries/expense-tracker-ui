@@ -55,6 +55,17 @@ export class TransactionsEffects {
     { dispatch: false },
   );
 
+  openTransactionFormToEdit$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.editTransaction),
+        tap(({ transactionId }) =>
+          this.router.navigate(['transactions', transactionId]),
+        ),
+      ),
+    { dispatch: false },
+  );
+
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,

@@ -67,10 +67,9 @@
 ::ng-deep .mat-mdc-cell {
   justify-content: center;
 }
-/*
 
-.mat-column-amount {
-  display: flex;
-  justify-content: flex-end;
+/* style for hovering over a table row */
+:host ::ng-deep .mat-mdc-row:hover {
+  cursor: pointer;
+  background-color: #f5f5f5 !important;
 }
-*/

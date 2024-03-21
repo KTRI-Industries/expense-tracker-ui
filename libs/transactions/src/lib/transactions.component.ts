@@ -36,6 +36,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -89,22 +90,27 @@ export class TransactionsComponent {
     | MatTableDataSource<TransactionDto>
     | undefined;
 
-  transactionColumns = [
-    // 'position',
-    'description',
-    'date',
-    'category',
-    'amount',
-  ];
+  transactionColumns = ['description', 'date', 'category', 'amount'];
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
   @Output() pageChange = new EventEmitter<Pageable>();
   @Output() sortChange = new EventEmitter<Pageable>();
+  @Output() rowSelected = new EventEmitter<TransactionDto>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   pageSize = 5;
   currentSort: Sort | undefined;
+
+  initialSelection = [];
+  selection;
+
+  constructor() {
+    this.selection = new SelectionModel<TransactionDto>(
+      false,
+      this.initialSelection,
+    );
+  }
 
   onOpenTransactionForm() {
     this.openTransactionForm.emit();
@@ -133,5 +139,10 @@ export class TransactionsComponent {
       page: page,
       sort: [`${column},${direction}`],
     };
+  }
+
+  onRowSelected(row: TransactionDto) {
+    console.log(row);
+    this.rowSelected.emit(row);
   }
 }

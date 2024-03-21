@@ -23,4 +23,12 @@ export const transactionsRoutes: Route[] = [
       provideEffects(TransactionsEffects),
     ],
   },
+  {
+    path: ':id',
+    component: TransactionContainerComponent,
+    providers: [
+      provideState(transactionsFeature),
+      provideEffects(TransactionsEffects),
+    ],
+  },
 ];
