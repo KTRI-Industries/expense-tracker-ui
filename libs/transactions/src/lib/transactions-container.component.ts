@@ -4,7 +4,11 @@ import { TransactionActions, TransactionsSelectors } from '../index';
 import { AsyncPipe } from '@angular/common';
 import { TransactionsComponent } from './transactions.component';
 import { Observable } from 'rxjs';
-import { Pageable, PageTransactionDto } from '@expense-tracker-ui/api';
+import {
+  Pageable,
+  PageTransactionDto,
+  TransactionDto,
+} from '@expense-tracker-ui/api';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',
@@ -16,7 +20,8 @@ import { Pageable, PageTransactionDto } from '@expense-tracker-ui/api';
       [transactions]="transactions"
       (openTransactionForm)="onOpenTransactionForm($event)"
       (pageChange)="onPageableChange($event)"
-      (sortChange)="onPageableChange($event)"></expense-tracker-ui-transactions>
+      (sortChange)="onPageableChange($event)"
+      (rowSelected)="onRowSelected($event)"></expense-tracker-ui-transactions>
     }
   `,
   styles: ``,
@@ -44,6 +49,14 @@ export class TransactionsContainerComponent implements OnInit {
   onPageableChange($event: Pageable) {
     this.store.dispatch(
       TransactionActions.initTransactions({ pageable: $event }),
+    );
+  }
+
+  onRowSelected($event: TransactionDto) {
+    this.store.dispatch(
+      TransactionActions.editTransaction({
+        transactionId: $event.transactionId,
+      }),
     );
   }
 }

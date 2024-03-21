@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   MatCard,
   MatCardContent,
@@ -11,7 +11,11 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
+import {
+  Category,
+  CreateTransactionCommand,
+  TransactionDto,
+} from '@expense-tracker-ui/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -19,9 +23,10 @@ import { MatButton } from '@angular/material/button';
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
 // the `default as` syntax.
-import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
+import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
+
 const moment = _rollupMoment || _moment;
 
 @Component({
@@ -47,6 +52,8 @@ const moment = _rollupMoment || _moment;
   ],
 })
 export class TransactionComponent implements OnInit {
+  @Input() selectedTransaction: TransactionDto | undefined | null;
+
   @Output() create = new EventEmitter<CreateTransactionCommand>();
 
   transactionForm = this.fb.group({});
@@ -63,6 +70,18 @@ export class TransactionComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    this.model = {
+      amount: this.selectedTransaction?.amount
+        ? {
+            currency: this.selectedTransaction.amount.currency,
+            amount: this.selectedTransaction.amount.amount,
+          }
+        : { currency: 'EUR', amount: undefined },
+      date: this.selectedTransaction?.date || '',
+      description: this.selectedTransaction?.description || '',
+      category: this.selectedTransaction?.category,
+    };
+
     this.fields = [
       {
         key: 'amount.amount',
@@ -125,7 +144,7 @@ export class TransactionComponent implements OnInit {
 
   getCategoryFromLabel() {
     return Object.keys(categoryLabels).find(
-        (key) => categoryLabels[key as Category] === this.model.category?.[0],
+      (key) => categoryLabels[key as Category] === this.model.category?.[0],
     ) as Category | undefined;
   }
 }
