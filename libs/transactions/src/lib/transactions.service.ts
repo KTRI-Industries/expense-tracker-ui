@@ -4,6 +4,7 @@ import {
   Pageable,
   PageTransactionDto,
   TransactionControllerService,
+  TransactionDto,
 } from '@expense-tracker-ui/api';
 import { Observable } from 'rxjs';
 
@@ -25,5 +26,9 @@ export class TransactionsService {
 
   createTransaction(transaction: CreateTransactionCommand) {
     return this.api.create(transaction);
+  }
+
+  getTransaction(transactionId: string): Observable<TransactionDto> {
+    return this.api.retrieve1(transactionId);
   }
 }
