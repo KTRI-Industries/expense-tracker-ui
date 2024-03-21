@@ -7,26 +7,12 @@
   </mat-card-header>
   <mat-card-content>
     @if (transactions?.content?.length !== 0) {
-    <div class="mat-elevation-z8">
+    <!-- md:w-3/5 to reduce the width of the table -->
+    <div class="mat-elevation-z8 lg:w-3/5">
       <mat-table
         [dataSource]="transactionDatasource || []"
         matSort
         (matSortChange)="onSortChange($event)">
-        <ng-container matColumnDef="position">
-          <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
-          <mat-cell *matCellDef="let element; let i = index" data-label="No.">
-            <!-- data-label needed for responsive-->
-            {{ (transactions?.pageable?.pageNumber ?? 0) * pageSize + i + 1 }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Amount">
-            {{ element.amount.amount | currency: element.amount.currency }}
-          </mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="description">
           <mat-header-cell *matHeaderCellDef mat-sort-header>
             Description
@@ -49,6 +35,22 @@
           <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Category">
             {{ element.category }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- justify-end for right aligned amounts -->
+        <ng-container matColumnDef="amount">
+          <mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            class="justify-end">
+            Amount
+          </mat-header-cell>
+          <mat-cell
+            *matCellDef="let element"
+            data-label="Amount"
+            class="justify-end">
+            {{ element.amount.amount | currency: element.amount.currency }}
           </mat-cell>
         </ng-container>
 
