@@ -67,3 +67,10 @@
 ::ng-deep .mat-mdc-cell {
   justify-content: center;
 }
+/*
+
+.mat-column-amount {
+  display: flex;
+  justify-content: flex-end;
+}
+*/

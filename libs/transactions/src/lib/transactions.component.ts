@@ -90,11 +90,11 @@ export class TransactionsComponent {
     | undefined;
 
   transactionColumns = [
-    'position',
-    'amount',
+    // 'position',
     'description',
     'date',
     'category',
+    'amount',
   ];
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
@@ -128,11 +128,7 @@ export class TransactionsComponent {
     );
   }
 
-  private constructPageable(
-    column = 'date',
-    direction = 'desc',
-    page = 0,
-  ) {
+  private constructPageable(column = 'date', direction = 'desc', page = 0) {
     return {
       page: page,
       sort: [`${column},${direction}`],
