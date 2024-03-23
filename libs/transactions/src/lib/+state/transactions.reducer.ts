@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
+import { PageTransactionDto, TransactionDto } from "@expense-tracker-ui/api";
 import { TransactionActions } from './transactions.actions';
 
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
@@ -12,6 +12,17 @@ export interface TransactionsState {
 export const initialTransactionsState: TransactionsState = {
   transactions: undefined,
   selectedTransactionId: null,
+};
+
+const initialTransaction: TransactionDto = {
+  amount: {
+    currency: 'EUR',
+    amount: undefined,
+  },
+  date: '',
+  description: '',
+  transactionId: '',
+  tenantId: '',
 };
 
 export const transactionsFeature = createFeature({
@@ -57,8 +68,10 @@ export const transactionsFeature = createFeature({
       selectTransactions,
       selectSelectedTransactionId,
       (transactions, selectedTransactionId) => {
+        // this is only needed for the case of new transaction where we do not have a selected tx id, but we still want to render the component.
+        // so we return an initial transaction instead of undefined...
         if (selectedTransactionId === null) {
-          return {} as TransactionDto; // this is only needed for the case of new transaction where we do not have a selected tx id but we still want to render the component. so we return an empty object instead of undefined...
+          return initialTransaction;
         }
         return transactions?.content?.find(
           (t) => t.transactionId === selectedTransactionId,

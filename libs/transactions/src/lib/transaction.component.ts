@@ -45,20 +45,31 @@ import { JsonPipe } from '@angular/common';
   ],
 })
 export class TransactionComponent implements OnInit {
+  /**
+   * The transaction that will be edited (or the initial transaction data in case of creation).
+   */
   @Input() selectedTransaction: TransactionDto | undefined | null;
 
   @Output() create = new EventEmitter<CreateTransactionCommand>();
 
+  /**
+   * The angular form group that will be related to formly form
+   */
   transactionForm = this.fb.group({});
+
+  /**
+   * The formly fields that will be used to render the dynamic form.
+   */
   fields: FormlyFieldConfig[] = [];
-  model: CreateTransactionCommand = {
-    amount: {
-      currency: 'EUR',
-      amount: undefined,
-    },
-    date: '',
-    description: '',
-  };
+
+  /**
+   * The model that will be used to store the form data.
+   */
+  model: CreateTransactionCommand | undefined;
+
+  /**
+   * Contains form state that is not part of the model.
+   */
   options: FormlyFormOptions = {
     formState: {
       txType: 'EXPENSE',
@@ -68,17 +79,16 @@ export class TransactionComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    if (Object.keys(this.selectedTransaction!).length !== 0) {
-      this.model = {
-        amount: {
-          currency: this.selectedTransaction?.amount.currency,
-          amount: this.selectedTransaction?.amount.amount,
-        },
-        date: this.selectedTransaction?.date ?? '',
-        description: this.selectedTransaction?.description,
-        category: this.selectedTransaction?.category,
-      };
-    }
+    // ic case where we are editing  an existing transaction, pre-populate the model with the transaction data.
+    this.model = {
+      amount: {
+        currency: this.selectedTransaction?.amount.currency,
+        amount: this.selectedTransaction?.amount.amount,
+      },
+      date: this.selectedTransaction?.date ?? '',
+      description: this.selectedTransaction?.description,
+      category: this.selectedTransaction?.category,
+    };
 
     this.fields = [
       {
@@ -96,6 +106,7 @@ export class TransactionComponent implements OnInit {
             { value: 'INCOME', label: 'Income' },
             { value: 'EXPENSE', label: 'Expense' },
           ],
+          // Update the form state when the value of the radio button changes.
           change: (field: FormlyFieldConfig) => {
             this.options.formState.txType = field.formControl?.value;
           },
@@ -145,13 +156,11 @@ export class TransactionComponent implements OnInit {
 
   onCreate() {
     if (this.transactionForm.valid) {
-      console.log(this.model.date);
-      // TODO allow array of categories in the backend to remove this hack
       const modifiedModel: CreateTransactionCommand = {
-        ...this.model,
+        ...this.model!,
         category: [this.getCategoryFromLabel()!],
         amount: {
-          ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
+          ...this.model?.amount, // if we do not spread the amount, after an error in backend the amount object is read only
           amount: this.getAmountByType(),
         },
       };
@@ -159,15 +168,22 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns the amount with the correct sign based on the transaction type.
+   */
   private getAmountByType() {
     return this.options.formState.txType === 'EXPENSE'
-      ? -this.model.amount.amount!
-      : this.model.amount.amount;
+      ? -(this.model?.amount.amount ?? 0)
+      : this.model?.amount.amount;
   }
 
+  /**
+   * Returns the first category based on the label.
+   * TODO: support multiple categories.
+   */
   getCategoryFromLabel() {
     return Object.keys(categoryLabels).find(
-      (key) => categoryLabels[key as Category] === this.model.category?.[0],
+      (key) => categoryLabels[key as Category] === this.model?.category?.[0],
     ) as Category | undefined;
   }
 }
