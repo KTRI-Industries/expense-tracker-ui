@@ -7,7 +7,11 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import {
+  FormlyFieldConfig,
+  FormlyFormOptions,
+  FormlyModule,
+} from '@ngx-formly/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
@@ -26,6 +30,7 @@ import { MatButton } from '@angular/material/button';
 // tslint:disable-next-line:no-duplicate-imports
 import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
+import { JsonPipe } from '@angular/common';
 
 const moment = _rollupMoment || _moment;
 
@@ -49,6 +54,7 @@ const moment = _rollupMoment || _moment;
     MatFormFieldModule,
     MatInputModule,
     MatButton,
+    JsonPipe,
   ],
 })
 export class TransactionComponent implements OnInit {
@@ -66,23 +72,48 @@ export class TransactionComponent implements OnInit {
     date: '',
     description: '',
   };
+  options: FormlyFormOptions = {
+    formState: {
+      txType: 'EXPENSE',
+    },
+  };
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.model = {
-      amount: this.selectedTransaction?.amount
-        ? {
-            currency: this.selectedTransaction.amount.currency,
-            amount: this.selectedTransaction.amount.amount,
-          }
-        : { currency: 'EUR', amount: undefined },
-      date: this.selectedTransaction?.date || '',
-      description: this.selectedTransaction?.description || '',
-      category: this.selectedTransaction?.category,
-    };
+    if (Object.keys(this.selectedTransaction!).length !== 0) {
+      this.model = {
+        amount: {
+          currency: this.selectedTransaction?.amount.currency,
+          amount: this.selectedTransaction?.amount.amount,
+        },
+        date: this.selectedTransaction?.date ?? '',
+        description: this.selectedTransaction?.description,
+        category: this.selectedTransaction?.category,
+      };
+    }
 
     this.fields = [
+      {
+        key: 'txType',
+        type: 'radio',
+        defaultValue: 'EXPENSE',
+        props: {
+          label: 'Transaction Type',
+          placeholder: 'Set transaction type',
+          required: true,
+          attributes: {
+            autocomplete: 'off',
+          },
+          options: [
+            { value: 'INCOME', label: 'Income' },
+            { value: 'EXPENSE', label: 'Expense' },
+          ],
+          change: (field: FormlyFieldConfig) => {
+            this.options.formState.txType = field.formControl?.value;
+          },
+        },
+      },
       {
         key: 'amount.amount',
         type: 'amount-input',
@@ -133,13 +164,19 @@ export class TransactionComponent implements OnInit {
         category: [this.getCategoryFromLabel()!],
         amount: {
           ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
-          amount: this.model.amount.amount,
+          amount: this.getAmount(),
         },
         // if we send date directly it is sent with timezone and then in backend date in utc is calculated wrongly
         date: moment(this.model.date).format('YYYY-MM-DDT00:00:00'),
       };
       this.create.emit(modifiedModel);
     }
+  }
+
+  private getAmount() {
+    return this.options.formState.txType === 'EXPENSE'
+      ? -this.model.amount.amount!
+      : this.model.amount.amount;
   }
 
   getCategoryFromLabel() {
