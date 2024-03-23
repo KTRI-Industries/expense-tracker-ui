@@ -12,8 +12,6 @@ import {
   FormlyFormOptions,
   FormlyModule,
 } from '@ngx-formly/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import {
   Category,
@@ -23,16 +21,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-// Depending on whether rollup is used, moment needs to be imported differently.
-// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
-// syntax. However, rollup creates a synthetic default module and we thus need to import it using
-// the `default as` syntax.
-// tslint:disable-next-line:no-duplicate-imports
-import * as _moment from 'moment';
-import { default as _rollupMoment } from 'moment';
 import { JsonPipe } from '@angular/common';
-
-const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -48,8 +37,6 @@ const moment = _rollupMoment || _moment;
     MatCardHeader,
     ReactiveFormsModule,
     FormlyModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -158,22 +145,21 @@ export class TransactionComponent implements OnInit {
 
   onCreate() {
     if (this.transactionForm.valid) {
+      console.log(this.model.date);
       // TODO allow array of categories in the backend to remove this hack
       const modifiedModel: CreateTransactionCommand = {
         ...this.model,
         category: [this.getCategoryFromLabel()!],
         amount: {
           ...this.model.amount, // if we do not spread the amount, after an error in backend the amount object is read only
-          amount: this.getAmount(),
+          amount: this.getAmountByType(),
         },
-        // if we send date directly it is sent with timezone and then in backend date in utc is calculated wrongly
-        date: moment(this.model.date).format('YYYY-MM-DDT00:00:00'),
       };
       this.create.emit(modifiedModel);
     }
   }
 
-  private getAmount() {
+  private getAmountByType() {
     return this.options.formState.txType === 'EXPENSE'
       ? -this.model.amount.amount!
       : this.model.amount.amount;
