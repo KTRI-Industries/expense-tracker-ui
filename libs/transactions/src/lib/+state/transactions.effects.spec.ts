@@ -9,6 +9,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('TransactionsEffects', () => {
   let actions$: Observable<Action>;
@@ -22,6 +23,7 @@ describe('TransactionsEffects', () => {
       providers: [
         TransactionsEffects,
         provideMockActions(() => actions$),
+        provideMockStore(),
         {
           provide: TransactionsService,
           useValue: {
