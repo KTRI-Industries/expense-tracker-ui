@@ -21,7 +21,8 @@ import { NgxMaskDirective } from 'ngx-mask';
       matInput
       mask="separator.2"
       [prefix]="prefix()"
-      [allowNegativeNumbers]="true"
+      type="text"
+      [allowNegativeNumbers]="false"
       [placeholder]="field.props.placeholder!!"
       [formControl]="formControl"
       [formlyAttributes]="field" />
