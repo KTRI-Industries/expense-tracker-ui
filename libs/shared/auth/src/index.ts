@@ -8,3 +8,5 @@ export { UserInfoContainerComponent } from './lib/user-info-container/user-info-
 export * from './lib/external-configuration';
 
 export * from './lib/+state/auth.reducer';
+
+export * from './lib/app.guard';

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '@expense-tracker-ui/shared/auth';
+import { AuthActions } from './+state/auth.actions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppGuardGuard extends KeycloakAuthGuard {
+export class AppGuard extends KeycloakAuthGuard {
   constructor(
     protected override readonly router: Router,
     protected readonly keycloak: KeycloakService,

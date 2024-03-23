@@ -5,7 +5,7 @@ import { transactionsFeature } from './+state/transactions.reducer';
 import { TransactionsEffects } from './+state/transactions.effects';
 import { TransactionsContainerComponent } from './transactions-container.component';
 import { TransactionContainerComponent } from './transaction-container.component';
-import { AppGuardGuard } from '../../../../src/app/app-guard.guard';
+import { AppGuard } from '@expense-tracker-ui/shared/auth';
 
 export const transactionsRoutes: Route[] = [
   {
@@ -31,6 +31,6 @@ export const transactionsRoutes: Route[] = [
       provideState(transactionsFeature),
       provideEffects(TransactionsEffects),
     ],
-    canActivate: [AppGuardGuard],
+    canActivate: [AppGuard],
   },
 ];
