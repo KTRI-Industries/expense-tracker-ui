@@ -19,7 +19,9 @@ import { ActivatedRoute } from '@angular/router';
     @if (selectedTransaction$ | async; as selectedTransaction) {
     <expense-tracker-ui-transaction
       [selectedTransaction]="selectedTransaction"
-      (create)="onCreate($event)"></expense-tracker-ui-transaction>
+      (create)="onCreate($event)"
+      (delete)="onDelete($event)"
+      (update)="onUpdate($event)"></expense-tracker-ui-transaction>
     }
   `,
   styles: ``,
@@ -50,6 +52,18 @@ export class TransactionContainerComponent implements OnInit {
   onCreate($event: CreateTransactionCommand) {
     this.store.dispatch(
       TransactionActions.createNewTransaction({ transaction: $event }),
+    );
+  }
+
+  onUpdate($event: TransactionDto) {
+    this.store.dispatch(
+      TransactionActions.updateTransaction({ transaction: $event }),
+    );
+  }
+
+  onDelete($event: string) {
+    this.store.dispatch(
+      TransactionActions.deleteTransaction({ transactionId: $event }),
     );
   }
 }
