@@ -7,4 +7,5 @@ export * from './pageableObject';
 export * from './sortObject';
 export * from './tenantDto';
 export * from './transactionDto';
+export * from './updateTransactionCommand';
 export * from './userInfo';
