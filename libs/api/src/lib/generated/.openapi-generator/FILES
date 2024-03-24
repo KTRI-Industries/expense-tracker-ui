@@ -18,6 +18,7 @@ model/pageableObject.ts
 model/sortObject.ts
 model/tenantDto.ts
 model/transactionDto.ts
+model/updateTransactionCommand.ts
 model/userInfo.ts
 param.ts
 variables.ts

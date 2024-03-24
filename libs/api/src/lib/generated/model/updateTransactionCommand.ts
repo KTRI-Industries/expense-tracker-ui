@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { Category } from './category';
+import { MonetaryAmount } from './monetaryAmount';
 
-export interface PageableObject {
-  offset?: number;
-  sort?: Array<SortObject>;
-  unpaged?: boolean;
-  paged?: boolean;
-  pageSize?: number;
-  pageNumber?: number;
+export interface UpdateTransactionCommand {
+  transactionId: string;
+  amount: MonetaryAmount;
+  description?: string;
+  date: string;
+  category: Array<Category>;
 }
