@@ -38,11 +38,11 @@ export class TransactionsEffects {
     ),
   );
 
-    /**
-     * Load a transaction if it is not already loaded. (case where user navigates directly to transaction with url).
-     * Filter checks if the transaction is already loaded.
-     *
-     */
+  /**
+   * Load a transaction if it is not already loaded. (case where user navigates directly to transaction with url).
+   * Filter checks if the transaction is already loaded.
+   *
+   */
   loadTransaction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionActions.loadTransaction),
@@ -101,6 +101,22 @@ export class TransactionsEffects {
         ),
       ),
     { dispatch: false },
+  );
+
+  deleteTransaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TransactionActions.deleteTransaction),
+      switchMap(({ transactionId }) =>
+        this.client.deleteTransaction(transactionId).pipe(
+          map(() => TransactionActions.deleteTransactionSuccess()),
+          tap(() => this.router.navigate(['transactions'])),
+          tap(() => this.snackBar.open('Transaction deleted', 'Close')),
+          catchError((error) =>
+            of(TransactionActions.deleteTransactionFailure({ error })),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor(

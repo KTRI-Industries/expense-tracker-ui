@@ -51,6 +51,8 @@ export class TransactionComponent implements OnInit {
   @Input() selectedTransaction: TransactionDto | undefined | null;
 
   @Output() create = new EventEmitter<CreateTransactionCommand>();
+  @Output() update = new EventEmitter<TransactionDto>();
+  @Output() delete = new EventEmitter<string>();
 
   /**
    * The angular form group that will be related to formly form
@@ -185,6 +187,12 @@ export class TransactionComponent implements OnInit {
     return Object.keys(categoryLabels).find(
       (key) => categoryLabels[key as Category] === this.model?.category?.[0],
     ) as Category | undefined;
+  }
+
+  onUpdate() {}
+
+  onDelete() {
+    this.delete.emit(this.selectedTransaction?.transactionId);
   }
 }
 

@@ -7,18 +7,28 @@
   </mat-card-header>
   <mat-card-content>
     <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
-    <form
-      class="md:w-6/12"
-      [formGroup]="transactionForm"
-      (ngSubmit)="onCreate()">
+    <form class="md:w-6/12" [formGroup]="transactionForm">
       <formly-form
         [form]="transactionForm"
         [fields]="fields"
         [model]="model"></formly-form>
+      @if (selectedTransaction) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onUpdate()"
+        class="mr-1">
+        Update
+      </button>
+      <button mat-raised-button color="warn" (click)="onDelete()">
+        Delete
+      </button>
+      } @else {
       <button mat-raised-button color="primary" (click)="onCreate()">
         Create
       </button>
+      }
     </form>
   </mat-card-content>
 </mat-card>
-<pre>{{ transactionForm.value | json}}</pre>
+<pre>{{ transactionForm.value | json }}</pre>

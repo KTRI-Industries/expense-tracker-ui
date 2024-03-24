@@ -31,4 +31,8 @@ export class TransactionsService {
   getTransaction(transactionId: string): Observable<TransactionDto> {
     return this.api.retrieve1(transactionId);
   }
+
+  deleteTransaction(transactionId: string) {
+    return this.api._delete(transactionId);
+  }
 }
