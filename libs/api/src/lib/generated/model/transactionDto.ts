@@ -17,6 +17,6 @@ export interface TransactionDto {
   amount: MonetaryAmount;
   date: string;
   description: string;
-  category: Array<Category>;
+  category?: Array<Category>;
   tenantId: string;
 }

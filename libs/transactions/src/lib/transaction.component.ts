@@ -17,6 +17,7 @@ import {
   Category,
   CreateTransactionCommand,
   TransactionDto,
+  UpdateTransactionCommand,
 } from '@expense-tracker-ui/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -51,7 +52,7 @@ export class TransactionComponent implements OnInit {
   @Input() selectedTransaction: TransactionDto | undefined | null;
 
   @Output() create = new EventEmitter<CreateTransactionCommand>();
-  @Output() update = new EventEmitter<TransactionDto>();
+  @Output() update = new EventEmitter<UpdateTransactionCommand>();
   @Output() delete = new EventEmitter<string>();
 
   /**
@@ -160,39 +161,64 @@ export class TransactionComponent implements OnInit {
     if (this.transactionForm.valid) {
       const modifiedModel: CreateTransactionCommand = {
         ...this.model!,
-        category: [this.getCategoryFromLabel()!],
+        category: this.getCategoryFromLabel(
+          categoryLabels,
+          this.model?.category?.[0],
+        )!,
+
         amount: {
           ...this.model?.amount, // if we do not spread the amount, after an error in backend the amount object is read only
-          amount: this.getAmountByType(),
+          amount: this.getAmountByType(this.model?.amount.amount),
         },
       };
       this.create.emit(modifiedModel);
     }
   }
 
+  onUpdate() {
+    if (this.transactionForm.valid) {
+      const modifiedModel: UpdateTransactionCommand = {
+        ...this.model!,
+        category: this.getCategoryFromLabel(
+          categoryLabels,
+          this.model?.category?.[0],
+        )!,
+
+        amount: {
+          ...this.model?.amount, // if we do not spread the amount, after an error in backend the amount object is read only
+          amount: this.getAmountByType(this.model?.amount.amount),
+        },
+        transactionId: this.selectedTransaction?.transactionId ?? '',
+      };
+      this.update.emit(modifiedModel);
+    }
+  }
+
+  onDelete() {
+    this.delete.emit(this.selectedTransaction?.transactionId);
+  }
+
   /**
    * Returns the amount with the correct sign based on the transaction type.
    */
-  private getAmountByType() {
+  private getAmountByType(amount: number | undefined) {
     return this.options.formState.txType === 'EXPENSE'
-      ? -(this.model?.amount.amount ?? 0)
-      : this.model?.amount.amount;
+      ? -(amount ?? 0)
+      : amount;
   }
 
   /**
    * Returns the first category based on the label.
    * TODO: support multiple categories.
    */
-  getCategoryFromLabel() {
-    return Object.keys(categoryLabels).find(
-      (key) => categoryLabels[key as Category] === this.model?.category?.[0],
-    ) as Category | undefined;
-  }
-
-  onUpdate() {}
-
-  onDelete() {
-    this.delete.emit(this.selectedTransaction?.transactionId);
+  getCategoryFromLabel(
+    categoryLabels: Record<Category, string>,
+    selectedCategory: Category | undefined,
+  ): Category[] {
+    let cat = Object.keys(categoryLabels).find(
+      (key) => categoryLabels[key as Category] === selectedCategory,
+    );
+    return cat != null ? ([cat] as Category[]) : [];
   }
 }
 

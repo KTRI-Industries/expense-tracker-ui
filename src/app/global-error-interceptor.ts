@@ -24,7 +24,7 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
         console.log(error);
         switch (error.status) {
           case 401:
-          case 403:
+            // case 403:
             this.keycloak.logout(); // one scenario to get here is when the refresh token is expired
             break;
           case 404:

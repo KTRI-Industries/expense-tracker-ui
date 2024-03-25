@@ -5,6 +5,7 @@ import { TransactionComponent } from './transaction.component';
 import {
   CreateTransactionCommand,
   TransactionDto,
+  UpdateTransactionCommand,
 } from '@expense-tracker-ui/api';
 import { selectCurrentTransaction } from './+state/transactions.selectors';
 import { AsyncPipe } from '@angular/common';
@@ -55,7 +56,7 @@ export class TransactionContainerComponent implements OnInit {
     );
   }
 
-  onUpdate($event: TransactionDto) {
+  onUpdate($event: UpdateTransactionCommand) {
     this.store.dispatch(
       TransactionActions.updateTransaction({ transaction: $event }),
     );

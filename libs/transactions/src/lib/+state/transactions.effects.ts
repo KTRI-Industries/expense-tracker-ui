@@ -119,6 +119,24 @@ export class TransactionsEffects {
     ),
   );
 
+  updateTransaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TransactionActions.updateTransaction),
+      switchMap(({ transaction }) =>
+        this.client.updateTransaction(transaction).pipe(
+          map((transaction) =>
+            TransactionActions.updateTransactionSuccess({ transaction }),
+          ),
+          tap(() => this.router.navigate(['transactions'])),
+          tap(() => this.snackBar.open('Transaction updated', 'Close')),
+          catchError((error) =>
+            of(TransactionActions.updateTransactionFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
