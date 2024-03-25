@@ -17,5 +17,5 @@ export interface UpdateTransactionCommand {
   amount: MonetaryAmount;
   description?: string;
   date: string;
-  category: Array<Category>;
+  category?: Array<Category>;
 }

@@ -5,6 +5,7 @@ import {
   PageTransactionDto,
   TransactionControllerService,
   TransactionDto,
+  UpdateTransactionCommand,
 } from '@expense-tracker-ui/api';
 import { Observable } from 'rxjs';
 
@@ -34,5 +35,12 @@ export class TransactionsService {
 
   deleteTransaction(transactionId: string) {
     return this.api._delete(transactionId);
+  }
+
+  updateTransaction(updateTransactionCommand: UpdateTransactionCommand) {
+    return this.api.update(
+      updateTransactionCommand.transactionId,
+      updateTransactionCommand,
+    );
   }
 }

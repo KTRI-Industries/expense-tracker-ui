@@ -551,40 +551,50 @@ export class TransactionControllerService {
   }
 
   /**
+   * @param id
    * @param updateTransactionCommand
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public update1(
+  public update(
+    id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<TransactionDto>;
-  public update1(
+  public update(
+    id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<TransactionDto>>;
-  public update1(
+  public update(
+    id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<TransactionDto>>;
-  public update1(
+  public update(
+    id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling update.',
+      );
+    }
     if (
       updateTransactionCommand === null ||
       updateTransactionCommand === undefined
     ) {
       throw new Error(
-        'Required parameter updateTransactionCommand was null or undefined when calling update1.',
+        'Required parameter updateTransactionCommand was null or undefined when calling update.',
       );
     }
 
@@ -645,7 +655,15 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({
+      name: 'id',
+      value: id,
+      in: 'path',
+      style: 'simple',
+      explode: false,
+      dataType: 'string',
+      dataFormat: 'uuid',
+    })}`;
     return this.httpClient.request<TransactionDto>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,

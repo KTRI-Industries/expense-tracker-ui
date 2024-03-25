@@ -4,6 +4,7 @@ import {
   Pageable,
   PageTransactionDto,
   TransactionDto,
+  UpdateTransactionCommand,
 } from '@expense-tracker-ui/api';
 
 export const TransactionActions = createActionGroup({
@@ -22,7 +23,9 @@ export const TransactionActions = createActionGroup({
     LoadTransaction: props<{ transactionId: string }>(),
     LoadTransactionSuccess: props<{ transaction: TransactionDto }>(),
     LoadTransactionFailure: props<{ error: Error }>(),
-    UpdateTransaction: props<{ transaction: TransactionDto }>(),
+    UpdateTransaction: props<{ transaction: UpdateTransactionCommand }>(),
+    'Update Transaction Success': props<{ transaction: TransactionDto }>(),
+    'Update Transaction Failure': props<{ error: Error }>(),
     DeleteTransaction: props<{ transactionId: string }>(),
     'Delete Transaction Success': emptyProps(),
     'Delete Transaction Failure': props<{ error: Error }>(),
