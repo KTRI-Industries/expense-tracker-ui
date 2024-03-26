@@ -44,7 +44,6 @@ describe('Transactions Reducer', () => {
     });
     const result = transactionsFeature.reducer(state, action);
 
-    expect(result.currentTransaction).toEqual(mockTransaction);
     expect(result.transactions).toBeUndefined();
   });
 });

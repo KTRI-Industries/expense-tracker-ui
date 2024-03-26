@@ -24,6 +24,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 
+/**
+ * The chips component works only with strings, so to keep things simple
+ * we will use a custom type for the model of the formly form
+ * which is the original CreateTransactionCommand with the category field as a string array.
+ */
+type CreateTransactionCommandUi = Omit<CreateTransactionCommand, 'category'> & {
+  category: string[];
+};
+
 @Component({
   selector: 'expense-tracker-ui-transaction',
   standalone: true,
@@ -68,7 +77,7 @@ export class TransactionComponent implements OnInit {
   /**
    * The model that will be used to store the form data.
    */
-  model: CreateTransactionCommand | undefined;
+  model: CreateTransactionCommandUi | undefined;
 
   /**
    * Contains form state that is not part of the model.
@@ -90,7 +99,10 @@ export class TransactionComponent implements OnInit {
       },
       date: this.selectedTransaction?.date ?? '',
       description: this.selectedTransaction?.description,
-      category: this.selectedTransaction?.category,
+      category: this.getLabelFromCategory(
+        categoryLabels,
+        this.selectedTransaction?.category,
+      ),
     };
 
     this.fields = [
@@ -213,12 +225,25 @@ export class TransactionComponent implements OnInit {
    */
   getCategoryFromLabel(
     categoryLabels: Record<Category, string>,
-    selectedCategory: Category | undefined,
+    selectedCategory: string | undefined,
   ): Category[] {
-    let cat = Object.keys(categoryLabels).find(
+    const foundCategory = Object.keys(categoryLabels).find(
       (key) => categoryLabels[key as Category] === selectedCategory,
     );
-    return cat != null ? ([cat] as Category[]) : [];
+    return foundCategory != null ? ([foundCategory] as Category[]) : [];
+  }
+
+  /**
+   * Returns the label based on the category enum.
+   */
+  private getLabelFromCategory(
+    categoryLabels: Record<Category, string>,
+    category: Array<Category> | undefined,
+  ): any[] | string[] {
+    if (category == undefined || category[0] == undefined) {
+      return [];
+    }
+    return [categoryLabels[category[0]]];
   }
 }
 
