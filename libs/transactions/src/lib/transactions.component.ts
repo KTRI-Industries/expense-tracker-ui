@@ -37,6 +37,8 @@ import { MatButton } from '@angular/material/button';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
+import { EnumToLabelPipe } from './enum-to-label.pipe';
+import { categoryLabels } from './transaction.component';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -65,6 +67,7 @@ import { SelectionModel } from '@angular/cdk/collections';
     MatPaginator,
     MatSort,
     MatSortHeader,
+    EnumToLabelPipe,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
@@ -145,4 +148,6 @@ export class TransactionsComponent {
     console.log(row);
     this.rowSelected.emit(row);
   }
+
+  protected readonly categoryLabels = categoryLabels;
 }

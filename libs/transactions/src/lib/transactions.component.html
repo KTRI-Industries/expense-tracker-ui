@@ -36,7 +36,7 @@
         <ng-container matColumnDef="category">
           <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Category">
-            {{ element.category }}
+            {{ element.category | enumToLabel: categoryLabels }}
           </mat-cell>
         </ng-container>
 
