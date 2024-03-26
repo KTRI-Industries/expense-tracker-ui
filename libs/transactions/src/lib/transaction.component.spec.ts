@@ -11,6 +11,7 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 describe('TransactionComponent', () => {
   let component: TransactionComponent;
@@ -24,6 +25,7 @@ describe('TransactionComponent', () => {
         FormlyMaterialModule,
         FormlyMatDatepickerModule,
         NoopAnimationsModule,
+
         FormlyModule.forRoot({
           types: [
             {
@@ -47,6 +49,20 @@ describe('TransactionComponent', () => {
       ],
       declarations: [],
       providers: [
+        provideMomentDateAdapter(
+          {
+            parse: {
+              dateInput: 'DD/MM/YYYY',
+            },
+            display: {
+              dateInput: 'DD/MM/YYYY',
+              monthYearLabel: 'MMMM YYYY',
+              dateA11yLabel: 'LL',
+              monthYearA11yLabel: 'MMMM YYYY',
+            },
+          },
+          { useUtc: true },
+        ),
         provideEnvironmentNgxMask({
           decimalMarker: ',',
           thousandSeparator: '.',
@@ -74,14 +90,15 @@ describe('TransactionComponent', () => {
       amount: { amount: 100, currency: 'EUR' },
       date: '2022-01-01',
       description: 'Test',
-      category: Category.Bill,
+      category: [Category.Bill],
     };
 
     component.transactionForm.setValue({
+      txType: 'EXPENSE',
       amount: { amount: command.amount.amount },
       date: command.date,
       description: command.description,
-      category: [categoryLabels[command.category!]],
+      category: command.category?.map((category) => categoryLabels[category]),
     });
 
     // Spy on event emitter
@@ -92,8 +109,10 @@ describe('TransactionComponent', () => {
     // Assert that event was emitted with correct value
     expect(component.create.emit).toHaveBeenCalledWith({
       ...command,
-      date: expect.any(String), // date is transformed in onCreate, so we just check it's a string
+      amount: { amount: -command.amount.amount!, currency: undefined }, // currency is taken from the model which is not set here
+      date: '2022-01-01',
       category: command.category,
+      txType: 'EXPENSE',
     });
   });
 

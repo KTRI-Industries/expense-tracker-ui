@@ -12,7 +12,7 @@
         [form]="transactionForm"
         [fields]="fields"
         [model]="model"></formly-form>
-      @if (selectedTransaction) {
+      @if (selectedTransaction?.transactionId !== '') {
       <button
         mat-raised-button
         color="primary"
