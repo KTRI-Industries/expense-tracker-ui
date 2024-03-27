@@ -11,7 +11,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EnumToLabelPipe implements PipeTransform {
   transform(value: unknown, map: Record<any, string>): string {
     const enumElement: string =
-      Object.keys(map).find((key) => key == value) || '';
+      Object.keys(map).find((key) => key == value) ?? '';
     return map[enumElement];
   }
 }

@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { PageTransactionDto, TransactionDto } from "@expense-tracker-ui/api";
+import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
 import { TransactionActions } from './transactions.actions';
 
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
@@ -40,13 +40,10 @@ export const transactionsFeature = createFeature({
       ...state,
       selectedTransactionId: null, // otherwise the form will be prefilled with the last selected transaction
     })),
-    on(
-      TransactionActions.createNewTransactionSuccess,
-      (state, { transaction }) => ({
-        ...state,
-        transactions: undefined, // otherwise the list of transactions won't be updated
-      }),
-    ),
+    on(TransactionActions.createNewTransactionSuccess, (state) => ({
+      ...state,
+      transactions: undefined, // otherwise the list of transactions won't be updated
+    })),
     on(TransactionActions.editTransaction, (state, { transactionId }) => ({
       ...state,
       selectedTransactionId: transactionId,

@@ -109,7 +109,7 @@ describe('TransactionComponent', () => {
     // Assert that event was emitted with correct value
     expect(component.create.emit).toHaveBeenCalledWith({
       ...command,
-      amount: { amount: -command.amount.amount!, currency: undefined }, // currency is taken from the model which is not set here
+      amount: { amount: -(command.amount.amount ?? 0), currency: undefined }, // currency is taken from the model which is not set here
       date: '2022-01-01',
       category: command.category,
       txType: 'EXPENSE',
