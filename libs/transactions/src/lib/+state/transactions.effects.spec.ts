@@ -4,7 +4,11 @@ import { Observable, of, throwError } from 'rxjs';
 import { TransactionsEffects } from './transactions.effects';
 import { TransactionsService } from '../transactions.service';
 import { TransactionActions } from './transactions.actions';
-import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
+import {
+  Pageable,
+  PageTransactionDto,
+  TransactionDto,
+} from '@expense-tracker-ui/api';
 import { cold, hot } from 'jasmine-marbles';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -59,7 +63,9 @@ describe('TransactionsEffects', () => {
       // fill with mock data
     };
     jest.spyOn(service, 'getAllTransactions').mockReturnValue(of(transactions));
-    const action = TransactionActions.initTransactions({} as any);
+    const action = TransactionActions.initTransactions({
+      pageable: {} as Pageable,
+    });
     const completion = TransactionActions.loadTransactionsSuccess({
       transactions,
     });
@@ -75,7 +81,9 @@ describe('TransactionsEffects', () => {
     jest
       .spyOn(service, 'getAllTransactions')
       .mockReturnValue(throwError(error));
-    const action = TransactionActions.initTransactions({} as any);
+    const action = TransactionActions.initTransactions({
+      pageable: {} as Pageable,
+    });
     const completion = TransactionActions.loadTransactionsFailure({ error });
 
     actions$ = hot('-a', { a: action });

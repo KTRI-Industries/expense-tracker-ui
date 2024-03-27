@@ -53,7 +53,7 @@ export class TransactionsEffects {
             (t) => t.transactionId === action.transactionId,
           ),
       ),
-      switchMap(([action, transactions]) =>
+      switchMap(([action]) =>
         this.client
           .getTransaction(action.transactionId)
           .pipe(

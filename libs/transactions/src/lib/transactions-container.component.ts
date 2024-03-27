@@ -18,7 +18,7 @@ import {
     @if (transactions$ | async; as transactions) {
     <expense-tracker-ui-transactions
       [transactions]="transactions"
-      (openTransactionForm)="onOpenTransactionForm($event)"
+      (openTransactionForm)="onOpenTransactionForm()"
       (pageChange)="onPageableChange($event)"
       (sortChange)="onPageableChange($event)"
       (rowSelected)="onRowSelected($event)"></expense-tracker-ui-transactions>
@@ -39,7 +39,7 @@ export class TransactionsContainerComponent implements OnInit {
     );
   }
 
-  onOpenTransactionForm($event: unknown) {
+  onOpenTransactionForm() {
     this.store.dispatch(TransactionActions.openTransactionFrom());
   }
 
