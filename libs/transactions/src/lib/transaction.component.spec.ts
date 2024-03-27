@@ -90,7 +90,7 @@ describe('TransactionComponent', () => {
       amount: { amount: 100, currency: 'EUR' },
       date: '2022-01-01',
       description: 'Test',
-      category: [Category.Bill],
+      categories: [Category.Bill],
     };
 
     component.transactionForm.setValue({
@@ -98,7 +98,9 @@ describe('TransactionComponent', () => {
       amount: { amount: command.amount.amount },
       date: command.date,
       description: command.description,
-      category: command.category?.map((category) => categoryLabels[category]),
+      categories: command.categories?.map(
+        (category) => categoryLabels[category],
+      ),
     });
 
     // Spy on event emitter
@@ -111,7 +113,7 @@ describe('TransactionComponent', () => {
       ...command,
       amount: { amount: -(command.amount.amount ?? 0), currency: undefined }, // currency is taken from the model which is not set here
       date: '2022-01-01',
-      category: command.category,
+      categories: command.categories,
       txType: 'EXPENSE',
     });
   });

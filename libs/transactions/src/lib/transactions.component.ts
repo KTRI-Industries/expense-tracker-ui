@@ -39,6 +39,7 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { categoryLabels } from './transaction.component';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -68,6 +69,8 @@ import { categoryLabels } from './transaction.component';
     MatSort,
     MatSortHeader,
     EnumToLabelPipe,
+    MatChipListbox,
+    MatChipOption,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',

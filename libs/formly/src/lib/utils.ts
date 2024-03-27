@@ -48,18 +48,18 @@ export class EnumToLabelConverter<T extends string | number | symbol> {
    * Returns the first category based on the label.
    * @param selectedLabel
    */
-  getEnumFromLabel(selectedLabel: string | undefined): T[] {
+  getEnumFromLabel(selectedLabel: string | undefined): T {
     const foundEnum = Object.keys(this.labels).find(
       (key) => this.labels[key as unknown as T] === selectedLabel,
     );
-    return foundEnum != null ? ([foundEnum] as unknown as T[]) : [];
+    return foundEnum as T;
   }
 
   /**
    * Returns the label based on the category enum.
    * @param selectedEnum
    */
-  getLabelFromEnum(selectedEnum: Array<T> | undefined): string[] {
-    return selectedEnum?.[0] == undefined ? [] : [this.labels[selectedEnum[0]]];
+  getLabelFromEnum(selectedEnum: T | undefined): string {
+    return selectedEnum == undefined ? '' : this.labels[selectedEnum];
   }
 }
