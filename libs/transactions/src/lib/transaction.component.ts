@@ -30,8 +30,11 @@ import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
  * we will use a custom type for the model of the formly form
  * which is the original CreateTransactionCommand with the category field as a string array.
  */
-type CreateTransactionCommandUi = Omit<CreateTransactionCommand, 'category'> & {
-  category: string[];
+type CreateTransactionCommandUi = Omit<
+  CreateTransactionCommand,
+  'categories'
+> & {
+  categories: string[] | undefined;
 };
 
 @Component({
@@ -104,9 +107,8 @@ export class TransactionComponent implements OnInit {
       },
       date: this.selectedTransaction?.date ?? '',
       description: this.selectedTransaction?.description,
-      // TODO: support multiple categories
-      category: this.labelCategoryConverter.getLabelFromEnum(
-        this.selectedTransaction?.category,
+      categories: this.selectedTransaction?.categories?.map((category) =>
+        this.labelCategoryConverter.getLabelFromEnum(category),
       ),
     };
 
@@ -163,7 +165,7 @@ export class TransactionComponent implements OnInit {
         },
       },
       {
-        key: 'category',
+        key: 'categories',
         type: 'chips',
         props: {
           label: 'Transaction Category',
@@ -178,9 +180,8 @@ export class TransactionComponent implements OnInit {
     if (this.transactionForm.valid) {
       const modifiedModel: CreateTransactionCommand = {
         ...this.model,
-        // TODO: support multiple categories
-        category: this.labelCategoryConverter.getEnumFromLabel(
-          this.model?.category?.[0],
+        categories: this.model?.categories?.map((category) =>
+          this.labelCategoryConverter.getEnumFromLabel(category),
         ),
         amount: this.transformAmount(),
         date: this.model?.date ?? '',
@@ -193,10 +194,9 @@ export class TransactionComponent implements OnInit {
     if (this.transactionForm.valid) {
       const modifiedModel: UpdateTransactionCommand = {
         ...this.model,
-        category: this.labelCategoryConverter.getEnumFromLabel(
-          this.model?.category?.[0],
+        categories: this.model?.categories?.map((category) =>
+          this.labelCategoryConverter.getEnumFromLabel(category),
         ),
-
         amount: this.transformAmount(),
         date: this.model?.date ?? '',
         transactionId: this.selectedTransaction?.transactionId ?? '',

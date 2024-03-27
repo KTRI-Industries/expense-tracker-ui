@@ -20,9 +20,9 @@ export interface PageTransactionDto {
   content?: Array<TransactionDto>;
   number?: number;
   sort?: Array<SortObject>;
-  first?: boolean;
-  last?: boolean;
   numberOfElements?: number;
   pageable?: PageableObject;
+  first?: boolean;
+  last?: boolean;
   empty?: boolean;
 }

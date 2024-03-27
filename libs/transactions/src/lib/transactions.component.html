@@ -36,7 +36,13 @@
         <ng-container matColumnDef="category">
           <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Category">
-            {{ element.category | enumToLabel: categoryLabels }}
+            <mat-chip-listbox aria-label="Fish selection">
+              @for ( category of element.categories; track category) {
+              <mat-chip-option>
+                {{ category | enumToLabel: categoryLabels }}
+              </mat-chip-option>
+              }
+            </mat-chip-listbox>
           </mat-cell>
         </ng-container>
 
