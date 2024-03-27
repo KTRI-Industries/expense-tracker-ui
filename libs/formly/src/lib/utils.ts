@@ -37,3 +37,29 @@ export interface Chip<T> {
   value: T;
   label: string;
 }
+
+/**
+ * This class is a utility for converting between enum values and their corresponding (UI) labels.
+ */
+export class EnumToLabelConverter<T extends string | number | symbol> {
+  constructor(private labels: Record<T, string>) {}
+
+  /**
+   * Returns the first category based on the label.
+   * @param selectedLabel
+   */
+  getEnumFromLabel(selectedLabel: string | undefined): T[] {
+    const foundEnum = Object.keys(this.labels).find(
+      (key) => this.labels[key as unknown as T] === selectedLabel,
+    );
+    return foundEnum != null ? ([foundEnum] as unknown as T[]) : [];
+  }
+
+  /**
+   * Returns the label based on the category enum.
+   * @param selectedEnum
+   */
+  getLabelFromEnum(selectedEnum: Array<T> | undefined): string[] {
+    return selectedEnum?.[0] == undefined ? [] : [this.labels[selectedEnum[0]]];
+  }
+}

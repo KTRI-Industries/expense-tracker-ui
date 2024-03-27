@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
+import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
 
 /**
  * The chips component works only with strings, so to keep things simple
@@ -88,6 +89,10 @@ export class TransactionComponent implements OnInit {
     },
   };
 
+  private labelCategoryConverter = new EnumToLabelConverter<Category>(
+    categoryLabels,
+  );
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -99,8 +104,8 @@ export class TransactionComponent implements OnInit {
       },
       date: this.selectedTransaction?.date ?? '',
       description: this.selectedTransaction?.description,
-      category: this.getLabelFromCategory(
-        categoryLabels,
+      // TODO: support multiple categories
+      category: this.labelCategoryConverter.getLabelFromEnum(
         this.selectedTransaction?.category,
       ),
     };
@@ -172,16 +177,13 @@ export class TransactionComponent implements OnInit {
   onCreate() {
     if (this.transactionForm.valid) {
       const modifiedModel: CreateTransactionCommand = {
-        ...this.model!,
-        category: this.getCategoryFromLabel(
-          categoryLabels,
+        ...this.model,
+        // TODO: support multiple categories
+        category: this.labelCategoryConverter.getEnumFromLabel(
           this.model?.category?.[0],
-        )!,
-
-        amount: {
-          ...this.model?.amount, // if we do not spread the amount, after an error in backend the amount object is read only
-          amount: this.getAmountByType(this.model?.amount.amount),
-        },
+        ),
+        amount: this.transformAmount(),
+        date: this.model?.date ?? '',
       };
       this.create.emit(modifiedModel);
     }
@@ -190,16 +192,13 @@ export class TransactionComponent implements OnInit {
   onUpdate() {
     if (this.transactionForm.valid) {
       const modifiedModel: UpdateTransactionCommand = {
-        ...this.model!,
-        category: this.getCategoryFromLabel(
-          categoryLabels,
+        ...this.model,
+        category: this.labelCategoryConverter.getEnumFromLabel(
           this.model?.category?.[0],
-        )!,
+        ),
 
-        amount: {
-          ...this.model?.amount, // if we do not spread the amount, after an error in backend the amount object is read only
-          amount: this.getAmountByType(this.model?.amount.amount),
-        },
+        amount: this.transformAmount(),
+        date: this.model?.date ?? '',
         transactionId: this.selectedTransaction?.transactionId ?? '',
       };
       this.update.emit(modifiedModel);
@@ -210,6 +209,14 @@ export class TransactionComponent implements OnInit {
     this.delete.emit(this.selectedTransaction?.transactionId);
   }
 
+  private transformAmount() {
+    return {
+      // if we do not spread the amount, after an error in backend the amount object is read only
+      ...this.model?.amount,
+      amount: this.getAmountByType(this.model?.amount.amount),
+    };
+  }
+
   /**
    * Returns the amount with the correct sign based on the transaction type.
    */
@@ -217,33 +224,6 @@ export class TransactionComponent implements OnInit {
     return this.options.formState.txType === 'EXPENSE'
       ? -(amount ?? 0)
       : amount;
-  }
-
-  /**
-   * Returns the first category based on the label.
-   * TODO: support multiple categories.
-   */
-  getCategoryFromLabel(
-    categoryLabels: Record<Category, string>,
-    selectedCategory: string | undefined,
-  ): Category[] {
-    const foundCategory = Object.keys(categoryLabels).find(
-      (key) => categoryLabels[key as Category] === selectedCategory,
-    );
-    return foundCategory != null ? ([foundCategory] as Category[]) : [];
-  }
-
-  /**
-   * Returns the label based on the category enum.
-   */
-  private getLabelFromCategory(
-    categoryLabels: Record<Category, string>,
-    category: Array<Category> | undefined,
-  ): any[] | string[] {
-    if (category == undefined || category[0] == undefined) {
-      return [];
-    }
-    return [categoryLabels[category[0]]];
   }
 }
 
