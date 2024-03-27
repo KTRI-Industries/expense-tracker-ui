@@ -29,6 +29,8 @@ describe('TransactionsEffects', () => {
           useValue: {
             getAllTransactions: jest.fn(),
             createTransaction: jest.fn(),
+            deleteTransaction: jest.fn(),
+            updateTransaction: jest.fn(),
           },
         },
         {
@@ -123,5 +125,102 @@ describe('TransactionsEffects', () => {
     effects.openTransactionForm$.subscribe();
 
     expect(router.navigate).toHaveBeenCalledWith(['transactions', 'new']);
+  });
+
+  it('should open the transaction form to edit', () => {
+    jest.spyOn(router, 'navigate');
+
+    actions$ = of(TransactionActions.editTransaction({ transactionId: '1' }));
+
+    effects.openTransactionFormToEdit$.subscribe();
+
+    expect(router.navigate).toHaveBeenCalledWith(['transactions', '1']);
+  });
+
+  it('should delete a transaction successfully', () => {
+    const transactionId = '1';
+    jest.spyOn(service, 'deleteTransaction').mockReturnValue(of(null));
+    jest.spyOn(router, 'navigate');
+
+    actions$ = of(TransactionActions.deleteTransaction({ transactionId }));
+
+    effects.deleteTransaction$.subscribe();
+
+    expect(service.deleteTransaction).toHaveBeenCalledWith(transactionId);
+    expect(router.navigate).toHaveBeenCalledWith(['transactions']);
+  });
+
+  it('should handle errors when deleting a transaction', () => {
+    const error = new Error('Error deleting transaction');
+    jest
+      .spyOn(service, 'deleteTransaction')
+      .mockReturnValue(throwError(() => error));
+    const transactionId = '1';
+    const action = TransactionActions.deleteTransaction({ transactionId });
+    const completion = TransactionActions.deleteTransactionFailure({ error });
+
+    actions$ = hot('-a', { a: action });
+    const expected = cold('-b', { b: completion });
+
+    expect(effects.deleteTransaction$).toBeObservable(expected);
+  });
+
+  it('should handle errors when creating a transaction', () => {
+    const error = new Error('Error creating transaction');
+    jest
+      .spyOn(service, 'createTransaction')
+      .mockReturnValue(throwError(() => error));
+    const mockTransaction = {
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+    };
+    const action = TransactionActions.createNewTransaction({
+      transaction: mockTransaction,
+    });
+    const completion = TransactionActions.createNewTransactionFailure({
+      error,
+    });
+
+    actions$ = hot('-a', { a: action });
+    const expected = cold('-b', { b: completion });
+
+    expect(effects.createTransaction$).toBeObservable(expected);
+  });
+
+  it('should update a transaction successfully', () => {
+    const mockTransaction: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+      description: 'Test',
+      tenantId: '1',
+    };
+    jest
+      .spyOn(service, 'updateTransaction')
+      .mockReturnValue(of(mockTransaction)); // Mock to return Observable<TransactionDto>
+    jest.spyOn(router, 'navigate');
+    jest.spyOn(snackBar, 'open');
+
+    const action = TransactionActions.updateTransaction({
+      transaction: mockTransaction,
+    });
+    const completion = TransactionActions.updateTransactionSuccess({
+      transaction: mockTransaction,
+    });
+
+    actions$ = hot('-a', { a: action });
+    const expected = cold('-b', { b: completion });
+
+    expect(effects.updateTransaction$).toBeObservable(expected);
+
+    expect(service.updateTransaction).toHaveBeenCalledWith(mockTransaction);
+    expect(router.navigate).toHaveBeenCalledWith(['transactions']);
+    expect(snackBar.open).toHaveBeenCalledWith('Transaction updated', 'Close');
   });
 });

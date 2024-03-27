@@ -46,4 +46,86 @@ describe('Transactions Reducer', () => {
 
     expect(result.transactions).toBeUndefined();
   });
+
+  it('should handle editTransaction', () => {
+    const action = TransactionActions.editTransaction({ transactionId: '1' });
+    const result = transactionsFeature.reducer(state, action);
+
+    expect(result.selectedTransactionId).toEqual('1');
+  });
+
+  it('should handle loadTransaction', () => {
+    const action = TransactionActions.loadTransaction({ transactionId: '1' });
+    const result = transactionsFeature.reducer(state, action);
+
+    expect(result.selectedTransactionId).toEqual('1');
+  });
+
+  it('should handle loadTransactionSuccess', () => {
+    const mockTransaction: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+      description: 'Test',
+      tenantId: '1',
+    };
+    const action = TransactionActions.loadTransactionSuccess({
+      transaction: mockTransaction,
+    });
+    const result = transactionsFeature.reducer(state, action);
+
+    expect(result.transactions).toEqual({
+      content: [mockTransaction],
+    });
+  });
+
+  it('should load transaction when content already contains a transaction', () => {
+    const mockTransaction: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+      description: 'Test',
+      tenantId: '1',
+    };
+
+    const mockTransaction2: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 200,
+      },
+      date: new Date().toDateString(),
+      description: 'Test',
+      tenantId: '1',
+    };
+
+    const mockState: TransactionsState = {
+      transactions: {
+        content: [mockTransaction],
+      },
+      selectedTransactionId: null,
+    };
+
+    const action = TransactionActions.loadTransactionSuccess({
+      transaction: mockTransaction2,
+    });
+    const result = transactionsFeature.reducer(mockState, action);
+
+    expect(result.transactions).toEqual({
+      content: [mockTransaction, mockTransaction2],
+    });
+  });
+
+  it('should handle openTransactionFrom', () => {
+    const action = TransactionActions.openTransactionFrom();
+    const result = transactionsFeature.reducer(state, action);
+
+    expect(result.selectedTransactionId).toBeNull();
+  });
 });
