@@ -4,6 +4,7 @@ export * from './monetaryAmount';
 export * from './pageTransactionDto';
 export * from './pageable';
 export * from './pageableObject';
+export * from './problemDetail';
 export * from './sortObject';
 export * from './tenantDto';
 export * from './transactionDto';

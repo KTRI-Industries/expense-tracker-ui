@@ -15,6 +15,7 @@ model/monetaryAmount.ts
 model/pageTransactionDto.ts
 model/pageable.ts
 model/pageableObject.ts
+model/problemDetail.ts
 model/sortObject.ts
 model/tenantDto.ts
 model/transactionDto.ts

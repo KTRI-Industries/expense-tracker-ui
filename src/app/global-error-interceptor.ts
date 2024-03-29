@@ -8,6 +8,7 @@ import {
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
+import { ProblemDetail } from '@expense-tracker-ui/api';
 
 export class GlobalErrorInterceptor implements HttpInterceptor {
   constructor(
@@ -29,7 +30,7 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
             break;
           case 404:
           default:
-            this.snackBar.open(error.statusText, 'Close', {
+            this.snackBar.open(this.getErrorMessage(error), 'Close', {
               duration: 10000,
             });
             break;
@@ -37,5 +38,16 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
         return throwError(() => error);
       }),
     );
+  }
+
+  private getErrorMessage(error: HttpErrorResponse) {
+    let message: string;
+    if ('detail' in error.error) {
+      const problemDetail = error.error as ProblemDetail;
+      message = problemDetail.detail!;
+    } else {
+      message = error.statusText;
+    }
+    return message;
   }
 }
