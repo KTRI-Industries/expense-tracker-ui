@@ -23,6 +23,9 @@
       ],
       "@expense-tracker-ui/nav-menu": ["libs/nav-menu/src/index.ts"],
       "@expense-tracker-ui/shared/auth": ["libs/shared/auth/src/index.ts"],
+      "@expense-tracker-ui/shared/error-handling": [
+        "libs/shared/error-handling/src/index.ts"
+      ],
       "@expense-tracker-ui/transactions": ["libs/transactions/src/index.ts"]
     },
     "allowSyntheticDefaultImports": true
