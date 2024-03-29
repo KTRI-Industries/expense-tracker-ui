@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
-import { provideState, provideStore } from '@ngrx/store';
+import { provideState, provideStore, Store } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
@@ -43,9 +43,12 @@ import {
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
-import { GlobalErrorInterceptor } from './global-error-interceptor';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
+import {
+  ErrorHandlingFeature,
+  GlobalErrorInterceptor,
+} from '@expense-tracker-ui/shared/error-handling';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -61,6 +64,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
+    provideState(ErrorHandlingFeature.errorHandlingFeature),
     provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,
     {
@@ -78,7 +82,7 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalErrorInterceptor,
       multi: true,
-      deps: [MatSnackBar, KeycloakService],
+      deps: [MatSnackBar, KeycloakService, Store],
     },
     {
       provide: Configuration,

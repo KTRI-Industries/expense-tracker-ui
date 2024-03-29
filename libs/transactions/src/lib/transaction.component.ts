@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
+import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 
 /**
  * The chips component works only with strings, so to keep things simple
@@ -56,6 +57,7 @@ type CreateTransactionCommandUi = Omit<
     MatInputModule,
     MatButton,
     JsonPipe,
+    ErrorHandlingComponent,
   ],
 })
 export class TransactionComponent implements OnInit {
