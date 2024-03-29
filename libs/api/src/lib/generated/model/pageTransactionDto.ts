@@ -14,15 +14,15 @@ import { TransactionDto } from './transactionDto';
 import { SortObject } from './sortObject';
 
 export interface PageTransactionDto {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Array<TransactionDto>;
   number?: number;
   sort?: Array<SortObject>;
-  numberOfElements?: number;
-  pageable?: PageableObject;
   first?: boolean;
   last?: boolean;
+  numberOfElements?: number;
+  pageable?: PageableObject;
   empty?: boolean;
 }

@@ -25,6 +25,8 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
+import { ProblemDetail } from '../model/problemDetail';
+// @ts-ignore
 import { TenantDto } from '../model/tenantDto';
 // @ts-ignore
 import { UserInfo } from '../model/userInfo';
