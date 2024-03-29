@@ -9,11 +9,14 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
 import { ProblemDetail } from '@expense-tracker-ui/api';
+import { Store } from '@ngrx/store';
+import { ErrorHandlingActions } from './+state/error-handling.actions';
 
 export class GlobalErrorInterceptor implements HttpInterceptor {
   constructor(
     private snackBar: MatSnackBar,
     private keycloak: KeycloakService,
+    private store: Store,
   ) {}
 
   intercept(
@@ -24,6 +27,13 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         console.log(error);
         switch (error.status) {
+          case 400:
+            this.store.dispatch(
+              ErrorHandlingActions.handleBackEndError({
+                message: this.getErrorMessage(error),
+              }),
+            );
+            break;
           case 401:
             // case 403:
             this.keycloak.logout(); // one scenario to get here is when the refresh token is expired

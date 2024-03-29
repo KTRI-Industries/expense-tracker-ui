@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { selectTransactions } from './transactions.selectors';
+import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
 
 @Injectable()
 export class TransactionsEffects {
@@ -134,6 +135,17 @@ export class TransactionsEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  clearError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        TransactionActions.createNewTransactionSuccess,
+        TransactionActions.updateTransactionSuccess,
+        TransactionActions.deleteTransactionSuccess,
+      ),
+      map(() => ErrorHandlingActions.clearBackEndError()),
     ),
   );
 
