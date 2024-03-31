@@ -11,7 +11,9 @@ import { KeycloakService } from 'keycloak-angular';
 import { ProblemDetail } from '@expense-tracker-ui/api';
 import { Store } from '@ngrx/store';
 import { ErrorHandlingActions } from './+state/error-handling.actions';
+import { Injectable } from '@angular/core';
 
+@Injectable({ providedIn: 'root' })
 export class GlobalErrorInterceptor implements HttpInterceptor {
   constructor(
     private snackBar: MatSnackBar,
@@ -52,7 +54,7 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
 
   private getErrorMessage(error: HttpErrorResponse) {
     let message: string;
-    if ('detail' in error.error) {
+    if (error.error && 'detail' in error.error) {
       const problemDetail = error.error as ProblemDetail;
       message = problemDetail.detail!;
     } else {

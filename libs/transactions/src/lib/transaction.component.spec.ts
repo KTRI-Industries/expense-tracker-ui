@@ -12,6 +12,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('TransactionComponent', () => {
   let component: TransactionComponent;
@@ -49,6 +50,7 @@ describe('TransactionComponent', () => {
       ],
       declarations: [],
       providers: [
+        provideMockStore(),
         provideMomentDateAdapter(
           {
             parse: {
