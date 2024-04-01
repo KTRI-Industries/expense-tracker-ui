@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
 import { KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
@@ -11,7 +10,6 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 @Component({
   standalone: true,
   imports: [
-    NxWelcomeComponent,
     RouterModule,
     NavMenuComponent,
     AsyncPipe,
