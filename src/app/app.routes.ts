@@ -8,17 +8,6 @@ export const appRoutes: Route[] = [
       import('@expense-tracker-ui/homepage').then((m) => m.homepageRoutes),
   },
   {
-    path: 'admin',
-    loadChildren: () =>
-      import('@expense-tracker-ui/keycloak-playground').then(
-        (m) => m.keycloakPlaygroundRoutes,
-      ),
-    canActivate: [AppGuard],
-    data: {
-      roles: ['administrator'],
-    },
-  },
-  {
     path: 'transactions',
     loadChildren: () =>
       import('@expense-tracker-ui/transactions').then(

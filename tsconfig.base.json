@@ -18,9 +18,6 @@
       "@expense-tracker-ui/api": ["libs/api/src/index.ts"],
       "@expense-tracker-ui/formly": ["libs/formly/src/index.ts"],
       "@expense-tracker-ui/homepage": ["libs/homepage/src/index.ts"],
-      "@expense-tracker-ui/keycloak-playground": [
-        "libs/keycloak-playground/src/index.ts"
-      ],
       "@expense-tracker-ui/nav-menu": ["libs/nav-menu/src/index.ts"],
       "@expense-tracker-ui/shared/auth": ["libs/shared/auth/src/index.ts"],
       "@expense-tracker-ui/shared/error-handling": [
