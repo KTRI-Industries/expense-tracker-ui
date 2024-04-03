@@ -49,7 +49,7 @@ describe('AuthReducer', () => {
         username: 'test-user',
         firstName: 'Test',
         lastName: 'User',
-        attributes: null,
+        attributes: undefined,
       };
 
       const expectedState: AuthState = {
