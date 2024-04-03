@@ -22,7 +22,7 @@ export const authFeature = createFeature({
       AuthActions.retrieveUserProfileSuccess,
       (state, { keycloakUserProfile }) => ({
         ...state,
-        userProfile: userProfileWithTenant(keycloakUserProfile),
+        userProfile: userProfileWithTenant(keycloakUserProfile as AttributeAwareKeycloakProfile),
       }),
     ),
     on(AuthActions.generateNewTenantSuccess, (state, { tenantId }) => ({
