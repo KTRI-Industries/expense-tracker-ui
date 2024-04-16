@@ -31,20 +31,23 @@
 
 <ng-template #menu>
   @if (!isAuthenticated) {
-  <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
-  <span class="flex-auto"></span>
-  <button mat-icon-button matTooltip="Login" (click)="onLogin()">
-    <mat-icon>login</mat-icon>
-  </button>
+    <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
+    <span class="flex-auto"></span>
+    <button mat-icon-button matTooltip="Login" (click)="onLogin()">
+      <mat-icon>login</mat-icon>
+    </button>
   } @else {
-  <button mat-button routerLink="/transactions" (click)="sidenav.close()">
-    Transactions
-  </button>
-  <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
-  <span class="flex-auto"></span>
-  <span>{{ username }}</span>
-  <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
-    <mat-icon>logout</mat-icon>
-  </button>
+    <button mat-button routerLink="/transactions" (click)="sidenav.close()">
+      Transactions
+    </button>
+    <button mat-button routerLink="/invite" (click)="sidenav.close()">
+      Invite User
+    </button>
+    <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
+    <span class="flex-auto"></span>
+    <span>{{ username }}</span>
+    <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   }
 </ng-template>

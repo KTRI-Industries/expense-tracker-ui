@@ -1,17 +1,13 @@
 import { Route } from '@angular/router';
-import { UserComponent } from './user/user.component';
-import { provideState } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import * as fromUser from './+state/user.reducer';
-import { UserEffects } from './+state/user.effects';
+import { InviteUserContainerComponent } from './user/invite-user-container.component';
 
 export const userRoutes: Route[] = [
   {
     path: '',
-    component: UserComponent,
+    component: InviteUserContainerComponent,
     providers: [
-      provideState(fromUser.USER_FEATURE_KEY, fromUser.userReducer),
-      provideEffects(UserEffects),
+      // provideState(fromUser.USER_FEATURE_KEY, fromUser.userReducer),
+      // provideEffects(UserEffects),
     ],
   },
 ];

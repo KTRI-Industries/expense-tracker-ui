@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthEffects {
@@ -100,6 +101,7 @@ export class AuthEffects {
       switchMap((action) =>
         this.authService.inviteUser(action.recipientEmail).pipe(
           map((invitedUser) => AuthActions.inviteUserSuccess({ invitedUser })),
+          tap(() => this.snackBar.open('User invited', 'Close')),
           catchError((error: Error) =>
             of(AuthActions.inviteUserFailure({ error })),
           ),
@@ -129,5 +131,6 @@ export class AuthEffects {
     private keycloak: KeycloakService,
     private authService: AuthService,
     private store: Store,
+    private snackBar: MatSnackBar,
   ) {}
 }
