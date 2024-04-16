@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Invite User</mat-card-title>
+    <mat-card-subtitle>
+      This user will be added to your account. All transactions will be shared.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <expense-tracker-ui-error-handling></expense-tracker-ui-error-handling>
+    <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
+    <form class="md:w-6/12" [formGroup]="inviteUserForm">
+      <formly-form
+        [form]="inviteUserForm"
+        [fields]="fields"
+        [model]="model"></formly-form>
+      <button mat-raised-button color="primary" (click)="onInvite()">
+        Invite
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
