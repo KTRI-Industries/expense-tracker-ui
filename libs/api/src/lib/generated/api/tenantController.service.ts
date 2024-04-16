@@ -25,9 +25,13 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
+import { InviteUserCommand } from '../model/inviteUserCommand';
+// @ts-ignore
+import { InvitedUserDto } from '../model/invitedUserDto';
+// @ts-ignore
 import { ProblemDetail } from '../model/problemDetail';
 // @ts-ignore
-import { UserInfo } from '../model/userInfo';
+import { TenantDto } from '../model/tenantDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -36,7 +40,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root',
 })
-export class KeycloakIntegrationControllerService {
+export class TenantControllerService {
   protected basePath = 'http://localhost:8080';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -123,22 +127,22 @@ export class KeycloakIntegrationControllerService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public admin(
+  public generateTenant(
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<UserInfo>;
-  public admin(
+  ): Observable<TenantDto>;
+  public generateTenant(
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<UserInfo>>;
-  public admin(
+  ): Observable<HttpResponse<TenantDto>>;
+  public generateTenant(
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<UserInfo>>;
-  public admin(
+  ): Observable<HttpEvent<TenantDto>>;
+  public generateTenant(
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
@@ -189,9 +193,9 @@ export class KeycloakIntegrationControllerService {
       }
     }
 
-    let localVarPath = `/admin`;
-    return this.httpClient.request<UserInfo>(
-      'get',
+    let localVarPath = `/tenants`;
+    return this.httpClient.request<TenantDto>(
+      'post',
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
@@ -205,29 +209,40 @@ export class KeycloakIntegrationControllerService {
   }
 
   /**
+   * @param inviteUserCommand
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public allUsers(
+  public inviteUser(
+    inviteUserCommand: InviteUserCommand,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<Array<UserInfo>>;
-  public allUsers(
+  ): Observable<InvitedUserDto>;
+  public inviteUser(
+    inviteUserCommand: InviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<Array<UserInfo>>>;
-  public allUsers(
+  ): Observable<HttpResponse<InvitedUserDto>>;
+  public inviteUser(
+    inviteUserCommand: InviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<Array<UserInfo>>>;
-  public allUsers(
+  ): Observable<HttpEvent<InvitedUserDto>>;
+  public inviteUser(
+    inviteUserCommand: InviteUserCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
+    if (inviteUserCommand === null || inviteUserCommand === undefined) {
+      throw new Error(
+        'Required parameter inviteUserCommand was null or undefined when calling inviteUser.',
+      );
+    }
+
     let localVarHeaders = this.defaultHeaders;
 
     let localVarCredential: string | undefined;
@@ -261,89 +276,15 @@ export class KeycloakIntegrationControllerService {
       localVarHttpContext = new HttpContext();
     }
 
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if (localVarHttpHeaderAcceptSelected) {
-      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-        responseType_ = 'text';
-      } else if (
-        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-      ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/users`;
-    return this.httpClient.request<Array<UserInfo>>(
-      'get',
-      `${this.configuration.basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: localVarHeaders,
-        observe: observe,
-        reportProgress: reportProgress,
-      },
-    );
-  }
-
-  /**
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public authenticated(
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<string>;
-  public authenticated(
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<string>>;
-  public authenticated(
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<string>>;
-  public authenticated(
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<any> {
-    let localVarHeaders = this.defaultHeaders;
-
-    let localVarCredential: string | undefined;
-    // authentication (security_auth) required
-    localVarCredential = this.configuration.lookupCredential('security_auth');
-    if (localVarCredential) {
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
       localVarHeaders = localVarHeaders.set(
-        'Authorization',
-        'Bearer ' + localVarCredential,
+        'Content-Type',
+        httpContentTypeSelected,
       );
-    }
-
-    let localVarHttpHeaderAcceptSelected: string | undefined =
-      options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
-      localVarHttpHeaderAcceptSelected =
-        this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (localVarHttpHeaderAcceptSelected !== undefined) {
-      localVarHeaders = localVarHeaders.set(
-        'Accept',
-        localVarHttpHeaderAcceptSelected,
-      );
-    }
-
-    let localVarHttpContext: HttpContext | undefined =
-      options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
     }
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -359,97 +300,13 @@ export class KeycloakIntegrationControllerService {
       }
     }
 
-    let localVarPath = `/user`;
-    return this.httpClient.request<string>(
-      'get',
+    let localVarPath = `/tenants/invite`;
+    return this.httpClient.request<InvitedUserDto>(
+      'post',
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: localVarHeaders,
-        observe: observe,
-        reportProgress: reportProgress,
-      },
-    );
-  }
-
-  /**
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public unauthenticated(
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<string>;
-  public unauthenticated(
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<string>>;
-  public unauthenticated(
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<string>>;
-  public unauthenticated(
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<any> {
-    let localVarHeaders = this.defaultHeaders;
-
-    let localVarCredential: string | undefined;
-    // authentication (security_auth) required
-    localVarCredential = this.configuration.lookupCredential('security_auth');
-    if (localVarCredential) {
-      localVarHeaders = localVarHeaders.set(
-        'Authorization',
-        'Bearer ' + localVarCredential,
-      );
-    }
-
-    let localVarHttpHeaderAcceptSelected: string | undefined =
-      options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
-      localVarHttpHeaderAcceptSelected =
-        this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (localVarHttpHeaderAcceptSelected !== undefined) {
-      localVarHeaders = localVarHeaders.set(
-        'Accept',
-        localVarHttpHeaderAcceptSelected,
-      );
-    }
-
-    let localVarHttpContext: HttpContext | undefined =
-      options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if (localVarHttpHeaderAcceptSelected) {
-      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-        responseType_ = 'text';
-      } else if (
-        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-      ) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/public`;
-    return this.httpClient.request<string>(
-      'get',
-      `${this.configuration.basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
+        body: inviteUserCommand,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,

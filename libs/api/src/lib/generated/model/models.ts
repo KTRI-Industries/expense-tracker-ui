@@ -1,5 +1,7 @@
 export * from './category';
 export * from './createTransactionCommand';
+export * from './inviteUserCommand';
+export * from './invitedUserDto';
 export * from './monetaryAmount';
 export * from './pageTransactionDto';
 export * from './pageable';
