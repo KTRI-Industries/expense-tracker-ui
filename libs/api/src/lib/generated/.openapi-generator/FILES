@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/keycloakIntegrationController.service.ts
+api/tenantController.service.ts
 api/transactionController.service.ts
 configuration.ts
 encoder.ts
@@ -10,6 +11,8 @@ git_push.sh
 index.ts
 model/category.ts
 model/createTransactionCommand.ts
+model/inviteUserCommand.ts
+model/invitedUserDto.ts
 model/models.ts
 model/monetaryAmount.ts
 model/pageTransactionDto.ts

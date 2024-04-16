@@ -208,15 +208,7 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({
-      name: 'id',
-      value: id,
-      in: 'path',
-      style: 'simple',
-      explode: false,
-      dataType: 'string',
-      dataFormat: 'uuid',
-    })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
     return this.httpClient.request<any>(
       'delete',
       `${this.configuration.basePath}${localVarPath}`,
@@ -529,15 +521,7 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({
-      name: 'id',
-      value: id,
-      in: 'path',
-      style: 'simple',
-      explode: false,
-      dataType: 'string',
-      dataFormat: 'uuid',
-    })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
     return this.httpClient.request<TransactionDto>(
       'get',
       `${this.configuration.basePath}${localVarPath}`,
@@ -657,15 +641,7 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({
-      name: 'id',
-      value: id,
-      in: 'path',
-      style: 'simple',
-      explode: false,
-      dataType: 'string',
-      dataFormat: 'uuid',
-    })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
     return this.httpClient.request<TransactionDto>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,
