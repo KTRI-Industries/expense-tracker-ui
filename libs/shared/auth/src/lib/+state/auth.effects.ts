@@ -94,6 +94,20 @@ export class AuthEffects {
     ),
   );
 
+  inviteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.inviteUser),
+      switchMap((action) =>
+        this.authService.inviteUser(action.recipientEmail).pipe(
+          map((invitedUser) => AuthActions.inviteUserSuccess({ invitedUser })),
+          catchError((error: Error) =>
+            of(AuthActions.inviteUserFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   /**
    * This is needed because the current token does not have the new tenantId!
    */
