@@ -96,7 +96,7 @@ export class TransactionsComponent {
     | MatTableDataSource<TransactionDto>
     | undefined;
 
-  transactionColumns = ['description', 'date', 'category', 'amount'];
+  transactionColumns = ['description', 'user', 'date', 'category', 'amount'];
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
   @Output() pageChange = new EventEmitter<Pageable>();

@@ -14,4 +14,5 @@ export interface UserInfo {
   username?: string;
   email: string;
   authorities?: Array<string>;
+  userId?: string;
 }

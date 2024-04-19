@@ -16,19 +16,19 @@ import {
   imports: [TransactionsComponent, AsyncPipe],
   template: `
     @if (transactions$ | async; as transactions) {
-    <expense-tracker-ui-transactions
-      [transactions]="transactions"
-      (openTransactionForm)="onOpenTransactionForm()"
-      (pageChange)="onPageableChange($event)"
-      (sortChange)="onPageableChange($event)"
-      (rowSelected)="onRowSelected($event)"></expense-tracker-ui-transactions>
+      <expense-tracker-ui-transactions
+        [transactions]="transactions"
+        (openTransactionForm)="onOpenTransactionForm()"
+        (pageChange)="onPageableChange($event)"
+        (sortChange)="onPageableChange($event)"
+        (rowSelected)="onRowSelected($event)"></expense-tracker-ui-transactions>
     }
   `,
   styles: ``,
 })
 export class TransactionsContainerComponent implements OnInit {
   transactions$: Observable<PageTransactionDto | undefined> = this.store.select(
-    TransactionsSelectors.selectTransactions,
+    TransactionsSelectors.selectAugmentedTransactions,
   );
 
   constructor(private store: Store) {}
