@@ -7,6 +7,7 @@ import { AuthService } from '../auth.service';
 import { createMockStore } from '@ngrx/store/testing';
 import { TenantDto } from '@expense-tracker-ui/api';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
@@ -33,6 +34,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     authEffects.login$.subscribe();
@@ -52,6 +54,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     authEffects.logout$.subscribe();
@@ -78,6 +81,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
@@ -104,6 +108,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     const expectedAction = AuthActions.loginSuccess();
@@ -131,6 +136,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error,
@@ -158,6 +164,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     const expectedAction = AuthActions.generateNewTenantSuccess({
@@ -188,6 +195,7 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
+      {} as MatSnackBar,
     );
 
     const expectedAction = AuthActions.generateNewTenantFailure({

@@ -204,7 +204,7 @@ async function setup(transactions: PageTransactionDto) {
       provideMockStore({
         selectors: [
           {
-            selector: TransactionsSelectors.selectTransactions,
+            selector: TransactionsSelectors.selectAugmentedTransactions,
             value: transactions,
           },
         ],
