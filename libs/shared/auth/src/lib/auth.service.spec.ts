@@ -2,6 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Observable, of, throwError } from 'rxjs';
 import {
   KeycloakIntegrationControllerService,
+  TenantControllerService,
   TenantDto,
 } from '@expense-tracker-ui/api';
 import { AuthService } from './auth.service';
@@ -9,20 +10,26 @@ import { AuthService } from './auth.service';
 describe('AuthService', () => {
   let service: AuthService;
   let api: KeycloakIntegrationControllerService;
+  let tenantApi: TenantControllerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         AuthService,
         {
-          provide: KeycloakIntegrationControllerService,
+          provide: TenantControllerService,
           useValue: { generateTenant: jest.fn() },
+        },
+        {
+          provide: KeycloakIntegrationControllerService,
+          useValue: { allUsers: jest.fn() },
         },
       ],
     });
 
     service = TestBed.inject(AuthService);
     api = TestBed.inject(KeycloakIntegrationControllerService);
+    tenantApi = TestBed.inject(TenantControllerService);
   });
 
   it('should generate tenant successfully', fakeAsync(() => {
@@ -31,7 +38,7 @@ describe('AuthService', () => {
 
     // this is not great, but it's the only way to mock overloaded methods with jest...
     (
-      jest.spyOn(api, 'generateTenant') as unknown as jest.SpyInstance<
+      jest.spyOn(tenantApi, 'generateTenant') as unknown as jest.SpyInstance<
         Observable<TenantDto>
       >
     ).mockReturnValue(of(tenant));
@@ -51,7 +58,7 @@ describe('AuthService', () => {
     const email = 'john@example.com';
 
     (
-      jest.spyOn(api, 'generateTenant') as unknown as jest.SpyInstance<
+      jest.spyOn(tenantApi, 'generateTenant') as unknown as jest.SpyInstance<
         Observable<TenantDto>
       >
     ).mockReturnValue(throwError(error));
