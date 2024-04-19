@@ -19,4 +19,6 @@ export interface TransactionDto {
   description: string;
   categories?: Array<Category>;
   tenantId: string;
+  userId?: string;
+  email?: string;
 }

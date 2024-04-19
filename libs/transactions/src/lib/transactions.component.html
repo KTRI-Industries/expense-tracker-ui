@@ -8,75 +8,81 @@
 
   <mat-card-content>
     @if (transactions?.content?.length !== 0) {
+      <!-- lg:w-10/12 xl:w-3/5 to reduce the width of the table in bigger screens -->
+      <div class="mat-elevation-z8 lg:w-10/12 xl:w-3/5">
+        <mat-table
+          [dataSource]="transactionDatasource || []"
+          matSort
+          (matSortChange)="onSortChange($event)">
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Description
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="Description">
+              {{ element.description }}
+            </mat-cell>
+          </ng-container>
 
-    <!-- md:w-3/5 to reduce the width of the table -->
-    <div class="mat-elevation-z8 lg:w-3/5">
-      <mat-table
-        [dataSource]="transactionDatasource || []"
-        matSort
-        (matSortChange)="onSortChange($event)">
-        <ng-container matColumnDef="description">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>
-            Description
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Description">
-            {{ element.description }}
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="User">
+              {{ element.email }}
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="date">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>
-            Date
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Date">
-            {{ element.date | date }}
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Date
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="Date">
+              {{ element.date | date }}
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="category">
-          <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Category">
-            <mat-chip-listbox aria-label="Fish selection">
-              @for ( category of element.categories; track category) {
-              <mat-chip-option>
-                {{ category | enumToLabel: categoryLabels }}
-              </mat-chip-option>
-              }
-            </mat-chip-listbox>
-          </mat-cell>
-        </ng-container>
+          <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="Category">
+              <mat-chip-listbox aria-label="Fish selection">
+                @for (category of element.categories; track category) {
+                  <mat-chip-option>
+                    {{ category | enumToLabel: categoryLabels }}
+                  </mat-chip-option>
+                }
+              </mat-chip-listbox>
+            </mat-cell>
+          </ng-container>
 
-        <!-- justify-end for right aligned amounts -->
-        <ng-container matColumnDef="amount">
-          <mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            class="justify-end">
-            Amount
-          </mat-header-cell>
-          <mat-cell
-            *matCellDef="let element"
-            data-label="Amount"
-            class="justify-end">
-            {{ element.amount.amount | currency: element.amount.currency }}
-          </mat-cell>
-        </ng-container>
+          <!-- justify-end for right aligned amounts -->
+          <ng-container matColumnDef="amount">
+            <mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="justify-end">
+              Amount
+            </mat-header-cell>
+            <mat-cell
+              *matCellDef="let element"
+              data-label="Amount"
+              class="justify-end">
+              {{ element.amount.amount | currency: element.amount.currency }}
+            </mat-cell>
+          </ng-container>
 
-        <mat-header-row *matHeaderRowDef="transactionColumns"></mat-header-row>
+          <mat-header-row
+            *matHeaderRowDef="transactionColumns"></mat-header-row>
 
-        <mat-row
-          *matRowDef="let row; columns: transactionColumns"
-          (click)="onRowSelected(row)"></mat-row>
-      </mat-table>
+          <mat-row
+            *matRowDef="let row; columns: transactionColumns"
+            (click)="onRowSelected(row)"></mat-row>
+        </mat-table>
 
-      <mat-paginator
-        [pageSize]="pageSize"
-        [length]="transactions?.totalElements"
-        (page)="onPageChange($event)"></mat-paginator>
-    </div>
-
+        <mat-paginator
+          [pageSize]="pageSize"
+          [length]="transactions?.totalElements"
+          (page)="onPageChange($event)"></mat-paginator>
+      </div>
     } @else {
-    <p>No transactions found.</p>
+      <p>No transactions found.</p>
     }
   </mat-card-content>
 

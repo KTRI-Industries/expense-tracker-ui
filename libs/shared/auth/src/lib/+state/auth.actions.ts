@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
-import { InvitedUserDto } from '@expense-tracker-ui/api';
+import { InvitedUserDto, UserInfo } from '@expense-tracker-ui/api';
 
 export const AuthActions = createActionGroup({
   source: 'Auth',
@@ -20,5 +20,8 @@ export const AuthActions = createActionGroup({
     'Invite User': props<{ recipientEmail: string }>(),
     'Invite User Success': props<{ invitedUser: InvitedUserDto }>(),
     'Invite User Failure': props<{ error: Error }>(),
+    'Retrieve Tenant Users': emptyProps(),
+    'Retrieve Tenant Users Success': props<{ users: Array<UserInfo> }>(),
+    'Retrieve Tenant Users Failure': props<{ error: Error }>(),
   },
 });

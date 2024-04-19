@@ -1,17 +1,20 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
+import { UserInfo } from '@expense-tracker-ui/api';
 
 export const AUTH_FEATURE_KEY = 'auth';
 const TENANT_ID = 'tenantId';
 
 export interface AuthState {
   userProfile: TenantAwareKeycloakProfile | null;
+  tenantUsers: UserInfo[];
 }
 
 export const initialAuthState: AuthState = {
   // set initial required properties
   userProfile: null,
+  tenantUsers: [],
 };
 
 export const authFeature = createFeature({
@@ -22,7 +25,9 @@ export const authFeature = createFeature({
       AuthActions.retrieveUserProfileSuccess,
       (state, { keycloakUserProfile }) => ({
         ...state,
-        userProfile: userProfileWithTenant(keycloakUserProfile as AttributeAwareKeycloakProfile),
+        userProfile: userProfileWithTenant(
+          keycloakUserProfile as AttributeAwareKeycloakProfile,
+        ),
       }),
     ),
     on(AuthActions.generateNewTenantSuccess, (state, { tenantId }) => ({
@@ -32,8 +37,12 @@ export const authFeature = createFeature({
         tenantId,
       },
     })),
+    on(AuthActions.retrieveTenantUsersSuccess, (state, { users }) => ({
+      ...state,
+      tenantUsers: users,
+    })),
   ),
-  extraSelectors: ({ selectUserProfile }) => ({
+  extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({
     selectIsLoggedIn: createSelector(
       selectUserProfile,
       (userProfile) => userProfile != null,

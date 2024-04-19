@@ -54,6 +54,13 @@ export class AuthEffects {
     ),
   );
 
+  retrieveTenantUsersAfterLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginSuccess),
+      map(() => AuthActions.retrieveTenantUsers()),
+    ),
+  );
+
   checkLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.checkLogin),
@@ -104,6 +111,20 @@ export class AuthEffects {
           tap(() => this.snackBar.open('User invited', 'Close')),
           catchError((error: Error) =>
             of(AuthActions.inviteUserFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  retrieveTenantUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveTenantUsers),
+      switchMap(() =>
+        this.authService.retrieveTenantUsers().pipe(
+          map((users) => AuthActions.retrieveTenantUsersSuccess({ users })),
+          catchError((error: Error) =>
+            of(AuthActions.retrieveTenantUsersFailure({ error })),
           ),
         ),
       ),
