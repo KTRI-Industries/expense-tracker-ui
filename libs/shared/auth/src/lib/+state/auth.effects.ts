@@ -29,13 +29,16 @@ export class AuthEffects {
     { dispatch: false },
   );
 
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => of(this.keycloak.logout(window.location.origin))), // redirect to base url after logout
+  checkLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkLogin),
+      switchMap(() =>
+        from([this.keycloak.isLoggedIn()]).pipe(
+          filter((isLoggedin) => isLoggedin),
+          map(() => AuthActions.loginSuccess()),
+        ),
       ),
-    { dispatch: false },
+    ),
   );
 
   retrieveProfile$ = createEffect(() =>
@@ -56,18 +59,22 @@ export class AuthEffects {
 
   retrieveTenantUsersAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.loginSuccess),
+      ofType(AuthActions.retrieveUserProfileSuccess),
       map(() => AuthActions.retrieveTenantUsers()),
     ),
   );
 
-  checkLogin$ = createEffect(() =>
+  retrieveTenantUsers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.checkLogin),
+      ofType(AuthActions.retrieveTenantUsers),
+      withLatestFrom(this.store.select(selectUserProfile)),
+      filter(([_, selectUserProfile]) => selectUserProfile?.tenantId != null),
       switchMap(() =>
-        from([this.keycloak.isLoggedIn()]).pipe(
-          filter((isLoggedin) => isLoggedin),
-          map(() => AuthActions.loginSuccess()),
+        this.authService.retrieveTenantUsers().pipe(
+          map((users) => AuthActions.retrieveTenantUsersSuccess({ users })),
+          catchError((error: Error) =>
+            of(AuthActions.retrieveTenantUsersFailure({ error })),
+          ),
         ),
       ),
     ),
@@ -117,32 +124,26 @@ export class AuthEffects {
     ),
   );
 
-  retrieveTenantUsers$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.retrieveTenantUsers),
-      switchMap(() =>
-        this.authService.retrieveTenantUsers().pipe(
-          map((users) => AuthActions.retrieveTenantUsersSuccess({ users })),
-          catchError((error: Error) =>
-            of(AuthActions.retrieveTenantUsersFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
   /**
    * This is needed because the current token does not have the new tenantId!
    */
-  refreshTokenAfterTenantGenerated$ = createEffect(
+  refreshTokenAfterTenantGenerated$ = createEffect(() =>
+      this.actions$.pipe(
+          ofType(AuthActions.generateNewTenantSuccess),
+          switchMap(() =>
+              from(this.keycloak.updateToken(-1)).pipe(
+                  tap((resp) => console.log(`Token refreshed: ${resp}`)),
+                  map(() => AuthActions.retrieveTenantUsers())
+              )
+          )
+      )
+  );
+
+  logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.generateNewTenantSuccess),
-        tap(() =>
-          this.keycloak
-            .updateToken(-1)
-            .then((resp) => console.log(`Token refreshed: ${resp}`)),
-        ),
+        ofType(AuthActions.logout),
+        tap(() => of(this.keycloak.logout(window.location.origin))), // redirect to base url after logout
       ),
     { dispatch: false },
   );
