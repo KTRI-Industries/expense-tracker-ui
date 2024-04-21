@@ -9,7 +9,7 @@ export const USER_FEATURE_KEY = 'user';
 export interface UserState extends EntityState<UserEntity> {
   selectedId?: string | number; // which User record has been selected
   loaded: boolean; // has the User list been loaded
-  error?: string | null; // last known error (if any)
+  error?: Error | null; // last known error (if any)
 }
 
 export interface UserPartialState {

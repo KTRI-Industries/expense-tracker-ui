@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "lib",
+            "prefix": "expense-tracker-ui",
             "style": "kebab-case"
           }
         ]

@@ -55,5 +55,7 @@ export class InviteUserFormComponent implements OnInit {
 
   onInvite() {
     this.invite.emit(this.model);
+
+    this.inviteUserForm.reset();
   }
 }

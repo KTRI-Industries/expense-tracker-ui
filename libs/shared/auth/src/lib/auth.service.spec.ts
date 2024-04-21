@@ -9,7 +9,6 @@ import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let api: KeycloakIntegrationControllerService;
   let tenantApi: TenantControllerService;
 
   beforeEach(() => {
@@ -28,7 +27,6 @@ describe('AuthService', () => {
     });
 
     service = TestBed.inject(AuthService);
-    api = TestBed.inject(KeycloakIntegrationControllerService);
     tenantApi = TestBed.inject(TenantControllerService);
   });
 
