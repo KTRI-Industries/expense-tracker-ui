@@ -10,5 +10,5 @@ export const loadUserSuccess = createAction(
 
 export const loadUserFailure = createAction(
   '[User/API] Load User Failure',
-  props<{ error: any }>(),
+  props<{ error: Error }>(),
 );

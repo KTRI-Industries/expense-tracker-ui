@@ -4,7 +4,7 @@ import { AuthActions } from '@expense-tracker-ui/shared/auth';
 import { InviteUserFormComponent } from './invite-user-form.component';
 
 @Component({
-  selector: 'expense-tracker-ui-user-container',
+  selector: 'expense-tracker-ui-invite-user-container',
   standalone: true,
   imports: [InviteUserFormComponent],
   template: `

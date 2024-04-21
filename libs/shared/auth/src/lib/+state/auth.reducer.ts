@@ -42,7 +42,7 @@ export const authFeature = createFeature({
       tenantUsers: users,
     })),
   ),
-  extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({
+  extraSelectors: ({ selectUserProfile }) => ({
     selectIsLoggedIn: createSelector(
       selectUserProfile,
       (userProfile) => userProfile != null,

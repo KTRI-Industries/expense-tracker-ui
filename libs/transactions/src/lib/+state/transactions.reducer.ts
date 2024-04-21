@@ -1,7 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
 import { TransactionActions } from './transactions.actions';
-import { selectTenantUsers } from '../../../../shared/auth/src/lib/+state/auth.selectors';
+import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
 
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
 
@@ -77,7 +77,7 @@ export const transactionsFeature = createFeature({
       },
     ),
     selectAugmentedTransactions: createSelector(
-      selectTenantUsers,
+      AuthSelectors.selectTenantUsers,
       selectTransactions,
       // add user email to each transaction
       (tenantUsers, transactions) => ({

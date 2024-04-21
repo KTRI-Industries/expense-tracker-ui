@@ -17,6 +17,7 @@ import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
 
 @Injectable()
 export class AuthEffects {
@@ -80,6 +81,13 @@ export class AuthEffects {
     ),
   );
 
+  clearError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.inviteUserSuccess),
+      map(() => ErrorHandlingActions.clearBackEndError()),
+    ),
+  );
+
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
@@ -128,15 +136,15 @@ export class AuthEffects {
    * This is needed because the current token does not have the new tenantId!
    */
   refreshTokenAfterTenantGenerated$ = createEffect(() =>
-      this.actions$.pipe(
-          ofType(AuthActions.generateNewTenantSuccess),
-          switchMap(() =>
-              from(this.keycloak.updateToken(-1)).pipe(
-                  tap((resp) => console.log(`Token refreshed: ${resp}`)),
-                  map(() => AuthActions.retrieveTenantUsers())
-              )
-          )
-      )
+    this.actions$.pipe(
+      ofType(AuthActions.generateNewTenantSuccess),
+      switchMap(() =>
+        from(this.keycloak.updateToken(-1)).pipe(
+          tap((resp) => console.log(`Token refreshed: ${resp}`)),
+          map(() => AuthActions.retrieveTenantUsers()),
+        ),
+      ),
+    ),
   );
 
   logout$ = createEffect(
