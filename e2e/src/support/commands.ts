@@ -13,8 +13,13 @@ import { getLoginButton } from './app.po';
 import {
   getAmountInput,
   getDatePicker,
+  getDeleteTransactionButton,
   getDescriptionInput,
 } from './transaction-form.po';
+import {
+  getFirstDescriptionCell,
+  hasTransactionInTable,
+} from './transactions.po';
 
 //
 // -- This is a parent command --
@@ -30,4 +35,29 @@ Cypress.Commands.add('addNewTransaction', (transaction) => {
   getAmountInput().type('100', { force: true });
   getDatePicker().type('28/04/2024');
   getDescriptionInput().type('Test transaction', { force: true });
+});
+
+Cypress.Commands.add('deleteVisibleTransactions', () => {
+  cy.intercept('GET', '/transactions?page=0&size=5&sort=date%2Cdesc').as(
+    'apiCheck',
+  );
+
+  hasTransactionInTable().then((hasTx) => {
+    if (!hasTx) {
+      return;
+    }
+    getFirstDescriptionCell().then(($el) => {
+      if ($el.is(':visible')) {
+        cy.wrap($el).click();
+
+        getDeleteTransactionButton().click();
+
+        cy.wait('@apiCheck').then((interception) => {
+          expect(interception?.response?.statusCode).to.eq(200);
+          // Call the function recursively
+          cy.deleteVisibleTransactions();
+        });
+      }
+    });
+  });
 });

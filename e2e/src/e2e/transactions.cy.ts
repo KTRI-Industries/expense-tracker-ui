@@ -1,26 +1,27 @@
+import { getTransactionMenu } from '../support/navigation-menu.po';
+import {
+  getCreateTransactionButton,
+  getDeleteTransactionButton,
+} from '../support/transaction-form.po';
 import {
   getAddTransactionButton,
-  getTransactionMenu,
-} from '../support/navigation-menu.po';
-import { getCreateTransactionButton } from '../support/transaction-form.po';
+  getFirstAmountCell,
+  getFirstDescriptionCell,
+} from '../support/transactions.po';
 
 const TEST_USERNAME = 'test_user';
 const TEST_PASSWORD = 'open123';
 
 describe('transactions', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => cy.visit('/').login(TEST_USERNAME, TEST_PASSWORD));
 
   it('should display transactions page', () => {
-    cy.login(TEST_USERNAME, TEST_PASSWORD);
-
     getTransactionMenu().click();
 
     getAddTransactionButton().should('be.visible');
   });
 
   it('should add a transaction', () => {
-    cy.login(TEST_USERNAME, TEST_PASSWORD);
-
     getTransactionMenu().click();
 
     getAddTransactionButton().click();
@@ -43,9 +44,37 @@ describe('transactions', () => {
 
     // make sure we re back to the tx list page and the new tx is showing in the table
     getAddTransactionButton().should('be.visible');
-    cy.get('mat-table :nth-child(2) > .justify-end').should(
-      'contain.text',
-      '-100',
+
+    getFirstAmountCell().should('contain.text', '-100');
+  });
+
+  it('should delete a transaction', () => {
+    getTransactionMenu().click();
+    getAddTransactionButton().click();
+
+    cy.addNewTransaction({
+      amount: 100,
+      date: '28/04/2024',
+      description: 'Test transaction',
+    });
+
+    getCreateTransactionButton().click();
+
+    getFirstDescriptionCell().click();
+
+    // CAUTION: intercept should be before the action that triggers the request!!!
+    cy.intercept('GET', '/transactions?page=0&size=5&sort=date%2Cdesc').as(
+      'apiCheck',
     );
+
+    getDeleteTransactionButton().click();
+
+    cy.wait('@apiCheck').then((interception) => {
+      expect(interception?.response?.statusCode).to.eq(200);
+    });
+  });
+
+  afterEach(() => {
+    cy.deleteVisibleTransactions();
   });
 });

@@ -21,7 +21,11 @@
           class="mr-1">
           Update
         </button>
-        <button mat-raised-button color="warn" (click)="onDelete()">
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="onDelete()"
+          data-cy="delete-transaction-button">
           Delete
         </button>
       } @else {
