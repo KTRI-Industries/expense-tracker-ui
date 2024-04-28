@@ -15,3 +15,12 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+declare global {
+  namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Chainable<Subject> {
+      login(email: string, password: string): void;
+    }
+  }
+}

@@ -11,7 +11,7 @@
   <!-- hidden md:flex hides top menu on smaller screens -->
   <!-- grow  fills any available space   -->
   <!-- items-center aligns menu items vertically-->
-  <div class="hidden md:flex grow items-center px-3">
+  <div class="hidden md:flex grow items-center px-3" data-cy="top-menu">
     <ng-container *ngTemplateOutlet="menu"></ng-container>
   </div>
 </mat-toolbar>
@@ -33,7 +33,11 @@
   @if (!isAuthenticated) {
     <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
     <span class="flex-auto"></span>
-    <button mat-icon-button matTooltip="Login" (click)="onLogin()">
+    <button
+      mat-icon-button
+      matTooltip="Login"
+      (click)="onLogin()"
+      data-cy="login-button">
       <mat-icon>login</mat-icon>
     </button>
   } @else {
@@ -46,7 +50,11 @@
     <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
     <span class="flex-auto"></span>
     <span>{{ username }}</span>
-    <button mat-icon-button matTooltip="Logout" (click)="onLogout()">
+    <button
+      mat-icon-button
+      matTooltip="Logout"
+      (click)="onLogout()"
+      data-cy="logout-button">
       <mat-icon>logout</mat-icon>
     </button>
   }
