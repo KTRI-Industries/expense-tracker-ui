@@ -74,7 +74,7 @@ describe('transactions', () => {
     });
   });
 
-  it.only('should not create an invalid transaction', () => {
+  it('should not create an invalid transaction', () => {
 
     getTransactionMenu().click();
     getAddTransactionButton().click();
