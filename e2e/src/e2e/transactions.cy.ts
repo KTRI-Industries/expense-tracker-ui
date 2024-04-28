@@ -1,7 +1,7 @@
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import {
   getCreateTransactionButton,
-  getDeleteTransactionButton,
+  getDeleteTransactionButton, getDescriptionInput,
 } from '../support/transaction-form.po';
 import {
   getAddTransactionButton,
@@ -72,6 +72,23 @@ describe('transactions', () => {
     cy.wait('@apiCheck').then((interception) => {
       expect(interception?.response?.statusCode).to.eq(200);
     });
+  });
+
+  it.only('should not create an invalid transaction', () => {
+
+    getTransactionMenu().click();
+    getAddTransactionButton().click();
+
+    cy.addNewTransaction({
+      amount: -100,
+      date: '28/04/2024',
+
+    });
+
+    getCreateTransactionButton().click();
+
+    getDescriptionInput()
+      .should('have.class', 'ng-invalid');
   });
 
   afterEach(() => {

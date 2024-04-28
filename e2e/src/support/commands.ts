@@ -32,9 +32,11 @@ Cypress.Commands.add('login', (email, password) => {
 });
 
 Cypress.Commands.add('addNewTransaction', (transaction) => {
-  getAmountInput().type('100', { force: true });
-  getDatePicker().type('28/04/2024');
-  getDescriptionInput().type('Test transaction', { force: true });
+  getAmountInput().type(transaction.amount, { force: true });
+  getDatePicker().type(transaction.date);
+  if (transaction.description !== undefined) {
+    getDescriptionInput().type(transaction.description, { force: true });
+  }
 });
 
 Cypress.Commands.add('deleteVisibleTransactions', () => {
