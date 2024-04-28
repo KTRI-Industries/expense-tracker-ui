@@ -87,7 +87,11 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="onOpenTransactionForm()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onOpenTransactionForm()"
+      data-cy="add-transaction-button">
       Add new transaction
     </button>
   </mat-card-actions>

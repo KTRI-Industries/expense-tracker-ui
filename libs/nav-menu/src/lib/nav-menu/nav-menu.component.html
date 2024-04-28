@@ -41,7 +41,11 @@
       <mat-icon>login</mat-icon>
     </button>
   } @else {
-    <button mat-button routerLink="/transactions" (click)="sidenav.close()">
+    <button
+      mat-button
+      routerLink="/transactions"
+      (click)="sidenav.close()"
+      data-cy="transactions-menu">
       Transactions
     </button>
     <button mat-button routerLink="/invite" (click)="sidenav.close()">
