@@ -125,6 +125,7 @@ export class TransactionComponent implements OnInit {
           required: true,
           attributes: {
             autocomplete: 'off',
+            'data-cy': 'tx-type-radio',
           },
           options: [
             { value: 'INCOME', label: 'Income' },
@@ -145,6 +146,7 @@ export class TransactionComponent implements OnInit {
           required: true,
           attributes: {
             autocomplete: 'off',
+            'data-cy': 'tx-amount-input',
           },
         },
       },
@@ -155,6 +157,9 @@ export class TransactionComponent implements OnInit {
           label: 'Transaction Date',
           placeholder: 'Pick transaction date',
           required: true,
+          attributes: {
+            'data-cy': 'tx-date-picker',
+          },
         },
       },
       {
@@ -164,6 +169,9 @@ export class TransactionComponent implements OnInit {
           label: 'Transaction Description',
           placeholder: 'Set transaction description',
           required: true,
+          attributes: {
+            'data-cy': 'tx-description-input',
+          },
         },
       },
       {

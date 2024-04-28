@@ -14,20 +14,24 @@
         [fields]="fields"
         [model]="model"></formly-form>
       @if (selectedTransaction?.transactionId !== '') {
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="onUpdate()"
-        class="mr-1">
-        Update
-      </button>
-      <button mat-raised-button color="warn" (click)="onDelete()">
-        Delete
-      </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onUpdate()"
+          class="mr-1">
+          Update
+        </button>
+        <button mat-raised-button color="warn" (click)="onDelete()">
+          Delete
+        </button>
       } @else {
-      <button mat-raised-button color="primary" (click)="onCreate()">
-        Create
-      </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onCreate()"
+          data-cy="create-transaction-button">
+          Create
+        </button>
       }
     </form>
   </mat-card-content>

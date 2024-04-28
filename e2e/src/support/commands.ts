@@ -10,6 +10,11 @@
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 import { getLoginButton } from './app.po';
+import {
+  getAmountInput,
+  getDatePicker,
+  getDescriptionInput,
+} from './transaction-form.po';
 
 //
 // -- This is a parent command --
@@ -20,14 +25,9 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get('#password').type(password);
   cy.get('#kc-login').click();
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('addNewTransaction', (transaction) => {
+  getAmountInput().type('100', { force: true });
+  getDatePicker().type('28/04/2024');
+  getDescriptionInput().type('Test transaction', { force: true });
+});
