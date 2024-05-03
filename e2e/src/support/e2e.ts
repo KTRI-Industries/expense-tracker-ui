@@ -7,6 +7,7 @@ declare global {
     interface Chainable<Subject> {
       login(email: string, password: string): void;
       addNewTransaction(transaction: any): void;
+      editTransaction(transaction: any): void;
       deleteVisibleTransactions(): void;
     }
   }

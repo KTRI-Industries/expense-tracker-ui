@@ -1,7 +1,9 @@
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import {
   getCreateTransactionButton,
-  getDeleteTransactionButton, getDescriptionInput,
+  getDeleteTransactionButton,
+  getDescriptionInput,
+  getUpdateTransactionButton,
 } from '../support/transaction-form.po';
 import {
   getAddTransactionButton,
@@ -75,23 +77,55 @@ describe('transactions', () => {
   });
 
   it('should not create an invalid transaction', () => {
-
     getTransactionMenu().click();
     getAddTransactionButton().click();
 
     cy.addNewTransaction({
       amount: -100,
       date: '28/04/2024',
-
     });
 
     getCreateTransactionButton().click();
 
-    getDescriptionInput()
-      .should('have.class', 'ng-invalid');
+    getDescriptionInput().should('have.class', 'ng-invalid');
   });
 
   afterEach(() => {
     cy.deleteVisibleTransactions();
+  });
+
+  it.only('should edit existing transaction', () => {
+    getTransactionMenu().click();
+    getAddTransactionButton().click();
+
+    cy.addNewTransaction({
+      amount: 100,
+      date: '28/04/2024',
+      description: 'Test transaction',
+    });
+
+    getCreateTransactionButton().click();
+
+    getFirstDescriptionCell().click();
+
+    cy.intercept('PUT', '/transactions/*').as('apiCheck');
+
+    cy.editTransaction({
+      amount: 200,
+      date: '28/04/2024',
+      description: 'Updated transaction',
+    });
+
+    getUpdateTransactionButton().click();
+
+    cy.wait('@apiCheck').then((interception) => {
+      expect(interception?.response?.statusCode).to.eq(200);
+      expect(interception?.response?.body.amount.amount).to.eq(-200);
+      expect(interception?.response?.body.description).to.eq(
+        'Updated transaction',
+      );
+    });
+
+    getFirstAmountCell().should('contain.text', '-200');
   });
 });

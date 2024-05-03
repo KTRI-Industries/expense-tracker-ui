@@ -13,3 +13,6 @@ export const getCreateTransactionButton = () =>
 
 export const getDeleteTransactionButton = () =>
   cy.get('[data-cy="delete-transaction-button"]');
+
+export const getUpdateTransactionButton = () =>
+  cy.get('[data-cy="update-transaction-button"]');

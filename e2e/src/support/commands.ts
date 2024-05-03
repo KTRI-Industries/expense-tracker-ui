@@ -39,6 +39,16 @@ Cypress.Commands.add('addNewTransaction', (transaction) => {
   }
 });
 
+Cypress.Commands.add('editTransaction', (transaction) => {
+  getAmountInput().clear().type(transaction.amount, { force: true });
+  getDatePicker().clear().type(transaction.date);
+  if (transaction.description !== undefined) {
+    getDescriptionInput()
+      .clear()
+      .type(transaction.description, { force: true });
+  }
+});
+
 Cypress.Commands.add('deleteVisibleTransactions', () => {
   cy.intercept('GET', '/transactions?page=0&size=5&sort=date%2Cdesc').as(
     'apiCheck',
@@ -50,7 +60,7 @@ Cypress.Commands.add('deleteVisibleTransactions', () => {
     }
     getFirstDescriptionCell().then(($el) => {
       if ($el.is(':visible')) {
-        cy.wrap($el).click();
+        $el.click();
 
         getDeleteTransactionButton().click();
 
