@@ -44,7 +44,7 @@ Cypress.Commands.add('editTransaction', (transaction) => {
   getDatePicker().clear().type(transaction.date);
   if (transaction.description !== undefined) {
     getDescriptionInput()
-      .clear()
+      .clear({ force: true })
       .type(transaction.description, { force: true });
   }
 });
