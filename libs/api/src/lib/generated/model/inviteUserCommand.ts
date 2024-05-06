@@ -12,5 +12,5 @@
 
 export interface InviteUserCommand {
   recipientEmail: string;
-  senderEmail?: string;
+  senderEmail: string;
 }

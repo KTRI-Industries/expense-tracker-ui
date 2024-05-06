@@ -15,4 +15,5 @@ export interface UserInfo {
   email: string;
   authorities?: Array<string>;
   userId?: string;
+  isMainUser: boolean;
 }
