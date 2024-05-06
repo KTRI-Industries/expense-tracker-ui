@@ -94,7 +94,7 @@ describe('transactions', () => {
     cy.deleteVisibleTransactions();
   });
 
-  it.only('should edit existing transaction', () => {
+  it('should edit existing transaction', () => {
     getTransactionMenu().click();
     getAddTransactionButton().click();
 

@@ -1,5 +1,6 @@
 <expense-tracker-ui-nav-menu
   [isAuthenticated]="isAuthenticated$ | async"
+  [isMainUser]="isMainUser$ | async"
   [username]="username$ | async"
   (login)="onLogin()"
   (logout)="onLogout()"></expense-tracker-ui-nav-menu>
