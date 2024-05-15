@@ -10,5 +10,6 @@ export * from './problemDetail';
 export * from './sortObject';
 export * from './tenantDto';
 export * from './transactionDto';
+export * from './uninviteUserCommand';
 export * from './updateTransactionCommand';
 export * from './userInfo';
