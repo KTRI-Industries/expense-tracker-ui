@@ -49,13 +49,21 @@
       Transactions
     </button>
     @if (isMainUser) {
-      <button mat-button routerLink="/invite" (click)="sidenav.close()">
+      <button
+        mat-button
+        routerLink="/user-page/invite"
+        (click)="sidenav.close()">
         Invite User
       </button>
     }
     <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
     <span class="flex-auto"></span>
-    <span>{{ username }}</span>
+    <a
+      routerLink="/user-page"
+      matTooltip="Go to User Page"
+      class="hover:underline">
+      {{ username }}
+    </a>
     <button
       mat-icon-button
       matTooltip="Logout"

@@ -18,8 +18,17 @@ export const appRoutes: Route[] = [
       roles: ['users'],
     },
   },
-  {
+  /*  {
     path: 'invite',
+    loadChildren: () =>
+      import('@expense-tracker-ui/user').then((m) => m.userRoutes),
+    canActivate: [AppGuard],
+    data: {
+      roles: ['users'],
+    },
+  },*/
+  {
+    path: 'user-page',
     loadChildren: () =>
       import('@expense-tracker-ui/user').then((m) => m.userRoutes),
     canActivate: [AppGuard],
