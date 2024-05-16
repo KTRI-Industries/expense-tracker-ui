@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Users</mat-card-title>
+    <mat-card-subtitle>
+      Here you can see all the users linked with your account. You can
+      <a routerLink="invite" class="hover:underline">invite new users</a>
+      new users or remove existing ones:
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-selection-list #users [multiple]="false">
+      @for (user of tenantUsers; track user) {
+        <mat-list-option [value]="user">
+          <span matListItemTitle>{{ user.username }}</span>
+          <span matListItemLine>{{ user.email }}</span>
+        </mat-list-option>
+      }
+    </mat-selection-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="onDelete(users.selectedOptions.selected[0].value.email )"
+      data-cy="delete-user-button"
+      [disabled]="!users.selectedOptions.selected.length">
+      Delete
+    </button>
+  </mat-card-actions>
+</mat-card>

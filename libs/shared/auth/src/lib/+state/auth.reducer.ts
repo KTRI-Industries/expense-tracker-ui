@@ -57,6 +57,9 @@ export const authFeature = createFeature({
       (users, userProfile) =>
         users.find((user) => user.email === userProfile?.email)?.isMainUser,
     ),
+    selectNonMainUsers: createSelector(selectTenantUsers, (users) =>
+      users.filter((user) => !user.isMainUser),
+    ),
   }),
 });
 

@@ -1,15 +1,48 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserInfo } from '@expense-tracker-ui/api';
+import {
+  MatList,
+  MatListItem,
+  MatListOption,
+  MatSelectionList,
+} from '@angular/material/list';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle
+} from "@angular/material/card";
+import {RouterLink} from "@angular/router";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'lib-user-page',
   standalone: true,
-  imports: [],
-  template: `
-    <p>user-page works!</p>
-  `,
+  imports: [
+    CommonModule,
+    MatList,
+    MatListItem,
+    MatSelectionList,
+    MatListOption,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardSubtitle,
+    MatCardTitle,
+    RouterLink,
+    MatCardActions,
+    MatButton,
+  ],
+  templateUrl: './user-page.component.html',
   styles: ``,
 })
 export class UserPageComponent {
-  constructor(private store: Store) {}
+  @Input() tenantUsers: UserInfo[] | null = [];
+
+  onDelete(value: string) {
+    console.log(value);
+  }
 }

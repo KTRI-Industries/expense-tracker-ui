@@ -6,4 +6,5 @@ export const {
   selectIsLoggedIn,
   selectUserName,
   selectIsMainUser,
+  selectNonMainUsers,
 } = authFeature;
