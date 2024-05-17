@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'lib-user-page-container',
+  selector: 'expense-tracker-ui-user-page-container',
   standalone: true,
   imports: [UserPageComponent, AsyncPipe],
   template: `
-    <lib-user-page [tenantUsers]="users$ | async"></lib-user-page>
+    <expense-tracker-ui-user-page
+      [tenantUsers]="users$ | async"
+      (delete)="onDelete($event)"></expense-tracker-ui-user-page>
   `,
   styles: ``,
 })
@@ -17,4 +19,8 @@ export class UserPageContainerComponent {
   users$ = this.store.select(AuthSelectors.selectNonMainUsers);
 
   constructor(private store: Store) {}
+
+  onDelete(userEmail: string) {
+    this.store.dispatch(AuthActions.unInviteUser({ userEmail }));
+  }
 }

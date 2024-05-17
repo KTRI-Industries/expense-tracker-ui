@@ -3,7 +3,7 @@
     <mat-card-title>Users</mat-card-title>
     <mat-card-subtitle>
       Here you can see all the users linked with your account. You can
-      <a routerLink="invite" class="hover:underline">invite new users</a>
+      <a routerLink="invite" class="hover:underline text-blue-600">invite new users</a>
       new users or remove existing ones:
     </mat-card-subtitle>
   </mat-card-header>
@@ -17,12 +17,15 @@
         </mat-list-option>
       }
     </mat-selection-list>
+    @if (tenantUsers?.length === 0) {
+      <p>No users found.</p>
+    }
   </mat-card-content>
   <mat-card-actions>
     <button
       mat-raised-button
       color="warn"
-      (click)="onDelete(users.selectedOptions.selected[0].value.email )"
+      (click)="onDelete(users.selectedOptions.selected[0].value.email)"
       data-cy="delete-user-button"
       [disabled]="!users.selectedOptions.selected.length">
       Delete

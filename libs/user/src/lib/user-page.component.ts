@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserInfo } from '@expense-tracker-ui/api';
 import {
@@ -13,13 +13,13 @@ import {
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
-  MatCardTitle
-} from "@angular/material/card";
-import {RouterLink} from "@angular/router";
-import {MatButton} from "@angular/material/button";
+  MatCardTitle,
+} from '@angular/material/card';
+import { RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'lib-user-page',
+  selector: 'expense-tracker-ui-user-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -41,8 +41,10 @@ import {MatButton} from "@angular/material/button";
 })
 export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
+  @Output() delete = new EventEmitter<string>();
 
   onDelete(value: string) {
     console.log(value);
+    this.delete.emit(value);
   }
 }

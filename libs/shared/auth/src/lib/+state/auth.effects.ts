@@ -67,7 +67,7 @@ export class AuthEffects {
 
   retrieveTenantUsers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.retrieveTenantUsers),
+      ofType(AuthActions.retrieveTenantUsers, AuthActions.unInviteUserSuccess),
       withLatestFrom(this.store.select(selectUserProfile)),
       filter(([_, selectUserProfile]) => selectUserProfile?.tenantId != null),
       switchMap(() =>
@@ -126,6 +126,21 @@ export class AuthEffects {
           tap(() => this.snackBar.open('User invited', 'Close')),
           catchError((error: Error) =>
             of(AuthActions.inviteUserFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  unInviteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.unInviteUser),
+      switchMap((action) =>
+        this.authService.uninviteUser(action.userEmail).pipe(
+          map(() => AuthActions.unInviteUserSuccess()),
+          tap(() => this.snackBar.open('User un-invited', 'Close')),
+          catchError((error: Error) =>
+            of(AuthActions.unInviteUserFailure({ error })),
           ),
         ),
       ),

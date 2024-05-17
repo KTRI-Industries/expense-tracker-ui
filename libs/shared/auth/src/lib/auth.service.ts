@@ -27,4 +27,8 @@ export class AuthService {
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
     return this.keycloakApi.allUsers();
   }
+
+  uninviteUser(guestEmail: string) {
+    return this.tenantApi.uninviteUser({ guestEmail });
+  }
 }
