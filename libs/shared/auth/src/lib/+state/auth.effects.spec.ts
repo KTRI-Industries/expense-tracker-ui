@@ -8,11 +8,13 @@ import { createMockStore } from '@ngrx/store/testing';
 import { TenantDto } from '@expense-tracker-ui/api';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
   let authService: AuthService;
   let snackBar: MatSnackBar;
+  let router: Router;
 
   beforeEach(() => {
     keycloakService = {
@@ -28,6 +30,7 @@ describe('AuthEffects', () => {
       uninviteUser: jest.fn(),
     } as any;
     snackBar = { open: jest.fn() } as any;
+    router = { navigate: jest.fn() } as any;
   });
 
   it('should log in user when login action is triggered', fakeAsync(() => {
@@ -41,6 +44,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     authEffects.login$.subscribe();
@@ -61,6 +65,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     authEffects.logout$.subscribe();
@@ -88,6 +93,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
@@ -115,6 +121,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.loginSuccess();
@@ -143,6 +150,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error,
@@ -171,6 +179,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.generateNewTenantSuccess({
@@ -202,6 +211,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.generateNewTenantFailure({
@@ -234,6 +244,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.inviteUserSuccess({
@@ -269,6 +280,7 @@ describe('AuthEffects', () => {
       authService,
       createMockStore({}),
       snackBar,
+      router,
     );
 
     const expectedAction = AuthActions.unInviteUserSuccess();
