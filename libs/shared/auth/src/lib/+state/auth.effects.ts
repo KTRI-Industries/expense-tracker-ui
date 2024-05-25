@@ -18,6 +18,7 @@ import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -67,7 +68,11 @@ export class AuthEffects {
 
   retrieveTenantUsers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.retrieveTenantUsers, AuthActions.unInviteUserSuccess),
+      ofType(
+        AuthActions.retrieveTenantUsers,
+        AuthActions.inviteUserSuccess,
+        AuthActions.unInviteUserSuccess,
+      ),
       withLatestFrom(this.store.select(selectUserProfile)),
       filter(([_, selectUserProfile]) => selectUserProfile?.tenantId != null),
       switchMap(() =>
@@ -123,6 +128,7 @@ export class AuthEffects {
       switchMap((action) =>
         this.authService.inviteUser(action.recipientEmail).pipe(
           map((invitedUser) => AuthActions.inviteUserSuccess({ invitedUser })),
+          tap(() => this.router.navigate(['user-page'])),
           tap(() => this.snackBar.open('User invited', 'Close')),
           catchError((error: Error) =>
             of(AuthActions.inviteUserFailure({ error })),
@@ -177,5 +183,6 @@ export class AuthEffects {
     private authService: AuthService,
     private store: Store,
     private snackBar: MatSnackBar,
+    private router: Router,
   ) {}
 }
