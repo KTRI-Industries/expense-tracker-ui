@@ -5,3 +5,6 @@ export const getLoginButton = () =>
 
 export const getLogoutButton = () =>
   cy.get('[data-cy="top-menu"]  [data-cy=logout-button]');
+
+export const getUsernameLink = () =>
+  cy.get('[data-cy="top-menu"]  [data-cy=username-link]');

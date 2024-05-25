@@ -1,6 +1,5 @@
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import {
-  getCreateTransactionButton,
   getDeleteTransactionButton,
   getDescriptionInput,
   getUpdateTransactionButton,
@@ -10,9 +9,7 @@ import {
   getFirstAmountCell,
   getFirstDescriptionCell,
 } from '../support/transactions.po';
-
-const TEST_USERNAME = 'test_user';
-const TEST_PASSWORD = 'open123';
+import { TEST_PASSWORD, TEST_USERNAME } from './app.cy';
 
 describe('transactions', () => {
   beforeEach(() => cy.visit('/').login(TEST_USERNAME, TEST_PASSWORD));
@@ -24,20 +21,14 @@ describe('transactions', () => {
   });
 
   it('should add a transaction', () => {
-    getTransactionMenu().click();
-
-    getAddTransactionButton().click();
+    // CAUTION: intercept should be before the action that triggers the request!!!
+    cy.intercept('POST', '/transactions').as('apiCheck');
 
     cy.addNewTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
-
-    // CAUTION: intercept should be before the action that triggers the request!!!
-    cy.intercept('POST', '/transactions').as('apiCheck');
-
-    getCreateTransactionButton().click();
 
     cy.wait('@apiCheck').then((interception) => {
       expect(interception?.response?.statusCode).to.eq(200);
@@ -51,16 +42,11 @@ describe('transactions', () => {
   });
 
   it('should delete a transaction', () => {
-    getTransactionMenu().click();
-    getAddTransactionButton().click();
-
     cy.addNewTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
-
-    getCreateTransactionButton().click();
 
     getFirstDescriptionCell().click();
 
@@ -77,15 +63,10 @@ describe('transactions', () => {
   });
 
   it('should not create an invalid transaction', () => {
-    getTransactionMenu().click();
-    getAddTransactionButton().click();
-
     cy.addNewTransaction({
       amount: -100,
       date: '28/04/2024',
     });
-
-    getCreateTransactionButton().click();
 
     getDescriptionInput().should('have.class', 'ng-invalid');
   });
@@ -95,16 +76,11 @@ describe('transactions', () => {
   });
 
   it('should edit existing transaction', () => {
-    getTransactionMenu().click();
-    getAddTransactionButton().click();
-
     cy.addNewTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
-
-    getCreateTransactionButton().click();
 
     getFirstDescriptionCell().click();
 

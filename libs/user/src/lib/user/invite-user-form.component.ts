@@ -48,6 +48,9 @@ export class InviteUserFormComponent implements OnInit {
         props: {
           label: 'Email',
           required: true,
+          attributes: {
+            'data-cy': 'user-email-input',
+          },
         },
       },
     ];

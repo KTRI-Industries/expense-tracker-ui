@@ -3,13 +3,18 @@
     <mat-card-title>Users</mat-card-title>
     <mat-card-subtitle>
       Here you can see all the users linked with your account. You can
-      <a routerLink="invite" class="hover:underline text-blue-600">invite new users</a>
+      <a
+        routerLink="invite"
+        class="hover:underline text-blue-600"
+        data-cy="invite-link">
+        invite new users
+      </a>
       new users or remove existing ones:
     </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-    <mat-selection-list #users [multiple]="false">
+    <mat-selection-list #users [multiple]="false" data-cy="user-list">
       @for (user of tenantUsers; track user) {
         <mat-list-option [value]="user">
           <span matListItemTitle>{{ user.username }}</span>

@@ -13,7 +13,11 @@
         [form]="inviteUserForm"
         [fields]="fields"
         [model]="model"></formly-form>
-      <button mat-raised-button color="primary" (click)="onInvite()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onInvite()"
+        data-cy="invite-user-button">
         Invite
       </button>
     </form>

@@ -1,7 +1,7 @@
 import { getGreeting, getLogoutButton } from '../support/app.po';
 
-const TEST_USERNAME = 'test_user';
-const TEST_PASSWORD = 'open123';
+export const TEST_USERNAME = 'test_user';
+export const TEST_PASSWORD = 'open123';
 
 describe('expense-tracker-ui', () => {
   beforeEach(() => cy.visit('/'));
