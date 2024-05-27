@@ -101,12 +101,16 @@ Cypress.Commands.add('deleteAllInvitedUsers', () => {
       if ($el.is(':visible')) {
         $el.click();
 
-        getUnInviteUserButton().click();
+        getUnInviteUserButton().then(($btn) => {
+          if (!$btn.is(':disabled')) {
+            $btn.click();
 
-        cy.wait('@apiCheck').then((interception) => {
-          expect(interception?.response?.statusCode).to.eq(200);
-          // Call the function recursively
-          cy.deleteAllInvitedUsers();
+            cy.wait('@apiCheck').then((interception) => {
+              expect(interception?.response?.statusCode).to.eq(200);
+              // Call the function recursively
+              cy.deleteAllInvitedUsers();
+            });
+          }
         });
       }
     });
