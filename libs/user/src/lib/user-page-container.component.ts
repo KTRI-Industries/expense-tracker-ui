@@ -11,12 +11,16 @@ import { AsyncPipe } from '@angular/common';
   template: `
     <expense-tracker-ui-user-page
       [tenantUsers]="users$ | async"
+      [isTenantOwner]="isTenantOwner$ | async"
+      [email]="email$ | async"
       (delete)="onDelete($event)"></expense-tracker-ui-user-page>
   `,
   styles: ``,
 })
 export class UserPageContainerComponent {
-  users$ = this.store.select(AuthSelectors.selectNonMainUsers);
+  users$ = this.store.select(AuthSelectors.selectTenantUsers);
+  isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
+  email$ = this.store.select(AuthSelectors.selectUserEmail);
 
   constructor(private store: Store) {}
 

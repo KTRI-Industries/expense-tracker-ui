@@ -5,6 +5,7 @@ export const {
   selectTenantUsers,
   selectIsLoggedIn,
   selectUserName,
-  selectIsMainUser,
+  selectIsTenantOwner,
   selectNonMainUsers,
+  selectUserEmail,
 } = authFeature;

@@ -51,14 +51,20 @@ export const authFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile?.username,
     ),
-    selectIsMainUser: createSelector(
+    selectIsTenantOwner: createSelector(
       selectTenantUsers,
       selectUserProfile,
       (users, userProfile) =>
-        users.find((user) => user.email === userProfile?.email)?.isMainUser,
+        (userProfile as RoleAwareKeycloakProfile)?.userRoles?.includes(
+          'tenant-owner',
+        ),
     ),
     selectNonMainUsers: createSelector(selectTenantUsers, (users) =>
       users.filter((user) => !user.isMainUser),
+    ),
+    selectUserEmail: createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile?.email,
     ),
   }),
 });
@@ -78,4 +84,8 @@ export interface TenantAwareKeycloakProfile extends KeycloakProfile {
 
 export interface AttributeAwareKeycloakProfile extends KeycloakProfile {
   attributes?: Record<string, string[] | undefined>;
+}
+
+export interface RoleAwareKeycloakProfile extends KeycloakProfile {
+  userRoles?: string[];
 }

@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
   filter,
+  forkJoin,
   from,
   map,
   of,
@@ -47,10 +48,18 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
       switchMap(() =>
-        from(this.keycloak.loadUserProfile()).pipe(
-          map((keycloakUserProfile) =>
-            AuthActions.retrieveUserProfileSuccess({ keycloakUserProfile }),
-          ),
+        forkJoin({
+          keycloakUserProfile: from(this.keycloak.loadUserProfile()),
+          userRoles: of(this.keycloak.getUserRoles(true)),
+        }).pipe(
+          map(({ keycloakUserProfile, userRoles }) => {
+            return AuthActions.retrieveUserProfileSuccess({
+              keycloakUserProfile: {
+                ...keycloakUserProfile,
+                userRoles,
+              },
+            });
+          }),
           catchError((error) =>
             of(AuthActions.retrieveUserProfileFailure({ error: error })),
           ),

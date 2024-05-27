@@ -17,7 +17,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 export class AppComponent implements OnInit {
   username$ = this.store.select(AuthSelectors.selectUserName);
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
-  isMainUser$ = this.store.select(AuthSelectors.selectIsMainUser);
+  isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
 
   title = 'expense-tracker-ui';
 

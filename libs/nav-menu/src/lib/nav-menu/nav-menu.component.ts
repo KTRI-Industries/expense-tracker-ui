@@ -34,7 +34,7 @@ import { RouterLink } from '@angular/router';
 export class NavMenuComponent {
   @Input() username: string | null | undefined = '';
   @Input() isAuthenticated: boolean | null | undefined = false;
-  @Input() isMainUser: boolean | null | undefined = false;
+  @Input() isTenantOwner: boolean | null | undefined = false;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();

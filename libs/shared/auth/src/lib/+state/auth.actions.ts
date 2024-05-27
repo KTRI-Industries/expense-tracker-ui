@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { KeycloakProfile } from 'keycloak-js';
 import { InvitedUserDto, UserInfo } from '@expense-tracker-ui/api';
+import { RoleAwareKeycloakProfile } from './auth.reducer';
 
 export const AuthActions = createActionGroup({
   source: 'Auth',
@@ -11,7 +11,7 @@ export const AuthActions = createActionGroup({
     Logout: emptyProps(),
     'Login Success': emptyProps(),
     'Retrieve User Profile Success': props<{
-      keycloakUserProfile: KeycloakProfile;
+      keycloakUserProfile: RoleAwareKeycloakProfile;
     }>(),
     'Retrieve User Profile Failure': props<{ error: Error }>(),
     'Generate New Tenant': props<{ email: string }>(),

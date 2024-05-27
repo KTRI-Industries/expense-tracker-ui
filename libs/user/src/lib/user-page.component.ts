@@ -41,10 +41,17 @@ import { MatButton } from '@angular/material/button';
 })
 export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
+  @Input() isTenantOwner: boolean | null | undefined = false;
+  @Input() email: string | null | undefined = '';
+
   @Output() delete = new EventEmitter<string>();
 
   onDelete(value: string) {
     console.log(value);
     this.delete.emit(value);
+  }
+
+  isLoggedInUser(user: UserInfo) {
+    return user.email == this.email;
   }
 }

@@ -48,7 +48,7 @@
       data-cy="transactions-menu">
       Transactions
     </button>
-    @if (isMainUser) {
+    @if (isTenantOwner) {
       <button
         mat-button
         routerLink="/user-page/invite"

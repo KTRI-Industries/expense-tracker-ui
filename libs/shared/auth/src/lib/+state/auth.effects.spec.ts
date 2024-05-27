@@ -22,6 +22,7 @@ describe('AuthEffects', () => {
       logout: jest.fn(),
       isLoggedIn: jest.fn(),
       loadUserProfile: jest.fn(),
+        getUserRoles: jest.fn(),
       // add other methods as needed
     } as any;
     authService = {
