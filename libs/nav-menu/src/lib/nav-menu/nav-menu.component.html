@@ -41,36 +41,38 @@
       <mat-icon>login</mat-icon>
     </button>
   } @else {
-    <button
-      mat-button
-      routerLink="/transactions"
-      (click)="sidenav.close()"
-      data-cy="transactions-menu">
-      Transactions
-    </button>
-    @if (isTenantOwner) {
+    @if (tenantId !== undefined) {
       <button
         mat-button
-        routerLink="/user-page/invite"
-        (click)="sidenav.close()">
-        Invite User
+        routerLink="/transactions"
+        (click)="sidenav.close()"
+        data-cy="transactions-menu">
+        Transactions
+      </button>
+      @if (isTenantOwner) {
+        <button
+          mat-button
+          routerLink="/user-page/invite"
+          (click)="sidenav.close()">
+          Invite User
+        </button>
+      }
+      <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
+      <span class="flex-auto"></span>
+      <a
+        routerLink="/user-page"
+        matTooltip="Go to User Page"
+        class="hover:underline"
+        data-cy="username-link">
+        {{ username }}
+      </a>
+      <button
+        mat-icon-button
+        matTooltip="Logout"
+        (click)="onLogout()"
+        data-cy="logout-button">
+        <mat-icon>logout</mat-icon>
       </button>
     }
-    <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
-    <span class="flex-auto"></span>
-    <a
-      routerLink="/user-page"
-      matTooltip="Go to User Page"
-      class="hover:underline"
-      data-cy="username-link">
-      {{ username }}
-    </a>
-    <button
-      mat-icon-button
-      matTooltip="Logout"
-      (click)="onLogout()"
-      data-cy="logout-button">
-      <mat-icon>logout</mat-icon>
-    </button>
   }
 </ng-template>

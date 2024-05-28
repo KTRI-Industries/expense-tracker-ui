@@ -1,5 +1,11 @@
-import { TEST_PASSWORD, TEST_USERNAME } from './app.cy';
-import { getUsernameLink } from '../support/app.po';
+import {
+  getUsernameLink,
+  TEST_GUEST_EMAIL,
+  TEST_GUEST_USERNAME,
+  TEST_PASSWORD,
+  TEST_USER_EMAIL,
+  TEST_USERNAME,
+} from '../support/app.po';
 import {
   getInviteButton,
   getUserEmailInput,
@@ -8,6 +14,7 @@ import {
 } from '../support/user-page.po';
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
+import { Method } from 'cypress/types/net-stubbing';
 
 describe('users', () => {
   before(() => {
@@ -35,50 +42,55 @@ describe('users', () => {
     getUsernameLink().click();
     getUserInviteLink().click();
 
-    getUserEmailInput().type('test@test.com');
+    getUserEmailInput().type(TEST_USER_EMAIL);
     getInviteButton().click();
 
-    getUserList().should('contain', 'test@test.com');
+    getUserList().should('contain', TEST_USER_EMAIL);
   });
 
   it('should invite user and invited user should login', () => {
+    cy.intercept(
+      'POST' as Method,
+      'https://keycloak.127.0.0.1.nip.io/realms/expense-tracker-realm/login-actions/authenticate*',
+    ).as('apiCheckAuth');
+
     getUsernameLink().click();
     getUserInviteLink().click();
 
-    getUserEmailInput().type('test2@test.com');
+    getUserEmailInput().type(TEST_GUEST_EMAIL);
     getInviteButton().click();
 
-    getUserList().should('contain', 'test2@test.com');
-
-    // TODO login if user already exists otherwise register
+    getUserList().should('contain', TEST_GUEST_EMAIL);
 
     cy.logout();
 
-    cy.login('test2@test.com', TEST_PASSWORD);
+    cy.login(TEST_GUEST_EMAIL, TEST_PASSWORD);
 
-    getUsernameLink().then(($link) => {
-      if ($link.length) {
-        // If the username link exists,do nothing it means user is already registered
-      } else {
-        // If the username link does not exist, attempt to register
-        cy.register('test2@test.com', TEST_PASSWORD);
+    cy.wait('@apiCheckAuth').then((interception) => {
+      const responseBody = interception?.response?.body;
+
+      // TODO register is not working, it redirects to login contrary to manual flow
+      if (responseBody.toString().includes('Invalid username or password')) {
+        cy.register(TEST_GUEST_EMAIL, TEST_PASSWORD);
         cy.confirmRegistration();
       }
+
+      getUsernameLink().should('contain', TEST_GUEST_USERNAME);
+
+      getTransactionMenu().click();
+
+      getFirstAmountCell().should('contain.text', '-100');
     });
-
-    getUsernameLink().should('contain', 'test2@test.com');
-
-    getTransactionMenu().click();
-
-    getFirstAmountCell().should('contain.text', '-100');
   });
 
   afterEach(() => {
+    cy.logout();
+    cy.login(TEST_USERNAME, TEST_PASSWORD);
+
     cy.deleteAllInvitedUsers();
   });
 
   after(() => {
-    getTransactionMenu().click();
     cy.deleteVisibleTransactions();
   });
 });

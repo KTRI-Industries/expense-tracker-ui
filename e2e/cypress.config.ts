@@ -7,7 +7,7 @@ const cypressJsonConfig = {
   // video: true,
   // videosFolder: '../../dist/cypress/apps/senik-ui-e2e/videos',
   // screenshotsFolder: '../../dist/cypress/apps/senik-ui-e2e/screenshots',
-  // chromeWebSecurity: false,
+  chromeWebSecurity: false,
   // defaultCommandTimeout: 20000,
   // specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
   // supportFile: 'src/support/e2e.ts',

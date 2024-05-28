@@ -2,6 +2,7 @@
   [isAuthenticated]="isAuthenticated$ | async"
   [isTenantOwner]="isTenantOwner$ | async"
   [username]="username$ | async"
+  [tenantId]="tenantId$ | async"
   (login)="onLogin()"
   (logout)="onLogout()"></expense-tracker-ui-nav-menu>
 <!-- container is used to have margins left and right (better for large screens) mx-auto to align to center and some padding for extra space -->

@@ -11,5 +11,5 @@ export const getFirstDescriptionCell = () => cy.get(FIRST_DESCRIPTION_COLUMN);
 
 export const hasTransactionInTable = () =>
   cy
-    .get('body')
+    .get('body expense-tracker-ui-transactions')
     .then(($body) => $body.find(FIRST_DESCRIPTION_COLUMN).length !== 0);

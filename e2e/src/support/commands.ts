@@ -1,13 +1,3 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-
 // eslint-disable-next-line @typescript-eslint/no-namespace
 import { getLoginButton, getUsernameLink } from './app.po';
 import {
@@ -30,14 +20,18 @@ import {
 } from './user-page.po';
 import { getTransactionMenu } from './navigation-menu.po';
 
-//
-// -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
   console.log('Custom command example: Login', email, password);
   getLoginButton().click();
-  cy.get('#username').type(email);
-  cy.get('#password').type(password);
-  cy.get('#kc-login').click();
+  cy.origin(
+    'https://keycloak.127.0.0.1.nip.io',
+    { args: { email, password } },
+    ({ email, password }) => {
+      cy.get('#username').type(email);
+      cy.get('#password').type(password);
+      cy.get('#kc-login').click();
+    },
+  );
 });
 
 Cypress.Commands.add('addNewTransaction', (transaction) => {
@@ -65,10 +59,17 @@ Cypress.Commands.add('editTransaction', (transaction) => {
 });
 
 Cypress.Commands.add('deleteVisibleTransactions', () => {
-  cy.intercept('GET', '/transactions?page=0&size=5&sort=date%2Cdesc').as(
-    'apiCheck',
-  );
+  cy.visit('/transactions');
+  cy.intercept('GET', '/transactions*').as('apiCheck');
 
+  cy.wait('@apiCheck').then((interception) => {
+    expect(interception?.response?.statusCode).to.eq(200);
+
+    doDelete();
+  });
+});
+
+function doDelete() {
   hasTransactionInTable().then((hasTx) => {
     if (!hasTx) {
       return;
@@ -81,13 +82,13 @@ Cypress.Commands.add('deleteVisibleTransactions', () => {
 
         cy.wait('@apiCheck').then((interception) => {
           expect(interception?.response?.statusCode).to.eq(200);
-          // Call the function recursively
-          cy.deleteVisibleTransactions();
+          // Call the function recursively to delete all transactions
+          doDelete();
         });
       }
     });
   });
-});
+}
 
 Cypress.Commands.add('deleteAllInvitedUsers', () => {
   getUsernameLink().click();
@@ -122,35 +123,53 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('register', (email, password) => {
-  getLoginButton().click();
-  cy.get('#kc-registration a').click();
-  cy.get('#username').type(email);
-  cy.get('#password').type(password);
-  cy.get('#password-confirm').type(password);
-  cy.get('#email').type(email);
-  cy.get('#firstName').type(email);
-  cy.get('#lastName').type(email);
-  cy.get('input[value="Register"]').click();
+  cy.origin(
+    'https://keycloak.127.0.0.1.nip.io',
+    { args: { email, password } },
+    ({ email, password }) => {
+      cy.get('#kc-registration a').click();
+      cy.get('#username').type(email);
+      cy.get('#password').type(password);
+      cy.get('#password-confirm').type(password);
+      cy.get('#email').type(email);
+      cy.get('#firstName').type(email);
+      cy.get('#lastName').type(email);
+      cy.get('input[value="Register"]').click();
+    },
+  );
 });
-
 /**
  * When trying to retrieve the email from the mailhog ui, I had issues with the iframes it renders so I had to use the API as a workaround.
  */
 Cypress.Commands.add('confirmRegistration', () => {
-  cy.intercept(
-    'GET',
-    'https://mailhog.127.0.0.1.nip.io/api/v2/messages?limit=50',
-  ).as('getEmails');
-  cy.visit('https://mailhog.127.0.0.1.nip.io/');
-  cy.wait('@getEmails').then((interception) => {
-    const body = JSON.parse(interception?.response?.body); // parse the JSON string into an object
-    const email = body.items[0]; // get the first email
-    const emailBody = email.Content.Body;
-    const linkRegex = /(https?:\/\/[^\s]*)/; // regex to match the URL
-    const match = emailBody.match(linkRegex); // find the URL
-    if (match) {
-      const url = match[0]; // get the URL from the regex match
-      cy.visit(url); // visit the URL
-    }
-  });
+  cy.request('https://mailhog.127.0.0.1.nip.io/api/v2/messages?limit=50').then(
+    (response) => {
+      const body = response.body;
+      const email = body.items[0];
+      const emailBody = email.Content.Body;
+      const linkRegex = /(https?:\/\/[^\s]*)/; // regex to match the URL
+      const match = emailBody.match(linkRegex); // find the URL
+      if (match) {
+        const url = match[0];
+        cy.request({
+          url: url,
+          followRedirect: false,
+        }).then((response) => {
+          expect(response.status).to.eq(302);
+          const redirectUrl = response.headers['location'] as string;
+          console.log('redirectUrl: ' + redirectUrl);
+
+          cy.request({
+            url: redirectUrl,
+            followRedirect: false,
+          }).then((response) => {
+            expect(response.status).to.eq(302);
+            const redirectUrl = response.headers['location'] as string;
+            console.log('redirectUrl: ' + redirectUrl);
+            cy.visit(redirectUrl);
+          });
+        });
+      }
+    },
+  );
 });

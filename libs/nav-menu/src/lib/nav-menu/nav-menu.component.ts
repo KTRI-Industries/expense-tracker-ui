@@ -35,6 +35,7 @@ export class NavMenuComponent {
   @Input() username: string | null | undefined = '';
   @Input() isAuthenticated: boolean | null | undefined = false;
   @Input() isTenantOwner: boolean | null | undefined = false;
+  @Input() tenantId: string | null | undefined;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();

@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   username$ = this.store.select(AuthSelectors.selectUserName);
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
+  tenantId$ = this.store.select(AuthSelectors.selectTenantId);
 
   title = 'expense-tracker-ui';
 

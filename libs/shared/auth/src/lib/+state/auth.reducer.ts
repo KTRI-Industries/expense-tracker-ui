@@ -66,6 +66,10 @@ export const authFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile?.email,
     ),
+    selectTenantId: createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile?.tenantId,
+    ),
   }),
 });
 
