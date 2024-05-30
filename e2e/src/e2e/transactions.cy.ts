@@ -12,7 +12,12 @@ import {
 import { TEST_PASSWORD, TEST_USERNAME } from '../support/app.po';
 
 describe('transactions', () => {
-  beforeEach(() => cy.visit('/').login(TEST_USERNAME, TEST_PASSWORD));
+  beforeEach(() => {
+    cy
+      // .visit('/')
+      .login(TEST_USERNAME, TEST_PASSWORD);
+    cy.visit('/');
+  });
 
   it('should display transactions page', () => {
     getTransactionMenu().click();

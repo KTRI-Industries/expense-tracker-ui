@@ -21,7 +21,22 @@ import {
 import { getTransactionMenu } from './navigation-menu.po';
 
 Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+  cy.session([email, password], () => {
+    cy.visit('/');
+    getLoginButton().click();
+    cy.origin(
+      'https://keycloak.127.0.0.1.nip.io',
+      { args: { email, password } },
+      ({ email, password }) => {
+        cy.get('#username').type(email);
+        cy.get('#password').type(password);
+        cy.get('#kc-login').click();
+      },
+    );
+  });
+});
+
+Cypress.Commands.add('loginWithoutSession', (email, password) => {
   getLoginButton().click();
   cy.origin(
     'https://keycloak.127.0.0.1.nip.io',

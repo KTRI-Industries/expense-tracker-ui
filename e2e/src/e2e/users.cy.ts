@@ -18,7 +18,7 @@ import { Method } from 'cypress/types/net-stubbing';
 
 describe('users', () => {
   before(() => {
-    cy.visit('/').login(TEST_USERNAME, TEST_PASSWORD);
+    cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
 
     cy.addNewTransaction({
       amount: 100,
@@ -31,7 +31,9 @@ describe('users', () => {
     cy.logout();
   });
 
-  beforeEach(() => cy.visit('/').login(TEST_USERNAME, TEST_PASSWORD));
+  beforeEach(() =>
+    cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD),
+  );
 
   it('should display users page with invite link', () => {
     getUsernameLink().click();
@@ -64,7 +66,7 @@ describe('users', () => {
 
     cy.logout();
 
-    cy.login(TEST_GUEST_EMAIL, TEST_PASSWORD);
+    cy.loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
 
     cy.wait('@apiCheckAuth').then((interception) => {
       const responseBody = interception?.response?.body;
@@ -85,7 +87,7 @@ describe('users', () => {
 
   afterEach(() => {
     cy.logout();
-    cy.login(TEST_USERNAME, TEST_PASSWORD);
+    cy.loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
 
     cy.deleteAllInvitedUsers();
   });
