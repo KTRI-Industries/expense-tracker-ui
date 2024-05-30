@@ -1,12 +1,12 @@
-export * from './keycloakIntegrationController.service';
-import { KeycloakIntegrationControllerService } from './keycloakIntegrationController.service';
+export * from './tenantController.service';
 import { TenantControllerService } from './tenantController.service';
 import { TransactionControllerService } from './transactionController.service';
+import { UserControllerService } from './userController.service';
 
-export * from './tenantController.service';
 export * from './transactionController.service';
+export * from './userController.service';
 export const APIS = [
-  KeycloakIntegrationControllerService,
   TenantControllerService,
   TransactionControllerService,
+  UserControllerService,
 ];

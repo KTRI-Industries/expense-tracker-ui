@@ -1,9 +1,9 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Observable, of, throwError } from 'rxjs';
 import {
-  KeycloakIntegrationControllerService,
   TenantControllerService,
   TenantDto,
+  UserControllerService,
 } from '@expense-tracker-ui/api';
 import { AuthService } from './auth.service';
 
@@ -20,7 +20,7 @@ describe('AuthService', () => {
           useValue: { generateTenant: jest.fn() },
         },
         {
-          provide: KeycloakIntegrationControllerService,
+          provide: UserControllerService,
           useValue: { allUsers: jest.fn() },
         },
       ],

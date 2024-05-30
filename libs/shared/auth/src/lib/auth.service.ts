@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   InvitedUserDto,
-  KeycloakIntegrationControllerService,
   TenantControllerService,
   TenantDto,
+  UserControllerService,
   UserInfo,
 } from '@expense-tracker-ui/api';
 
@@ -13,7 +13,7 @@ import {
 })
 export class AuthService {
   private tenantApi = inject(TenantControllerService); // TODO better way to reference the generated code?
-  private keycloakApi = inject(KeycloakIntegrationControllerService);
+  private userApi = inject(UserControllerService);
 
   generateTenant(email: string): Observable<TenantDto> {
     console.log(email);
@@ -21,14 +21,14 @@ export class AuthService {
   }
 
   inviteUser(recipientEmail: string): Observable<InvitedUserDto> {
-    return this.tenantApi.inviteUser({ recipientEmail });
+    return this.userApi.inviteUser({ recipientEmail });
   }
 
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
-    return this.keycloakApi.allUsers();
+    return this.userApi.allUsers();
   }
 
   uninviteUser(guestEmail: string) {
-    return this.tenantApi.uninviteUser({ guestEmail });
+    return this.userApi.uninviteUser({ guestEmail });
   }
 }

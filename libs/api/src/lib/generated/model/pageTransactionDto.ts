@@ -14,8 +14,8 @@ import { TransactionDto } from './transactionDto';
 import { SortObject } from './sortObject';
 
 export interface PageTransactionDto {
-  totalPages?: number;
   totalElements?: number;
+  totalPages?: number;
   size?: number;
   content?: Array<TransactionDto>;
   number?: number;

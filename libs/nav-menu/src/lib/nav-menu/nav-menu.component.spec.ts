@@ -16,7 +16,7 @@ describe('NavMenuComponent', () => {
   });
 
   it('should display username if authenticated', async () => {
-    component = await setupComponent(true, 'JohnDoe');
+    component = await setupComponent(true, 'JohnDoe', '1234');
 
     expect(screen.getAllByText('JohnDoe')).toHaveLength(2);
   });
@@ -37,13 +37,13 @@ describe('NavMenuComponent', () => {
   });
 
   it('should display "Logout" button if authenticated', async () => {
-    component = await setupComponent(true, null);
+    component = await setupComponent(true, null, '1234');
 
     expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 
   it('should emit logout event when "Logout" button is clicked', async () => {
-    component = await setupComponent(true, null);
+    component = await setupComponent(true, null, '1234');
     const logoutSpy = jest.spyOn(
       component.fixture.componentInstance,
       'onLogout',
@@ -58,6 +58,7 @@ describe('NavMenuComponent', () => {
 async function setupComponent(
   isAuthenticated: boolean,
   username: string | null,
+  tenantId?: string,
 ) {
   return await render(NavMenuComponent, {
     imports: [], // Import necessary modules here
@@ -65,6 +66,7 @@ async function setupComponent(
     componentProperties: {
       isAuthenticated,
       username,
+      tenantId,
     },
   });
 }
