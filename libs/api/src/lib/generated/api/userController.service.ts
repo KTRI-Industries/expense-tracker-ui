@@ -323,25 +323,25 @@ export class UserControllerService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public uninviteUser(
+  public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<UserInfo>;
-  public uninviteUser(
+  ): Observable<any>;
+  public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<UserInfo>>;
-  public uninviteUser(
+  ): Observable<HttpResponse<any>>;
+  public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<UserInfo>>;
-  public uninviteUser(
+  ): Observable<HttpEvent<any>>;
+  public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -349,7 +349,7 @@ export class UserControllerService {
   ): Observable<any> {
     if (uninviteUserCommand === null || uninviteUserCommand === undefined) {
       throw new Error(
-        'Required parameter uninviteUserCommand was null or undefined when calling uninviteUser.',
+        'Required parameter uninviteUserCommand was null or undefined when calling unInviteUser.',
       );
     }
 
@@ -411,8 +411,8 @@ export class UserControllerService {
     }
 
     let localVarPath = `/users/uninvite`;
-    return this.httpClient.request<UserInfo>(
-      'post',
+    return this.httpClient.request<any>(
+      'put',
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,

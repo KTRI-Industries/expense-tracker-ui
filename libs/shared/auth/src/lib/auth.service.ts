@@ -29,6 +29,6 @@ export class AuthService {
   }
 
   uninviteUser(guestEmail: string) {
-    return this.userApi.uninviteUser({ guestEmail });
+    return this.userApi.unInviteUser({ guestEmail });
   }
 }
