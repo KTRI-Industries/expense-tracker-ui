@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  TenantControllerService,
-  TenantDto,
+  InvitedUserDto,
   UserControllerService,
   UserInfo,
 } from '@expense-tracker-ui/api';
@@ -10,16 +9,20 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  private tenantApi = inject(TenantControllerService); // TODO better way to reference the generated code?
+export class UserService {
   private userApi = inject(UserControllerService);
 
-  generateTenant(email: string): Observable<TenantDto> {
-    console.log(email);
-    return this.tenantApi.generateTenant();
-  }
+  constructor() {}
 
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
     return this.userApi.allUsers();
+  }
+
+  inviteUser(recipientEmail: string): Observable<InvitedUserDto> {
+    return this.userApi.inviteUser({ recipientEmail });
+  }
+
+  unInviteUser(guestEmail: string) {
+    return this.userApi.unInviteUser({ guestEmail });
   }
 }

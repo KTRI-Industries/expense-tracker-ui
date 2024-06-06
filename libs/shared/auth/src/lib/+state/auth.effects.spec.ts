@@ -7,14 +7,10 @@ import { AuthService } from '../auth.service';
 import { createMockStore } from '@ngrx/store/testing';
 import { TenantDto } from '@expense-tracker-ui/api';
 import { fakeAsync, tick } from '@angular/core/testing';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
   let authService: AuthService;
-  let snackBar: MatSnackBar;
-  let router: Router;
 
   beforeEach(() => {
     keycloakService = {
@@ -22,7 +18,7 @@ describe('AuthEffects', () => {
       logout: jest.fn(),
       isLoggedIn: jest.fn(),
       loadUserProfile: jest.fn(),
-        getUserRoles: jest.fn(),
+      getUserRoles: jest.fn(),
       // add other methods as needed
     } as any;
     authService = {
@@ -30,8 +26,6 @@ describe('AuthEffects', () => {
       inviteUser: jest.fn(),
       uninviteUser: jest.fn(),
     } as any;
-    snackBar = { open: jest.fn() } as any;
-    router = { navigate: jest.fn() } as any;
   });
 
   it('should log in user when login action is triggered', fakeAsync(() => {
@@ -44,8 +38,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     authEffects.login$.subscribe();
@@ -65,8 +57,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     authEffects.logout$.subscribe();
@@ -93,8 +83,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
@@ -121,8 +109,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     const expectedAction = AuthActions.loginSuccess();
@@ -150,8 +136,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error,
@@ -179,8 +163,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     const expectedAction = AuthActions.generateNewTenantSuccess({
@@ -211,8 +193,6 @@ describe('AuthEffects', () => {
       keycloakService,
       authService,
       createMockStore({}),
-      snackBar,
-      router,
     );
 
     const expectedAction = AuthActions.generateNewTenantFailure({
@@ -221,73 +201,6 @@ describe('AuthEffects', () => {
 
     let result: any;
     authEffects.generateTenant$.subscribe((action) => {
-      result = action;
-    });
-
-    tick();
-
-    expect(result).toEqual(expectedAction);
-  }));
-
-  it('should invite user successfully', fakeAsync(() => {
-    const recipientEmail = 'john@example.com';
-    const actions$ = of(AuthActions.inviteUser({ recipientEmail }));
-
-    jest.spyOn(authService, 'inviteUser').mockReturnValue(
-      of({
-        email: recipientEmail,
-      }),
-    );
-
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-      snackBar,
-      router,
-    );
-
-    const expectedAction = AuthActions.inviteUserSuccess({
-      invitedUser: {
-        email: recipientEmail,
-      },
-    });
-
-    let result: any;
-    authEffects.inviteUser$.subscribe((action) => {
-      result = action;
-    });
-
-    tick();
-
-    expect(result).toEqual(expectedAction);
-  }));
-
-  it('should uninvite user successfully', fakeAsync(() => {
-    const userEmail = 'john@example.com';
-    const actions$ = of(AuthActions.unInviteUser({ userEmail }));
-
-    jest.spyOn(authService, 'uninviteUser').mockReturnValue(
-      of({
-        email: userEmail,
-        isMainUser: false,
-      }),
-    );
-
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-      snackBar,
-      router,
-    );
-
-    const expectedAction = AuthActions.unInviteUserSuccess();
-
-    let result: any;
-    authEffects.unInviteUser$.subscribe((action) => {
       result = action;
     });
 

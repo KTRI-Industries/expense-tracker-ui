@@ -1,14 +1,14 @@
-import { createAction, props } from '@ngrx/store';
-import { UserEntity } from './user.models';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { InvitedUserDto } from '@expense-tracker-ui/api';
 
-export const initUser = createAction('[User Page] Init');
-
-export const loadUserSuccess = createAction(
-  '[User/API] Load User Success',
-  props<{ user: UserEntity[] }>(),
-);
-
-export const loadUserFailure = createAction(
-  '[User/API] Load User Failure',
-  props<{ error: Error }>(),
-);
+export const UserActions = createActionGroup({
+  source: 'User',
+  events: {
+    'Invite User': props<{ recipientEmail: string }>(),
+    'Invite User Success': props<{ invitedUser: InvitedUserDto }>(),
+    'Invite User Failure': props<{ error: Error }>(),
+    'UnInvite User': props<{ userEmail: string }>(),
+    'UnInvite User Success': emptyProps(),
+    'UnInvite User Failure': props<{ error: Error }>(),
+  },
+});

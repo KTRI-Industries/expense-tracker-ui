@@ -1,39 +1,88 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
-import { hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { createMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
 
-import * as UserActions from './user.actions';
+import { UserActions } from './user.actions';
+import { UserService } from '../user.service';
 import { UserEffects } from './user.effects';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('UserEffects', () => {
-  let actions: Observable<Action>;
-  let effects: UserEffects;
+  let router: Router;
+  let snackBar: MatSnackBar;
+
+  let userService: UserService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [
-        UserEffects,
-        provideMockActions(() => actions),
-        provideMockStore(),
-      ],
-    });
+    userService = { inviteUser: jest.fn(), unInviteUser: jest.fn() } as any;
 
-    effects = TestBed.inject(UserEffects);
+    router = { navigate: jest.fn() } as any;
+    snackBar = { open: jest.fn() } as any;
   });
 
-  describe('init$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: UserActions.initUser() });
+  it('should invite user successfully', fakeAsync(() => {
+    const recipientEmail = 'john@example.com';
+    const actions$ = of(UserActions.inviteUser({ recipientEmail }));
 
-      const expected = hot('-a-|', {
-        a: UserActions.loadUserSuccess({ user: [] }),
-      });
+    jest.spyOn(userService, 'inviteUser').mockReturnValue(
+      of({
+        email: recipientEmail,
+      }),
+    );
 
-      expect(effects.init$).toBeObservable(expected);
+    const userEffects = new UserEffects(
+      actions$,
+      userService,
+      router,
+      snackBar,
+      createMockStore({}),
+    );
+
+    const expectedAction = UserActions.inviteUserSuccess({
+      invitedUser: {
+        email: recipientEmail,
+      },
     });
-  });
+
+    let result: any;
+    userEffects.inviteUser$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should uninvite user successfully', fakeAsync(() => {
+    const userEmail = 'john@example.com';
+    const actions$ = of(UserActions.unInviteUser({ userEmail }));
+
+    jest.spyOn(userService, 'unInviteUser').mockReturnValue(
+      of({
+        email: userEmail,
+        isMainUser: false,
+      }),
+    );
+
+    const userEffects = new UserEffects(
+      actions$,
+      userService,
+      router,
+      snackBar,
+      createMockStore({}),
+    );
+
+    const expectedAction = UserActions.unInviteUserSuccess();
+
+    let result: any;
+    userEffects.unInviteUser$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
 });

@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { InvitedUserDto, UserInfo } from '@expense-tracker-ui/api';
+import { UserInfo } from '@expense-tracker-ui/api';
 import { RoleAwareKeycloakProfile } from './auth.reducer';
 
 export const AuthActions = createActionGroup({
@@ -17,14 +17,9 @@ export const AuthActions = createActionGroup({
     'Generate New Tenant': props<{ email: string }>(),
     'Generate New Tenant Success': props<{ tenantId: string }>(),
     'Generate New Tenant Failure': props<{ error: Error }>(),
-    'Invite User': props<{ recipientEmail: string }>(),
-    'Invite User Success': props<{ invitedUser: InvitedUserDto }>(),
-    'Invite User Failure': props<{ error: Error }>(),
+
     'Retrieve Tenant Users': emptyProps(),
     'Retrieve Tenant Users Success': props<{ users: Array<UserInfo> }>(),
     'Retrieve Tenant Users Failure': props<{ error: Error }>(),
-    'UnInvite User': props<{ userEmail: string }>(),
-    'UnInvite User Success': emptyProps(),
-    'UnInvite User Failure': props<{ error: Error }>(),
   },
 });

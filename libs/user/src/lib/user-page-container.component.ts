@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
-import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
+import { UserActions } from './+state/user.actions';
 
 @Component({
   selector: 'expense-tracker-ui-user-page-container',
@@ -25,6 +26,6 @@ export class UserPageContainerComponent {
   constructor(private store: Store) {}
 
   onDelete(userEmail: string) {
-    this.store.dispatch(AuthActions.unInviteUser({ userEmail }));
+    this.store.dispatch(UserActions.unInviteUser({ userEmail }));
   }
 }

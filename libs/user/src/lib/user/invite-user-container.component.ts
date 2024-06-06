@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '@expense-tracker-ui/shared/auth';
 import { InviteUserFormComponent } from './invite-user-form.component';
+import { UserActions } from '../+state/user.actions';
 
 @Component({
   selector: 'expense-tracker-ui-invite-user-container',
@@ -16,7 +16,7 @@ import { InviteUserFormComponent } from './invite-user-form.component';
 export class InviteUserContainerComponent {
   onInvite($event: any) {
     this.store.dispatch(
-      AuthActions.inviteUser({ recipientEmail: $event.email }),
+      UserActions.inviteUser({ recipientEmail: $event.email }),
     );
   }
 

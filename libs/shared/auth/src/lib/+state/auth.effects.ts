@@ -17,9 +17,6 @@ import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -75,33 +72,6 @@ export class AuthEffects {
     ),
   );
 
-  retrieveTenantUsers$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        AuthActions.retrieveTenantUsers,
-        AuthActions.inviteUserSuccess,
-        AuthActions.unInviteUserSuccess,
-      ),
-      withLatestFrom(this.store.select(selectUserProfile)),
-      filter(([_, selectUserProfile]) => selectUserProfile?.tenantId != null),
-      switchMap(() =>
-        this.authService.retrieveTenantUsers().pipe(
-          map((users) => AuthActions.retrieveTenantUsersSuccess({ users })),
-          catchError((error: Error) =>
-            of(AuthActions.retrieveTenantUsersFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  clearError$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.inviteUserSuccess),
-      map(() => ErrorHandlingActions.clearBackEndError()),
-    ),
-  );
-
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
@@ -131,39 +101,8 @@ export class AuthEffects {
     ),
   );
 
-  inviteUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.inviteUser),
-      switchMap((action) =>
-        this.authService.inviteUser(action.recipientEmail).pipe(
-          map((invitedUser) => AuthActions.inviteUserSuccess({ invitedUser })),
-          tap(() => this.router.navigate(['user-page'])),
-          tap(() => this.snackBar.open('User invited', 'Close')),
-          catchError((error: Error) =>
-            of(AuthActions.inviteUserFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  unInviteUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.unInviteUser),
-      switchMap((action) =>
-        this.authService.uninviteUser(action.userEmail).pipe(
-          map(() => AuthActions.unInviteUserSuccess()),
-          tap(() => this.snackBar.open('User un-invited', 'Close')),
-          catchError((error: Error) =>
-            of(AuthActions.unInviteUserFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
   /**
-   * This is needed because the current token does not have the new tenantId!
+   * This is needed because the initial token, before tenant generation, does not have the new tenantId!
    */
   refreshTokenAfterTenantGenerated$ = createEffect(() =>
     this.actions$.pipe(
@@ -191,7 +130,5 @@ export class AuthEffects {
     private keycloak: KeycloakService,
     private authService: AuthService,
     private store: Store,
-    private snackBar: MatSnackBar,
-    private router: Router,
   ) {}
 }
