@@ -9,6 +9,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/associateTenantCommand.ts
 model/category.ts
 model/createTransactionCommand.ts
 model/inviteUserCommand.ts
@@ -21,6 +22,7 @@ model/pageableObject.ts
 model/problemDetail.ts
 model/sortObject.ts
 model/tenantDto.ts
+model/tenantWithUserDetails.ts
 model/transactionDto.ts
 model/uninviteUserCommand.ts
 model/updateTransactionCommand.ts

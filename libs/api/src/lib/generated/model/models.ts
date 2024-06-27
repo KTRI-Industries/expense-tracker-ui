@@ -1,3 +1,4 @@
+export * from './associateTenantCommand';
 export * from './category';
 export * from './createTransactionCommand';
 export * from './inviteUserCommand';
@@ -9,6 +10,7 @@ export * from './pageableObject';
 export * from './problemDetail';
 export * from './sortObject';
 export * from './tenantDto';
+export * from './tenantWithUserDetails';
 export * from './transactionDto';
 export * from './uninviteUserCommand';
 export * from './updateTransactionCommand';
