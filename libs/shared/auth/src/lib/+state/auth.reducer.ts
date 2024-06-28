@@ -1,7 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
-import { UserInfo } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
 
 export const AUTH_FEATURE_KEY = 'auth';
 const TENANT_ID = 'tenantId';
@@ -9,12 +9,14 @@ const TENANT_ID = 'tenantId';
 export interface AuthState {
   userProfile: TenantAwareKeycloakProfile | null;
   tenantUsers: UserInfo[];
+  tenants: TenantWithUserDetails[];
 }
 
 export const initialAuthState: AuthState = {
   // set initial required properties
   userProfile: null,
   tenantUsers: [],
+  tenants: [],
 };
 
 export const authFeature = createFeature({

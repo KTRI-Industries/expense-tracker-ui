@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   InvitedUserDto,
+  TenantControllerService,
+  TenantWithUserDetails,
   UserControllerService,
   UserInfo,
 } from '@expense-tracker-ui/api';
@@ -11,6 +13,7 @@ import {
 })
 export class UserService {
   private userApi = inject(UserControllerService);
+  private tenantApi = inject(TenantControllerService);
 
   constructor() {}
 
@@ -24,5 +27,9 @@ export class UserService {
 
   unInviteUser(guestEmail: string) {
     return this.userApi.unInviteUser({ guestEmail });
+  }
+
+  retrieveTenants(): Observable<Array<TenantWithUserDetails>> {
+    return this.tenantApi.getUserTenants();
   }
 }

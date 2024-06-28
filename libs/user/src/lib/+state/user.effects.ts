@@ -71,6 +71,20 @@ export class UserEffects {
     ),
   );
 
+  retrieveTenants$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.retrieveTenants),
+      switchMap(() =>
+        this.userService.retrieveTenants().pipe(
+          map((tenants) => UserActions.retrieveTenantsSuccess({ tenants })),
+          catchError((error: Error) =>
+            of(UserActions.retrieveTenantsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   clearError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.inviteUserSuccess),
