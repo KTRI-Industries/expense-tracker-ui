@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserInfo } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
 import {
   MatList,
   MatListItem,
@@ -45,6 +45,7 @@ export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
   @Input() isTenantOwner: boolean | null | undefined = false;
   @Input() email: string | null | undefined = '';
+  @Input() tenants: TenantWithUserDetails[] | null = [];
 
   @Output() delete = new EventEmitter<string>();
 
