@@ -13,4 +13,5 @@
 export interface TenantWithUserDetails {
   id: string;
   mainUserEmail?: string;
+  isAssociated: boolean;
 }
