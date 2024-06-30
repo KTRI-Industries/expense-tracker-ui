@@ -71,6 +71,13 @@ export class UserEffects {
     ),
   );
 
+  retrieveTenantsAfterLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess, UserActions.leaveTenantSuccess, UserActions.associateTenantSuccess),
+      map(() => UserActions.retrieveTenants()),
+    ),
+  );
+
   retrieveTenants$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.retrieveTenants),
@@ -79,6 +86,34 @@ export class UserEffects {
           map((tenants) => UserActions.retrieveTenantsSuccess({ tenants })),
           catchError((error: Error) =>
             of(UserActions.retrieveTenantsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  leaveTenant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.leaveTenant),
+      switchMap((action) =>
+        this.userService.leaveTenant(action.tenantId).pipe(
+          map(() => UserActions.leaveTenantSuccess()),
+          catchError((error: Error) =>
+            of(UserActions.leaveTenantFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  associateTenant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.associateTenant),
+      switchMap((action) =>
+        this.userService.associateTenant(action.tenantId).pipe(
+          map(() => UserActions.associateTenantSuccess()),
+          catchError((error: Error) =>
+            of(UserActions.associateTenantFailure({ error })),
           ),
         ),
       ),

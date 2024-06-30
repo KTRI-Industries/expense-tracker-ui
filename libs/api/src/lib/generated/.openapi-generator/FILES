@@ -12,6 +12,7 @@ index.ts
 model/associateTenantCommand.ts
 model/category.ts
 model/createTransactionCommand.ts
+model/disassociateTenantCommand.ts
 model/inviteUserCommand.ts
 model/invitedUserDto.ts
 model/models.ts

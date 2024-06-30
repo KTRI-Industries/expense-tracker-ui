@@ -50,4 +50,9 @@
 
 <div class="my-2"></div>
 
-<expense-tracker-ui-tenant-list></expense-tracker-ui-tenant-list>
+<expense-tracker-ui-tenant-list
+  [tenants]="tenants"
+  (leaveTenant)="onLeaveTenant($event)"
+  (associateTenant)="
+    onAssociateTenant($event)
+  "></expense-tracker-ui-tenant-list>
