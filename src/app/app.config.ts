@@ -50,6 +50,7 @@ import {
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
 import { UserEffects } from '../../libs/user/src/lib/+state/user.effects';
+import { UserFeature } from '@expense-tracker-ui/user';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -65,6 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
+    provideState(UserFeature.userFeature),
     provideState(ErrorHandlingFeature.errorHandlingFeature),
     provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,

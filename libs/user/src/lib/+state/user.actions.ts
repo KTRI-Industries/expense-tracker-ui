@@ -13,5 +13,11 @@ export const UserActions = createActionGroup({
     'Retrieve Tenants': emptyProps(),
     'Retrieve Tenants Success': props<{ tenants: TenantWithUserDetails[] }>(),
     'Retrieve Tenants Failure': props<{ error: Error }>(),
+    'Leave Tenant': props<{ tenantId: string }>(),
+    'Leave Tenant Success': emptyProps(),
+    'Leave Tenant Failure': props<{ error: Error }>(),
+    'Associate Tenant': props<{ tenantId: string }>(),
+    'Associate Tenant Success': emptyProps(),
+    'Associate Tenant Failure': props<{ error: Error }>(),
   },
 });

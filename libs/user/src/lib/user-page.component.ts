@@ -45,9 +45,11 @@ export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
   @Input() isTenantOwner: boolean | null | undefined = false;
   @Input() email: string | null | undefined = '';
-  @Input() tenants: TenantWithUserDetails[] | null = [];
+  @Input() tenants: TenantWithUserDetails[] | null | undefined = [];
 
   @Output() delete = new EventEmitter<string>();
+  @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
+  @Output() associateTenant = new EventEmitter<TenantWithUserDetails>();
 
   onDelete(value: string) {
     console.log(value);
@@ -56,5 +58,13 @@ export class UserPageComponent {
 
   isLoggedInUser(user: UserInfo) {
     return user.email == this.email;
+  }
+
+  onLeaveTenant($event: TenantWithUserDetails) {
+    this.leaveTenant.emit($event);
+  }
+
+  onAssociateTenant($event: TenantWithUserDetails) {
+    this.associateTenant.emit($event);
   }
 }

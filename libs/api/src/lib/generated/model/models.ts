@@ -1,6 +1,7 @@
 export * from './associateTenantCommand';
 export * from './category';
 export * from './createTransactionCommand';
+export * from './disassociateTenantCommand';
 export * from './inviteUserCommand';
 export * from './invitedUserDto';
 export * from './monetaryAmount';

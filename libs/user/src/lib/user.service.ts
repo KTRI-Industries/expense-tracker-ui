@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   InvitedUserDto,
   TenantControllerService,
+  TenantDto,
   TenantWithUserDetails,
   UserControllerService,
   UserInfo,
@@ -31,5 +32,13 @@ export class UserService {
 
   retrieveTenants(): Observable<Array<TenantWithUserDetails>> {
     return this.tenantApi.getUserTenants();
+  }
+
+  leaveTenant(tenantId: string) {
+    return this.tenantApi.disassociateTenant({ tenantId });
+  }
+
+  associateTenant(tenantId: string): Observable<TenantDto> {
+    return this.tenantApi.associateTenant({ tenantId });
   }
 }
