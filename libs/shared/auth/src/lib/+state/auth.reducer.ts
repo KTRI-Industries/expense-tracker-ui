@@ -45,6 +45,10 @@ export const authFeature = createFeature({
       ...state,
       tenantUsers: users,
     })),
+    on(AuthActions.switchTenant, (state, { tenantId }) => ({
+      ...state,
+      currentTenant: tenantId,
+    })),
   ),
   extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({
     selectIsLoggedIn: createSelector(

@@ -72,8 +72,11 @@ export class TenantListComponent {
     return this._tenants;
   }
 
+  @Input() currentTenantId: string | null | undefined;
+
   @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
   @Output() associateTenant = new EventEmitter<TenantWithUserDetails>();
+  @Output() switchTenant = new EventEmitter<TenantWithUserDetails>();
 
   tenantsDatasource: MatTableDataSource<TenantWithUserDetails> | undefined;
   displayedColumns = ['mainUserEmail', 'isAssociated'];
@@ -84,5 +87,9 @@ export class TenantListComponent {
 
   onAccept(element: TenantWithUserDetails) {
     this.associateTenant.emit(element);
+  }
+
+  onSwitch(element: TenantWithUserDetails) {
+    this.switchTenant.emit(element);
   }
 }

@@ -21,5 +21,9 @@ export const AuthActions = createActionGroup({
     'Retrieve Tenant Users': emptyProps(),
     'Retrieve Tenant Users Success': props<{ users: Array<UserInfo> }>(),
     'Retrieve Tenant Users Failure': props<{ error: Error }>(),
+
+    'Switch Tenant': props<{ tenantId: string }>(),
+    'Switch Tenant Success': emptyProps(),
+    'Switch Tenant Failure': props<{ error: Error }>(),
   },
 });
