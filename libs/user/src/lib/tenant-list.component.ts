@@ -25,6 +25,7 @@ import {
 } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
 import { MatSortHeader } from '@angular/material/sort';
+import { MatChip, MatChipSet } from '@angular/material/chips';
 
 @Component({
   selector: 'expense-tracker-ui-tenant-list',
@@ -50,6 +51,8 @@ import { MatSortHeader } from '@angular/material/sort';
     MatSortHeader,
     MatRowDef,
     MatHeaderRowDef,
+    MatChipSet,
+    MatChip,
   ],
   templateUrl: './tenant-list.component.html',
   styles: ``,
