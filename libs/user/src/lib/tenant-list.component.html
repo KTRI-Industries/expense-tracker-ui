@@ -2,8 +2,9 @@
   <mat-card-header>
     <mat-card-title>Accounts</mat-card-title>
     <mat-card-subtitle>
-      Here you can see all the accounts/tenants you are member of and the accounts/tenants that
-      you are invited to. You can also switch to start using another account.
+      Here you can see all the accounts/tenants you are member of and the
+      accounts/tenants that you are invited to. You can also switch to start
+      using another account.
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -25,25 +26,37 @@
         <ng-container matColumnDef="isAssociated">
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Actions">
-            @if (!element.isCurrentUserOwner) {
-              @if (element.isAssociated) {
+            <div
+              class="flex flex-col sm:flex-row sm:space-x-1 sm:space-y-0 space-y-1">
+              @if (!element.isCurrentUserOwner) {
+                @if (element.isAssociated) {
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="onLeave(element)"
+                    data-cy="select-tenant-button">
+                    Leave tenant
+                  </button>
+                } @else {
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="onAccept(element)"
+                    data-cy="associate-tenant-button">
+                    Accept invitation
+                  </button>
+                }
+              }
+              @if (currentTenantId != element.id) {
                 <button
                   mat-raised-button
-                  color="primary"
-                  (click)="onLeave(element)"
-                  data-cy="select-tenant-button">
-                  Leave tenant
-                </button>
-              } @else {
-                <button
-                  mat-raised-button
-                  color="primary"
-                  (click)="onAccept(element)"
-                  data-cy="associate-tenant-button">
-                  Accept invitation
+                  color="accent"
+                  (click)="onSwitch(element)"
+                  data-cy="switch-tenant-button">
+                  Switch to this account
                 </button>
               }
-            }
+            </div>
           </mat-cell>
         </ng-container>
 

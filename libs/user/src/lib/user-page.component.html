@@ -52,7 +52,7 @@
 
 <expense-tracker-ui-tenant-list
   [tenants]="tenants"
+  [currentTenantId]="currentTenantId"
   (leaveTenant)="onLeaveTenant($event)"
-  (associateTenant)="
-    onAssociateTenant($event)
-  "></expense-tracker-ui-tenant-list>
+  (associateTenant)="onAssociateTenant($event)"
+  (switchTenant)="onSwitchTenant($event)"></expense-tracker-ui-tenant-list>

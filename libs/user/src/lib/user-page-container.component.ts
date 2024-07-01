@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
 import { UserActions } from './+state/user.actions';
 import { UserSelectors } from '@expense-tracker-ui/user';
@@ -18,11 +18,11 @@ import { Observable } from 'rxjs';
       [isTenantOwner]="isTenantOwner$ | async"
       [email]="email$ | async"
       [tenants]="tenants$ | async"
+      [currentTenantId]="currentTenantId$ | async"
       (delete)="onDelete($event)"
       (leaveTenant)="onLeaveTenant($event)"
-      (associateTenant)="
-        onAssociateTenant($event)
-      "></expense-tracker-ui-user-page>
+      (associateTenant)="onAssociateTenant($event)"
+      (switchTenant)="onSwitchTenant($event)"></expense-tracker-ui-user-page>
   `,
   styles: ``,
 })
@@ -34,6 +34,9 @@ export class UserPageContainerComponent {
   email$ = this.store.select(AuthSelectors.selectUserEmail);
   tenants$: Observable<TenantWithUserDetails[]> = this.store.select(
     UserSelectors.selectTenants,
+  );
+  currentTenantId$: Observable<string> = this.store.select(
+    AuthSelectors.selectCurrentTenant,
   );
 
   constructor(private store: Store) {}
@@ -48,5 +51,9 @@ export class UserPageContainerComponent {
 
   onAssociateTenant($event: TenantWithUserDetails) {
     this.store.dispatch(UserActions.associateTenant({ tenantId: $event.id }));
+  }
+
+  onSwitchTenant($event: TenantWithUserDetails) {
+    this.store.dispatch(AuthActions.switchTenant({ tenantId: $event.id }));
   }
 }
