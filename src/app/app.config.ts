@@ -51,6 +51,9 @@ import {
 } from '@expense-tracker-ui/shared/error-handling';
 import { UserEffects } from '../../libs/user/src/lib/+state/user.effects';
 import { UserFeature } from '@expense-tracker-ui/user';
+import {
+  TenantIdHeaderInterceptorInterceptor
+} from "../../libs/shared/auth/src/lib/tenant-id-header-interceptor.interceptor";
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -86,6 +89,11 @@ export const appConfig: ApplicationConfig = {
       useClass: GlobalErrorInterceptor,
       multi: true,
       deps: [MatSnackBar, KeycloakService, Store],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TenantIdHeaderInterceptorInterceptor,
+      multi: true,
     },
     {
       provide: Configuration,

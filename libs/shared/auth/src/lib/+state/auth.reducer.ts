@@ -10,6 +10,7 @@ export interface AuthState {
   userProfile: TenantAwareKeycloakProfile | null;
   tenantUsers: UserInfo[];
   tenants: TenantWithUserDetails[];
+  currentTenant: string;
 }
 
 export const initialAuthState: AuthState = {
@@ -17,6 +18,7 @@ export const initialAuthState: AuthState = {
   userProfile: null,
   tenantUsers: [],
   tenants: [],
+  currentTenant: '',
 };
 
 export const authFeature = createFeature({
