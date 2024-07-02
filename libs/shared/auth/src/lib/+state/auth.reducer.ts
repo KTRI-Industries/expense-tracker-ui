@@ -58,6 +58,13 @@ export const authFeature = createFeature({
       ...state,
       currentTenant: tenants.find((tenant) => tenant.isDefault)?.id || '',
     })),
+    on(AuthActions.refreshUserRolesSuccess, (state, { userRoles }) => ({
+      ...state,
+      userProfile: {
+        ...state.userProfile,
+        userRoles,
+      },
+    })),
   ),
   extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({
     selectIsLoggedIn: createSelector(

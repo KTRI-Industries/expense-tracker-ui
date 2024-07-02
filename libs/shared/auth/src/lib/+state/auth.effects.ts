@@ -106,6 +106,22 @@ export class AuthEffects {
     ),
   );
 
+  refreshRolesAfterTenantGenerated$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.generateNewTenantSuccess),
+      switchMap(() =>
+        from(this.refreshRoles()).pipe(
+          map((userRoles) =>
+            AuthActions.refreshUserRolesSuccess({ userRoles }),
+          ),
+          catchError((error) =>
+            of(AuthActions.refreshUserRolesFailure({ error: error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   setDefaultTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.setDefaultTenant),
@@ -123,7 +139,7 @@ export class AuthEffects {
   /**
    * This is needed because the initial token, before tenant generation, does not have the new tenantId!
    */
-  refreshTokenAfterTenantGenerated$ = createEffect(() =>
+  refreshTokenAfterTenantGeneratedOrAssociated$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
         AuthActions.generateNewTenantSuccess,
@@ -153,4 +169,12 @@ export class AuthEffects {
     private authService: AuthService,
     private store: Store,
   ) {}
+
+  /**
+   * Without the refreshed token the roles are not updated.
+   */
+  async refreshRoles(): Promise<string[]> {
+    await this.keycloak.updateToken(-1);
+    return this.keycloak.getUserRoles(true);
+  }
 }
