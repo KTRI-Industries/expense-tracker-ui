@@ -29,5 +29,9 @@ export const AuthActions = createActionGroup({
     'Set Default Tenant': props<{ tenantId: string }>(),
     'Set Default Tenant Success': emptyProps(),
     'Set Default Tenant Failure': props<{ error: Error }>(),
+
+    'Refresh User Roles': emptyProps(),
+    'Refresh User Roles Success': props<{ userRoles: Array<string> }>(),
+    'Refresh User Roles Failure': props<{ error: Error }>(),
   },
 });

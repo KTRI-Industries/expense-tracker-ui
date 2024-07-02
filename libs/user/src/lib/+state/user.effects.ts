@@ -71,19 +71,20 @@ export class UserEffects {
     ),
   );
 
-  retrieveTenantsAfterLogin$ = createEffect(() =>
+  retrieveTenantsAfterTenantChangeAction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
+        UserActions.associateTenantSuccess,
         AuthActions.retrieveUserProfileSuccess,
         UserActions.leaveTenantSuccess,
-        UserActions.associateTenantSuccess,
         AuthActions.setDefaultTenantSuccess,
+        AuthActions.generateNewTenantSuccess,
       ),
       map(() => UserActions.retrieveTenants()),
     ),
   );
 
-  retrieveTenants$ = createEffect(() =>
+  retrieveUserTenants$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.retrieveTenants),
       switchMap(() =>
