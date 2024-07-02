@@ -22,7 +22,10 @@ import { Observable } from 'rxjs';
       (delete)="onDelete($event)"
       (leaveTenant)="onLeaveTenant($event)"
       (associateTenant)="onAssociateTenant($event)"
-      (switchTenant)="onSwitchTenant($event)"></expense-tracker-ui-user-page>
+      (switchTenant)="onSwitchTenant($event)"
+      (setDefaultTenant)="
+        onSetDefaultTenant($event)
+      "></expense-tracker-ui-user-page>
   `,
   styles: ``,
 })
@@ -55,5 +58,9 @@ export class UserPageContainerComponent {
 
   onSwitchTenant($event: TenantWithUserDetails) {
     this.store.dispatch(AuthActions.switchTenant({ tenantId: $event.id }));
+  }
+
+  onSetDefaultTenant($event: TenantWithUserDetails) {
+    this.store.dispatch(AuthActions.setDefaultTenant({ tenantId: $event.id }));
   }
 }

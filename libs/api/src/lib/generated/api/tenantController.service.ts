@@ -31,6 +31,8 @@ import { DisassociateTenantCommand } from '../model/disassociateTenantCommand';
 // @ts-ignore
 import { ProblemDetail } from '../model/problemDetail';
 // @ts-ignore
+import { SetDefaultTenantCommand } from '../model/setDefaultTenantCommand';
+// @ts-ignore
 import { TenantDto } from '../model/tenantDto';
 // @ts-ignore
 import { TenantWithUserDetails } from '../model/tenantWithUserDetails';
@@ -508,6 +510,117 @@ export class TenantControllerService {
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: localVarHeaders,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * @param setDefaultTenantCommand
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public setDefaultTenant(
+    setDefaultTenantCommand: SetDefaultTenantCommand,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<TenantDto>;
+  public setDefaultTenant(
+    setDefaultTenantCommand: SetDefaultTenantCommand,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<HttpResponse<TenantDto>>;
+  public setDefaultTenant(
+    setDefaultTenantCommand: SetDefaultTenantCommand,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<HttpEvent<TenantDto>>;
+  public setDefaultTenant(
+    setDefaultTenantCommand: SetDefaultTenantCommand,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<any> {
+    if (
+      setDefaultTenantCommand === null ||
+      setDefaultTenantCommand === undefined
+    ) {
+      throw new Error(
+        'Required parameter setDefaultTenantCommand was null or undefined when calling setDefaultTenant.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    let localVarCredential: string | undefined;
+    // authentication (security_auth) required
+    localVarCredential = this.configuration.lookupCredential('security_auth');
+    if (localVarCredential) {
+      localVarHeaders = localVarHeaders.set(
+        'Authorization',
+        'Bearer ' + localVarCredential,
+      );
+    }
+
+    let localVarHttpHeaderAcceptSelected: string | undefined =
+      options && options.httpHeaderAccept;
+    if (localVarHttpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['application/json'];
+      localVarHttpHeaderAcceptSelected =
+        this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Accept',
+        localVarHttpHeaderAcceptSelected,
+      );
+    }
+
+    let localVarHttpContext: HttpContext | undefined =
+      options && options.context;
+    if (localVarHttpContext === undefined) {
+      localVarHttpContext = new HttpContext();
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Content-Type',
+        httpContentTypeSelected,
+      );
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (
+        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+      ) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/tenants/default`;
+    return this.httpClient.request<TenantDto>(
+      'put',
+      `${this.configuration.basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        body: setDefaultTenantCommand,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,

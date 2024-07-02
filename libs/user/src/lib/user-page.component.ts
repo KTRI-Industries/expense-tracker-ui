@@ -52,6 +52,7 @@ export class UserPageComponent {
   @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
   @Output() associateTenant = new EventEmitter<TenantWithUserDetails>();
   @Output() switchTenant = new EventEmitter<TenantWithUserDetails>();
+  @Output() setDefaultTenant = new EventEmitter<TenantWithUserDetails>();
 
   onDelete(value: string) {
     console.log(value);
@@ -72,5 +73,9 @@ export class UserPageComponent {
 
   onSwitchTenant($event: TenantWithUserDetails) {
     this.switchTenant.emit($event);
+  }
+
+  onSetDefaultTenant($event: TenantWithUserDetails) {
+    this.setDefaultTenant.emit($event);
   }
 }

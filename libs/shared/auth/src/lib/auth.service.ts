@@ -22,4 +22,8 @@ export class AuthService {
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
     return this.userApi.allUsers();
   }
+
+  setDefaultTenant(tenantId: string) {
+    return this.tenantApi.setDefaultTenant({ tenantId });
+  }
 }

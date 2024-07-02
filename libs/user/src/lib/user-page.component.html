@@ -55,4 +55,7 @@
   [currentTenantId]="currentTenantId"
   (leaveTenant)="onLeaveTenant($event)"
   (associateTenant)="onAssociateTenant($event)"
-  (switchTenant)="onSwitchTenant($event)"></expense-tracker-ui-tenant-list>
+  (switchTenant)="onSwitchTenant($event)"
+  (setDefaultTenant)="
+    onSetDefaultTenant($event)
+  "></expense-tracker-ui-tenant-list>

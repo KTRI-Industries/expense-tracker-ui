@@ -77,6 +77,7 @@ export class TenantListComponent {
   @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
   @Output() associateTenant = new EventEmitter<TenantWithUserDetails>();
   @Output() switchTenant = new EventEmitter<TenantWithUserDetails>();
+  @Output() setDefaultTenant = new EventEmitter<TenantWithUserDetails>();
 
   tenantsDatasource: MatTableDataSource<TenantWithUserDetails> | undefined;
   displayedColumns = ['mainUserEmail', 'isAssociated'];
@@ -91,5 +92,9 @@ export class TenantListComponent {
 
   onSwitch(element: TenantWithUserDetails) {
     this.switchTenant.emit(element);
+  }
+
+  onSetDefault(element: TenantWithUserDetails) {
+    this.setDefaultTenant.emit(element);
   }
 }
