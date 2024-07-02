@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
+import { UserActions } from '@expense-tracker-ui/user';
 
 @Injectable()
 export class AuthEffects {
@@ -67,7 +68,11 @@ export class AuthEffects {
 
   retrieveTenantUsersAfterLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.retrieveUserProfileSuccess),
+      ofType(
+        UserActions.retrieveTenantsSuccess,
+        AuthActions.setDefaultTenantSuccess,
+        AuthActions.switchTenant,
+      ),
       map(() => AuthActions.retrieveTenantUsers()),
     ),
   );
@@ -101,12 +106,29 @@ export class AuthEffects {
     ),
   );
 
+  setDefaultTenant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.setDefaultTenant),
+      switchMap((action) =>
+        this.authService.setDefaultTenant(action.tenantId).pipe(
+          map(() => AuthActions.setDefaultTenantSuccess()),
+          catchError((error: Error) =>
+            of(AuthActions.setDefaultTenantFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   /**
    * This is needed because the initial token, before tenant generation, does not have the new tenantId!
    */
   refreshTokenAfterTenantGenerated$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.generateNewTenantSuccess),
+      ofType(
+        AuthActions.generateNewTenantSuccess,
+        UserActions.associateTenantSuccess,
+      ),
       switchMap(() =>
         from(this.keycloak.updateToken(-1)).pipe(
           tap((resp) => console.log(`Token refreshed: ${resp}`)),

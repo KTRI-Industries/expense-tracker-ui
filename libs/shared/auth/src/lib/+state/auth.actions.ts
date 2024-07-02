@@ -25,5 +25,9 @@ export const AuthActions = createActionGroup({
     'Switch Tenant': props<{ tenantId: string }>(),
     'Switch Tenant Success': emptyProps(),
     'Switch Tenant Failure': props<{ error: Error }>(),
+
+    'Set Default Tenant': props<{ tenantId: string }>(),
+    'Set Default Tenant Success': emptyProps(),
+    'Set Default Tenant Failure': props<{ error: Error }>(),
   },
 });

@@ -21,7 +21,7 @@ export class TenantIdHeaderInterceptorInterceptor implements HttpInterceptor {
       first(),
       switchMap((currentTenantId) => {
         if (currentTenantId) {
-          console.log("currentTenantId", currentTenantId);
+          console.log('currentTenantId', currentTenantId);
           request = request.clone({
             setHeaders: {
               'X-Tenant-ID': currentTenantId,

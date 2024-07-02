@@ -47,13 +47,27 @@
                   </button>
                 }
               }
-              @if (currentTenantId != element.id) {
+              @if (
+                currentTenantId != element.id &&
+                (element.isAssociated || element.isCurrentUserOwner)
+              ) {
                 <button
                   mat-raised-button
                   color="accent"
                   (click)="onSwitch(element)"
                   data-cy="switch-tenant-button">
                   Switch to this account
+                </button>
+              }
+              @if (
+                !element.isDefault &&
+                (element.isAssociated || element.isCurrentUserOwner)
+              ) {
+                <button
+                  mat-raised-button
+                  (click)="onSetDefault(element)"
+                  data-cy="set-default-tenant-button">
+                  Set this account as default
                 </button>
               }
             </div>
