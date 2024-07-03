@@ -1,3 +1,1 @@
-import { userFeature } from './user.reducer';
-
-export const { selectTenants } = userFeature;
+// export const {  } = userFeature;

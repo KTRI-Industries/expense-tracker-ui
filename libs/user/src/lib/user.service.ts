@@ -1,12 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   InvitedUserDto,
   TenantControllerService,
   TenantDto,
-  TenantWithUserDetails,
   UserControllerService,
-  UserInfo,
+  UserInfo
 } from '@expense-tracker-ui/api';
 
 @Injectable({
@@ -16,7 +15,6 @@ export class UserService {
   private userApi = inject(UserControllerService);
   private tenantApi = inject(TenantControllerService);
 
-  constructor() {}
 
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
     return this.userApi.allUsers();
@@ -30,9 +28,6 @@ export class UserService {
     return this.userApi.unInviteUser({ guestEmail });
   }
 
-  retrieveTenants(): Observable<Array<TenantWithUserDetails>> {
-    return this.tenantApi.getUserTenants();
-  }
 
   leaveTenant(tenantId: string) {
     return this.tenantApi.disassociateTenant({ tenantId });

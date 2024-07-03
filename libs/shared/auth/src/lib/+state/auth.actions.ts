@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { UserInfo } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
 import { RoleAwareKeycloakProfile } from './auth.reducer';
 
 export const AuthActions = createActionGroup({
@@ -33,5 +33,9 @@ export const AuthActions = createActionGroup({
     'Refresh User Roles': emptyProps(),
     'Refresh User Roles Success': props<{ userRoles: Array<string> }>(),
     'Refresh User Roles Failure': props<{ error: Error }>(),
+
+    'Retrieve Tenants': emptyProps(),
+    'Retrieve Tenants Success': props<{ tenants: TenantWithUserDetails[] }>(),
+    'Retrieve Tenants Failure': props<{ error: Error }>(),
   },
 });

@@ -10,4 +10,5 @@ export const {
   selectUserEmail,
   selectTenantId,
   selectCurrentTenant,
+  selectTenants
 } = authFeature;

@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { first, Observable, switchMap } from 'rxjs';
-import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AuthSelectors } from '../index';
 import { Store } from '@ngrx/store';
 
 @Injectable()

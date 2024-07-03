@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
 import { UserActions } from './+state/user.actions';
-import { UserSelectors } from '@expense-tracker-ui/user';
 import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
 import { Observable } from 'rxjs';
 
@@ -29,20 +28,24 @@ import { Observable } from 'rxjs';
   `,
   styles: ``,
 })
-export class UserPageContainerComponent {
+export class UserPageContainerComponent implements OnInit {
   users$: Observable<UserInfo[]> = this.store.select(
     AuthSelectors.selectTenantUsers,
   );
   isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
   email$ = this.store.select(AuthSelectors.selectUserEmail);
   tenants$: Observable<TenantWithUserDetails[]> = this.store.select(
-    UserSelectors.selectTenants,
+    AuthSelectors.selectTenants,
   );
   currentTenantId$: Observable<string> = this.store.select(
     AuthSelectors.selectCurrentTenant,
   );
 
   constructor(private store: Store) {}
+
+  ngOnInit(): void {
+        this.store.dispatch(AuthActions.retrieveTenants());
+    }
 
   onDelete(userEmail: string) {
     this.store.dispatch(UserActions.unInviteUser({ userEmail }));
