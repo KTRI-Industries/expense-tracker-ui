@@ -9,6 +9,8 @@ describe('AuthReducer', () => {
       const expectedState: AuthState = {
         userProfile: null,
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(undefined, {} as Action);
@@ -27,12 +29,16 @@ describe('AuthReducer', () => {
           lastName: 'User',
         },
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
         {
           userProfile: null,
           tenantUsers: [],
+          tenants: [],
+          currentTenant: '',
         },
         AuthActions.retrieveUserProfileSuccess({
           keycloakUserProfile: expectedState.userProfile || {},
@@ -46,6 +52,8 @@ describe('AuthReducer', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const userProfile = {
@@ -62,6 +70,8 @@ describe('AuthReducer', () => {
           tenantId: undefined,
         },
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -85,6 +95,8 @@ describe('AuthReducer', () => {
           lastName: 'User',
         },
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const tenantId = 'tenant-123';
@@ -94,6 +106,8 @@ describe('AuthReducer', () => {
           tenantId,
         },
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -112,6 +126,8 @@ describe('AuthReducer', () => {
       authState = {
         userProfile: null,
         tenantUsers: [],
+        tenants: [],
+        currentTenant: '',
       };
     });
 

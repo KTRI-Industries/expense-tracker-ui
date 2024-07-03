@@ -7,14 +7,25 @@ import { UserService } from '../user.service';
 import { UserEffects } from './user.effects';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { KeycloakService } from 'keycloak-angular';
 
 describe('UserEffects', () => {
   let router: Router;
   let snackBar: MatSnackBar;
 
   let userService: UserService;
+  let keycloakService: KeycloakService;
+
 
   beforeEach(() => {
+    keycloakService = {
+      login: jest.fn(),
+      logout: jest.fn(),
+      isLoggedIn: jest.fn(),
+      loadUserProfile: jest.fn(),
+      getUserRoles: jest.fn(),
+      // add other methods as needed
+    } as any;
     userService = { inviteUser: jest.fn(), unInviteUser: jest.fn() } as any;
 
     router = { navigate: jest.fn() } as any;
@@ -37,6 +48,7 @@ describe('UserEffects', () => {
       router,
       snackBar,
       createMockStore({}),
+      keycloakService
     );
 
     const expectedAction = UserActions.inviteUserSuccess({
@@ -72,6 +84,7 @@ describe('UserEffects', () => {
       router,
       snackBar,
       createMockStore({}),
+      keycloakService
     );
 
     const expectedAction = UserActions.unInviteUserSuccess();

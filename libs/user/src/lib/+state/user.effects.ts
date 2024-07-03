@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  filter,
-  map,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, filter, from, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
 import { UserActions } from './user.actions';
-import { AuthActions } from '@expense-tracker-ui/shared/auth';
-import { selectUserProfile } from '../../../../shared/auth/src/lib/+state/auth.selectors';
+import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { Store } from '@ngrx/store';
+import { KeycloakService } from 'keycloak-angular';
 
 @Injectable()
 export class UserEffects {
@@ -58,7 +50,7 @@ export class UserEffects {
         UserActions.inviteUserSuccess,
         UserActions.unInviteUserSuccess,
       ),
-      withLatestFrom(this.store.select(selectUserProfile)),
+      withLatestFrom(this.store.select(AuthSelectors.selectUserProfile)),
       filter(([_, selectUserProfile]) => selectUserProfile?.tenantId != null),
       switchMap(() =>
         this.userService.retrieveTenantUsers().pipe(
@@ -80,23 +72,11 @@ export class UserEffects {
         AuthActions.setDefaultTenantSuccess,
         AuthActions.generateNewTenantSuccess,
       ),
-      map(() => UserActions.retrieveTenants()),
+      map(() => AuthActions.retrieveTenants()),
     ),
   );
 
-  retrieveUserTenants$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.retrieveTenants),
-      switchMap(() =>
-        this.userService.retrieveTenants().pipe(
-          map((tenants) => UserActions.retrieveTenantsSuccess({ tenants })),
-          catchError((error: Error) =>
-            of(UserActions.retrieveTenantsFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
+
 
   leaveTenant$ = createEffect(() =>
     this.actions$.pipe(
@@ -133,11 +113,28 @@ export class UserEffects {
     ),
   );
 
+  // needed to break the cycle:
+  refreshTokenAfterTenantAssociated$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        UserActions.associateTenantSuccess,
+      ),
+      switchMap(() =>
+        from(this.keycloak.updateToken(-1)).pipe(
+          tap((resp) => console.log(`Token refreshed: ${resp}`)),
+          map(() => AuthActions.retrieveTenantUsers()),
+        ),
+      ),
+    ),
+  );
+
+
   constructor(
     private actions$: Actions,
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
     private store: Store,
+    private keycloak: KeycloakService,
   ) {}
 }

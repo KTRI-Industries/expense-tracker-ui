@@ -1,23 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  filter,
-  forkJoin,
-  from,
-  map,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, filter, forkJoin, from, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from './auth.actions';
 import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
-import { UserActions } from '@expense-tracker-ui/user';
 
 @Injectable()
 export class AuthEffects {
@@ -66,10 +55,9 @@ export class AuthEffects {
     ),
   );
 
-  retrieveTenantUsersAfterLogin$ = createEffect(() =>
+  retrieveTenantUsersAfterChangeOfTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        UserActions.retrieveTenantsSuccess,
         AuthActions.setDefaultTenantSuccess,
         AuthActions.switchTenant,
       ),
@@ -143,7 +131,6 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(
         AuthActions.generateNewTenantSuccess,
-        UserActions.associateTenantSuccess,
       ),
       switchMap(() =>
         from(this.keycloak.updateToken(-1)).pipe(
@@ -151,6 +138,29 @@ export class AuthEffects {
           map(() => AuthActions.retrieveTenantUsers()),
         ),
       ),
+    ),
+  );
+
+  retrieveUserTenants$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveTenants),
+      switchMap(() =>
+        this.authService.retrieveTenants().pipe(
+          map((tenants) => AuthActions.retrieveTenantsSuccess({ tenants })),
+          catchError((error: Error) =>
+            of(AuthActions.retrieveTenantsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  retrieveTenantUsersAfterTenants$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        AuthActions.retrieveTenantsSuccess,
+      ),
+      map(() => AuthActions.retrieveTenantUsers()),
     ),
   );
 

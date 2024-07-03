@@ -1,6 +1,5 @@
 import { Route } from '@angular/router';
 import { AppGuard } from '@expense-tracker-ui/shared/auth';
-import { userRoutes } from '@expense-tracker-ui/user';
 
 export const appRoutes: Route[] = [
   {

@@ -2,7 +2,6 @@ import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
 import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
-import { UserActions } from '@expense-tracker-ui/user';
 
 export const AUTH_FEATURE_KEY = 'auth';
 const TENANT_ID = 'tenantId';
@@ -54,16 +53,21 @@ export const authFeature = createFeature({
       ...state,
       currentTenant: tenantId,
     })),
-    on(UserActions.retrieveTenantsSuccess, (state, { tenants }) => ({
-      ...state,
-      currentTenant: tenants.find((tenant) => tenant.isDefault)?.id || '',
-    })),
+
     on(AuthActions.refreshUserRolesSuccess, (state, { userRoles }) => ({
       ...state,
       userProfile: {
         ...state.userProfile,
         userRoles,
       },
+    })),
+    on(AuthActions.retrieveTenantsSuccess, (state, { tenants }) => ({
+      ...state,
+      tenants,
+      currentTenant: state.currentTenant ?
+        state.currentTenant :
+        (tenants.find((tenant) => tenant.isDefault)?.id || ''),
+
     })),
   ),
   extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({

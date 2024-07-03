@@ -1,5 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
-import { UserActions } from './user.actions';
+import { createFeature, createReducer } from '@ngrx/store';
 import { TenantWithUserDetails } from '@expense-tracker-ui/api';
 
 export const USER_FEATURE_KEY = 'user';
@@ -18,9 +17,9 @@ export const userFeature = createFeature({
   name: USER_FEATURE_KEY,
   reducer: createReducer(
     initialUserState,
-    on(UserActions.retrieveTenantsSuccess, (state, { tenants }) => ({
-      ...state,
-      tenants,
-    })),
+    // on(UserActions.retrieveTenantsSuccess, (state, { tenants }) => ({
+    //   ...state,
+    //   tenants,
+    // })),
   ),
 });

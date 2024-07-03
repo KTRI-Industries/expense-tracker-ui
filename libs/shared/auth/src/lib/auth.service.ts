@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import {
   TenantControllerService,
   TenantDto,
+  TenantWithUserDetails,
   UserControllerService,
-  UserInfo,
+  UserInfo
 } from '@expense-tracker-ui/api';
 
 @Injectable({
@@ -25,5 +26,9 @@ export class AuthService {
 
   setDefaultTenant(tenantId: string) {
     return this.tenantApi.setDefaultTenant({ tenantId });
+  }
+
+  retrieveTenants(): Observable<Array<TenantWithUserDetails>> {
+    return this.tenantApi.getUserTenants();
   }
 }

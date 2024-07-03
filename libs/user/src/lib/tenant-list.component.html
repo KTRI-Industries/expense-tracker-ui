@@ -48,7 +48,7 @@
                 }
               }
               @if (
-                currentTenantId != element.id &&
+                currentTenantId !== element.id &&
                 (element.isAssociated || element.isCurrentUserOwner)
               ) {
                 <button
