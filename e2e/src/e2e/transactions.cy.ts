@@ -2,16 +2,18 @@ import { getTransactionMenu } from '../support/navigation-menu.po';
 import {
   getDeleteTransactionButton,
   getDescriptionInput,
-  getUpdateTransactionButton,
+  getUpdateTransactionButton
 } from '../support/transaction-form.po';
-import {
-  getAddTransactionButton,
-  getFirstAmountCell,
-  getFirstDescriptionCell,
-} from '../support/transactions.po';
+import { getAddTransactionButton, getFirstAmountCell, getFirstDescriptionCell } from '../support/transactions.po';
 import { TEST_PASSWORD, TEST_USERNAME } from '../support/app.po';
 
 describe('transactions', () => {
+
+  before(() => {
+    // ensure clean test slate for these tests
+    cy.then(Cypress.session.clearCurrentSessionData)
+  });
+
   beforeEach(() => {
     cy
       // .visit('/')

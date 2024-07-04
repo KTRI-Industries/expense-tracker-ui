@@ -15,3 +15,13 @@ export const getUserEMailListElement = () => cy.get(FIRST_USER_COLUMN);
 
 export const getUnInviteUserButton = () =>
   cy.get('[data-cy="delete-user-button"]');
+
+export const getAcceptInvitationButton = () =>
+  cy.get('[data-cy="associate-tenant-button"]');
+
+export const getSwitchTenantButton = () =>
+  cy.get('[data-cy="switch-tenant-button"]');
+
+export const getAccountList = () => cy.get('[data-cy="account-list"]');
+
+export const getLeaveTenantButton = () => cy.get('[data-cy="leave-tenant-button"]');

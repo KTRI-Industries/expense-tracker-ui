@@ -14,6 +14,8 @@ declare global {
       logout(): void;
       register(email: string, password: string): void;
       confirmRegistration(): void;
+      acceptInvitation(username: string): void;
+      leaveTenant(): void;
     }
   }
 }

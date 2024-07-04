@@ -12,6 +12,8 @@ const cypressJsonConfig = {
   // specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
   // supportFile: 'src/support/e2e.ts',
   experimentalRunAllSpecs: true,
+  defaultCommandTimeout: 10000,
+  requestTimeout: 10000
 };
 
 export default defineConfig({
