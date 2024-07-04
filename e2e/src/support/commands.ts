@@ -5,18 +5,17 @@ import {
   getCreateTransactionButton,
   getDatePicker,
   getDeleteTransactionButton,
-  getDescriptionInput,
+  getDescriptionInput
 } from './transaction-form.po';
+import { getAddTransactionButton, getFirstDescriptionCell, hasTransactionInTable } from './transactions.po';
 import {
-  getAddTransactionButton,
-  getFirstDescriptionCell,
-  hasTransactionInTable,
-} from './transactions.po';
-import {
+  getAcceptInvitationButton,
+  getLeaveTenantButton,
+  getSwitchTenantButton,
   getUnInviteUserButton,
   getUserEMailListElement,
   getUserList,
-  hasUserExceptSelfInTable,
+  hasUserExceptSelfInTable
 } from './user-page.po';
 import { getTransactionMenu } from './navigation-menu.po';
 
@@ -84,53 +83,66 @@ Cypress.Commands.add('deleteVisibleTransactions', () => {
   });
 });
 
-function doDelete() {
-  hasTransactionInTable().then((hasTx) => {
-    if (!hasTx) {
-      return;
-    }
-    getFirstDescriptionCell().then(($el) => {
-      if ($el.is(':visible')) {
-        $el.click();
+Cypress.Commands.add('acceptInvitation', (username) => {
+  cy.intercept('GET', '/users').as('apiCheck1');
 
-        getDeleteTransactionButton().click();
+  cy.visit('/user-page');
+  cy.wait('@apiCheck1').then((interception) => {
+    cy.intercept('/tenants/associate').as('apiCheck');
 
-        cy.wait('@apiCheck').then((interception) => {
-          expect(interception?.response?.statusCode).to.eq(200);
-          // Call the function recursively to delete all transactions
-          doDelete();
-        });
-      }
+    getAcceptInvitationButton().click();
+
+    cy.wait('@apiCheck').then((interception) => {
+      expect(interception?.response?.statusCode).to.eq(200);
+      getSwitchTenantButton().click();
+
     });
   });
-}
+});
+
+  Cypress.Commands.add('leaveTenant', () => {
+    cy.visit('/user-page');
+    cy.intercept('GET', '/users').as('apiCheck1');
+    cy.wait('@apiCheck1').then((interception) => {
+      cy.intercept('/tenants/disassociate').as('apiCheck');
+
+      getLeaveTenantButton().click();
+      cy.wait('@apiCheck').then((interception) => {
+        expect(interception?.response?.statusCode).to.eq(200);
+    });
+    });
+});
 
 Cypress.Commands.add('deleteAllInvitedUsers', () => {
+  cy.intercept('GET', '/users').as('apiCheck1');
   getUsernameLink().click();
-  getUserList().should('be.visible');
-  cy.intercept('GET', '/users').as('apiCheck');
-  hasUserExceptSelfInTable().then((hasUser) => {
-    if (!hasUser) {
-      return;
-    }
-    getUserEMailListElement().then(($el) => {
-      if ($el.is(':visible')) {
-        $el.click();
-
-        getUnInviteUserButton().then(($btn) => {
-          if (!$btn.is(':disabled')) {
-            $btn.click();
-
-            cy.wait('@apiCheck').then((interception) => {
-              expect(interception?.response?.statusCode).to.eq(200);
-              // Call the function recursively
-              cy.deleteAllInvitedUsers();
-            });
-          }
-        });
+  cy.wait('@apiCheck1').then((interception) => {
+    getUserList().should('be.visible');
+    hasUserExceptSelfInTable().then((hasUser) => {
+      if (!hasUser) {
+        return;
       }
+      getUserEMailListElement().then(($el) => {
+        if ($el.is(':visible')) {
+          $el.click();
+          getUnInviteUserButton().then(($btn) => {
+
+            cy.intercept('GET', '/users').as('apiCheck2');
+            if (!$btn.is(':disabled')) {
+              $btn.click();
+
+              cy.wait('@apiCheck2').then((interception) => {
+                expect(interception?.response?.statusCode).to.eq(200);
+                // Call the function recursively
+                cy.deleteAllInvitedUsers();
+              });
+            }
+          });
+        }
+      });
     });
   });
+
 });
 
 Cypress.Commands.add('logout', () => {
@@ -188,3 +200,24 @@ Cypress.Commands.add('confirmRegistration', () => {
     },
   );
 });
+
+function doDelete() {
+  hasTransactionInTable().then((hasTx) => {
+    if (!hasTx) {
+      return;
+    }
+    getFirstDescriptionCell().then(($el) => {
+      if ($el.is(':visible')) {
+        $el.click();
+
+        getDeleteTransactionButton().click();
+
+        cy.wait('@apiCheck').then((interception) => {
+          expect(interception?.response?.statusCode).to.eq(200);
+          // Call the function recursively to delete all transactions
+          doDelete();
+        });
+      }
+    });
+  });
+}
