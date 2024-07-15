@@ -3,9 +3,8 @@ import { Observable } from 'rxjs';
 import {
   InvitedUserDto,
   TenantControllerService,
-  TenantDto,
   UserControllerService,
-  UserInfo
+  UserInfo,
 } from '@expense-tracker-ui/api';
 
 @Injectable({
@@ -14,7 +13,6 @@ import {
 export class UserService {
   private userApi = inject(UserControllerService);
   private tenantApi = inject(TenantControllerService);
-
 
   retrieveTenantUsers(): Observable<Array<UserInfo>> {
     return this.userApi.allUsers();
@@ -28,12 +26,11 @@ export class UserService {
     return this.userApi.unInviteUser({ guestEmail });
   }
 
-
-  leaveTenant(tenantId: string) {
-    return this.tenantApi.disassociateTenant({ tenantId });
+  leaveTenant(tenantId: string): Observable<UserInfo> {
+    return this.userApi.disassociateTenant({ tenantId });
   }
 
-  associateTenant(tenantId: string): Observable<TenantDto> {
-    return this.tenantApi.associateTenant({ tenantId });
+  associateTenant(tenantId: string): Observable<UserInfo> {
+    return this.userApi.associateTenant({ tenantId });
   }
 }

@@ -5,9 +5,13 @@ import {
   getCreateTransactionButton,
   getDatePicker,
   getDeleteTransactionButton,
-  getDescriptionInput
+  getDescriptionInput,
 } from './transaction-form.po';
-import { getAddTransactionButton, getFirstDescriptionCell, hasTransactionInTable } from './transactions.po';
+import {
+  getAddTransactionButton,
+  getFirstDescriptionCell,
+  hasTransactionInTable,
+} from './transactions.po';
 import {
   getAcceptInvitationButton,
   getLeaveTenantButton,
@@ -15,7 +19,7 @@ import {
   getUnInviteUserButton,
   getUserEMailListElement,
   getUserList,
-  hasUserExceptSelfInTable
+  hasUserExceptSelfInTable,
 } from './user-page.po';
 import { getTransactionMenu } from './navigation-menu.po';
 
@@ -88,29 +92,28 @@ Cypress.Commands.add('acceptInvitation', (username) => {
 
   cy.visit('/user-page');
   cy.wait('@apiCheck1').then((interception) => {
-    cy.intercept('/tenants/associate').as('apiCheck');
+    cy.intercept('/users/associate').as('apiCheck');
 
     getAcceptInvitationButton().click();
 
     cy.wait('@apiCheck').then((interception) => {
       expect(interception?.response?.statusCode).to.eq(200);
       getSwitchTenantButton().click();
-
     });
   });
 });
 
-  Cypress.Commands.add('leaveTenant', () => {
-    cy.visit('/user-page');
-    cy.intercept('GET', '/users').as('apiCheck1');
-    cy.wait('@apiCheck1').then((interception) => {
-      cy.intercept('/tenants/disassociate').as('apiCheck');
+Cypress.Commands.add('leaveTenant', () => {
+  cy.visit('/user-page');
+  cy.intercept('GET', '/users').as('apiCheck1');
+  cy.wait('@apiCheck1').then((interception) => {
+    cy.intercept('/users/disassociate').as('apiCheck');
 
-      getLeaveTenantButton().click();
-      cy.wait('@apiCheck').then((interception) => {
-        expect(interception?.response?.statusCode).to.eq(200);
+    getLeaveTenantButton().click();
+    cy.wait('@apiCheck').then((interception) => {
+      expect(interception?.response?.statusCode).to.eq(200);
     });
-    });
+  });
 });
 
 Cypress.Commands.add('deleteAllInvitedUsers', () => {
@@ -126,7 +129,6 @@ Cypress.Commands.add('deleteAllInvitedUsers', () => {
         if ($el.is(':visible')) {
           $el.click();
           getUnInviteUserButton().then(($btn) => {
-
             cy.intercept('GET', '/users').as('apiCheck2');
             if (!$btn.is(':disabled')) {
               $btn.click();
@@ -142,7 +144,6 @@ Cypress.Commands.add('deleteAllInvitedUsers', () => {
       });
     });
   });
-
 });
 
 Cypress.Commands.add('logout', () => {
