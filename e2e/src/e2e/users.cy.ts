@@ -4,14 +4,19 @@ import {
   TEST_GUEST_USERNAME,
   TEST_PASSWORD,
   TEST_USER_EMAIL,
-  TEST_USERNAME
+  TEST_USERNAME,
 } from '../support/app.po';
-import { getInviteButton, getUserEmailInput, getUserInviteLink, getUserList } from '../support/user-page.po';
+import {
+  getInviteButton,
+  getUserEmailInput,
+  getUserInviteLink,
+  getUserList,
+} from '../support/user-page.po';
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
 import { Method } from 'cypress/types/net-stubbing';
 
-describe('users', () => {
+describe.only('users', () => {
   before(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
 
@@ -61,8 +66,10 @@ describe('users', () => {
 
     cy.logout();
 
-    cy.intercept('GET', 'https://keycloak.127.0.0.1.nip.io/realms/expense-tracker-realm/account').as('apiCheck1');
-
+    cy.intercept(
+      'GET',
+      'https://keycloak.127.0.0.1.nip.io/realms/expense-tracker-realm/account',
+    ).as('apiCheck1');
 
     cy.loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
 
@@ -82,15 +89,12 @@ describe('users', () => {
 
         cy.acceptInvitation(TEST_GUEST_USERNAME);
 
-
         getTransactionMenu().click();
 
         getFirstAmountCell().should('contain.text', '-100');
 
         cy.leaveTenant();
       });
-
-
     });
   });
 

@@ -5,7 +5,7 @@ import {
   TenantDto,
   TenantWithUserDetails,
   UserControllerService,
-  UserInfo
+  UserInfo,
 } from '@expense-tracker-ui/api';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   setDefaultTenant(tenantId: string) {
-    return this.tenantApi.setDefaultTenant({ tenantId });
+    return this.userApi.setDefaultTenant({ tenantId });
   }
 
   retrieveTenants(): Observable<Array<TenantWithUserDetails>> {
