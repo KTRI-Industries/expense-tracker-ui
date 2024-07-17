@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, forkJoin, from, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  forkJoin,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from './auth.actions';
 import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/api';
+import { UserActions } from '@expense-tracker-ui/user';
 
 @Injectable()
 export class AuthEffects {
@@ -57,10 +68,7 @@ export class AuthEffects {
 
   retrieveTenantUsersAfterChangeOfTenant$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        AuthActions.setDefaultTenantSuccess,
-        AuthActions.switchTenant,
-      ),
+      ofType(AuthActions.setDefaultTenantSuccess, AuthActions.switchTenant),
       map(() => AuthActions.retrieveTenantUsers()),
     ),
   );
@@ -129,9 +137,7 @@ export class AuthEffects {
    */
   refreshTokenAfterTenantGeneratedOrAssociated$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        AuthActions.generateNewTenantSuccess,
-      ),
+      ofType(AuthActions.generateNewTenantSuccess),
       switchMap(() =>
         from(this.keycloak.updateToken(-1)).pipe(
           tap((resp) => console.log(`Token refreshed: ${resp}`)),
@@ -157,10 +163,15 @@ export class AuthEffects {
 
   retrieveTenantUsersAfterTenants$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        AuthActions.retrieveTenantsSuccess,
-      ),
+      ofType(AuthActions.retrieveTenantsSuccess),
       map(() => AuthActions.retrieveTenantUsers()),
+    ),
+  );
+
+  retrieveTenantsAfterUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess),
+      map(() => AuthActions.retrieveTenants()),
     ),
   );
 
