@@ -11,6 +11,7 @@ import {
 } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
+import { MatChip } from '@angular/material/chips';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
@@ -27,6 +28,7 @@ import { RouterLink } from '@angular/router';
     MatSidenavContent,
     RouterLink,
     MatButton,
+    MatChip,
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',
@@ -36,6 +38,7 @@ export class NavMenuComponent {
   @Input() isAuthenticated: boolean | null | undefined = false;
   @Input() isTenantOwner: boolean | null | undefined = false;
   @Input() tenantId: string | null | undefined;
+  @Input() currentTenant: string | null | undefined;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();

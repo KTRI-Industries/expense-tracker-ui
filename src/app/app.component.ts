@@ -6,6 +6,7 @@ import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { NavMenuComponent } from '@expense-tracker-ui/nav-menu';
 import { AsyncPipe } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { Observable } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -19,6 +20,9 @@ export class AppComponent implements OnInit {
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
   tenantId$ = this.store.select(AuthSelectors.selectTenantId);
+  currentTenant$: Observable<string | undefined> = this.store.select(
+    AuthSelectors.selectCurrentTenantOwnerEmail,
+  );
 
   title = 'expense-tracker-ui';
 

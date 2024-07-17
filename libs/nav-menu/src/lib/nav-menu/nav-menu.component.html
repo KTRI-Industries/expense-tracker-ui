@@ -59,6 +59,15 @@
       }
       <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
       <span class="flex-auto"></span>
+      @if (currentTenant) {
+        <span class="px-2 mr-4 text-sm">
+          Account in use:
+          <br />
+          <mat-chip class="text-orange-500">
+            {{ currentTenant }}
+          </mat-chip>
+        </span>
+      }
       <a
         routerLink="/user-page"
         matTooltip="Go to User Page"
