@@ -64,13 +64,17 @@ export const authFeature = createFeature({
     on(AuthActions.retrieveTenantsSuccess, (state, { tenants }) => ({
       ...state,
       tenants,
-      currentTenant: state.currentTenant ?
-        state.currentTenant :
-        (tenants.find((tenant) => tenant.isDefault)?.id || ''),
-
+      currentTenant: state.currentTenant
+        ? state.currentTenant
+        : tenants.find((tenant) => tenant.isDefault)?.id || '',
     })),
   ),
-  extraSelectors: ({ selectUserProfile, selectTenantUsers }) => ({
+  extraSelectors: ({
+    selectUserProfile,
+    selectTenantUsers,
+    selectTenants,
+    selectCurrentTenant,
+  }) => ({
     selectIsLoggedIn: createSelector(
       selectUserProfile,
       (userProfile) => userProfile != null,
@@ -97,6 +101,12 @@ export const authFeature = createFeature({
     selectTenantId: createSelector(
       selectUserProfile,
       (userProfile) => userProfile?.tenantId,
+    ),
+    selectCurrentTenantOwnerEmail: createSelector(
+      selectTenants,
+      selectCurrentTenant,
+      (tenants: TenantWithUserDetails[], currentTenant) =>
+        tenants.find((tenant) => tenant.id === currentTenant)?.mainUserEmail,
     ),
   }),
 });
