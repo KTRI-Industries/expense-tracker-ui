@@ -62,10 +62,11 @@
       @if (currentTenant) {
         <span class="px-2 mr-4 text-sm">
           Account in use:
-          <br />
-          <mat-chip class="text-orange-500">
-            {{ currentTenant }}
-          </mat-chip>
+          <mat-chip-listbox>
+            <mat-chip highlighted color="accent">
+              {{ currentTenant }}
+            </mat-chip>
+          </mat-chip-listbox>
         </span>
       }
       <a

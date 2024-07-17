@@ -11,7 +11,7 @@ import {
 } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
-import { MatChip } from '@angular/material/chips';
+import { MatChip, MatChipListbox, MatChipSet } from '@angular/material/chips';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
@@ -29,6 +29,8 @@ import { MatChip } from '@angular/material/chips';
     RouterLink,
     MatButton,
     MatChip,
+    MatChipSet,
+    MatChipListbox,
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',
