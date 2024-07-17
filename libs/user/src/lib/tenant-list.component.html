@@ -27,7 +27,7 @@
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Actions">
             <div
-              class="flex flex-col sm:flex-row sm:space-x-1 sm:space-y-0 space-y-1">
+              class="flex flex-col lg:flex-row lg:space-x-1 lg:space-y-0 space-y-1 py-1">
               @if (!element.isCurrentUserOwner) {
                 @if (element.isAssociated) {
                   <button
