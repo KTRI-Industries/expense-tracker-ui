@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, from, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -67,7 +76,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(
         UserActions.associateTenantSuccess,
-        AuthActions.retrieveUserProfileSuccess,
+        // AuthActions.retrieveUserProfileSuccess,
         UserActions.leaveTenantSuccess,
         AuthActions.setDefaultTenantSuccess,
         AuthActions.generateNewTenantSuccess,
@@ -75,8 +84,6 @@ export class UserEffects {
       map(() => AuthActions.retrieveTenants()),
     ),
   );
-
-
 
   leaveTenant$ = createEffect(() =>
     this.actions$.pipe(
@@ -116,9 +123,7 @@ export class UserEffects {
   // needed to break the cycle:
   refreshTokenAfterTenantAssociated$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        UserActions.associateTenantSuccess,
-      ),
+      ofType(UserActions.associateTenantSuccess),
       switchMap(() =>
         from(this.keycloak.updateToken(-1)).pipe(
           tap((resp) => console.log(`Token refreshed: ${resp}`)),
@@ -127,7 +132,6 @@ export class UserEffects {
       ),
     ),
   );
-
 
   constructor(
     private actions$: Actions,
