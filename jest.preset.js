@@ -7,4 +7,9 @@ module.exports = {
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
+    '<rootDir>/libs/api/',
+  ]
 };
