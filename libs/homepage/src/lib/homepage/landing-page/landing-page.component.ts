@@ -17,7 +17,6 @@ import { MatIcon } from '@angular/material/icon';
     MatIcon,
   ],
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css',
 })
 export class LandingPageComponent {
   @Output() login = new EventEmitter<void>();

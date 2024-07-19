@@ -45,7 +45,6 @@ import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT I
     MatOption,
   ],
   templateUrl: './chips.component.html',
-  styleUrl: './chips.component.css',
 })
 export class ChipsComponent
   extends FieldType<FieldTypeConfig>

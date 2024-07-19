@@ -1,4 +1,10 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, isDevMode, LOCALE_ID } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  importProvidersFrom,
+  isDevMode,
+  LOCALE_ID,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore, Store } from '@ngrx/store';
@@ -6,28 +12,44 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 import { KeycloakBearerInterceptor, KeycloakService } from 'keycloak-angular';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-// import { UserEffects, UserFeature } from '@expense-tracker-ui/user';
 import {
   AuthEffects,
   AuthFeature,
   ExternalConfiguration,
-  TenantIdHeaderInterceptorInterceptor
+  TenantIdHeaderInterceptorInterceptor,
 } from '@expense-tracker-ui/shared/auth';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApiModule, Configuration, ConfigurationParameters } from '@expense-tracker-ui/api';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import {
+  ApiModule,
+  Configuration,
+  ConfigurationParameters,
+} from '@expense-tracker-ui/api';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { AmountInputComponent, ChipsComponent } from '@expense-tracker-ui/formly';
+import {
+  AmountInputComponent,
+  ChipsComponent,
+} from '@expense-tracker-ui/formly';
 
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBar,
+} from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
-import { ErrorHandlingFeature, GlobalErrorInterceptor } from '@expense-tracker-ui/shared/error-handling';
+import {
+  ErrorHandlingFeature,
+  GlobalErrorInterceptor,
+} from '@expense-tracker-ui/shared/error-handling';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -39,7 +61,7 @@ export function apiConfigFactory(): Configuration {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    provideEffects(AuthEffects, ),
+    provideEffects(AuthEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
