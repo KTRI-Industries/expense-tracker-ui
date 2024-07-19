@@ -66,7 +66,7 @@ export const authFeature = createFeature({
       tenants,
       currentTenant: state.currentTenant
         ? state.currentTenant
-        : tenants.find((tenant) => tenant.isDefault)?.id || '',
+        : tenants.find((tenant) => tenant.isDefault)?.id ?? '',
     })),
   ),
   extraSelectors: ({

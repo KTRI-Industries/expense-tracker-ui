@@ -28,7 +28,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
   templateUrl: './invite-user-form.component.html',
-  styleUrl: './invite-user-form.component.css',
 })
 export class InviteUserFormComponent implements OnInit {
   inviteUserForm = this.fb.group({});

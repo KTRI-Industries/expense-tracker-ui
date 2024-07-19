@@ -43,7 +43,6 @@ type CreateTransactionCommandUi = Omit<
   standalone: true,
 
   templateUrl: './transaction.component.html',
-  styleUrl: './transaction.component.css',
   imports: [
     MatCard,
     MatCardContent,

@@ -9,7 +9,6 @@ import { tap } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './error-handling.component.html',
-  styleUrl: './error-handling.component.css',
 })
 export class ErrorHandlingComponent {
   errorMessage$ = this.store

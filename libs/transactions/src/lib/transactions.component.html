@@ -73,7 +73,9 @@
 
           <mat-row
             *matRowDef="let row; columns: transactionColumns"
-            (click)="onRowSelected(row)"></mat-row>
+            (click)="onRowSelected(row)"
+            (keydown.enter)="onRowSelected(row)"
+            (keydown.space)="onRowSelected(row)"></mat-row>
         </mat-table>
 
         <mat-paginator
