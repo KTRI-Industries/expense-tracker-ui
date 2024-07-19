@@ -5,7 +5,11 @@ import { KeycloakProfile } from 'keycloak-js';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthService } from '../auth.service';
 import { createMockStore } from '@ngrx/store/testing';
-import { TenantDto } from '@expense-tracker-ui/api';
+import {
+  TenantDto,
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/api';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('AuthEffects', () => {
@@ -25,6 +29,8 @@ describe('AuthEffects', () => {
       generateTenant: jest.fn(),
       inviteUser: jest.fn(),
       uninviteUser: jest.fn(),
+      retrieveTenants: jest.fn(),
+      setDefaultTenant: jest.fn(),
     } as any;
   });
 
@@ -201,6 +207,73 @@ describe('AuthEffects', () => {
 
     let result: any;
     authEffects.generateTenant$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should set default tenant successfully', fakeAsync(() => {
+    const tenantId = 'tenant-123';
+    const actions$ = of(AuthActions.setDefaultTenant({ tenantId }));
+
+    const userInfo = {} as UserInfo;
+
+    jest.spyOn(authService, 'setDefaultTenant').mockReturnValue(of(userInfo));
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.setDefaultTenantSuccess();
+
+    let result: any;
+    authEffects.setDefaultTenant$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should retrieve tenants successfully', fakeAsync(() => {
+    const tenants: TenantWithUserDetails[] = [
+      {
+        id: 'tenant-123',
+        isDefault: true,
+        mainUserEmail: 'main@example.com',
+        isAssociated: true,
+        isCurrentUserOwner: true,
+      },
+      {
+        id: 'tenant-456',
+        isDefault: false,
+        mainUserEmail: 'main@example.com',
+        isAssociated: true,
+        isCurrentUserOwner: true,
+      },
+    ];
+    const actions$ = of(AuthActions.retrieveTenants());
+
+    jest.spyOn(authService, 'retrieveTenants').mockReturnValue(of(tenants));
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.retrieveTenantsSuccess({ tenants });
+
+    let result: any;
+    authEffects.retrieveUserTenants$.subscribe((action) => {
       result = action;
     });
 
