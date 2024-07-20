@@ -38,8 +38,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EnumToLabelPipe } from './enum-to-label.pipe';
-import { categoryLabels } from './transaction.component';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { categoryLabels } from './transaction.model';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
