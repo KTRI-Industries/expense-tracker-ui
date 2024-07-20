@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { categoryLabels, TransactionComponent } from './transaction.component';
+import { TransactionComponent } from './transaction.component';
 import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
 import { FormlyModule } from '@ngx-formly/core';
 import {
@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideMockStore } from '@ngrx/store/testing';
+import { categoryLabels } from './transaction.model';
 
 describe('TransactionComponent', () => {
   let component: TransactionComponent;
@@ -113,9 +114,10 @@ describe('TransactionComponent', () => {
     // Assert that event was emitted with correct value
     expect(component.create.emit).toHaveBeenCalledWith({
       ...command,
-      amount: { amount: -(command.amount.amount ?? 0), currency: undefined }, // currency is taken from the model which is not set here
+      amount: { amount: (command.amount.amount ?? 0), currency: undefined }, // currency is taken from the model which is not set here
       date: '2022-01-01',
-      categories: command.categories,
+      categories: ['bills',],
+      txId: undefined,
       txType: 'EXPENSE',
     });
   });

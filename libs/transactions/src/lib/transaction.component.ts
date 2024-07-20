@@ -13,30 +13,17 @@ import {
   FormlyModule,
 } from '@ngx-formly/core';
 import { MatChipsModule } from '@angular/material/chips';
-import {
-  Category,
-  CreateTransactionCommand,
-  TransactionDto,
-  UpdateTransactionCommand,
-} from '@expense-tracker-ui/api';
+import { Category, TransactionDto } from '@expense-tracker-ui/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
 import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
-
-/**
- * The chips component works only with strings, so to keep things simple
- * we will use a custom type for the model of the formly form
- * which is the original CreateTransactionCommand with the category field as a string array.
- */
-type CreateTransactionCommandUi = Omit<
-  CreateTransactionCommand,
-  'categories'
-> & {
-  categories: string[] | undefined;
-};
+import {
+  categoryLabels,
+  CreateTransactionCommandUi,
+} from './transaction.model';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -65,8 +52,8 @@ export class TransactionComponent implements OnInit {
    */
   @Input() selectedTransaction: TransactionDto | undefined | null;
 
-  @Output() create = new EventEmitter<CreateTransactionCommand>();
-  @Output() update = new EventEmitter<UpdateTransactionCommand>();
+  @Output() create = new EventEmitter<CreateTransactionCommandUi>();
+  @Output() update = new EventEmitter<CreateTransactionCommandUi>();
   @Output() delete = new EventEmitter<string>();
 
   /**
@@ -111,6 +98,8 @@ export class TransactionComponent implements OnInit {
       categories: this.selectedTransaction?.categories?.map((category) =>
         this.labelCategoryConverter.getLabelFromEnum(category),
       ),
+      txType: this.options.formState.txType,
+      txId: this.selectedTransaction?.transactionId,
     };
 
     this.fields = [
@@ -187,65 +176,17 @@ export class TransactionComponent implements OnInit {
 
   onCreate() {
     if (this.transactionForm.valid) {
-      const modifiedModel: CreateTransactionCommand = {
-        ...this.model,
-        categories: this.model?.categories?.map((category) =>
-          this.labelCategoryConverter.getEnumFromLabel(category),
-        ),
-        amount: this.transformAmount(),
-        date: this.model?.date ?? '',
-      };
-      this.create.emit(modifiedModel);
+      this.create.emit(this.model);
     }
   }
 
   onUpdate() {
     if (this.transactionForm.valid) {
-      const modifiedModel: UpdateTransactionCommand = {
-        ...this.model,
-        categories: this.model?.categories?.map((category) =>
-          this.labelCategoryConverter.getEnumFromLabel(category),
-        ),
-        amount: this.transformAmount(),
-        date: this.model?.date ?? '',
-        transactionId: this.selectedTransaction?.transactionId ?? '',
-      };
-      this.update.emit(modifiedModel);
+      this.update.emit(this.model);
     }
   }
 
   onDelete() {
     this.delete.emit(this.selectedTransaction?.transactionId);
   }
-
-  private transformAmount() {
-    return {
-      // if we do not spread the amount, after an error in backend the amount object is read only
-      ...this.model?.amount,
-      amount: this.getAmountByType(this.model?.amount.amount),
-    };
-  }
-
-  /**
-   * Returns the amount with the correct sign based on the transaction type.
-   */
-  private getAmountByType(amount: number | undefined) {
-    return this.options.formState.txType === 'EXPENSE'
-      ? -(amount ?? 0)
-      : amount;
-  }
 }
-
-export const categoryLabels: Record<Category, string> = {
-  BILL: 'bills',
-  ENTERTAINMENT: 'entertainment',
-  GIFTS: 'gifts',
-  GROCERIES: 'groceries',
-  OTHER: 'other',
-  RESTAURANT: 'restaurant',
-  RENT: 'rent',
-  SALARY: 'salary',
-  SPORT: 'sport',
-  TAXES: 'taxes',
-  TRAVEL: 'travel',
-};
