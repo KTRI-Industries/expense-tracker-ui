@@ -9,7 +9,6 @@ describe('AppGuard', () => {
   let guard: AppGuard;
   let keycloakService: KeycloakService;
   let store: Store;
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,7 +32,6 @@ describe('AppGuard', () => {
     guard = TestBed.inject(AppGuard);
     keycloakService = TestBed.inject(KeycloakService);
     store = TestBed.inject(Store);
-    router = TestBed.inject(Router);
   });
 
   it('should force login if unauthenticated', async () => {
