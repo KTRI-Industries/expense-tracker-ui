@@ -11,6 +11,7 @@ import {
   UserInfo,
 } from '@expense-tracker-ui/api';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { RoleAwareKeycloakProfile } from './auth.reducer';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
@@ -23,6 +24,7 @@ describe('AuthEffects', () => {
       isLoggedIn: jest.fn(),
       loadUserProfile: jest.fn(),
       getUserRoles: jest.fn(),
+      updateToken: jest.fn(),
       // add other methods as needed
     } as any;
     authService = {
@@ -274,6 +276,142 @@ describe('AuthEffects', () => {
 
     let result: any;
     authEffects.retrieveUserTenants$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should retrieve tenants after user profile is retrieved', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.retrieveUserProfileSuccess({
+        keycloakUserProfile: {} as RoleAwareKeycloakProfile,
+      }),
+    );
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.retrieveTenants();
+
+    let result: any;
+    authEffects.retrieveTenantsAfterUserProfile$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should retrieve tenant users after tenants are retrieved', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.retrieveTenantsSuccess({
+        tenants: {} as TenantWithUserDetails[],
+      }),
+    );
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.retrieveTenantUsers();
+
+    let result: any;
+    authEffects.retrieveTenantUsersAfterTenants$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should retrieve tenant users after change of tenant', fakeAsync(() => {
+    const actions$ = of(AuthActions.setDefaultTenantSuccess());
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.retrieveTenantUsers();
+
+    let result: any;
+    authEffects.retrieveTenantUsersAfterChangeOfTenant$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should refresh token after tenant is generated', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.generateNewTenantSuccess({ tenantId: 'tenant-123' }),
+    );
+
+    jest
+      .spyOn(keycloakService, 'updateToken')
+      .mockImplementation(() => Promise.resolve(true));
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    const expectedAction = AuthActions.retrieveTenantUsers();
+
+    let result: any;
+    authEffects.refreshTokenAfterTenantGeneratedOrAssociated$.subscribe(
+      (action) => {
+        result = action;
+      },
+    );
+
+    tick();
+
+    expect(result).toEqual(expectedAction);
+  }));
+
+  it('should refresh roles after tenant is generated', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.generateNewTenantSuccess({
+        tenantId: 'tenant-123',
+      }),
+    );
+
+    const authEffects = new AuthEffects(
+      actions$,
+      keycloakService,
+      authService,
+      createMockStore({}),
+    );
+
+    jest
+      .spyOn(authEffects, 'refreshRoles')
+      .mockImplementation(() => Promise.resolve(['role1', 'role2']));
+
+    const expectedAction = AuthActions.refreshUserRolesSuccess({
+      userRoles: ['role1', 'role2'],
+    });
+
+    let result: any;
+    authEffects.refreshRolesAfterTenantGenerated$.subscribe((action) => {
       result = action;
     });
 
