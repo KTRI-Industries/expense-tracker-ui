@@ -39,7 +39,7 @@
     "@ngx-formly/material": "6.3.0",
     "@nx/angular": "18.3.4",
     "keycloak-angular": "15.2.1",
-    "keycloak-js": "24.0.3",
+    "keycloak-js": "24.0.5",
     "ng-http-loader": "^15.0.0",
     "ngx-mask": "17.0.7",
     "rxjs": "~7.8.1",
