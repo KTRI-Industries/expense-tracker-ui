@@ -123,7 +123,7 @@ export class UserEffects {
   // needed to break the cycle:
   refreshTokenAfterTenantAssociated$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.associateTenantSuccess),
+      ofType(UserActions.associateTenantSuccess, UserActions.leaveTenantSuccess),
       switchMap(() =>
         from(this.keycloak.updateToken(-1)).pipe(
           tap((resp) => console.log(`Token refreshed: ${resp}`)),
