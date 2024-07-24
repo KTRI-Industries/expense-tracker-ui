@@ -12,4 +12,5 @@ export const {
   selectCurrentTenant,
   selectTenants,
   selectCurrentTenantOwnerEmail,
+  selectPendingInvitations,
 } = authFeature;

@@ -66,7 +66,7 @@ export const authFeature = createFeature({
       tenants,
       currentTenant: state.currentTenant
         ? state.currentTenant
-        : tenants.find((tenant) => tenant.isDefault)?.id ?? '',
+        : (tenants.find((tenant) => tenant.isDefault)?.id ?? ''),
     })),
   ),
   extraSelectors: ({
@@ -107,6 +107,13 @@ export const authFeature = createFeature({
       selectCurrentTenant,
       (tenants: TenantWithUserDetails[], currentTenant) =>
         tenants.find((tenant) => tenant.id === currentTenant)?.mainUserEmail,
+    ),
+    selectPendingInvitations: createSelector(
+      selectTenants,
+      (tenants) =>
+        tenants.filter(
+          (tenant) => !tenant.isAssociated && !tenant.isCurrentUserOwner,
+        ).length,
     ),
   }),
 });

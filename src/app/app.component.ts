@@ -23,6 +23,9 @@ export class AppComponent implements OnInit {
   currentTenant$: Observable<string | undefined> = this.store.select(
     AuthSelectors.selectCurrentTenantOwnerEmail,
   );
+  pendingInvitations$ = this.store.select(
+    AuthSelectors.selectPendingInvitations,
+  );
 
   title = 'expense-tracker-ui';
 

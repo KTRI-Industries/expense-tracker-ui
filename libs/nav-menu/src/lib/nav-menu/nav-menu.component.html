@@ -57,6 +57,16 @@
           Invite User
         </button>
       }
+      @if (!!pendingInvitations && pendingInvitations > 0) {
+        <button
+          class="badge-low"
+          mat-button
+          [matBadge]="pendingInvitations"
+          routerLink="/user-page"
+          (click)="sidenav.close()">
+          Invitations
+        </button>
+      }
       <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
       <span class="flex-auto"></span>
       @if (currentTenant) {

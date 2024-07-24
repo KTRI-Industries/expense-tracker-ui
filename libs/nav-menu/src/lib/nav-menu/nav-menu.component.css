@@ -8,3 +8,13 @@
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px; /* Overwrite the height of the toolbar */
 }
+
+:host ::ng-deep button.badge-low .mat-badge-content {
+  margin: -27px -27px -27px -40px;
+}
+
+@media screen(md) {
+  :host ::ng-deep button.badge-low .mat-badge-content {
+    margin: -15px;
+  }
+}

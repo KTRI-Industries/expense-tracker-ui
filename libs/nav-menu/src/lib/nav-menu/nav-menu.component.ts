@@ -12,6 +12,7 @@ import {
 import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { MatChip, MatChipListbox, MatChipSet } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
@@ -19,6 +20,7 @@ import { MatChip, MatChipListbox, MatChipSet } from '@angular/material/chips';
   imports: [
     CommonModule,
     MatToolbar,
+    MatBadgeModule,
     MatIcon,
     MatIconButton,
     MatTooltip,
@@ -41,6 +43,7 @@ export class NavMenuComponent {
   @Input() isTenantOwner: boolean | null | undefined = false;
   @Input() tenantId: string | null | undefined;
   @Input() currentTenant: string | null | undefined;
+  @Input() pendingInvitations: number | null | undefined = 0;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();
