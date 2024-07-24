@@ -55,7 +55,7 @@ import { MatChip, MatChipSet } from '@angular/material/chips';
     MatChip,
   ],
   templateUrl: './tenant-list.component.html',
-  styles: ``,
+  styleUrl: './tenant-list.component.css',
 })
 export class TenantListComponent {
   private _tenants: TenantWithUserDetails[] | null | undefined;
