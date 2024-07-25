@@ -50,6 +50,7 @@ import {
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
+import { ClearErrorInterceptor } from '../../libs/shared/error-handling/src/lib/clear-error.interceptor';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -77,6 +78,12 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: HTTP_INTERCEPTORS,
+      useClass: ClearErrorInterceptor,
+      multi: true,
+      deps: [Store],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: KeycloakBearerInterceptor, // TODO investigate why this interceptor has to be provided here, according to docs this should be provided by default
       multi: true,
     },
@@ -91,6 +98,7 @@ export const appConfig: ApplicationConfig = {
       useClass: TenantIdHeaderInterceptorInterceptor,
       multi: true,
     },
+
     {
       provide: Configuration,
       useFactory: (externalConfig: ExternalConfiguration) =>

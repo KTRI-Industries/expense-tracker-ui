@@ -7,10 +7,17 @@ import { NavMenuComponent } from '@expense-tracker-ui/nav-menu';
 import { AsyncPipe } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { Observable } from 'rxjs';
+import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, NavMenuComponent, AsyncPipe, NgHttpLoaderModule],
+  imports: [
+    RouterModule,
+    NavMenuComponent,
+    AsyncPipe,
+    NgHttpLoaderModule,
+    ErrorHandlingComponent,
+  ],
   selector: 'expense-tracker-ui-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

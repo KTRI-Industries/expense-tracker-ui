@@ -9,6 +9,7 @@
   (logout)="onLogout()"></expense-tracker-ui-nav-menu>
 <!-- container is used to have margins left and right (better for large screens) mx-auto to align to center and some padding for extra space -->
 <div class="container mx-auto px-4">
+  <expense-tracker-ui-error-handling></expense-tracker-ui-error-handling>
   <router-outlet></router-outlet>
 </div>
 <ng-http-loader [opacity]="'1'"></ng-http-loader>
