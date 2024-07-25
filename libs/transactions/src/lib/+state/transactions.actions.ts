@@ -5,7 +5,7 @@ import {
   PageTransactionDto,
   TransactionDto,
   UpdateTransactionCommand,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 
 export const TransactionActions = createActionGroup({
   source: 'Transactions',

@@ -8,7 +8,7 @@ import {
   Pageable,
   PageTransactionDto,
   TransactionDto,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { cold, hot } from 'jasmine-marbles';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';

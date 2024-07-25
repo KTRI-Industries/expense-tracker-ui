@@ -4,7 +4,10 @@ import { UserPageComponent } from './user-page.component';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
 import { UserActions } from './+state/user.actions';
-import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
+import {
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -44,8 +47,8 @@ export class UserPageContainerComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-        this.store.dispatch(AuthActions.retrieveTenants());
-    }
+    this.store.dispatch(AuthActions.retrieveTenants());
+  }
 
   onDelete(userEmail: string) {
     this.store.dispatch(UserActions.unInviteUser({ userEmail }));

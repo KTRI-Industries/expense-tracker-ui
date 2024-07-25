@@ -13,12 +13,12 @@ import {
   FormlyModule,
 } from '@ngx-formly/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { Category, TransactionDto } from '@expense-tracker-ui/api';
+import { Category, TransactionDto } from '@expense-tracker-ui/shared/api';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
-import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
+import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
 import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 import {
   categoryLabels,

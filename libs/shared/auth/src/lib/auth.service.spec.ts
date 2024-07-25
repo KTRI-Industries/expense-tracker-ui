@@ -4,7 +4,7 @@ import {
   TenantControllerService,
   TenantDto,
   UserControllerService,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {

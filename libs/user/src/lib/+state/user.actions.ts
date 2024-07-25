@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { InvitedUserDto } from '@expense-tracker-ui/api';
+import { InvitedUserDto } from '@expense-tracker-ui/shared/api';
 
 export const UserActions = createActionGroup({
   source: 'User',
@@ -11,7 +11,6 @@ export const UserActions = createActionGroup({
     'UnInvite User': props<{ userEmail: string }>(),
     'UnInvite User Success': emptyProps(),
     'UnInvite User Failure': props<{ error: Error }>(),
-
 
     'Leave Tenant': props<{ tenantId: string }>(),
     'Leave Tenant Success': emptyProps(),

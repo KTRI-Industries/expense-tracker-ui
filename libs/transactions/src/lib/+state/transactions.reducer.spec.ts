@@ -4,7 +4,10 @@ import {
   TransactionsState,
 } from './transactions.reducer';
 import { TransactionActions } from './transactions.actions';
-import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
+import {
+  PageTransactionDto,
+  TransactionDto,
+} from '@expense-tracker-ui/shared/api';
 import { selectAugmentedTransactions } from './transactions.selectors';
 
 describe('Transactions Reducer', () => {
@@ -132,23 +135,66 @@ describe('Transactions Reducer', () => {
 
   it('should return transactions with user email', () => {
     const tenantUsers = [
-      { userId: '1', username: 'user1', email: 'user1@example.com', isMainUser: false },
-      { userId: '2', username: 'user2', email: 'user2@example.com', isMainUser: false },
+      {
+        userId: '1',
+        username: 'user1',
+        email: 'user1@example.com',
+        isMainUser: false,
+      },
+      {
+        userId: '2',
+        username: 'user2',
+        email: 'user2@example.com',
+        isMainUser: false,
+      },
     ];
 
     const transactions: PageTransactionDto = {
       content: [
-        { transactionId: 't1', userId: '1', amount: { currency: 'EUR', amount: 100 }, date: '2022-01-01', description: 'desc1', tenantId: 'tenant1' },
-        { transactionId: 't2', userId: '2', amount: { currency: 'EUR', amount: 200 }, date: '2022-01-02', description: 'desc2', tenantId: 'tenant2' },
+        {
+          transactionId: 't1',
+          userId: '1',
+          amount: { currency: 'EUR', amount: 100 },
+          date: '2022-01-01',
+          description: 'desc1',
+          tenantId: 'tenant1',
+        },
+        {
+          transactionId: 't2',
+          userId: '2',
+          amount: { currency: 'EUR', amount: 200 },
+          date: '2022-01-02',
+          description: 'desc2',
+          tenantId: 'tenant2',
+        },
       ],
     };
 
-    const augmentedTransactions = selectAugmentedTransactions.projector(tenantUsers, transactions);
+    const augmentedTransactions = selectAugmentedTransactions.projector(
+      tenantUsers,
+      transactions,
+    );
 
     expect(augmentedTransactions).toEqual({
       content: [
-        { transactionId: 't1', userId: '1', amount: { currency: 'EUR', amount: 100 }, date: '2022-01-01', description: 'desc1', tenantId: 'tenant1', email: 'user1@example.com' },
-        { transactionId: 't2', userId: '2', amount: { currency: 'EUR', amount: 200 }, date: '2022-01-02', description: 'desc2', tenantId: 'tenant2', email: 'user2@example.com' },
+        {
+          transactionId: 't1',
+          userId: '1',
+          amount: { currency: 'EUR', amount: 100 },
+          date: '2022-01-01',
+          description: 'desc1',
+          tenantId: 'tenant1',
+          email: 'user1@example.com',
+        },
+        {
+          transactionId: 't2',
+          userId: '2',
+          amount: { currency: 'EUR', amount: 200 },
+          date: '2022-01-02',
+          description: 'desc2',
+          tenantId: 'tenant2',
+          email: 'user2@example.com',
+        },
       ],
     });
   });

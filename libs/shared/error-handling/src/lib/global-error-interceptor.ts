@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
-import { ProblemDetail } from '@expense-tracker-ui/api';
+import { ProblemDetail } from '@expense-tracker-ui/shared/api';
 import { Store } from '@ngrx/store';
 import { ErrorHandlingActions } from './+state/error-handling.actions';
 import { Injectable } from '@angular/core';

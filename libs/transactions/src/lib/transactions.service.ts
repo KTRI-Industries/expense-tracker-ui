@@ -6,7 +6,7 @@ import {
   TransactionControllerService,
   TransactionDto,
   UpdateTransactionCommand,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 
 @Injectable({

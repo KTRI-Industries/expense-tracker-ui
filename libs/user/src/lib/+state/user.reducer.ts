@@ -1,5 +1,5 @@
 import { createFeature, createReducer } from '@ngrx/store';
-import { TenantWithUserDetails } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 
 export const USER_FEATURE_KEY = 'user';
 

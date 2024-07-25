@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from '@expense-tracker-ui/shared/auth';
-import { UserInfo } from '@expense-tracker-ui/api';
+import { UserInfo } from '@expense-tracker-ui/shared/api';
 
 describe('UserEffects', () => {
   let router: Router;

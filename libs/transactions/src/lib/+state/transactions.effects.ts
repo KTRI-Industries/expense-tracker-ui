@@ -10,7 +10,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { TransactionActions } from './transactions.actions';
-import { PageTransactionDto } from '@expense-tracker-ui/api';
+import { PageTransactionDto } from '@expense-tracker-ui/shared/api';
 import { TransactionsService } from '../transactions.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';

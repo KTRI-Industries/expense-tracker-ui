@@ -1,7 +1,10 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
-import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
+import {
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/shared/api';
 
 export const AUTH_FEATURE_KEY = 'auth';
 const TENANT_ID = 'tenantId';

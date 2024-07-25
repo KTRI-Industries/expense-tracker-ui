@@ -5,7 +5,7 @@ import {
   TenantControllerService,
   UserControllerService,
   UserInfo,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 
 @Injectable({
   providedIn: 'root',

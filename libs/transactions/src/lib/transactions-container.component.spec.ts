@@ -8,7 +8,7 @@ import {
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TransactionActions, TransactionsSelectors } from '../index';
 import '@testing-library/jest-dom';
-import { PageTransactionDto } from '@expense-tracker-ui/api';
+import { PageTransactionDto } from '@expense-tracker-ui/shared/api';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { LOCALE_ID } from '@angular/core';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';

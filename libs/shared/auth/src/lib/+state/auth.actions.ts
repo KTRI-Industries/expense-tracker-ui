@@ -1,5 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
+import {
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/shared/api';
 import { RoleAwareKeycloakProfile } from './auth.reducer';
 
 export const AuthActions = createActionGroup({

@@ -5,7 +5,7 @@ import {
   screen,
 } from '@testing-library/angular';
 import { TenantListComponent } from './tenant-list.component';
-import { TenantWithUserDetails } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import '@testing-library/jest-dom';
 
 describe('TenantListComponent', () => {

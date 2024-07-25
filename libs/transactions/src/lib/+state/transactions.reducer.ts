@@ -1,5 +1,8 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { PageTransactionDto, TransactionDto } from '@expense-tracker-ui/api';
+import {
+  PageTransactionDto,
+  TransactionDto,
+} from '@expense-tracker-ui/shared/api';
 import { TransactionActions } from './transactions.actions';
 import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
 

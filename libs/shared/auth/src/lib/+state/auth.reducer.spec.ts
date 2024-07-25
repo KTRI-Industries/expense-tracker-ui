@@ -1,8 +1,20 @@
-import { authFeature, AuthState, RoleAwareKeycloakProfile } from './auth.reducer';
+import {
+  authFeature,
+  AuthState,
+  RoleAwareKeycloakProfile,
+} from './auth.reducer';
 import { AuthActions } from './auth.actions';
-import { selectCurrentTenantOwnerEmail, selectIsLoggedIn, selectTenantId, selectUserName } from './auth.selectors';
+import {
+  selectCurrentTenantOwnerEmail,
+  selectIsLoggedIn,
+  selectTenantId,
+  selectUserName,
+} from './auth.selectors';
 import { Action } from '@ngrx/store';
-import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
+import {
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/shared/api';
 
 describe('AuthReducer', () => {
   describe('initial state', () => {

@@ -9,7 +9,7 @@ import {
   TenantDto,
   TenantWithUserDetails,
   UserInfo,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { RoleAwareKeycloakProfile } from './auth.reducer';
 

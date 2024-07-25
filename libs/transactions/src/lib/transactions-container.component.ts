@@ -8,7 +8,7 @@ import {
   Pageable,
   PageTransactionDto,
   TransactionDto,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',

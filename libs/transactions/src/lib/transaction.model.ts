@@ -1,4 +1,7 @@
-import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
+import {
+  Category,
+  CreateTransactionCommand,
+} from '@expense-tracker-ui/shared/api';
 
 export const categoryLabels: Record<Category, string> = {
   BILL: 'bills',

@@ -18,7 +18,7 @@ import {
   Pageable,
   PageTransactionDto,
   TransactionDto,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { MatList, MatListItem } from '@angular/material/list';
 import {
   MatCell,

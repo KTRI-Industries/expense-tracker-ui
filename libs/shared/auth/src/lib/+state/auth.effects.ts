@@ -1,12 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, forkJoin, from, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  forkJoin,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from './auth.actions';
 import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
-import { TenantDto } from '@expense-tracker-ui/api';
+import { TenantDto } from '@expense-tracker-ui/shared/api';
 
 @Injectable()
 export class AuthEffects {

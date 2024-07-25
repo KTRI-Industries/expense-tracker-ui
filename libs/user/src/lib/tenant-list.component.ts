@@ -9,7 +9,7 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
-import { TenantWithUserDetails } from '@expense-tracker-ui/api';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import {
   MatCell,
   MatCellDef,

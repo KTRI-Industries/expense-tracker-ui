@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TransactionComponent } from './transaction.component';
-import { Category, CreateTransactionCommand } from '@expense-tracker-ui/api';
+import {
+  Category,
+  CreateTransactionCommand,
+} from '@expense-tracker-ui/shared/api';
 import { FormlyModule } from '@ngx-formly/core';
 import {
   AmountInputComponent,
   ChipsComponent,
-} from '@expense-tracker-ui/formly';
+} from '@expense-tracker-ui/shared/formly';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
@@ -114,9 +117,9 @@ describe('TransactionComponent', () => {
     // Assert that event was emitted with correct value
     expect(component.create.emit).toHaveBeenCalledWith({
       ...command,
-      amount: { amount: (command.amount.amount ?? 0), currency: undefined }, // currency is taken from the model which is not set here
+      amount: { amount: command.amount.amount ?? 0, currency: undefined }, // currency is taken from the model which is not set here
       date: '2022-01-01',
-      categories: ['bills',],
+      categories: ['bills'],
       txId: undefined,
       txType: 'EXPENSE',
     });

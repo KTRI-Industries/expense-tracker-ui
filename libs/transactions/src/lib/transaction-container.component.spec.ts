@@ -6,14 +6,15 @@ import { TransactionActions } from './+state/transactions.actions';
 import { selectCurrentTransaction } from './+state/transactions.selectors';
 import { TestBed } from '@angular/core/testing';
 import { FormlyModule } from '@ngx-formly/core';
-import {
-  AmountInputComponent,
-  ChipsComponent,
-} from '@expense-tracker-ui/formly';
+
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  AmountInputComponent,
+  ChipsComponent,
+} from '@expense-tracker-ui/shared/formly';
 
 describe('TransactionContainerComponent', () => {
   let component: RenderResult<TransactionContainerComponent>;

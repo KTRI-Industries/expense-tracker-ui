@@ -10,6 +10,6 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/dist/',
-    '<rootDir>/libs/api/',
-  ]
+    '<rootDir>/libs/shared/api/',
+  ],
 };

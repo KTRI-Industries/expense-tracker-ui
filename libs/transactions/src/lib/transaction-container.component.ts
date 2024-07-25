@@ -7,12 +7,12 @@ import {
   CreateTransactionCommand,
   TransactionDto,
   UpdateTransactionCommand,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { selectCurrentTransaction } from './+state/transactions.selectors';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { EnumToLabelConverter } from '@expense-tracker-ui/formly';
+import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
 import {
   categoryLabels,
   CreateTransactionCommandUi,

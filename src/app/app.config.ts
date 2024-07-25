@@ -27,7 +27,7 @@ import {
   ApiModule,
   Configuration,
   ConfigurationParameters,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
@@ -35,7 +35,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import {
   AmountInputComponent,
   ChipsComponent,
-} from '@expense-tracker-ui/formly';
+} from '@expense-tracker-ui/shared/formly';
 
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -47,10 +47,10 @@ import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import {
+  ClearErrorInterceptor,
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
-import { ClearErrorInterceptor } from '../../libs/shared/error-handling/src/lib/clear-error.interceptor';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {

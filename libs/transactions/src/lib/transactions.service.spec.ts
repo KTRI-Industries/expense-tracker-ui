@@ -4,7 +4,7 @@ import {
   PageTransactionDto,
   TransactionControllerService,
   TransactionDto,
-} from '@expense-tracker-ui/api';
+} from '@expense-tracker-ui/shared/api';
 import { Observable, of, throwError } from 'rxjs';
 
 describe('TransactionsService', () => {

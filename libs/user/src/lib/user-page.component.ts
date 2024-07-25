@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TenantWithUserDetails, UserInfo } from '@expense-tracker-ui/api';
+import {
+  TenantWithUserDetails,
+  UserInfo,
+} from '@expense-tracker-ui/shared/api';
 import {
   MatList,
   MatListItem,
