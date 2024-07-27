@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ErrorHandlingActions } from './+state/error-handling.actions';
 
 @Injectable()
 export class ClearErrorInterceptor implements HttpInterceptor {
@@ -19,7 +18,7 @@ export class ClearErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       tap(() => {
-        this.store.dispatch(ErrorHandlingActions.clearBackEndError());
+        // this.store.dispatch(ErrorHandlingActions.clearBackEndError());
       }),
     );
   }

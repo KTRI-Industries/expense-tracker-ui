@@ -51,6 +51,7 @@ import {
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
+import { ErrorHandlingEffects } from '../../libs/shared/error-handling/src/lib/+state/error-handling.effects';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -62,7 +63,7 @@ export function apiConfigFactory(): Configuration {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    provideEffects(AuthEffects),
+    provideEffects(AuthEffects, ErrorHandlingEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),

@@ -177,12 +177,16 @@ export class TransactionComponent implements OnInit {
   onCreate() {
     if (this.transactionForm.valid) {
       this.create.emit(this.model);
+    } else {
+      this.transactionForm.markAllAsTouched();
     }
   }
 
   onUpdate() {
     if (this.transactionForm.valid) {
       this.update.emit(this.model);
+    } else {
+      this.transactionForm.markAllAsTouched();
     }
   }
 
