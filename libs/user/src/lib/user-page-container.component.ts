@@ -1,72 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
 import { UserPageComponent } from './user-page.component';
-import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
-import { UserActions } from './+state/user.actions';
 import {
-  TenantWithUserDetails,
-  UserInfo,
-} from '@expense-tracker-ui/shared/api';
-import { Observable } from 'rxjs';
+  MatTab,
+  MatTabGroup,
+  MatTabLink,
+  MatTabNav,
+  MatTabNavPanel,
+} from '@angular/material/tabs';
+import { TenantListComponent } from './tenant-list.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-user-page-container',
   standalone: true,
-  imports: [UserPageComponent, AsyncPipe],
+  imports: [
+    UserPageComponent,
+    AsyncPipe,
+    MatTabGroup,
+    MatTab,
+    TenantListComponent,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    MatTabLink,
+    MatTabNav,
+    MatTabNavPanel,
+  ],
   template: `
-    <expense-tracker-ui-user-page
-      [tenantUsers]="users$ | async"
-      [isTenantOwner]="isTenantOwner$ | async"
-      [email]="email$ | async"
-      [tenants]="tenants$ | async"
-      [currentTenantId]="currentTenantId$ | async"
-      (delete)="onDelete($event)"
-      (leaveTenant)="onLeaveTenant($event)"
-      (associateTenant)="onAssociateTenant($event)"
-      (switchTenant)="onSwitchTenant($event)"
-      (setDefaultTenant)="
-        onSetDefaultTenant($event)
-      "></expense-tracker-ui-user-page>
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+      <a
+        mat-tab-link
+        routerLinkActive
+        #rla1="routerLinkActive"
+        [routerLink]="['/user-page/users']"
+        [active]="rla1.isActive">
+        Users
+      </a>
+      <a
+        mat-tab-link
+        routerLinkActive
+        #rla2="routerLinkActive"
+        [routerLink]="['/user-page/tenants']"
+        [active]="rla2.isActive">
+        Accounts
+      </a>
+    </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+
+    <router-outlet></router-outlet>
   `,
   styles: ``,
 })
-export class UserPageContainerComponent implements OnInit {
-  users$: Observable<UserInfo[]> = this.store.select(
-    AuthSelectors.selectTenantUsers,
-  );
-  isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
-  email$ = this.store.select(AuthSelectors.selectUserEmail);
-  tenants$: Observable<TenantWithUserDetails[]> = this.store.select(
-    AuthSelectors.selectTenants,
-  );
-  currentTenantId$: Observable<string> = this.store.select(
-    AuthSelectors.selectCurrentTenant,
-  );
-
-  constructor(private store: Store) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(AuthActions.retrieveTenants());
-  }
-
-  onDelete(userEmail: string) {
-    this.store.dispatch(UserActions.unInviteUser({ userEmail }));
-  }
-
-  onLeaveTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(UserActions.leaveTenant({ tenantId: $event.id }));
-  }
-
-  onAssociateTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(UserActions.associateTenant({ tenantId: $event.id }));
-  }
-
-  onSwitchTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(AuthActions.switchTenant({ tenantId: $event.id }));
-  }
-
-  onSetDefaultTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(AuthActions.setDefaultTenant({ tenantId: $event.id }));
-  }
-}
+export class UserPageContainerComponent {}

@@ -7,7 +7,7 @@
         <p>
           You can
           <a
-            routerLink="invite"
+            routerLink="../invite"
             class="hover:underline text-blue-600"
             data-cy="invite-link">
             invite new users
@@ -49,13 +49,3 @@
 </mat-card>
 
 <div class="my-2"></div>
-
-<expense-tracker-ui-tenant-list
-  [tenants]="tenants"
-  [currentTenantId]="currentTenantId"
-  (leaveTenant)="onLeaveTenant($event)"
-  (associateTenant)="onAssociateTenant($event)"
-  (switchTenant)="onSwitchTenant($event)"
-  (setDefaultTenant)="
-    onSetDefaultTenant($event)
-  "></expense-tracker-ui-tenant-list>

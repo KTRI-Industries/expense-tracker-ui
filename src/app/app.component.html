@@ -12,4 +12,8 @@
   <expense-tracker-ui-error-handling></expense-tracker-ui-error-handling>
   <router-outlet></router-outlet>
 </div>
-<ng-http-loader [opacity]="'1'"></ng-http-loader>
+<!-- to avoid flickering play with these values when multiple backend requests are firing at the same time-->
+<ng-http-loader
+  [extraDuration]="200"
+  [minDuration]="100"
+  [opacity]="'1'"></ng-http-loader>

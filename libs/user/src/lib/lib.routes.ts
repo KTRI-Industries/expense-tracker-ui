@@ -6,14 +6,28 @@ import { UserEffects } from './+state/user.effects';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 import { userFeature } from './+state/user.reducer';
+import { UsersContainerComponent } from './users.container.component';
+import { TenantListContainerComponent } from './tenant-list.container.component';
 
 export const userRoutes: Route[] = [
   {
     path: '',
     component: UserPageContainerComponent,
-    providers: [
-      provideState(userFeature),
-      provideEffects(UserEffects),
+    providers: [provideState(userFeature), provideEffects(UserEffects)],
+    children: [
+      {
+        path: '',
+        redirectTo: 'users',
+        pathMatch: 'full',
+      },
+      {
+        path: 'users',
+        component: UsersContainerComponent,
+      },
+      {
+        path: 'tenants',
+        component: TenantListContainerComponent,
+      },
     ],
   },
   {
@@ -23,9 +37,6 @@ export const userRoutes: Route[] = [
     data: {
       roles: ['users', 'tenant-owner'],
     },
-    providers: [
-      provideState(userFeature),
-      provideEffects(UserEffects),
-    ],
+    providers: [provideState(userFeature), provideEffects(UserEffects)],
   },
 ];

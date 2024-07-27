@@ -65,12 +65,14 @@ export class AuthEffects {
     ),
   );
 
+  /*
   retrieveTenantUsersAfterChangeOfTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.setDefaultTenantSuccess, AuthActions.switchTenant),
       map(() => AuthActions.retrieveTenantUsers()),
     ),
   );
+*/
 
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
@@ -134,7 +136,7 @@ export class AuthEffects {
   /**
    * This is needed because the initial token, before tenant generation, does not have the new tenantId!
    */
-  refreshTokenAfterTenantGeneratedOrAssociated$ = createEffect(() =>
+  refreshTokenAfterTenantGenerated$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.generateNewTenantSuccess),
       switchMap(() =>
@@ -160,12 +162,12 @@ export class AuthEffects {
     ),
   );
 
-  retrieveTenantUsersAfterTenants$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.retrieveTenantsSuccess),
-      map(() => AuthActions.retrieveTenantUsers()),
-    ),
-  );
+  // retrieveTenantUsersAfterTenants$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(AuthActions.retrieveTenantsSuccess),
+  //     map(() => AuthActions.retrieveTenantUsers()),
+  //   ),
+  // );
 
   retrieveTenantsAfterUserProfile$ = createEffect(() =>
     this.actions$.pipe(

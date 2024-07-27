@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  TenantWithUserDetails,
-  UserInfo,
-} from '@expense-tracker-ui/shared/api';
+import { UserInfo } from '@expense-tracker-ui/shared/api';
 import {
   MatList,
   MatListItem,
@@ -48,14 +45,8 @@ export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
   @Input() isTenantOwner: boolean | null | undefined = false;
   @Input() email: string | null | undefined = '';
-  @Input() tenants: TenantWithUserDetails[] | null | undefined = [];
-  @Input() currentTenantId: string | null | undefined = '';
 
   @Output() delete = new EventEmitter<string>();
-  @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
-  @Output() associateTenant = new EventEmitter<TenantWithUserDetails>();
-  @Output() switchTenant = new EventEmitter<TenantWithUserDetails>();
-  @Output() setDefaultTenant = new EventEmitter<TenantWithUserDetails>();
 
   onDelete(value: string) {
     console.log(value);
@@ -64,21 +55,5 @@ export class UserPageComponent {
 
   isLoggedInUser(user: UserInfo) {
     return user.email == this.email;
-  }
-
-  onLeaveTenant($event: TenantWithUserDetails) {
-    this.leaveTenant.emit($event);
-  }
-
-  onAssociateTenant($event: TenantWithUserDetails) {
-    this.associateTenant.emit($event);
-  }
-
-  onSwitchTenant($event: TenantWithUserDetails) {
-    this.switchTenant.emit($event);
-  }
-
-  onSetDefaultTenant($event: TenantWithUserDetails) {
-    this.setDefaultTenant.emit($event);
   }
 }

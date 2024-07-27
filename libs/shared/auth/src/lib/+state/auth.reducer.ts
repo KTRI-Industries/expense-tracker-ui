@@ -89,10 +89,16 @@ export const authFeature = createFeature({
     selectIsTenantOwner: createSelector(
       selectTenantUsers,
       selectUserProfile,
-      (users, userProfile) =>
-        (userProfile as RoleAwareKeycloakProfile)?.userRoles?.includes(
-          'tenant-owner',
-        ),
+      selectCurrentTenant,
+      selectTenants,
+      (users, userProfile, currentTenant, tenants) => {
+        const userRoles = (userProfile as RoleAwareKeycloakProfile)?.userRoles;
+        const isTenantOwner = userRoles?.includes('tenant-owner');
+        const isOwnerOfCurrentTenant =
+          tenants.find((tenant) => tenant.id === currentTenant)
+            ?.mainUserEmail === userProfile?.email;
+        return isTenantOwner && isOwnerOfCurrentTenant;
+      },
     ),
     selectNonMainUsers: createSelector(selectTenantUsers, (users) =>
       users.filter((user) => !user.isMainUser),
