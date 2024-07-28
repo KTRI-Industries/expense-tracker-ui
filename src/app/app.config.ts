@@ -48,10 +48,10 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import {
   ClearErrorInterceptor,
+  ErrorHandlingEffects,
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
-import { ErrorHandlingEffects } from '../../libs/shared/error-handling/src/lib/+state/error-handling.effects';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
