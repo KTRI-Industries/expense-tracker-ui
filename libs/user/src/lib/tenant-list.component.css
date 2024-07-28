@@ -27,30 +27,20 @@
     border-bottom: 5px solid #ddd;
     display: block;
   }
-  /*
-    .mat-mdc-table .mat-mdc-row:nth-child(even) {background: #CCC}
-    .mat-mdc-table .mat-mdc-row:nth-child(odd) {background: #FFF}
-    */
+
   .mat-mdc-table .mat-mdc-cell {
     border-bottom: 1px solid #ddd;
     display: block;
     font-size: 1em;
     text-align: right;
-    /*font-weight: bold;*/
-    /*height: 30px;*/
     margin-bottom: 4%;
     padding-top: 3px;
   }
+
   .mat-mdc-table .mat-mdc-cell:before {
-    /*
-        * aria-label has no advantage, it won't be read inside a table
-        content: attr(aria-label);
-        */
     content: attr(data-label);
     float: left;
-    /*text-transform: uppercase;*/
     font-weight: bold;
-
     font-size: 0.85em;
   }
   .mat-mdc-table .mat-mdc-cell:last-child {

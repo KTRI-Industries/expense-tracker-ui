@@ -65,15 +65,6 @@ export class AuthEffects {
     ),
   );
 
-  /*
-  retrieveTenantUsersAfterChangeOfTenant$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.setDefaultTenantSuccess, AuthActions.switchTenant),
-      map(() => AuthActions.retrieveTenantUsers()),
-    ),
-  );
-*/
-
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
@@ -161,13 +152,6 @@ export class AuthEffects {
       ),
     ),
   );
-
-  // retrieveTenantUsersAfterTenants$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(AuthActions.retrieveTenantsSuccess),
-  //     map(() => AuthActions.retrieveTenantUsers()),
-  //   ),
-  // );
 
   retrieveTenantsAfterUserProfile$ = createEffect(() =>
     this.actions$.pipe(

@@ -47,7 +47,6 @@ import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import {
-  ClearErrorInterceptor,
   ErrorHandlingEffects,
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
@@ -76,12 +75,6 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService, ExternalConfiguration],
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ClearErrorInterceptor,
-      multi: true,
-      deps: [Store],
     },
     {
       provide: HTTP_INTERCEPTORS,
