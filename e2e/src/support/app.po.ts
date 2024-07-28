@@ -15,3 +15,5 @@ export const getLogoutButton = () =>
 
 export const getUsernameLink = () =>
   cy.get('[data-cy="top-menu"]  [data-cy=username-link]');
+
+export const getAccountsTab = () => cy.get('[data-cy="tenants-tab"]');

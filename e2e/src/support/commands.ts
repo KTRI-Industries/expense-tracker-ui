@@ -90,7 +90,7 @@ Cypress.Commands.add('deleteVisibleTransactions', () => {
 Cypress.Commands.add('acceptInvitation', (username) => {
   cy.intercept('GET', '/users').as('apiCheck1');
 
-  cy.visit('/user-page');
+  cy.visit('/user-page/tenants');
   cy.wait('@apiCheck1').then((interception) => {
     cy.intercept('/users/associate').as('apiCheck');
 
@@ -104,8 +104,8 @@ Cypress.Commands.add('acceptInvitation', (username) => {
 });
 
 Cypress.Commands.add('leaveTenant', () => {
-  cy.visit('/user-page');
-  cy.intercept('GET', '/users').as('apiCheck1');
+  cy.visit('/user-page/tenants');
+  cy.intercept('GET', '/tenants').as('apiCheck1');
   cy.wait('@apiCheck1').then((interception) => {
     cy.intercept('/users/disassociate').as('apiCheck');
 

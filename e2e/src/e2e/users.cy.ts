@@ -1,4 +1,5 @@
 import {
+  getAccountsTab,
   getUsernameLink,
   TEST_GUEST_EMAIL,
   TEST_GUEST_USERNAME,
@@ -16,7 +17,7 @@ import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
 import { Method } from 'cypress/types/net-stubbing';
 
-describe('users', () => {
+describe.only('users', () => {
   before(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
 
@@ -86,6 +87,8 @@ describe('users', () => {
         getUsernameLink().should('contain', TEST_GUEST_USERNAME);
 
         getUsernameLink().click();
+
+        getAccountsTab().click();
 
         cy.acceptInvitation(TEST_GUEST_USERNAME);
 

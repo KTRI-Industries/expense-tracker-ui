@@ -42,7 +42,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
         routerLinkActive
         #rla2="routerLinkActive"
         [routerLink]="['/user-page/tenants']"
-        [active]="rla2.isActive">
+        [active]="rla2.isActive"
+        data-cy="tenants-tab">
         Accounts
       </a>
     </nav>
