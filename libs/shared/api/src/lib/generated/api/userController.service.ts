@@ -35,6 +35,8 @@ import { InvitedUserDto } from '../model/invitedUserDto';
 // @ts-ignore
 import { ProblemDetail } from '../model/problemDetail';
 // @ts-ignore
+import { RejectInviteCommand } from '../model/rejectInviteCommand';
+// @ts-ignore
 import { SetDefaultTenantCommand } from '../model/setDefaultTenantCommand';
 // @ts-ignore
 import { UninviteUserCommand } from '../model/uninviteUserCommand';
@@ -547,6 +549,114 @@ export class UserControllerService {
   }
 
   /**
+   * @param rejectInviteCommand
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public rejectInvite(
+    rejectInviteCommand: RejectInviteCommand,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<object>;
+  public rejectInvite(
+    rejectInviteCommand: RejectInviteCommand,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<HttpResponse<object>>;
+  public rejectInvite(
+    rejectInviteCommand: RejectInviteCommand,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<HttpEvent<object>>;
+  public rejectInvite(
+    rejectInviteCommand: RejectInviteCommand,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+  ): Observable<any> {
+    if (rejectInviteCommand === null || rejectInviteCommand === undefined) {
+      throw new Error(
+        'Required parameter rejectInviteCommand was null or undefined when calling rejectInvite.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    let localVarCredential: string | undefined;
+    // authentication (security_auth) required
+    localVarCredential = this.configuration.lookupCredential('security_auth');
+    if (localVarCredential) {
+      localVarHeaders = localVarHeaders.set(
+        'Authorization',
+        'Bearer ' + localVarCredential,
+      );
+    }
+
+    let localVarHttpHeaderAcceptSelected: string | undefined =
+      options && options.httpHeaderAccept;
+    if (localVarHttpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['application/json'];
+      localVarHttpHeaderAcceptSelected =
+        this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Accept',
+        localVarHttpHeaderAcceptSelected,
+      );
+    }
+
+    let localVarHttpContext: HttpContext | undefined =
+      options && options.context;
+    if (localVarHttpContext === undefined) {
+      localVarHttpContext = new HttpContext();
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Content-Type',
+        httpContentTypeSelected,
+      );
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (
+        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+      ) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/users/reject-invite`;
+    return this.httpClient.request<object>(
+      'put',
+      `${this.configuration.basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        body: rejectInviteCommand,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: localVarHeaders,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
    * @param setDefaultTenantCommand
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
@@ -667,19 +777,19 @@ export class UserControllerService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<any>;
+  ): Observable<object>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<any>>;
+  ): Observable<HttpResponse<object>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<any>>;
+  ): Observable<HttpEvent<object>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe: any = 'body',
@@ -750,7 +860,7 @@ export class UserControllerService {
     }
 
     let localVarPath = `/users/uninvite`;
-    return this.httpClient.request<any>(
+    return this.httpClient.request<object>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,
       {
