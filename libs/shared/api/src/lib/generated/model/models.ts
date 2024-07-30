@@ -9,6 +9,7 @@ export * from './pageTransactionDto';
 export * from './pageable';
 export * from './pageableObject';
 export * from './problemDetail';
+export * from './rejectInviteCommand';
 export * from './setDefaultTenantCommand';
 export * from './sortObject';
 export * from './tenantDto';
