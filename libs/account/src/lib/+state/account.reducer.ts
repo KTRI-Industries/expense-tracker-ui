@@ -1,50 +1,86 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Action, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
-import * as AccountActions from './account.actions';
-import { AccountEntity } from './account.models';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
+import { AccountActions } from './account.actions';
+import {
+  AuthSelectors,
+  RoleAwareKeycloakProfile,
+  TenantAwareKeycloakProfile,
+} from '@expense-tracker-ui/shared/auth';
 
 export const ACCOUNT_FEATURE_KEY = 'account';
 
-export interface AccountState extends EntityState<AccountEntity> {
-  selectedId?: string | number; // which Account record has been selected
-  loaded: boolean; // has the Account list been loaded
-  error?: string | null; // last known error (if any)
+export interface AccountState {
+  accounts: TenantWithUserDetails[];
+  currentAccount: string;
 }
 
-export interface AccountPartialState {
-  readonly [ACCOUNT_FEATURE_KEY]: AccountState;
-}
+export const initialAccountState: AccountState = {
+  accounts: [],
+  currentAccount: '',
+};
 
-export const accountAdapter: EntityAdapter<AccountEntity> =
-  createEntityAdapter<AccountEntity>();
-
-export const initialAccountState: AccountState = accountAdapter.getInitialState(
-  {
-    // set initial required properties
-    loaded: false,
-  },
-);
-
-const reducer = createReducer(
-  initialAccountState,
-  on(AccountActions.initAccount, (state) => ({
-    ...state,
-    loaded: false,
-    error: null,
-  })),
-  on(AccountActions.loadAccountSuccess, (state, { account }) =>
-    accountAdapter.setAll(account, { ...state, loaded: true }),
+export const accountFeature = createFeature({
+  name: ACCOUNT_FEATURE_KEY,
+  reducer: createReducer(
+    initialAccountState,
+    on(AccountActions.retrieveAccountsSuccess, (state, { accounts }) => ({
+      ...state,
+      accounts,
+      currentAccount: state.currentAccount
+        ? state.currentAccount
+        : (accounts.find((account) => account.isDefault)?.id ?? ''),
+    })),
+    on(AccountActions.setDefaultAccount, (state, { tenantId }) => ({
+      ...state,
+      currentAccount: tenantId,
+    })),
+    on(AccountActions.switchAccount, (state, { tenantId }) => ({
+      ...state,
+      currentAccount: tenantId,
+    })),
   ),
-  on(AccountActions.loadAccountFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
-);
+  extraSelectors: ({ selectAccounts, selectCurrentAccount }) => ({
+    selectCurrentAccountOwnerEmail: createSelector(
+      selectAccounts,
+      selectCurrentAccount,
+      (accounts: TenantWithUserDetails[], currentAccount) =>
+        accounts.find((account) => account.id === currentAccount)
+          ?.mainUserEmail,
+    ),
+    selectPendingAccountInvitations: createSelector(
+      selectAccounts,
+      (accounts) =>
+        accounts.filter(
+          (account) => !account.isAssociated && !account.isCurrentUserOwner,
+        ).length,
+    ),
+    selectIsUserCurrentAccountOwner: createSelector(
+      AuthSelectors.selectUserProfile,
+      selectCurrentAccount,
+      selectAccounts,
+      (userProfile, currentAccount, accounts) => {
+        return (
+          hasAccountOwnerRole(userProfile) &&
+          isOwnerOfCurrentAccount(accounts, currentAccount, userProfile)
+        );
+      },
+    ),
+  }),
+});
 
-export function accountReducer(
-  state: AccountState | undefined,
-  action: Action,
+function hasAccountOwnerRole(userProfile: TenantAwareKeycloakProfile | null) {
+  const userRoles = (userProfile as RoleAwareKeycloakProfile)?.userRoles;
+  return userRoles?.includes('tenant-owner');
+}
+
+function isOwnerOfCurrentAccount(
+  accounts: TenantWithUserDetails[],
+  currentAccount: string,
+  userProfile: TenantAwareKeycloakProfile | null,
 ) {
-  return reducer(state, action);
+  return (
+    accounts.find((account) => account.id === currentAccount)?.mainUserEmail ===
+    userProfile?.email
+  );
 }

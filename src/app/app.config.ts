@@ -16,7 +16,6 @@ import {
   AuthEffects,
   AuthFeature,
   ExternalConfiguration,
-  TenantIdHeaderInterceptorInterceptor,
 } from '@expense-tracker-ui/shared/auth';
 import {
   HTTP_INTERCEPTORS,
@@ -51,6 +50,11 @@ import {
   ErrorHandlingFeature,
   GlobalErrorInterceptor,
 } from '@expense-tracker-ui/shared/error-handling';
+import {
+  AccountEffects,
+  AccountFeature,
+  TenantIdHeaderInterceptorInterceptor,
+} from '@expense-tracker-ui/account';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -62,11 +66,11 @@ export function apiConfigFactory(): Configuration {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    provideEffects(AuthEffects, ErrorHandlingEffects),
+    provideEffects(AuthEffects, ErrorHandlingEffects, AccountEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
-    // provideState(UserFeature.userFeature),
+    provideState(AccountFeature.accountFeature),
     provideState(ErrorHandlingFeature.errorHandlingFeature),
     provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,

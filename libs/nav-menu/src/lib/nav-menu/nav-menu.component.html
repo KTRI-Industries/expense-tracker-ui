@@ -49,7 +49,7 @@
         data-cy="transactions-menu">
         Transactions
       </button>
-      @if (isTenantOwner) {
+      @if (isUserAccountOwner) {
         <button
           mat-button
           routerLink="/user-page/invite"
@@ -57,11 +57,11 @@
           Invite User
         </button>
       }
-      @if (!!pendingInvitations && pendingInvitations > 0) {
+      @if (!!pendingAccountInvitations && pendingAccountInvitations > 0) {
         <button
           class="badge-low"
           mat-button
-          [matBadge]="pendingInvitations"
+          [matBadge]="pendingAccountInvitations"
           routerLink="/user-page/tenants"
           (click)="sidenav.close()">
           Invitations
@@ -69,12 +69,12 @@
       }
       <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->
       <span class="flex-auto"></span>
-      @if (currentTenant) {
+      @if (currentAccount) {
         <span class="px-2 mr-4 text-sm">
           Account in use:
           <mat-chip-listbox>
             <mat-chip highlighted color="accent">
-              {{ currentTenant }}
+              {{ currentAccount }}
             </mat-chip>
           </mat-chip-listbox>
         </span>

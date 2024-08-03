@@ -1,14 +1,27 @@
-import { createAction, props } from '@ngrx/store';
-import { AccountEntity } from './account.models';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 
-export const initAccount = createAction('[Account Page] Init');
+export const AccountActions = createActionGroup({
+  source: 'Account',
+  events: {
+    'Retrieve Accounts': emptyProps(),
+    'Retrieve Accounts Success': props<{ accounts: TenantWithUserDetails[] }>(),
+    'Retrieve Accounts Failure': props<{ error: Error }>(),
 
-export const loadAccountSuccess = createAction(
-  '[Account/API] Load Account Success',
-  props<{ account: AccountEntity[] }>(),
-);
+    'Set Default Account': props<{ tenantId: string }>(),
+    'Set Default Account Success': emptyProps(),
+    'Set Default Account Failure': props<{ error: Error }>(),
 
-export const loadAccountFailure = createAction(
-  '[Account/API] Load Account Failure',
-  props<{ error: any }>(),
-);
+    'Switch Account': props<{ tenantId: string }>(),
+    'Switch Account Success': emptyProps(),
+    'Switch Account Failure': props<{ error: Error }>(),
+
+    'Associate User With Account': props<{ tenantId: string }>(),
+    'Associate User With Account Success': emptyProps(),
+    'Associate User With Account Failure': props<{ error: Error }>(),
+
+    'Leave Account': props<{ tenantId: string }>(),
+    'Leave Account Success': emptyProps(),
+    'Leave Account Failure': props<{ error: Error }>(),
+  },
+});

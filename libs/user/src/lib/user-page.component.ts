@@ -43,7 +43,7 @@ import { TenantListComponent } from './tenant-list.component';
 })
 export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];
-  @Input() isTenantOwner: boolean | null | undefined = false;
+  @Input() isAccountOwner: boolean | null | undefined = false;
   @Input() email: string | null | undefined = '';
 
   @Output() delete = new EventEmitter<string>();

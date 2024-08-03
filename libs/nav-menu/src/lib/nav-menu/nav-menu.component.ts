@@ -40,10 +40,10 @@ import { MatBadgeModule } from '@angular/material/badge';
 export class NavMenuComponent {
   @Input() username: string | null | undefined = '';
   @Input() isAuthenticated: boolean | null | undefined = false;
-  @Input() isTenantOwner: boolean | null | undefined = false;
+  @Input() isUserAccountOwner: boolean | null | undefined = false;
   @Input() tenantId: string | null | undefined;
-  @Input() currentTenant: string | null | undefined;
-  @Input() pendingInvitations: number | null | undefined = 0;
+  @Input() currentAccount: string | null | undefined;
+  @Input() pendingAccountInvitations: number | null | undefined = 0;
 
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();
