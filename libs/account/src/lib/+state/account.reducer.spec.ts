@@ -1,41 +1,86 @@
-import { Action } from '@ngrx/store';
+import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
+import { accountFeature, AccountState } from './account.reducer';
+import { AccountActions } from './account.actions';
 
-import * as AccountActions from './account.actions';
-import { AccountEntity } from './account.models';
-import {
-  accountReducer,
-  AccountState,
-  initialAccountState,
-} from './account.reducer';
+describe('AccountReducer', () => {
+  describe('retrieveAccountsSuccess action', () => {
+    it('should set the accounts property and currentAccount if not set', () => {
+      const initialState: AccountState = {
+        accounts: [],
+        currentAccount: '',
+      };
 
-describe('Account Reducer', () => {
-  const createAccountEntity = (id: string, name = ''): AccountEntity => ({
-    id,
-    name: name || `name-${id}`,
-  });
-
-  describe('valid Account actions', () => {
-    it('loadAccountSuccess should return the list of known Account', () => {
-      const account = [
-        createAccountEntity('PRODUCT-AAA'),
-        createAccountEntity('PRODUCT-zzz'),
+      const accounts: TenantWithUserDetails[] = [
+        {
+          id: 'tenant-123',
+          isDefault: true,
+          mainUserEmail: 'main@example.com',
+          isAssociated: true,
+          isCurrentUserOwner: true,
+        },
+        {
+          id: 'tenant-456',
+          isDefault: false,
+          mainUserEmail: 'main@example.com',
+          isAssociated: true,
+          isCurrentUserOwner: true,
+        },
       ];
-      const action = AccountActions.loadAccountSuccess({ account });
 
-      const result: AccountState = accountReducer(initialAccountState, action);
+      const expectedState: AccountState = {
+        accounts: accounts,
+        currentAccount: 'tenant-123',
+      };
 
-      expect(result.loaded).toBe(true);
-      expect(result.ids.length).toBe(2);
+      const actualState = accountFeature.reducer(
+        initialState,
+        AccountActions.retrieveAccountsSuccess({ accounts }),
+      );
+
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+  describe('switchAccount action', () => {
+    it('should set the currentAccount property', () => {
+      const initialState: AccountState = {
+        accounts: [],
+        currentAccount: '',
+      };
+
+      const tenantId = 'tenant-123';
+      const expectedState: AccountState = {
+        accounts: [],
+        currentAccount: tenantId,
+      };
+
+      const actualState = accountFeature.reducer(
+        initialState,
+        AccountActions.switchAccount({ tenantId }),
+      );
+
+      expect(actualState).toEqual(expectedState);
     });
   });
 
-  describe('unknown action', () => {
-    it('should return the previous state', () => {
-      const action = {} as Action;
+  describe('setDefaultAccount action', () => {
+    it('should set the currentAccount property', () => {
+      const initialState: AccountState = {
+        accounts: [],
+        currentAccount: '',
+      };
 
-      const result = accountReducer(initialAccountState, action);
+      const tenantId = 'tenant-123';
+      const expectedState: AccountState = {
+        accounts: [],
+        currentAccount: tenantId,
+      };
 
-      expect(result).toBe(initialAccountState);
+      const actualState = accountFeature.reducer(
+        initialState,
+        AccountActions.setDefaultAccount({ tenantId }),
+      );
+
+      expect(actualState).toEqual(expectedState);
     });
   });
 });

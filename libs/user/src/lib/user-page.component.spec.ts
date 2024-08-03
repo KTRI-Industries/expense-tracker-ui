@@ -30,7 +30,10 @@ describe('UserPageComponent', () => {
 
   it('should emit onDelete event when "Delete" button is clicked and isTenantOwner is true', async () => {
     component = await setupComponent(true, [{ email: 'test@example.com' }]);
-    const deleteSpy = jest.spyOn(component.fixture.componentInstance, 'onDelete');
+    const deleteSpy = jest.spyOn(
+      component.fixture.componentInstance,
+      'onDelete',
+    );
 
     const option = screen.getByText('test@example.com');
     fireEvent.click(option);
@@ -51,7 +54,7 @@ describe('UserPageComponent', () => {
 async function setupComponent(isTenantOwner: boolean, tenantUsers: any[]) {
   return await render(UserPageComponent, {
     componentProperties: {
-      isTenantOwner,
+      isAccountOwner: isTenantOwner,
       tenantUsers,
     },
   });

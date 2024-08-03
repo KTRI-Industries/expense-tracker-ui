@@ -8,6 +8,7 @@ import { AsyncPipe } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { Observable } from 'rxjs';
 import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
+import { AccountSelectors } from '@expense-tracker-ui/account';
 
 @Component({
   standalone: true,
@@ -25,13 +26,15 @@ import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handlin
 export class AppComponent implements OnInit {
   username$ = this.store.select(AuthSelectors.selectUserName);
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
-  isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
-  tenantId$ = this.store.select(AuthSelectors.selectTenantId);
-  currentTenant$: Observable<string | undefined> = this.store.select(
-    AuthSelectors.selectCurrentTenantOwnerEmail,
+  isUserAccountOwner$ = this.store.select(
+    AccountSelectors.selectIsUserCurrentAccountOwner,
   );
-  pendingInvitations$ = this.store.select(
-    AuthSelectors.selectPendingInvitations,
+  tenantId$ = this.store.select(AuthSelectors.selectTenantId);
+  currentAccount$: Observable<string | undefined> = this.store.select(
+    AccountSelectors.selectCurrentAccountOwnerEmail,
+  );
+  pendingAccountInvitations$ = this.store.select(
+    AccountSelectors.selectPendingAccountInvitations,
   );
 
   title = 'expense-tracker-ui';

@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { first, Observable, switchMap } from 'rxjs';
-import { AuthSelectors } from '../index';
 import { Store } from '@ngrx/store';
+import { AccountSelectors } from '../index';
 
 @Injectable()
 export class TenantIdHeaderInterceptorInterceptor implements HttpInterceptor {
@@ -12,7 +17,7 @@ export class TenantIdHeaderInterceptorInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    return this.store.select(AuthSelectors.selectCurrentTenant).pipe(
+    return this.store.select(AccountSelectors.selectCurrentAccount).pipe(
       first(),
       switchMap((currentTenantId) => {
         if (currentTenantId) {

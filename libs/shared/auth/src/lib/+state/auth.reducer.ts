@@ -1,10 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { KeycloakProfile } from 'keycloak-js';
 import { AuthActions } from './auth.actions';
-import {
-  TenantWithUserDetails,
-  UserInfo,
-} from '@expense-tracker-ui/shared/api';
+import { UserInfo } from '@expense-tracker-ui/shared/api';
 
 export const AUTH_FEATURE_KEY = 'auth';
 const TENANT_ID = 'tenantId';
@@ -12,16 +9,16 @@ const TENANT_ID = 'tenantId';
 export interface AuthState {
   userProfile: TenantAwareKeycloakProfile | null;
   tenantUsers: UserInfo[];
-  tenants: TenantWithUserDetails[];
-  currentTenant: string;
+  // tenants: TenantWithUserDetails[];
+  // currentTenant: string;
 }
 
 export const initialAuthState: AuthState = {
   // set initial required properties
   userProfile: null,
   tenantUsers: [],
-  tenants: [],
-  currentTenant: '',
+  // tenants: [],
+  // currentTenant: '',
 };
 
 export const authFeature = createFeature({
@@ -48,14 +45,14 @@ export const authFeature = createFeature({
       ...state,
       tenantUsers: users,
     })),
-    on(AuthActions.switchTenant, (state, { tenantId }) => ({
+    /*    on(AuthActions.switchTenant, (state, { tenantId }) => ({
       ...state,
       currentTenant: tenantId,
     })),
     on(AuthActions.setDefaultTenant, (state, { tenantId }) => ({
       ...state,
       currentTenant: tenantId,
-    })),
+    })),*/
 
     on(AuthActions.refreshUserRolesSuccess, (state, { userRoles }) => ({
       ...state,
@@ -64,19 +61,19 @@ export const authFeature = createFeature({
         userRoles,
       },
     })),
-    on(AuthActions.retrieveTenantsSuccess, (state, { tenants }) => ({
+    /*    on(AuthActions.retrieveTenantsSuccess, (state, { tenants }) => ({
       ...state,
       tenants,
       currentTenant: state.currentTenant
         ? state.currentTenant
         : (tenants.find((tenant) => tenant.isDefault)?.id ?? ''),
-    })),
+    })),*/
   ),
   extraSelectors: ({
     selectUserProfile,
     selectTenantUsers,
-    selectTenants,
-    selectCurrentTenant,
+    // selectTenants,
+    // selectCurrentTenant,
   }) => ({
     selectIsLoggedIn: createSelector(
       selectUserProfile,
@@ -86,7 +83,7 @@ export const authFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile?.username,
     ),
-    selectIsTenantOwner: createSelector(
+    /*selectIsTenantOwner: createSelector(
       selectTenantUsers,
       selectUserProfile,
       selectCurrentTenant,
@@ -99,7 +96,7 @@ export const authFeature = createFeature({
             ?.mainUserEmail === userProfile?.email;
         return isTenantOwner && isOwnerOfCurrentTenant;
       },
-    ),
+    ),*/
     selectNonMainUsers: createSelector(selectTenantUsers, (users) =>
       users.filter((user) => !user.isMainUser),
     ),
@@ -111,19 +108,19 @@ export const authFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile?.tenantId,
     ),
-    selectCurrentTenantOwnerEmail: createSelector(
-      selectTenants,
-      selectCurrentTenant,
-      (tenants: TenantWithUserDetails[], currentTenant) =>
-        tenants.find((tenant) => tenant.id === currentTenant)?.mainUserEmail,
-    ),
-    selectPendingInvitations: createSelector(
+    // selectCurrentTenantOwnerEmail: createSelector(
+    //   selectTenants,
+    //   selectCurrentTenant,
+    //   (tenants: TenantWithUserDetails[], currentTenant) =>
+    //     tenants.find((tenant) => tenant.id === currentTenant)?.mainUserEmail,
+    // ),
+    /* selectPendingInvitations: createSelector(
       selectTenants,
       (tenants) =>
         tenants.filter(
           (tenant) => !tenant.isAssociated && !tenant.isCurrentUserOwner,
         ).length,
-    ),
+    ),*/
   }),
 });
 

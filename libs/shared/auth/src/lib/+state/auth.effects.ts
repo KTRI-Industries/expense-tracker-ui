@@ -65,6 +65,8 @@ export class AuthEffects {
     ),
   );
 
+  // NOTE: this effect and the next one needs to be in auth because the user profile is updated
+  // in the reducer with the tenantId after generateNewTenantSuccess
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
@@ -110,20 +112,6 @@ export class AuthEffects {
     ),
   );
 
-  setDefaultTenant$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.setDefaultTenant),
-      switchMap((action) =>
-        this.authService.setDefaultTenant(action.tenantId).pipe(
-          map(() => AuthActions.setDefaultTenantSuccess()),
-          catchError((error: Error) =>
-            of(AuthActions.setDefaultTenantFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
   /**
    * This is needed because the initial token, before tenant generation, does not have the new tenantId!
    */
@@ -136,27 +124,6 @@ export class AuthEffects {
           map(() => AuthActions.retrieveTenantUsers()),
         ),
       ),
-    ),
-  );
-
-  retrieveUserTenants$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.retrieveTenants),
-      switchMap(() =>
-        this.authService.retrieveTenants().pipe(
-          map((tenants) => AuthActions.retrieveTenantsSuccess({ tenants })),
-          catchError((error: Error) =>
-            of(AuthActions.retrieveTenantsFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  retrieveTenantsAfterUserProfile$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.retrieveUserProfileSuccess),
-      map(() => AuthActions.retrieveTenants()),
     ),
   );
 

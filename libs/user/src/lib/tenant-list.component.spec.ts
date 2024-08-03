@@ -242,7 +242,7 @@ describe('TenantListComponent', () => {
     );
 
     const associateTenantSpy = jest.spyOn(
-      component.fixture.componentInstance.associateTenant,
+      component.fixture.componentInstance.associateUserWithAccount,
       'emit',
     );
 
@@ -272,7 +272,7 @@ describe('TenantListComponent', () => {
     );
 
     const switchTenantSpy = jest.spyOn(
-      component.fixture.componentInstance.switchTenant,
+      component.fixture.componentInstance.switchAccount,
       'emit',
     );
 
@@ -302,7 +302,7 @@ describe('TenantListComponent', () => {
     );
 
     const setDefaultTenantSpy = jest.spyOn(
-      component.fixture.componentInstance.setDefaultTenant,
+      component.fixture.componentInstance.setDefaultAccount,
       'emit',
     );
 

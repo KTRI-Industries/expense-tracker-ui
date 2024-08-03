@@ -1,3 +1,4 @@
+/*
 import { Route } from '@angular/router';
 import { AccountComponent } from './account/account.component';
 import { provideState } from '@ngrx/store';
@@ -15,3 +16,4 @@ export const accountRoutes: Route[] = [
     ],
   },
 ];
+*/

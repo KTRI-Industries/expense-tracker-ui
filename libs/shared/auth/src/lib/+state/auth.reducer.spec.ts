@@ -5,16 +5,12 @@ import {
 } from './auth.reducer';
 import { AuthActions } from './auth.actions';
 import {
-  selectCurrentTenantOwnerEmail,
   selectIsLoggedIn,
   selectTenantId,
   selectUserName,
 } from './auth.selectors';
 import { Action } from '@ngrx/store';
-import {
-  TenantWithUserDetails,
-  UserInfo,
-} from '@expense-tracker-ui/shared/api';
+import { UserInfo } from '@expense-tracker-ui/shared/api';
 
 describe('AuthReducer', () => {
   describe('initial state', () => {
@@ -22,8 +18,6 @@ describe('AuthReducer', () => {
       const expectedState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(undefined, {} as Action);
@@ -42,16 +36,12 @@ describe('AuthReducer', () => {
           lastName: 'User',
         },
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
         {
           userProfile: null,
           tenantUsers: [],
-          tenants: [],
-          currentTenant: '',
         },
         AuthActions.retrieveUserProfileSuccess({
           keycloakUserProfile: expectedState.userProfile || {},
@@ -65,8 +55,6 @@ describe('AuthReducer', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const userProfile = {
@@ -83,8 +71,6 @@ describe('AuthReducer', () => {
           tenantId: undefined,
         },
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -108,8 +94,6 @@ describe('AuthReducer', () => {
           lastName: 'User',
         },
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const tenantId = 'tenant-123';
@@ -119,8 +103,6 @@ describe('AuthReducer', () => {
           tenantId,
         },
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -137,8 +119,6 @@ describe('AuthReducer', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const tenantUsers: UserInfo[] = [
@@ -159,8 +139,6 @@ describe('AuthReducer', () => {
       const expectedState: AuthState = {
         userProfile: null,
         tenantUsers,
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -172,13 +150,11 @@ describe('AuthReducer', () => {
     });
   });
 
-  describe('switchTenant action', () => {
+  /*describe('switchTenant action', () => {
     it('should set the currentTenant property', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const tenantId = 'tenant-123';
@@ -203,8 +179,6 @@ describe('AuthReducer', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const tenantId = 'tenant-123';
@@ -222,7 +196,7 @@ describe('AuthReducer', () => {
 
       expect(actualState).toEqual(expectedState);
     });
-  });
+  });*/
 
   describe('refreshUserRolesSuccess action', () => {
     it('should set the userRoles property of userProfile', () => {
@@ -234,8 +208,6 @@ describe('AuthReducer', () => {
           lastName: 'User',
         },
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const userRoles = ['role1', 'role2'];
@@ -245,8 +217,6 @@ describe('AuthReducer', () => {
           userRoles,
         } as RoleAwareKeycloakProfile,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const actualState = authFeature.reducer(
@@ -258,13 +228,11 @@ describe('AuthReducer', () => {
     });
   });
 
-  describe('retrieveTenantsSuccess action', () => {
+  /*describe('retrieveTenantsSuccess action', () => {
     it('should set the tenants property and currentTenant if not set', () => {
       const initialState: AuthState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
 
       const tenants: TenantWithUserDetails[] = [
@@ -298,7 +266,7 @@ describe('AuthReducer', () => {
 
       expect(actualState).toEqual(expectedState);
     });
-  });
+  });*/
 
   describe('AuthSelector', () => {
     let authState: AuthState;
@@ -307,8 +275,6 @@ describe('AuthReducer', () => {
       authState = {
         userProfile: null,
         tenantUsers: [],
-        tenants: [],
-        currentTenant: '',
       };
     });
 
@@ -370,7 +336,7 @@ describe('AuthReducer', () => {
       expect(tenantId).toBeUndefined();
     });
 
-    it('should return the currentTenantOwnerEmail if the tenants and currentTenant are defined', () => {
+    /* it('should return the currentTenantOwnerEmail if the tenants and currentTenant are defined', () => {
       const tenants: TenantWithUserDetails[] = [
         {
           id: 'tenant-123',
@@ -430,6 +396,6 @@ describe('AuthReducer', () => {
       );
 
       expect(currentTenantOwnerEmail).toBeUndefined();
-    });
+    });*/
   });
 });

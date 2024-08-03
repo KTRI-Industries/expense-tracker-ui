@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthActions } from '@expense-tracker-ui/shared/auth';
-import { UserInfo } from '@expense-tracker-ui/shared/api';
 
 describe('UserEffects', () => {
   let router: Router;
@@ -158,7 +157,7 @@ describe('UserEffects', () => {
     expect(result).toEqual(expectedAction);
   }));
 
-  it('should leave tenant successfully', fakeAsync(() => {
+  /*it('should leave tenant successfully', fakeAsync(() => {
     const tenantId = 'tenant-123';
     const actions$ = of(UserActions.leaveTenant({ tenantId }));
 
@@ -184,9 +183,9 @@ describe('UserEffects', () => {
     tick();
 
     expect(result).toEqual(expectedAction);
-  }));
+  }));*/
 
-  it('should associate tenant successfully', fakeAsync(() => {
+  /* it('should associate tenant successfully', fakeAsync(() => {
     const tenantId = 'tenant-123';
     const actions$ = of(UserActions.associateTenant({ tenantId }));
 
@@ -212,5 +211,5 @@ describe('UserEffects', () => {
     tick();
 
     expect(result).toEqual(expectedAction);
-  }));
+  }));*/
 });

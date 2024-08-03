@@ -6,6 +6,7 @@ import { AsyncPipe } from '@angular/common';
 import { UserActions } from './+state/user.actions';
 import { UserInfo } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
+import { AccountSelectors } from '@expense-tracker-ui/account';
 
 @Component({
   selector: 'expense-tracker-ui-user-page-container',
@@ -14,7 +15,7 @@ import { Observable } from 'rxjs';
   template: `
     <expense-tracker-ui-user-page
       [tenantUsers]="users$ | async"
-      [isTenantOwner]="isTenantOwner$ | async"
+      [isAccountOwner]="isAccountOwner$ | async"
       [email]="email$ | async"
       (delete)="onDelete($event)"></expense-tracker-ui-user-page>
   `,
@@ -24,7 +25,9 @@ export class UsersContainerComponent implements OnInit {
   users$: Observable<UserInfo[]> = this.store.select(
     AuthSelectors.selectTenantUsers,
   );
-  isTenantOwner$ = this.store.select(AuthSelectors.selectIsTenantOwner);
+  isAccountOwner$ = this.store.select(
+    AccountSelectors.selectIsUserCurrentAccountOwner,
+  );
   email$ = this.store.select(AuthSelectors.selectUserEmail);
 
   constructor(private store: Store) {}

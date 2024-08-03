@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
   filter,
-  from,
   map,
   of,
   switchMap,
@@ -72,64 +71,10 @@ export class UserEffects {
     ),
   );
 
-  retrieveTenantsAfterTenantChangeAction$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        UserActions.associateTenantSuccess,
-        // AuthActions.retrieveUserProfileSuccess,
-        UserActions.leaveTenantSuccess,
-        AuthActions.setDefaultTenantSuccess,
-        AuthActions.generateNewTenantSuccess,
-      ),
-      map(() => AuthActions.retrieveTenants()),
-    ),
-  );
-
-  leaveTenant$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.leaveTenant),
-      switchMap((action) =>
-        this.userService.leaveTenant(action.tenantId).pipe(
-          map(() => UserActions.leaveTenantSuccess()),
-          catchError((error: Error) =>
-            of(UserActions.leaveTenantFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  associateTenant$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.associateTenant),
-      switchMap((action) =>
-        this.userService.associateTenant(action.tenantId).pipe(
-          map(() => UserActions.associateTenantSuccess()),
-          catchError((error: Error) =>
-            of(UserActions.associateTenantFailure({ error })),
-          ),
-        ),
-      ),
-    ),
-  );
-
   clearError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.inviteUserSuccess),
       map(() => ErrorHandlingActions.clearBackEndError()),
-    ),
-  );
-
-  // needed to break the cycle:
-  refreshTokenAfterTenantAssociated$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(UserActions.associateTenantSuccess, UserActions.leaveTenantSuccess),
-      switchMap(() =>
-        from(this.keycloak.updateToken(-1)).pipe(
-          tap((resp) => console.log(`Token refreshed: ${resp}`)),
-          map(() => AuthActions.retrieveTenantUsers()),
-        ),
-      ),
     ),
   );
 

@@ -3,7 +3,7 @@
     <mat-card-title>Users</mat-card-title>
     <mat-card-subtitle>
       Here you can see all the users linked with your account.
-      @if (isTenantOwner) {
+      @if (isAccountOwner) {
         <p>
           You can
           <a
@@ -21,7 +21,7 @@
   <mat-card-content>
     <mat-selection-list #users [multiple]="false" data-cy="user-list">
       @for (user of tenantUsers; track user) {
-        @if (isTenantOwner) {
+        @if (isAccountOwner) {
           <mat-list-option [value]="user" [disabled]="isLoggedInUser(user)">
             <span matListItemLine>{{ user.email }}</span>
           </mat-list-option>
@@ -34,7 +34,7 @@
       <p>No users found.</p>
     }
   </mat-card-content>
-  @if (isTenantOwner) {
+  @if (isAccountOwner) {
     <mat-card-actions>
       <button
         mat-raised-button

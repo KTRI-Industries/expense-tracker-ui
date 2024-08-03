@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
-import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { AsyncPipe } from '@angular/common';
-import { UserActions } from './+state/user.actions';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 import { TenantListComponent } from './tenant-list.component';
+import { AccountActions, AccountSelectors } from '@expense-tracker-ui/account';
 
 @Component({
   selector: 'expense-tracker-ui-tenant-list-container',
@@ -14,44 +13,48 @@ import { TenantListComponent } from './tenant-list.component';
   imports: [UserPageComponent, AsyncPipe, TenantListComponent],
   template: `
     <expense-tracker-ui-tenant-list
-      [tenants]="tenants$ | async"
+      [tenants]="accounts$ | async"
       [currentTenantId]="currentTenantId$ | async"
       (leaveTenant)="onLeaveTenant($event)"
-      (associateTenant)="onAssociateTenant($event)"
-      (switchTenant)="onSwitchTenant($event)"
-      (setDefaultTenant)="
-        onSetDefaultTenant($event)
+      (associateUserWithAccount)="onAssociateUserWithAccount($event)"
+      (switchAccount)="onSwitchAccount($event)"
+      (setDefaultAccount)="
+        onSetDefaultAccount($event)
       "></expense-tracker-ui-tenant-list>
   `,
   styles: ``,
 })
 export class TenantListContainerComponent implements OnInit {
-  tenants$: Observable<TenantWithUserDetails[]> = this.store.select(
-    AuthSelectors.selectTenants,
+  accounts$: Observable<TenantWithUserDetails[]> = this.store.select(
+    AccountSelectors.selectAccounts,
   );
   currentTenantId$: Observable<string> = this.store.select(
-    AuthSelectors.selectCurrentTenant,
+    AccountSelectors.selectCurrentAccount,
   );
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store.dispatch(AuthActions.retrieveTenants());
+    this.store.dispatch(AccountActions.retrieveAccounts());
   }
 
   onLeaveTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(UserActions.leaveTenant({ tenantId: $event.id }));
+    this.store.dispatch(AccountActions.leaveAccount({ tenantId: $event.id }));
   }
 
-  onAssociateTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(UserActions.associateTenant({ tenantId: $event.id }));
+  onAssociateUserWithAccount($event: TenantWithUserDetails) {
+    this.store.dispatch(
+      AccountActions.associateUserWithAccount({ tenantId: $event.id }),
+    );
   }
 
-  onSwitchTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(AuthActions.switchTenant({ tenantId: $event.id }));
+  onSwitchAccount($event: TenantWithUserDetails) {
+    this.store.dispatch(AccountActions.switchAccount({ tenantId: $event.id }));
   }
 
-  onSetDefaultTenant($event: TenantWithUserDetails) {
-    this.store.dispatch(AuthActions.setDefaultTenant({ tenantId: $event.id }));
+  onSetDefaultAccount($event: TenantWithUserDetails) {
+    this.store.dispatch(
+      AccountActions.setDefaultAccount({ tenantId: $event.id }),
+    );
   }
 }
