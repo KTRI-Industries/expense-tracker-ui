@@ -10,5 +10,3 @@ export * from './lib/external-configuration';
 export * from './lib/+state/auth.reducer';
 
 export * from './lib/app.guard';
-
-// export * from './lib/tenant-id-header-interceptor.interceptor';

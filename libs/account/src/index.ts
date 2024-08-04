@@ -4,7 +4,6 @@ import * as AccountSelectors from './lib/+state/account.selectors';
 export { AccountFeature, AccountSelectors };
 
 export * from './lib/+state/account.models';
-// export * from './lib/lib.routes';
 export * from './lib/account/account.component';
 export * from './lib/+state/account.actions';
 export * from './lib/+state/account.effects';
