@@ -9,8 +9,10 @@
   </mat-card-header>
 
   <mat-card-content>
-    @if (!!tenants && tenants.length > 0) {
-      <mat-table [dataSource]="tenantsDatasource || []" data-cy="account-list">
+    @if (!!accounts && accounts.length > 0) {
+      <mat-table
+        [dataSource]="accountssDatasource || []"
+        data-cy="account-list">
         <ng-container matColumnDef="mainUserEmail">
           <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
           <mat-cell *matCellDef="let element" data-label="Owner">
