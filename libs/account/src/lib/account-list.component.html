@@ -53,6 +53,14 @@
                     data-cy="associate-tenant-button">
                     Accept invitation
                   </button>
+                  <button
+                    class="w-fit"
+                    mat-raised-button
+                    color="warn"
+                    (click)="onReject(element)"
+                    data-cy="reject-tenant-button">
+                    Reject invitation
+                  </button>
                 }
               }
               @if (

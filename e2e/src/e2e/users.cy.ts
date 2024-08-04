@@ -17,7 +17,7 @@ import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
 import { Method } from 'cypress/types/net-stubbing';
 
-describe.only('users', () => {
+describe('users', () => {
   before(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
 

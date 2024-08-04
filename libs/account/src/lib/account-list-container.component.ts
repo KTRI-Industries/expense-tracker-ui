@@ -18,9 +18,8 @@ import { AccountSelectors } from '../index';
       (leaveAccount)="onLeaveAccount($event)"
       (associateUserWithAccount)="onAssociateUserWithAccount($event)"
       (switchAccount)="onSwitchAccount($event)"
-      (setDefaultAccount)="
-        onSetDefaultAccount($event)
-      "></expense-tracker-ui-account-list>
+      (setDefaultAccount)="onSetDefaultAccount($event)"
+      (rejectInvite)="onRejectInvite($event)"></expense-tracker-ui-account-list>
   `,
   styles: ``,
 })
@@ -56,5 +55,9 @@ export class AccountListContainerComponent implements OnInit {
     this.store.dispatch(
       AccountActions.setDefaultAccount({ tenantId: $event.id }),
     );
+  }
+
+  onRejectInvite($event: TenantWithUserDetails) {
+    this.store.dispatch(AccountActions.rejectInvite({ tenantId: $event.id }));
   }
 }

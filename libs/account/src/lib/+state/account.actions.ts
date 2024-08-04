@@ -20,6 +20,10 @@ export const AccountActions = createActionGroup({
     'Associate User With Account Success': emptyProps(),
     'Associate User With Account Failure': props<{ error: Error }>(),
 
+    'Reject Invite': props<{ tenantId: string }>(),
+    'Reject Invite Success': emptyProps(),
+    'Reject Invite Failure': props<{ error: Error }>(),
+
     'Leave Account': props<{ tenantId: string }>(),
     'Leave Account Success': emptyProps(),
     'Leave Account Failure': props<{ error: Error }>(),
