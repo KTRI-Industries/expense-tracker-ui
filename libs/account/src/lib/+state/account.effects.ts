@@ -53,6 +53,20 @@ export class AccountEffects {
     ),
   );
 
+  rejectInvite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.rejectInvite),
+      switchMap((action) =>
+        this.accountService.rejectInvite(action.tenantId).pipe(
+          map(() => AccountActions.rejectInviteSuccess()),
+          catchError((error: Error) =>
+            of(AccountActions.rejectInviteFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   leaveAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AccountActions.leaveAccount),
@@ -71,6 +85,7 @@ export class AccountEffects {
     this.actions$.pipe(
       ofType(
         AccountActions.associateUserWithAccountSuccess,
+        AccountActions.rejectInviteSuccess,
         AccountActions.leaveAccountSuccess,
         AccountActions.setDefaultAccountSuccess,
         AuthActions.generateNewTenantSuccess,
@@ -92,6 +107,16 @@ export class AccountEffects {
           map(() => AuthActions.retrieveTenantUsers()),
         ),
       ),
+    ),
+  );
+
+  /**
+   * This effect is needed on initial load because we need to retrieve invitations to accounts and current account which are displayed in the nav menu.
+   */
+  retrieveTenantsAfterUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess),
+      map(() => AccountActions.retrieveAccounts()),
     ),
   );
 

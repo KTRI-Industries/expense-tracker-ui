@@ -29,4 +29,8 @@ export class AccountService {
   leaveAccount(tenantId: string): Observable<UserInfo> {
     return this.userApi.disassociateTenant({ tenantId });
   }
+
+  rejectInvite(tenantId: string) {
+    return this.userApi.rejectInvite({ tenantId });
+  }
 }

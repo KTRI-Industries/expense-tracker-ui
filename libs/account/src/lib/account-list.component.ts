@@ -79,6 +79,7 @@ export class AccountListComponent {
     new EventEmitter<TenantWithUserDetails>();
   @Output() switchAccount = new EventEmitter<TenantWithUserDetails>();
   @Output() setDefaultAccount = new EventEmitter<TenantWithUserDetails>();
+  @Output() rejectInvite = new EventEmitter<TenantWithUserDetails>();
 
   accountssDatasource: MatTableDataSource<TenantWithUserDetails> | undefined;
   displayedColumns = ['mainUserEmail', 'isAssociated'];
@@ -97,5 +98,9 @@ export class AccountListComponent {
 
   onSetDefault(element: TenantWithUserDetails) {
     this.setDefaultAccount.emit(element);
+  }
+
+  onReject(element: TenantWithUserDetails) {
+    this.rejectInvite.emit(element);
   }
 }
