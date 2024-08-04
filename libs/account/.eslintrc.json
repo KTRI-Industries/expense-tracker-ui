@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "lib",
+            "prefix": "expenseTrackerUi",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "lib",
+            "prefix": "expense-tracker-ui",
             "style": "kebab-case"
           }
         ]

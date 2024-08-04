@@ -28,7 +28,7 @@ import { MatSortHeader } from '@angular/material/sort';
 import { MatChip, MatChipSet } from '@angular/material/chips';
 
 @Component({
-  selector: 'expense-tracker-ui-tenant-list',
+  selector: 'expense-tracker-ui-account-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -54,37 +54,37 @@ import { MatChip, MatChipSet } from '@angular/material/chips';
     MatChipSet,
     MatChip,
   ],
-  templateUrl: './tenant-list.component.html',
-  styleUrl: './tenant-list.component.css',
+  templateUrl: './account-list.component.html',
+  styleUrl: './account-list.component.css',
 })
-export class TenantListComponent {
-  private _tenants: TenantWithUserDetails[] | null | undefined;
+export class AccountListComponent {
+  private _accounts: TenantWithUserDetails[] | null | undefined;
 
   @Input()
-  set tenants(value: TenantWithUserDetails[] | null | undefined) {
-    this._tenants = value ?? [];
+  set accounts(value: TenantWithUserDetails[] | null | undefined) {
+    this._accounts = value ?? [];
 
     // TODO - this is a workaround, we should not be setting the datasource here
-    this.tenantsDatasource = new MatTableDataSource(this._tenants);
+    this.accountssDatasource = new MatTableDataSource(this._accounts);
   }
 
-  get tenants() {
-    return this._tenants;
+  get accounts() {
+    return this._accounts;
   }
 
   @Input() currentTenantId: string | null | undefined;
 
-  @Output() leaveTenant = new EventEmitter<TenantWithUserDetails>();
+  @Output() leaveAccount = new EventEmitter<TenantWithUserDetails>();
   @Output() associateUserWithAccount =
     new EventEmitter<TenantWithUserDetails>();
   @Output() switchAccount = new EventEmitter<TenantWithUserDetails>();
   @Output() setDefaultAccount = new EventEmitter<TenantWithUserDetails>();
 
-  tenantsDatasource: MatTableDataSource<TenantWithUserDetails> | undefined;
+  accountssDatasource: MatTableDataSource<TenantWithUserDetails> | undefined;
   displayedColumns = ['mainUserEmail', 'isAssociated'];
 
   onLeave(element: TenantWithUserDetails) {
-    this.leaveTenant.emit(element);
+    this.leaveAccount.emit(element);
   }
 
   onAccept(element: TenantWithUserDetails) {

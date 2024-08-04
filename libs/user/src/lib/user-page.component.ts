@@ -17,7 +17,6 @@ import {
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { TenantListComponent } from './tenant-list.component';
 
 @Component({
   selector: 'expense-tracker-ui-user-page',
@@ -36,7 +35,6 @@ import { TenantListComponent } from './tenant-list.component';
     RouterLink,
     MatCardActions,
     MatButton,
-    TenantListComponent,
   ],
   templateUrl: './user-page.component.html',
   styles: ``,

@@ -1,16 +1,17 @@
 import { render, RenderResult, screen } from '@testing-library/angular';
-import { TenantListContainerComponent } from './tenant-list.container.component';
+import { AccountListContainerComponent } from './account-list-container.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { AccountActions, AccountSelectors } from '@expense-tracker-ui/account';
+import { AccountActions } from './+state/account.actions';
+import { AccountSelectors } from '../index';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import { TestBed } from '@angular/core/testing';
 import '@testing-library/jest-dom';
 
 describe('TenantListContainerComponent', () => {
-  let component: RenderResult<TenantListContainerComponent>;
+  let component: RenderResult<AccountListContainerComponent>;
 
   const setup = async () => {
-    component = await render(TenantListContainerComponent, {
+    component = await render(AccountListContainerComponent, {
       providers: [
         provideMockStore({
           selectors: [
@@ -54,7 +55,7 @@ describe('TenantListContainerComponent', () => {
       isAssociated: true,
       isCurrentUserOwner: true,
     };
-    component.fixture.componentInstance.onLeaveTenant(tenant);
+    component.fixture.componentInstance.onLeaveAccount(tenant);
     expect(dispatchSpy).toHaveBeenCalledWith(
       AccountActions.leaveAccount({ tenantId: tenant.id }),
     );

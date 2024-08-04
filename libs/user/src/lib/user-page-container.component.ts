@@ -8,7 +8,6 @@ import {
   MatTabNav,
   MatTabNavPanel,
 } from '@angular/material/tabs';
-import { TenantListComponent } from './tenant-list.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -19,7 +18,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     AsyncPipe,
     MatTabGroup,
     MatTab,
-    TenantListComponent,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,

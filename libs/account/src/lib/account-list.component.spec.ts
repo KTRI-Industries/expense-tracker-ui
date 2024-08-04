@@ -4,20 +4,20 @@ import {
   RenderResult,
   screen,
 } from '@testing-library/angular';
-import { TenantListComponent } from './tenant-list.component';
+import { AccountListComponent } from './account-list.component';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import '@testing-library/jest-dom';
 
 describe('TenantListComponent', () => {
-  let component: RenderResult<TenantListComponent>;
+  let component: RenderResult<AccountListComponent>;
 
   async function setupComponent(
     tenants: TenantWithUserDetails[],
     currentTenantId: string,
   ) {
-    return await render(TenantListComponent, {
+    return await render(AccountListComponent, {
       componentProperties: {
-        tenants,
+        accounts: tenants,
         currentTenantId,
       },
     });
@@ -212,7 +212,7 @@ describe('TenantListComponent', () => {
     );
 
     const leaveTenantSpy = jest.spyOn(
-      component.fixture.componentInstance.leaveTenant,
+      component.fixture.componentInstance.leaveAccount,
       'emit',
     );
 

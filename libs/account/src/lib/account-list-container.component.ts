@@ -1,30 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { UserPageComponent } from './user-page.component';
 import { AsyncPipe } from '@angular/common';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
-import { TenantListComponent } from './tenant-list.component';
-import { AccountActions, AccountSelectors } from '@expense-tracker-ui/account';
+import { AccountListComponent } from './account-list.component';
+import { AccountActions } from './+state/account.actions';
+import { AccountSelectors } from '../index';
 
 @Component({
-  selector: 'expense-tracker-ui-tenant-list-container',
+  selector: 'expense-tracker-ui-account-list-container',
   standalone: true,
-  imports: [UserPageComponent, AsyncPipe, TenantListComponent],
+  imports: [AsyncPipe, AccountListComponent],
   template: `
-    <expense-tracker-ui-tenant-list
-      [tenants]="accounts$ | async"
+    <expense-tracker-ui-account-list
+      [accounts]="accounts$ | async"
       [currentTenantId]="currentTenantId$ | async"
-      (leaveTenant)="onLeaveTenant($event)"
+      (leaveAccount)="onLeaveAccount($event)"
       (associateUserWithAccount)="onAssociateUserWithAccount($event)"
       (switchAccount)="onSwitchAccount($event)"
       (setDefaultAccount)="
         onSetDefaultAccount($event)
-      "></expense-tracker-ui-tenant-list>
+      "></expense-tracker-ui-account-list>
   `,
   styles: ``,
 })
-export class TenantListContainerComponent implements OnInit {
+export class AccountListContainerComponent implements OnInit {
   accounts$: Observable<TenantWithUserDetails[]> = this.store.select(
     AccountSelectors.selectAccounts,
   );
@@ -38,7 +38,7 @@ export class TenantListContainerComponent implements OnInit {
     this.store.dispatch(AccountActions.retrieveAccounts());
   }
 
-  onLeaveTenant($event: TenantWithUserDetails) {
+  onLeaveAccount($event: TenantWithUserDetails) {
     this.store.dispatch(AccountActions.leaveAccount({ tenantId: $event.id }));
   }
 
