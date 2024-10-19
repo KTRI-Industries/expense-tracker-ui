@@ -1,10 +1,15 @@
 import * as TransactionsFeature from './lib/+state/transactions.reducer';
 
 import * as TransactionsSelectors from './lib/+state/transactions.selectors';
+import * as RecurrentTransactionsSelectors from './lib/+state/recurrent-transactions.selectors';
 
 export * from './lib/+state/transactions.models';
 
-export { TransactionsFeature, TransactionsSelectors };
+export {
+  TransactionsFeature,
+  TransactionsSelectors,
+  RecurrentTransactionsSelectors,
+};
 
 export * from './lib/transaction.routes';
 
