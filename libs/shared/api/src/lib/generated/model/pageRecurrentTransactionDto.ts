@@ -10,14 +10,14 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageableObject';
-import { TransactionDto } from './transactionDto';
 import { SortObject } from './sortObject';
+import { RecurrentTransactionDto } from './recurrentTransactionDto';
 
-export interface PageTransactionDto {
+export interface PageRecurrentTransactionDto {
   totalElements?: number;
   totalPages?: number;
   size?: number;
-  content?: Array<TransactionDto>;
+  content?: Array<RecurrentTransactionDto>;
   number?: number;
   sort?: Array<SortObject>;
   first?: boolean;
