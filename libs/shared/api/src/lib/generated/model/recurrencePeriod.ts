@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { RecurrenceFrequency } from './recurrenceFrequency';
 
-export interface PageableObject {
-  offset?: number;
-  sort?: Array<SortObject>;
-  paged?: boolean;
-  pageNumber?: number;
-  pageSize?: number;
-  unpaged?: boolean;
+export interface RecurrencePeriod {
+  startDate: string;
+  endDate?: string;
+  frequency: RecurrenceFrequency;
 }
