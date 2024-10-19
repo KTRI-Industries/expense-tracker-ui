@@ -6,6 +6,7 @@ import { TransactionsEffects } from './+state/transactions.effects';
 import { TransactionsContainerComponent } from './transactions-container.component';
 import { TransactionContainerComponent } from './transaction-container.component';
 import { AppGuard } from '@expense-tracker-ui/shared/auth';
+import { RecurrentTransactionComponent } from './recurrent-transaction.component';
 
 export const transactionsRoutes: Route[] = [
   {
@@ -25,6 +26,20 @@ export const transactionsRoutes: Route[] = [
     ],
   },
   {
+    path: 'recurrent',
+
+    children: [
+      {
+        path: '',
+        component: RecurrentTransactionComponent,
+      },
+      {
+        path: 'new',
+        component: RecurrentTransactionComponent,
+      },
+    ],
+  },
+  {
     path: ':id',
     component: TransactionContainerComponent,
     providers: [
@@ -33,4 +48,5 @@ export const transactionsRoutes: Route[] = [
     ],
     canActivate: [AppGuard],
   },
+
 ];

@@ -40,6 +40,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { categoryLabels } from './transaction.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -71,6 +72,7 @@ import { categoryLabels } from './transaction.model';
     EnumToLabelPipe,
     MatChipListbox,
     MatChipOption,
+    RouterLink,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
