@@ -9,17 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RecurrenceFrequency } from './recurrenceFrequency';
+import { Category } from './category';
 import { MonetaryAmount } from './monetaryAmount';
+import { RecurrencePeriod } from './recurrencePeriod';
 
 export interface RecurrentTransactionDto {
   recurrentTransactionId: string;
   tenantId: string;
-  description: string;
-  categories: Array<string>;
+  description?: string;
+  categories?: Array<Category>;
   userId: string;
   amount: MonetaryAmount;
-  startDate: string;
-  endDate?: string;
-  frequency: RecurrenceFrequency;
+  recurrencePeriod: RecurrencePeriod;
 }
