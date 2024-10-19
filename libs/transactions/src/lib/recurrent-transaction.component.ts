@@ -1,4 +1,22 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Category,
+  RecurrenceFrequency,
+  RecurrentTransactionDto,
+} from '@expense-tracker-ui/shared/api';
+import {
+  categoryLabels,
+  CreateRecurrentTransactionCommandUi,
+} from './transaction.model';
+import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
+import {
+  FormlyFieldConfig,
+  FormlyFormOptions,
+  FormlyModule,
+} from '@ngx-formly/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatCard,
   MatCardContent,
@@ -6,55 +24,32 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  FormlyFieldConfig,
-  FormlyFormOptions,
-  FormlyModule,
-} from '@ngx-formly/core';
-import { MatChipsModule } from '@angular/material/chips';
-import { Category, TransactionDto } from '@expense-tracker-ui/shared/api';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import { JsonPipe } from '@angular/common';
-import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
-import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
-import {
-  categoryLabels,
-  CreateTransactionCommandUi,
-} from './transaction.model';
-import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'expense-tracker-ui-transaction',
+  selector: 'expense-tracker-ui-recurrent-transaction',
   standalone: true,
-
-  templateUrl: './transaction.component.html',
   imports: [
+    CommonModule,
+    FormlyModule,
+    MatButton,
     MatCard,
     MatCardContent,
+    MatCardHeader,
     MatCardTitle,
     MatCardSubtitle,
-    MatCardHeader,
     ReactiveFormsModule,
-    FormlyModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButton,
-    JsonPipe,
-    ErrorHandlingComponent,
   ],
+  templateUrl: './recurrent-transaction.component.html',
+  styles: ``,
 })
-export class TransactionComponent implements OnInit {
+export class RecurrentTransactionComponent implements OnInit {
   /**
    * The transaction that will be edited (or the initial transaction data in case of creation).
    */
-  @Input() selectedTransaction: TransactionDto | undefined | null;
+  @Input() selectedTransaction: RecurrentTransactionDto | undefined | null;
 
-  @Output() create = new EventEmitter<CreateTransactionCommandUi>();
-  @Output() update = new EventEmitter<CreateTransactionCommandUi>();
+  @Output() create = new EventEmitter<CreateRecurrentTransactionCommandUi>();
+  @Output() update = new EventEmitter<CreateRecurrentTransactionCommandUi>();
   @Output() delete = new EventEmitter<string>();
 
   /**
@@ -70,7 +65,7 @@ export class TransactionComponent implements OnInit {
   /**
    * The model that will be used to store the form data.
    */
-  model: CreateTransactionCommandUi | undefined;
+  model: CreateRecurrentTransactionCommandUi | undefined;
 
   /**
    * Contains form state that is not part of the model.
@@ -94,16 +89,60 @@ export class TransactionComponent implements OnInit {
         currency: this.selectedTransaction?.amount.currency,
         amount: this.selectedTransaction?.amount.amount,
       },
-      date: this.selectedTransaction?.date ?? '',
-      description: this.selectedTransaction?.description,
+      description: this.selectedTransaction?.description ?? '',
       categories: this.selectedTransaction?.categories?.map((category) =>
         this.labelCategoryConverter.getLabelFromEnum(category),
       ),
       txType: this.options.formState.txType,
-      txId: this.selectedTransaction?.transactionId,
+      recurrentTxId: this.selectedTransaction?.recurrentTransactionId,
+      recurrencePeriod: this.selectedTransaction?.recurrencePeriod ?? {
+        frequency: RecurrenceFrequency.Daily,
+        startDate: '',
+        endDate: '',
+      },
     };
 
     this.fields = [
+      {
+        key: 'recurrencePeriod.startDate',
+        type: 'datepicker',
+        props: {
+          label: 'Start of recurrent transactions',
+          placeholder: 'Pick start date',
+          required: true,
+          attributes: {
+            'data-cy': 'tx-start-date-picker',
+          },
+        },
+      },
+      {
+        key: 'recurrencePeriod.endDate',
+        type: 'datepicker',
+        props: {
+          label: 'End of recurrent transactions',
+          placeholder: 'Pick end date',
+          attributes: {
+            'data-cy': 'tx-end-date-picker',
+          },
+        },
+      },
+      {
+        key: 'recurrencePeriod.frequency',
+        type: 'select',
+        props: {
+          label: 'Recurrence Frequency',
+          placeholder: 'Set recurrence frequency',
+          required: true,
+          attributes: {
+            'data-cy': 'tx-recurrence-frequency-select',
+          },
+          options: [
+            { value: RecurrenceFrequency.Daily, label: 'Daily' },
+            { value: RecurrenceFrequency.Monthly, label: 'Monthly' },
+            { value: RecurrenceFrequency.Yearly, label: 'Yearly' },
+          ],
+        },
+      },
       {
         key: 'txType',
         type: 'radio',
@@ -136,18 +175,6 @@ export class TransactionComponent implements OnInit {
           attributes: {
             autocomplete: 'off',
             'data-cy': 'tx-amount-input',
-          },
-        },
-      },
-      {
-        key: 'date',
-        type: 'datepicker',
-        props: {
-          label: 'Transaction Date',
-          placeholder: 'Pick transaction date',
-          required: true,
-          attributes: {
-            'data-cy': 'tx-date-picker',
           },
         },
       },
@@ -192,6 +219,6 @@ export class TransactionComponent implements OnInit {
   }
 
   onDelete() {
-    this.delete.emit(this.selectedTransaction?.transactionId);
+    this.delete.emit(this.selectedTransaction?.recurrentTransactionId);
   }
 }

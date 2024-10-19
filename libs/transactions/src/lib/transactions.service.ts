@@ -1,10 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  CreateRecurrentTransactionCommand,
   CreateTransactionCommand,
   Pageable,
   PageTransactionDto,
+  RecurrentTransactionControllerService,
   TransactionControllerService,
   TransactionDto,
+  UpdateRecurrentTransactionCommand,
   UpdateTransactionCommand,
 } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
@@ -16,6 +19,10 @@ export class TransactionsService {
   private api: TransactionControllerService = inject(
     TransactionControllerService,
   ); // TODO better way to reference the generated code?
+
+  private recurrentApi: RecurrentTransactionControllerService = inject(
+    RecurrentTransactionControllerService,
+  );
 
   getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
     return this.api.retrieve({
@@ -41,6 +48,37 @@ export class TransactionsService {
     return this.api.update(
       updateTransactionCommand.transactionId,
       updateTransactionCommand,
+    );
+  }
+
+  getAllRecurrentTransactions(pageable: Pageable) {
+    return this.recurrentApi.retrieveMany({
+      page: pageable.page,
+      size: pageable.size,
+      sort: pageable.sort,
+    });
+  }
+
+  getRecurrentTransaction(recurrentTransactionId: string) {
+    return this.recurrentApi.retrieve2(recurrentTransactionId);
+  }
+
+  createRecurrentTransaction(
+    recurrentTransaction: CreateRecurrentTransactionCommand,
+  ) {
+    return this.recurrentApi.create1(recurrentTransaction);
+  }
+
+  deleteRecurrentTransaction(recurrentTransactionId: string) {
+    return this.recurrentApi.delete1(recurrentTransactionId);
+  }
+
+  updateRecurrentTransaction(
+    updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand,
+  ) {
+    return this.recurrentApi.update1(
+      updateRecurrentTransactionCommand.recurrentTransactionId,
+      updateRecurrentTransactionCommand,
     );
   }
 }

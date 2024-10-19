@@ -1,11 +1,12 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Transactions</mat-card-title>
+    <mat-card-title>Recurrent Transactions</mat-card-title>
     <mat-card-subtitle>
-      Here you can see your latest transactions and create new ones. For
-      <strong>recurrent</strong>
+      Here you can see your latest recurrent transactions and create new ones.
+      For
+      <strong>one-off</strong>
       transactions click
-      <a [routerLink]="['../recurrent-transactions']" class="link">here</a>
+      <a [routerLink]="['../']" class="link">here</a>
       .
     </mat-card-subtitle>
   </mat-card-header>
@@ -34,12 +35,31 @@
             </mat-cell>
           </ng-container>
 
-          <ng-container matColumnDef="date">
+          <ng-container matColumnDef="startDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header>
-              Date
+              Start Date
             </mat-header-cell>
-            <mat-cell *matCellDef="let element" data-label="Date">
-              {{ element.date | date }}
+            <mat-cell *matCellDef="let element" data-label="Start Date">
+              {{ element.recurrencePeriod.startDate | date }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="endDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              End Date
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="End Date">
+              {{ element.recurrencePeriod.endDate | date }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="frequency">
+            <mat-header-cell *matHeaderCellDef>Frequency</mat-header-cell>
+            <mat-cell *matCellDef="let element" data-label="Frequency">
+              {{
+                element.recurrencePeriod.frequency
+                  | enumToLabel: recurrenceFrequencyLabels
+              }}
             </mat-cell>
           </ng-container>
 

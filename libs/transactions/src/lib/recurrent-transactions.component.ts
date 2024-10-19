@@ -16,8 +16,8 @@ import {
 } from '@angular/material/card';
 import {
   Pageable,
-  PageTransactionDto,
-  TransactionDto,
+  PageRecurrentTransactionDto,
+  RecurrentTransactionDto,
 } from '@expense-tracker-ui/shared/api';
 import { MatList, MatListItem } from '@angular/material/list';
 import {
@@ -39,11 +39,11 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
-import { categoryLabels } from './transaction.model';
+import { categoryLabels, recurrenceFrequencyLabels } from './transaction.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'expense-tracker-ui-transactions',
+  selector: 'expense-tracker-ui-recurrent-transactions',
   standalone: true,
   imports: [
     CommonModule,
@@ -74,14 +74,14 @@ import { RouterLink } from '@angular/router';
     MatChipOption,
     RouterLink,
   ],
-  templateUrl: './transactions.component.html',
+  templateUrl: './recurrent-transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent {
-  private _transactions: PageTransactionDto | undefined;
+export class RecurrentTransactionsComponent {
+  private _transactions: PageRecurrentTransactionDto | undefined;
 
   @Input()
-  set transactions(value: PageTransactionDto | undefined) {
+  set transactions(value: PageRecurrentTransactionDto | undefined) {
     this._transactions = value;
 
     // TODO - this is a workaround, we should not be setting the datasource here
@@ -90,20 +90,28 @@ export class TransactionsComponent {
     );
   }
 
-  get transactions(): PageTransactionDto | undefined {
+  get transactions(): PageRecurrentTransactionDto | undefined {
     return this._transactions;
   }
 
   protected transactionDatasource:
-    | MatTableDataSource<TransactionDto>
+    | MatTableDataSource<RecurrentTransactionDto>
     | undefined;
 
-  transactionColumns = ['description', 'user', 'date', 'category', 'amount'];
+  transactionColumns = [
+    'description',
+    'user',
+    'startDate',
+    'endDate',
+    'frequency',
+    'category',
+    'amount',
+  ];
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
   @Output() pageChange = new EventEmitter<Pageable>();
   @Output() sortChange = new EventEmitter<Pageable>();
-  @Output() rowSelected = new EventEmitter<TransactionDto>();
+  @Output() rowSelected = new EventEmitter<RecurrentTransactionDto>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -114,7 +122,7 @@ export class TransactionsComponent {
   selection;
 
   constructor() {
-    this.selection = new SelectionModel<TransactionDto>(
+    this.selection = new SelectionModel<RecurrentTransactionDto>(
       false,
       this.initialSelection,
     );
@@ -149,10 +157,11 @@ export class TransactionsComponent {
     };
   }
 
-  onRowSelected(row: TransactionDto) {
+  onRowSelected(row: RecurrentTransactionDto) {
     console.log(row);
     this.rowSelected.emit(row);
   }
 
   protected readonly categoryLabels = categoryLabels;
+  protected readonly recurrenceFrequencyLabels = recurrenceFrequencyLabels;
 }
