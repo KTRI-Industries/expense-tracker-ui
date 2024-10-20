@@ -1,9 +1,13 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
+  CreateRecurrentTransactionCommand,
   CreateTransactionCommand,
   Pageable,
+  PageRecurrentTransactionDto,
   PageTransactionDto,
+  RecurrentTransactionDto,
   TransactionDto,
+  UpdateRecurrentTransactionCommand,
   UpdateTransactionCommand,
 } from '@expense-tracker-ui/shared/api';
 
@@ -29,5 +33,40 @@ export const TransactionActions = createActionGroup({
     DeleteTransaction: props<{ transactionId: string }>(),
     'Delete Transaction Success': emptyProps(),
     'Delete Transaction Failure': props<{ error: Error }>(),
+  },
+});
+
+export const RecurrentTransactionActions = createActionGroup({
+  source: 'RecurrentTransactions',
+  events: {
+    InitRecurrentTransactions: props<{ pageable: Pageable }>(),
+    'Load Recurrent Transactions Success': props<{
+      recurrentTransactions: PageRecurrentTransactionDto;
+    }>(),
+    'Load Recurrent Transactions Failure': props<{ error: Error }>(),
+    'Create New Recurrent Transaction': props<{
+      recurrentTransactionCommand: CreateRecurrentTransactionCommand;
+    }>(),
+    'Create New Recurrent Transaction Success': props<{
+      recurrentTransaction: RecurrentTransactionDto;
+    }>(),
+    'Create New Recurrent Transaction Failure': props<{ error: Error }>(),
+    'Open Recurrent Transaction From': emptyProps(),
+    'Edit Recurrent Transaction': props<{ recurrentTransactionId: string }>(),
+    LoadRecurrentTransaction: props<{ recurrentTransactionId: string }>(),
+    LoadRecurrentTransactionSuccess: props<{
+      recurrentTransaction: RecurrentTransactionDto;
+    }>(),
+    LoadRecurrentTransactionFailure: props<{ error: Error }>(),
+    UpdateRecurrentTransaction: props<{
+      updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand;
+    }>(),
+    'Update Recurrent Transaction Success': props<{
+      recurrentTransaction: RecurrentTransactionDto;
+    }>(),
+    'Update Recurrent Transaction Failure': props<{ error: Error }>(),
+    DeleteRecurrentTransaction: props<{ recurrentTransactionId: string }>(),
+    'Delete Recurrent Transaction Success': emptyProps(),
+    'Delete Recurrent Transaction Failure': props<{ error: Error }>(),
   },
 });

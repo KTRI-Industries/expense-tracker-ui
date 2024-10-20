@@ -10,13 +10,35 @@ import {
   CreateRecurrentTransactionCommandUi,
 } from './transaction.model';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  FormlyFieldConfig,
+  FormlyFormOptions,
+  FormlyModule,
+} from '@ngx-formly/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormlyModule,
+    MatButton,
+    MatCard,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    ReactiveFormsModule,
+  ],
   templateUrl: './recurrent-transaction.component.html',
   styles: ``,
 })
@@ -76,6 +98,7 @@ export class RecurrentTransactionComponent implements OnInit {
       recurrencePeriod: this.selectedTransaction?.recurrencePeriod ?? {
         frequency: RecurrenceFrequency.Daily,
         startDate: '',
+        endDate: '',
       },
     };
 
@@ -88,7 +111,7 @@ export class RecurrentTransactionComponent implements OnInit {
           placeholder: 'Pick start date',
           required: true,
           attributes: {
-            'data-cy': 'tx-date-picker',
+            'data-cy': 'tx-start-date-picker',
           },
         },
       },
@@ -98,9 +121,8 @@ export class RecurrentTransactionComponent implements OnInit {
         props: {
           label: 'End of recurrent transactions',
           placeholder: 'Pick end date',
-          required: true,
           attributes: {
-            'data-cy': 'tx-date-picker',
+            'data-cy': 'tx-end-date-picker',
           },
         },
       },

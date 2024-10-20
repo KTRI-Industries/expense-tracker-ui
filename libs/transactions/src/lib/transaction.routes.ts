@@ -6,7 +6,10 @@ import { TransactionsEffects } from './+state/transactions.effects';
 import { TransactionsContainerComponent } from './transactions-container.component';
 import { TransactionContainerComponent } from './transaction-container.component';
 import { AppGuard } from '@expense-tracker-ui/shared/auth';
-import { RecurrentTransactionComponent } from './recurrent-transaction.component';
+import { RecurrentTransactionsContainerComponent } from './recurrent-transactions-container.component';
+import { RecurrentTransactionContainerComponent } from './recurrent-transaction-container.component';
+import { recurrentTransactionsFeature } from './+state/recurrent-transactions.reducer';
+import { RecurrentTransactionsEffects } from './+state/recurrent-transactions.effects';
 
 export const transactionsRoutes: Route[] = [
   {
@@ -25,20 +28,7 @@ export const transactionsRoutes: Route[] = [
       provideEffects(TransactionsEffects),
     ],
   },
-  {
-    path: 'recurrent',
 
-    children: [
-      {
-        path: '',
-        component: RecurrentTransactionComponent,
-      },
-      {
-        path: 'new',
-        component: RecurrentTransactionComponent,
-      },
-    ],
-  },
   {
     path: ':id',
     component: TransactionContainerComponent,
@@ -48,5 +38,33 @@ export const transactionsRoutes: Route[] = [
     ],
     canActivate: [AppGuard],
   },
+];
 
+export const recurrentTransactionsRoutes: Route[] = [
+  // order matters, this must be before the :id route
+  {
+    path: '',
+    component: RecurrentTransactionsContainerComponent,
+    providers: [
+      provideState(recurrentTransactionsFeature),
+      provideEffects(RecurrentTransactionsEffects),
+    ],
+  },
+  {
+    path: 'new',
+    component: RecurrentTransactionContainerComponent,
+    providers: [
+      provideState(recurrentTransactionsFeature),
+      provideEffects(RecurrentTransactionsEffects),
+    ],
+  },
+  {
+    path: ':id',
+    component: RecurrentTransactionContainerComponent,
+    providers: [
+      provideState(recurrentTransactionsFeature),
+      provideEffects(RecurrentTransactionsEffects),
+    ],
+    canActivate: [AppGuard],
+  },
 ];

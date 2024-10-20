@@ -18,6 +18,17 @@ export const appRoutes: Route[] = [
       roles: ['users'],
     },
   },
+  {
+    path: 'recurrent-transactions',
+    loadChildren: () =>
+      import('@expense-tracker-ui/transactions').then(
+        (m) => m.recurrentTransactionsRoutes,
+      ),
+    canActivate: [AppGuard],
+    data: {
+      roles: ['users'],
+    },
+  },
   /*  {
     path: 'invite',
     loadChildren: () =>
