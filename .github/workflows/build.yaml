@@ -17,10 +17,6 @@ jobs:
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v3
-      # Clean up node_modules and package-lock.json to fix the npm optional dependencies issue
-      - run: |
-          rm -rf node_modules
-          rm -f package-lock.json
       - run: npm ci
 
 #      - run: npx nx format:check this fails for no obvious reason
