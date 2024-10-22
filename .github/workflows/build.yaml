@@ -9,6 +9,8 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+    env:
+      NX_DISABLE_DB: true
     steps:
       - uses: actions/checkout@v3
         with:
