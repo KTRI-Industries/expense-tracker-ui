@@ -95,10 +95,12 @@ export class RecurrentTransactionComponent implements OnInit {
       ),
       txType: this.options.formState.txType,
       recurrentTxId: this.selectedTransaction?.recurrentTransactionId,
-      recurrencePeriod: this.selectedTransaction?.recurrencePeriod ?? {
-        frequency: RecurrenceFrequency.Daily,
-        startDate: '',
-        endDate: '',
+      recurrencePeriod: {
+        frequency:
+          this.selectedTransaction?.recurrencePeriod?.frequency ??
+          RecurrenceFrequency.Daily,
+        startDate: this.selectedTransaction?.recurrencePeriod?.startDate ?? '',
+        endDate: this.selectedTransaction?.recurrencePeriod?.endDate ?? '',
       },
     };
 
