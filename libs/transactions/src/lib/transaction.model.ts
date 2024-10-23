@@ -1,6 +1,8 @@
 import {
   Category,
+  CreateRecurrentTransactionCommand,
   CreateTransactionCommand,
+  RecurrenceFrequency,
 } from '@expense-tracker-ui/shared/api';
 
 export const categoryLabels: Record<Category, string> = {
@@ -28,4 +30,19 @@ export type CreateTransactionCommandUi = Omit<
   categories: string[] | undefined;
   txType: 'EXPENSE' | 'INCOME';
   txId?: string;
+};
+
+export type CreateRecurrentTransactionCommandUi = Omit<
+  CreateRecurrentTransactionCommand,
+  'categories'
+> & {
+  categories: string[] | undefined;
+  txType: 'EXPENSE' | 'INCOME';
+  recurrentTxId?: string;
+};
+
+export const recurrenceFrequencyLabels: Record<RecurrenceFrequency, string> = {
+  DAILY: 'Daily',
+  MONTHLY: 'Monthly',
+  YEARLY: 'Yearly',
 };

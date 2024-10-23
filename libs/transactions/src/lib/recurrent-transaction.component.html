@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>New Transaction</mat-card-title>
+    <mat-card-subtitle>
+      Create a new transaction (income/expense).
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
+    <form class="md:w-6/12" [formGroup]="transactionForm">
+      <formly-form
+        [form]="transactionForm"
+        [fields]="fields"
+        [model]="model"></formly-form>
+      @if (selectedTransaction?.recurrentTransactionId !== '') {
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onUpdate()"
+          data-cy="update-transaction-button"
+          class="mr-1">
+          Update
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="onDelete()"
+          data-cy="delete-transaction-button">
+          Delete
+        </button>
+      } @else {
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onCreate()"
+          data-cy="create-transaction-button">
+          Create
+        </button>
+      }
+    </form>
+  </mat-card-content>
+</mat-card>
+<pre>{{ transactionForm.value | json }}</pre>

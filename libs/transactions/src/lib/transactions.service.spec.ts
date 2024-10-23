@@ -2,8 +2,9 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TransactionsService } from './transactions.service';
 import {
   PageTransactionDto,
+  RecurrentTransactionControllerService,
   TransactionControllerService,
-  TransactionDto,
+  TransactionDto
 } from '@expense-tracker-ui/shared/api';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -23,6 +24,12 @@ describe('TransactionsService', () => {
             update: jest.fn(),
             _delete: jest.fn(),
             retrieve1: jest.fn(),
+          },
+        },
+        {
+          provide: RecurrentTransactionControllerService,
+          useValue: {
+            retrieveMany: jest.fn(),
           },
         },
       ],

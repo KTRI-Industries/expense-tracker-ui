@@ -8,7 +8,7 @@ export const appRoutes: Route[] = [
       import('@expense-tracker-ui/homepage').then((m) => m.homepageRoutes),
   },
   {
-    path: 'transactions',
+    path: 'transactions-page',
     loadChildren: () =>
       import('@expense-tracker-ui/transactions').then(
         (m) => m.transactionsRoutes,
@@ -18,6 +18,17 @@ export const appRoutes: Route[] = [
       roles: ['users'],
     },
   },
+  /*  {
+    path: 'recurrent-transactions',
+    loadChildren: () =>
+      import('@expense-tracker-ui/transactions').then(
+        (m) => m.recurrentTransactionsRoutes,
+      ),
+    canActivate: [AppGuard],
+    data: {
+      roles: ['users'],
+    },
+  },*/
   /*  {
     path: 'invite',
     loadChildren: () =>

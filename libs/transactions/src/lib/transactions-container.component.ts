@@ -9,11 +9,12 @@ import {
   PageTransactionDto,
   TransactionDto,
 } from '@expense-tracker-ui/shared/api';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',
   standalone: true,
-  imports: [TransactionsComponent, AsyncPipe],
+  imports: [TransactionsComponent, AsyncPipe, RouterOutlet],
   template: `
     @if (transactions$ | async; as transactions) {
       <expense-tracker-ui-transactions
