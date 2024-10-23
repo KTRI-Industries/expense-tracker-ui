@@ -84,7 +84,12 @@ export class RecurrentTransactionsEffects {
                 recurrentTransaction,
               }),
             ),
-            tap(() => this.router.navigate(['recurrent-transactions'])),
+            tap(() =>
+              this.router.navigate([
+                'transactions-page',
+                'recurrent-transactions',
+              ]),
+            ),
             tap(() =>
               this.snackBar.open('Recurrent transaction created', 'Close'),
             ),
@@ -106,7 +111,13 @@ export class RecurrentTransactionsEffects {
     () =>
       this.actions$.pipe(
         ofType(RecurrentTransactionActions.openRecurrentTransactionFrom),
-        tap(() => this.router.navigate(['recurrent-transactions', 'new'])),
+        tap(() =>
+          this.router.navigate([
+            'transactions-page',
+            'recurrent-transactions',
+            'new',
+          ]),
+        ),
       ),
     { dispatch: false },
   );
@@ -117,7 +128,8 @@ export class RecurrentTransactionsEffects {
         ofType(RecurrentTransactionActions.editRecurrentTransaction),
         tap(({ recurrentTransactionId }) =>
           this.router.navigate([
-            '../recurrent-transactions',
+            'transactions-page',
+            'recurrent-transactions',
             recurrentTransactionId,
           ]),
         ),
@@ -133,7 +145,12 @@ export class RecurrentTransactionsEffects {
           map(() =>
             RecurrentTransactionActions.deleteRecurrentTransactionSuccess(),
           ),
-          tap(() => this.router.navigate(['recurrent-transactions'])),
+          tap(() =>
+            this.router.navigate([
+              'transactions-page',
+              'recurrent-transactions',
+            ]),
+          ),
           tap(() =>
             this.snackBar.open('Recurrent transaction deleted', 'Close'),
           ),
@@ -161,7 +178,12 @@ export class RecurrentTransactionsEffects {
                 recurrentTransaction,
               }),
             ),
-            tap(() => this.router.navigate(['recurrent-transactions'])),
+            tap(() =>
+              this.router.navigate([
+                'transactions-page',
+                'recurrent-transactions',
+              ]),
+            ),
             tap(() =>
               this.snackBar.open('Recurrent transaction updated', 'Close'),
             ),

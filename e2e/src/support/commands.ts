@@ -77,7 +77,7 @@ Cypress.Commands.add('editTransaction', (transaction) => {
 });
 
 Cypress.Commands.add('deleteVisibleTransactions', () => {
-  cy.visit('/transactions');
+  cy.visit('transactions-page/transactions');
   cy.intercept('GET', '/transactions*').as('apiCheck');
 
   cy.wait('@apiCheck').then((interception) => {

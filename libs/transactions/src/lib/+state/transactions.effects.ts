@@ -74,7 +74,9 @@ export class TransactionsEffects {
           map((transaction) =>
             TransactionActions.createNewTransactionSuccess({ transaction }),
           ),
-          tap(() => this.router.navigate(['transactions'])),
+          tap(() =>
+            this.router.navigate(['transactions-page', 'transactions']),
+          ),
           tap(() => this.snackBar.open('Transaction created', 'Close')),
           catchError((error) =>
             of(TransactionActions.createNewTransactionFailure({ error })),
@@ -88,7 +90,9 @@ export class TransactionsEffects {
     () =>
       this.actions$.pipe(
         ofType(TransactionActions.openTransactionFrom),
-        tap(() => this.router.navigate(['transactions', 'new'])),
+        tap(() =>
+          this.router.navigate(['transactions-page', 'transactions', 'new']),
+        ),
       ),
     { dispatch: false },
   );
@@ -98,7 +102,11 @@ export class TransactionsEffects {
       this.actions$.pipe(
         ofType(TransactionActions.editTransaction),
         tap(({ transactionId }) =>
-          this.router.navigate(['transactions', transactionId]),
+          this.router.navigate([
+            'transactions-page',
+            'transactions',
+            transactionId,
+          ]),
         ),
       ),
     { dispatch: false },
@@ -110,7 +118,9 @@ export class TransactionsEffects {
       switchMap(({ transactionId }) =>
         this.client.deleteTransaction(transactionId).pipe(
           map(() => TransactionActions.deleteTransactionSuccess()),
-          tap(() => this.router.navigate(['transactions'])),
+          tap(() =>
+            this.router.navigate(['transactions-page', 'transactions']),
+          ),
           tap(() => this.snackBar.open('Transaction deleted', 'Close')),
           catchError((error) =>
             of(TransactionActions.deleteTransactionFailure({ error })),
@@ -128,7 +138,9 @@ export class TransactionsEffects {
           map((transaction) =>
             TransactionActions.updateTransactionSuccess({ transaction }),
           ),
-          tap(() => this.router.navigate(['transactions'])),
+          tap(() =>
+            this.router.navigate(['transactions-page', 'transactions']),
+          ),
           tap(() => this.snackBar.open('Transaction updated', 'Close')),
           catchError((error) =>
             of(TransactionActions.updateTransactionFailure({ error })),
