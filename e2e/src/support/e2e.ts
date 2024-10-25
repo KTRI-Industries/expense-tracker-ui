@@ -10,12 +10,15 @@ declare global {
       addNewTransaction(transaction: any): void;
       editTransaction(transaction: any): void;
       deleteVisibleTransactions(): void;
+      deleteVisibleRecurrentTransactions(): void;
       deleteAllInvitedUsers(): void;
       logout(): void;
       register(email: string, password: string): void;
       confirmRegistration(): void;
       acceptInvitation(username: string): void;
       leaveTenant(): void;
+
+      addNewRecurrentTransaction(transaction: any): void;
     }
   }
 }

@@ -22,6 +22,16 @@ import {
   hasUserExceptSelfInTable,
 } from './user-page.po';
 import { getTransactionMenu } from './navigation-menu.po';
+import {
+  getAddRecurrentTransactionButton,
+  getCreateRecurrentTransactionButton,
+  getDeleteRecurrentTransactionButton,
+  getRecurrentAmountInput,
+  getRecurrentDescriptionInput,
+  getRecurrentStartDatePicker,
+  getRecurrentTransactionTab,
+  hasRecurrentTransactionInTable,
+} from './recurrent-transactions.po';
 
 Cypress.Commands.add('login', (email, password) => {
   cy.session([email, password], () => {
@@ -84,6 +94,17 @@ Cypress.Commands.add('deleteVisibleTransactions', () => {
     expect(interception?.response?.statusCode).to.eq(200);
 
     doDelete();
+  });
+});
+
+Cypress.Commands.add('deleteVisibleRecurrentTransactions', () => {
+  cy.visit('transactions-page/recurrent-transactions');
+  cy.intercept('GET', '/recurrent-transactions*').as('apiCheckRecurrent');
+
+  cy.wait('@apiCheckRecurrent').then((interception) => {
+    expect(interception?.response?.statusCode).to.eq(200);
+
+    doDeleteRecurrent();
   });
 });
 
@@ -202,6 +223,23 @@ Cypress.Commands.add('confirmRegistration', () => {
   );
 });
 
+Cypress.Commands.add('addNewRecurrentTransaction', (transaction) => {
+  getTransactionMenu().click();
+  getRecurrentTransactionTab().click();
+  getAddRecurrentTransactionButton().click();
+
+  getRecurrentAmountInput().type(transaction.amount, { force: true });
+  getRecurrentStartDatePicker().type(transaction.date, { force: true });
+
+  if (transaction.description !== undefined) {
+    getRecurrentDescriptionInput().type(transaction.description, {
+      force: true,
+    });
+  }
+
+  getCreateRecurrentTransactionButton().click();
+});
+
 function doDelete() {
   hasTransactionInTable().then((hasTx) => {
     if (!hasTx) {
@@ -217,6 +255,27 @@ function doDelete() {
           expect(interception?.response?.statusCode).to.eq(200);
           // Call the function recursively to delete all transactions
           doDelete();
+        });
+      }
+    });
+  });
+}
+
+function doDeleteRecurrent() {
+  hasRecurrentTransactionInTable().then((hasTx) => {
+    if (!hasTx) {
+      return;
+    }
+    getFirstDescriptionCell().then(($el) => {
+      if ($el.is(':visible')) {
+        $el.click();
+
+        getDeleteRecurrentTransactionButton().click();
+
+        cy.wait('@apiCheckRecurrent').then((interception) => {
+          expect(interception?.response?.statusCode).to.eq(200);
+          // Call the function recursively to delete all transactions
+          doDeleteRecurrent();
         });
       }
     });

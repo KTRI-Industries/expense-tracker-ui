@@ -113,7 +113,7 @@ export class RecurrentTransactionComponent implements OnInit {
           placeholder: 'Pick start date',
           required: true,
           attributes: {
-            'data-cy': 'tx-start-date-picker',
+            'data-cy': 'recurrent-tx-start-date-picker',
           },
         },
       },
@@ -176,7 +176,7 @@ export class RecurrentTransactionComponent implements OnInit {
           required: true,
           attributes: {
             autocomplete: 'off',
-            'data-cy': 'tx-amount-input',
+            'data-cy': 'recurrent-tx-amount-input',
           },
         },
       },
@@ -188,7 +188,7 @@ export class RecurrentTransactionComponent implements OnInit {
           placeholder: 'Set transaction description',
           required: true,
           attributes: {
-            'data-cy': 'tx-description-input',
+            'data-cy': 'recurrent-tx-description-input',
           },
         },
       },
