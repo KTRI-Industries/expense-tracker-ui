@@ -11,7 +11,7 @@ import {
 } from '../support/transactions.po';
 import { TEST_PASSWORD, TEST_USERNAME } from '../support/app.po';
 
-describe.only('transactions', () => {
+describe('transactions', () => {
   before(() => {
     // ensure clean test slate for these tests
     cy.then(Cypress.session.clearCurrentSessionData);
