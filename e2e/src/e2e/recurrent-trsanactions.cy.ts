@@ -5,7 +5,11 @@ import {
   getFirstRecurrentAmountCell,
   getRecurrentTransactionTab,
 } from '../support/recurrent-transactions.po';
-import { getFirstAmountCell } from '../support/transactions.po';
+import {
+  getFirstAmountCell,
+  getFirstDescriptionCell,
+} from '../support/transactions.po';
+import { getUpdateTransactionButton } from '../support/transaction-form.po';
 
 describe.only('recurrent transactions', () => {
   before(() => {
@@ -55,5 +59,35 @@ describe.only('recurrent transactions', () => {
     cy.deleteVisibleTransactions();
     getRecurrentTransactionTab().click();
     cy.deleteVisibleRecurrentTransactions();
+  });
+
+  it('should edit existing recurrent transaction', () => {
+    cy.addNewRecurrentTransaction({
+      amount: 100,
+      date: new Date().toLocaleDateString('el-GR'),
+      description: 'Test transaction',
+    });
+
+    getFirstDescriptionCell().click();
+
+    cy.intercept('PUT', '/recurrent-transactions/*').as('apiCheck');
+
+    cy.editRecurrentTransaction({
+      amount: 200,
+      date: new Date().toLocaleDateString('el-GR'),
+      description: 'Updated transaction',
+    });
+
+    getUpdateTransactionButton().click();
+
+    cy.wait('@apiCheck').then((interception) => {
+      expect(interception?.response?.statusCode).to.eq(200);
+      expect(interception?.response?.body.amount.amount).to.eq(-200);
+      expect(interception?.response?.body.description).to.eq(
+        'Updated transaction',
+      );
+    });
+
+    getFirstAmountCell().should('contain.text', '-200');
   });
 });

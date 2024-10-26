@@ -240,6 +240,16 @@ Cypress.Commands.add('addNewRecurrentTransaction', (transaction) => {
   getCreateRecurrentTransactionButton().click();
 });
 
+Cypress.Commands.add('editRecurrentTransaction', (transaction) => {
+  getRecurrentAmountInput().clear().type(transaction.amount, { force: true });
+  getRecurrentStartDatePicker().clear().type(transaction.date);
+  if (transaction.description !== undefined) {
+    getRecurrentDescriptionInput()
+      .clear({ force: true })
+      .type(transaction.description, { force: true });
+  }
+});
+
 function doDelete() {
   hasTransactionInTable().then((hasTx) => {
     if (!hasTx) {
