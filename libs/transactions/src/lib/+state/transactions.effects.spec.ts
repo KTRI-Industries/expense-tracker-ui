@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { provideMockStore } from '@ngrx/store/testing';
 
+const TRANSACTIONS_PAGE_ROUTE = 'transactions-page';
+
 describe('TransactionsEffects', () => {
   let actions$: Observable<Action>;
   let effects: TransactionsEffects;
@@ -121,7 +123,10 @@ describe('TransactionsEffects', () => {
     effects.createTransaction$.subscribe();
 
     expect(service.createTransaction).toHaveBeenCalledWith(mockTransaction);
-    expect(router.navigate).toHaveBeenCalledWith(['transactions']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      TRANSACTIONS_PAGE_ROUTE,
+      'transactions',
+    ]);
     expect(snackBar.open).toHaveBeenCalledWith('Transaction created', 'Close');
   });
 
@@ -132,7 +137,11 @@ describe('TransactionsEffects', () => {
 
     effects.openTransactionForm$.subscribe();
 
-    expect(router.navigate).toHaveBeenCalledWith(['transactions', 'new']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      TRANSACTIONS_PAGE_ROUTE,
+      'transactions',
+      'new',
+    ]);
   });
 
   it('should open the transaction form to edit', () => {
@@ -142,7 +151,11 @@ describe('TransactionsEffects', () => {
 
     effects.openTransactionFormToEdit$.subscribe();
 
-    expect(router.navigate).toHaveBeenCalledWith(['transactions', '1']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      TRANSACTIONS_PAGE_ROUTE,
+      'transactions',
+      '1',
+    ]);
   });
 
   it('should delete a transaction successfully', () => {
@@ -155,7 +168,10 @@ describe('TransactionsEffects', () => {
     effects.deleteTransaction$.subscribe();
 
     expect(service.deleteTransaction).toHaveBeenCalledWith(transactionId);
-    expect(router.navigate).toHaveBeenCalledWith(['transactions']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      TRANSACTIONS_PAGE_ROUTE,
+      'transactions',
+    ]);
   });
 
   it('should handle errors when deleting a transaction', () => {
@@ -228,7 +244,10 @@ describe('TransactionsEffects', () => {
     expect(effects.updateTransaction$).toBeObservable(expected);
 
     expect(service.updateTransaction).toHaveBeenCalledWith(mockTransaction);
-    expect(router.navigate).toHaveBeenCalledWith(['transactions']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      TRANSACTIONS_PAGE_ROUTE,
+      'transactions',
+    ]);
     expect(snackBar.open).toHaveBeenCalledWith('Transaction updated', 'Close');
   });
 });
