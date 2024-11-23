@@ -42,7 +42,7 @@ import {
 } from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
-import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { CurrencyPipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import {
@@ -160,6 +160,7 @@ export const appConfig: ApplicationConfig = {
       },
       { useUtc: true },
     ),
+    CurrencyPipe, // this is not great, but it is needed for the pipe to work when injected inside a service
     provideStoreDevtools({ logOnly: !isDevMode() }), // CAUTION: store dev tools must be configured AFTER the actual store
   ],
 };
