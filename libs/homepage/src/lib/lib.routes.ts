@@ -4,6 +4,10 @@ import { provideState } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import * as fromHomepage from './+state/homepage.reducer';
 import { HomepageEffects } from './+state/homepage.effects';
+import {
+  DashboardEffects,
+  dashboardFeature,
+} from '@expense-tracker-ui/dashboard';
 
 export const homepageRoutes: Route[] = [
   {
@@ -15,6 +19,8 @@ export const homepageRoutes: Route[] = [
         fromHomepage.homepageReducer,
       ),
       provideEffects(HomepageEffects),
+      provideState(dashboardFeature),
+      provideEffects(DashboardEffects),
     ],
   },
 ];
