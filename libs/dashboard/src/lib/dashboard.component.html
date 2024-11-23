@@ -1,1 +1,35 @@
-<p>dashboard works!</p>
+<div class="grid grid-cols-1 gap-4 lg:gap-20 md:grid-cols-2 lg:grid-cols-4">
+  <mat-card class="p-4 text-center">
+    <mat-card-title class="text-center text-green-500">
+      {{
+        dashboard?.mainTransactionData?.totalIncome?.amount ?? 0
+          | currency: dashboard?.mainTransactionData?.totalIncome?.currency
+      }}
+    </mat-card-title>
+    <mat-card-content class="text-center">Income</mat-card-content>
+  </mat-card>
+  <mat-card class="p-4 text-center">
+    <mat-card-title class="text-center text-red-500">
+      {{
+        dashboard?.mainTransactionData?.totalExpense?.amount ?? 0
+          | currency: dashboard?.mainTransactionData?.totalExpense?.currency
+      }}
+    </mat-card-title>
+    <mat-card-content class="text-center">Expenses</mat-card-content>
+  </mat-card>
+  <mat-card class="p-4 text-center">
+    <mat-card-title class="text-center text-blue-500">
+      {{
+        dashboard?.mainTransactionData?.totalBalance?.amount ?? 0
+          | currency: dashboard?.mainTransactionData?.totalBalance?.currency
+      }}
+    </mat-card-title>
+    <mat-card-content class="text-center">Balance</mat-card-content>
+  </mat-card>
+  <mat-card class="p-4 text-center">
+    <mat-card-title class="text-center text-purple-500">
+      {{ dashboard?.mainTransactionData?.totalTransactions }}
+    </mat-card-title>
+    <mat-card-content class="text-center">Transactions</mat-card-content>
+  </mat-card>
+</div>

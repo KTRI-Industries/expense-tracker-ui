@@ -8,17 +8,28 @@ import {
   DashboardComponent,
   DashboardSelectors,
 } from '@expense-tracker-ui/dashboard';
+import { DashboardDto } from '@expense-tracker-ui/shared/api';
+import { Observable } from 'rxjs';
+import { MatCard, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'expense-tracker-ui-homepage',
   standalone: true,
-  imports: [CommonModule, LandingPageComponent, DashboardComponent],
+  imports: [
+    CommonModule,
+    LandingPageComponent,
+    DashboardComponent,
+    MatCard,
+    MatCardTitle,
+  ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
 })
 export class HomepageComponent implements OnInit {
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
-  dashboard$ = this.store.select(DashboardSelectors.selectDashboard);
+  dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
+    DashboardSelectors.selectDashboard,
+  );
 
   constructor(private store: Store) {}
 
