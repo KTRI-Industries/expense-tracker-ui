@@ -33,3 +33,18 @@
     <mat-card-content class="text-center">Transactions</mat-card-content>
   </mat-card>
 </div>
+
+<div class="mt-8">
+  <mat-card class="p-4">
+    <mat-card-title class="text-center">Expenses by Category</mat-card-title>
+    <mat-card-content>
+      <div class="w-full max-w-xs mx-auto">
+        <canvas
+          baseChart
+          [data]="doughnutChartData"
+          [options]="doughnutChartOptions"
+          type="doughnut"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
