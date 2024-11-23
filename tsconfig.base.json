@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@expense-tracker-ui/account": ["libs/account/src/index.ts"],
+      "@expense-tracker-ui/dashboard": ["libs/dashboard/src/index.ts"],
       "@expense-tracker-ui/homepage": ["libs/homepage/src/index.ts"],
       "@expense-tracker-ui/nav-menu": ["libs/nav-menu/src/index.ts"],
       "@expense-tracker-ui/shared/api": ["libs/shared/api/src/index.ts"],
