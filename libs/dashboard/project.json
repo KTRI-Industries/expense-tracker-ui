@@ -2,7 +2,7 @@
   "name": "dashboard",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/dashboard/src",
-  "prefix": "lib",
+  "prefix": "expense-tracker-ui",
   "projectType": "library",
   "tags": [],
   "targets": {
