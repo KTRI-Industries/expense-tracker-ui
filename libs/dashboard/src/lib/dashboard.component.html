@@ -39,11 +39,13 @@
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
     <mat-card-content>
       <div class="w-full max-w-xs mx-auto">
-        <canvas
-          baseChart
-          [data]="doughnutChartData"
-          [options]="doughnutChartOptions"
-          type="doughnut"></canvas>
+        @if (chartData !== null) {
+          <canvas
+            baseChart
+            [data]="chartData"
+            [options]="doughnutChartOptions"
+            type="doughnut"></canvas>
+        }
       </div>
     </mat-card-content>
   </mat-card>

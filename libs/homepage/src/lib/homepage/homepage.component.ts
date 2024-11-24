@@ -11,6 +11,7 @@ import {
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 import { MatCard, MatCardTitle } from '@angular/material/card';
+import { ChartData } from 'chart.js';
 
 @Component({
   selector: 'expense-tracker-ui-homepage',
@@ -30,6 +31,8 @@ export class HomepageComponent implements OnInit {
   dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
     DashboardSelectors.selectDashboard,
   );
+  chartData$: Observable<ChartData<'doughnut', number[], string | string[]>> =
+    this.store.select(DashboardSelectors.selectChartData);
 
   constructor(private store: Store) {}
 
