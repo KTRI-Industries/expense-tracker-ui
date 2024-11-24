@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Category, DashboardDto } from '@expense-tracker-ui/shared/api';
+import { CommonModule } from '@angular/common';
+import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { ChartData, ChartOptions, TooltipItem } from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartFormattingService } from './chart-formatting.service';
 
@@ -20,18 +20,19 @@ import { ChartFormattingService } from './chart-formatting.service';
   styles: ``,
 })
 export class DashboardComponent {
-  @Input() dashboard: DashboardDto | undefined | null;
+  private _dashboard: DashboardDto | undefined | null = null;
 
-  totalExpenseData: ExpenseCategories = {
-    labels: [
-      Category.Restaurant,
-      Category.Rent,
-      Category.Groceries,
-      Category.Bill,
-      Category.Taxes,
-    ],
-    values: [10320, 2020, 2002, 2222, 5565],
-  };
+  @Input()
+  set dashboard(value: DashboardDto | undefined | null) {
+    this._dashboard = value;
+    this.updateChartData();
+  }
+
+  get dashboard(): DashboardDto | undefined | null {
+    return this._dashboard;
+  }
+
+  constructor(private chartFormattingService: ChartFormattingService) {}
 
   public doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
@@ -51,32 +52,25 @@ export class DashboardComponent {
 
   public doughnutChartData: ChartData<'doughnut', number[], string | string[]> =
     {
-      labels: this.totalExpenseData.labels || [],
+      labels: [],
       datasets: [
         {
-          data: this.totalExpenseData.values || [],
+          data: [],
         },
       ],
     };
 
-  formatTooltipLabel(context: TooltipItem<'doughnut'>): string {
-    const value = context.raw || 0;
-    const currency =
-      this.dashboard?.mainTransactionData?.totalExpense?.currency || 'EUR';
-    const formattedValue = this.currencyPipe.transform(
-      value as number,
-      currency,
-    );
-    return `${formattedValue}`;
+  private updateChartData(): void {
+    this.doughnutChartData = {
+      labels: this.dashboard?.expenseByCategory?.labels || [],
+      datasets: [
+        {
+          data:
+            this.dashboard?.expenseByCategory.values.map(
+              (value) => value.amount as number,
+            ) || [],
+        },
+      ],
+    };
   }
-
-  constructor(
-    private currencyPipe: CurrencyPipe,
-    private chartFormattingService: ChartFormattingService,
-  ) {}
-}
-
-interface ExpenseCategories {
-  labels: string[];
-  values: number[];
 }
