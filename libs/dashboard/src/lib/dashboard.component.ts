@@ -20,17 +20,12 @@ import { ChartFormattingService } from './chart-formatting.service';
   styles: ``,
 })
 export class DashboardComponent {
-  private _dashboard: DashboardDto | undefined | null = null;
+  @Input() chartData:
+    | ChartData<'doughnut', number[], string | string[]>
+    | undefined
+    | null = null;
 
-  @Input()
-  set dashboard(value: DashboardDto | undefined | null) {
-    this._dashboard = value;
-    this.updateChartData();
-  }
-
-  get dashboard(): DashboardDto | undefined | null {
-    return this._dashboard;
-  }
+  @Input() dashboard: DashboardDto | undefined | null = null;
 
   constructor(private chartFormattingService: ChartFormattingService) {}
 
@@ -49,28 +44,4 @@ export class DashboardComponent {
       },
     },
   };
-
-  public doughnutChartData: ChartData<'doughnut', number[], string | string[]> =
-    {
-      labels: [],
-      datasets: [
-        {
-          data: [],
-        },
-      ],
-    };
-
-  private updateChartData(): void {
-    this.doughnutChartData = {
-      labels: this.dashboard?.expenseByCategory?.labels || [],
-      datasets: [
-        {
-          data:
-            this.dashboard?.expenseByCategory.values.map(
-              (value) => value.amount as number,
-            ) || [],
-        },
-      ],
-    };
-  }
 }
