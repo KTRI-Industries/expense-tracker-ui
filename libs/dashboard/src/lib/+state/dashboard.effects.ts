@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
-import { DashboardActions } from '@expense-tracker-ui/dashboard';
 import { Store } from '@ngrx/store';
 import { DashboardControllerService } from '@expense-tracker-ui/shared/api';
+import { DashboardActions } from '../../index';
 
 @Injectable()
 export class DashboardEffects {

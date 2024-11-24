@@ -17,9 +17,11 @@ import {
 } from '@expense-tracker-ui/shared/formly';
 import { RecurrenceFrequency } from '@expense-tracker-ui/shared/api';
 import { RecurrentTransactionActions } from './+state/transactions.actions';
+import { take } from 'rxjs';
 
 describe('RecurrentTransactionContainerComponent', () => {
   let component: RenderResult<RecurrentTransactionContainerComponent>;
+  let store: MockStore;
 
   const setup = async (routeValue: string | null) => {
     component = await render(RecurrentTransactionContainerComponent, {
@@ -96,19 +98,21 @@ describe('RecurrentTransactionContainerComponent', () => {
         },
       ],
     });
-    const store = TestBed.inject(MockStore);
+    store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
     return { dispatchSpy: store.dispatch };
   };
 
-  // TODO: during ngOnInit dispatch method of store has not been mocked yet
-  it.skip('should load recurrent transaction if id is present in route', async () => {
-    const { dispatchSpy } = await setup('123');
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      RecurrentTransactionActions.loadRecurrentTransaction({
-        recurrentTransactionId: '123',
-      }),
-    );
+  // TODO: during ngOnInit dispatch method of store has not been mocked yet so we use scannedActions$
+  it('should load recurrent transaction if id is present in route', async () => {
+    await setup('123');
+    store.scannedActions$.pipe(take(1)).subscribe((action) => {
+      expect(action).toEqual(
+        RecurrentTransactionActions.loadRecurrentTransaction({
+          recurrentTransactionId: '123',
+        }),
+      );
+    });
   });
 
   it('should not load recurrent transaction if id is not present in route', async () => {

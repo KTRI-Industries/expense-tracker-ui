@@ -13,10 +13,26 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!.*\\.mjs$)',
+    // '../../node_modules/(?!${ng2-charts})',
+  ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  /**
+   * This is a workaround for the issue:
+   *    Details:
+   *
+   *     C:\dev\WORKSPACE\EXPENSE-TRACKER\expense-tracker-ui\node_modules\lodash-es\lodash.js:10
+   *     export { default as add } from './add.js';
+   *     ^^^^^^
+   *
+   *     SyntaxError: Unexpected token 'export'
+   */
+  moduleNameMapper: {
+    '^lodash-es$': 'lodash',
+  },
 };
