@@ -15,9 +15,11 @@ import {
   AmountInputComponent,
   ChipsComponent,
 } from '@expense-tracker-ui/shared/formly';
+import { take } from 'rxjs';
 
 describe('TransactionContainerComponent', () => {
   let component: RenderResult<TransactionContainerComponent>;
+  let store: MockStore;
 
   const setup = async (routeValue: string | null) => {
     component = await render(TransactionContainerComponent, {
@@ -90,17 +92,19 @@ describe('TransactionContainerComponent', () => {
         },
       ],
     });
-    const store = TestBed.inject(MockStore);
+    store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
     return { dispatchSpy: store.dispatch };
   };
 
-  // TODO: during ngOnInit dispatch method of store has not been mocked yet
-  it.skip('should load transaction if id is present in route', async () => {
-    const { dispatchSpy } = await setup('123');
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      TransactionActions.loadTransaction({ transactionId: '123' }),
-    );
+  // TODO: during ngOnInit dispatch method of store has not been mocked yet so we use scannedActions$
+  it('should load transaction if id is present in route', async () => {
+    await setup('123');
+    store.scannedActions$.pipe(take(1)).subscribe((action) => {
+      expect(action).toEqual(
+        TransactionActions.loadTransaction({ transactionId: '123' }),
+      );
+    });
   });
 
   it('should not load transaction if id is not present in route', async () => {
