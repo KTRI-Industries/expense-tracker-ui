@@ -40,7 +40,8 @@ export class DashboardComponent {
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
-      fieldGroupClassName: 'flex flex-row space-x-4',
+      // in large screens, display the form fields in a row
+      fieldGroupClassName: 'lg:flex lg:flex-row lg:space-x-4',
       fieldGroup: [
         {
           key: 'dateRange',
