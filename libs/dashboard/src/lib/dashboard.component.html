@@ -7,6 +7,7 @@
       [options]="options"></formly-form>
   </form>
 </div>
+<!-- single column in small screens, 2 in medium 4 in large -->
 <div class="grid grid-cols-1 gap-4 lg:gap-20 md:grid-cols-2 lg:grid-cols-4">
   <mat-card class="p-4 text-center">
     <mat-card-title class="text-center text-green-500">
@@ -47,6 +48,7 @@
   <mat-card class="p-4">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
     <mat-card-content>
+      <!-- max width to something smal and margins left and righ to auto -->
       <div class="w-full max-w-xs mx-auto">
         @if (chartData !== null) {
           <canvas
