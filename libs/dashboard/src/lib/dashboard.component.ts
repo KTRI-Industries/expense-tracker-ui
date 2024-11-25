@@ -54,6 +54,7 @@ export class DashboardComponent {
               { value: 'lastYear', label: 'Last Year' },
               { value: 'custom', label: 'Custom Date Range' },
             ],
+            subscriptSizing: 'dynamic',
           },
         },
         {
@@ -62,6 +63,7 @@ export class DashboardComponent {
           props: {
             label: 'Start Date',
             placeholder: 'Pick start date',
+            subscriptSizing: 'dynamic',
           },
           hideExpression: (model) => model.dateRange !== 'custom',
         },
@@ -71,6 +73,7 @@ export class DashboardComponent {
           props: {
             label: 'End Date',
             placeholder: 'Pick end date',
+            subscriptSizing: 'dynamic',
           },
           hideExpression: (model) => model.dateRange !== 'custom',
         },

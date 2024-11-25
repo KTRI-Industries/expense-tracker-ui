@@ -1,12 +1,14 @@
-<div>
-  <form [formGroup]="form">
-    <formly-form
-      [form]="form"
-      [fields]="fields"
-      [model]="model"
-      [options]="options"></formly-form>
-  </form>
-</div>
+<mat-card class="lg:inline-block mb-2">
+  <mat-card-content class="py-2 px-2">
+    <form [formGroup]="form">
+      <formly-form
+        [form]="form"
+        [fields]="fields"
+        [model]="model"
+        [options]="options"></formly-form>
+    </form>
+  </mat-card-content>
+</mat-card>
 <!-- single column in small screens, 2 in medium 4 in large -->
 <div class="grid grid-cols-1 gap-4 lg:gap-20 md:grid-cols-2 lg:grid-cols-4">
   <mat-card class="p-4 text-center">
