@@ -25,5 +25,23 @@ export class DashboardEffects {
     ),
   );
 
+  filterDashboard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.dateRangeChange),
+      switchMap((value) =>
+        this.client
+          .getDashboard(
+            value.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
+            value.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
+          )
+          .pipe(
+            map((dashboard) =>
+              DashboardActions.loadDashboardSuccess({ dashboard }),
+            ),
+          ),
+      ),
+    ),
+  );
+
   constructor(private store: Store) {}
 }
