@@ -5,6 +5,8 @@ import * as RecurrentTransactionsSelectors from './lib/+state/recurrent-transact
 
 export * from './lib/+state/transactions.models';
 
+export * from './lib/transaction.model';
+
 export {
   TransactionsFeature,
   TransactionsSelectors,
