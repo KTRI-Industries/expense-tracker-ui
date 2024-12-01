@@ -1,0 +1,19 @@
+<!-- flex flex-wrap lg:items-center lg:space-x-4 makes the form items align in a row with the button -->
+<form
+  [formGroup]="form"
+  class="lg:flex lg:flex-wrap lg:items-center lg:space-x-4">
+  <formly-form
+    [form]="form"
+    [fields]="fields"
+    [model]="model"
+    [options]="options"></formly-form>
+  <a
+    *ngIf="isCustomFilter()"
+    mat-button
+    color="primary"
+    class="mt-4 lg:mt-0"
+    href="#"
+    (click)="applyCustomFilter($event)">
+    Apply
+  </a>
+</form>
