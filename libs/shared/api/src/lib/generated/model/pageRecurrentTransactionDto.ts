@@ -14,8 +14,8 @@ import { SortObject } from './sortObject';
 import { RecurrentTransactionDto } from './recurrentTransactionDto';
 
 export interface PageRecurrentTransactionDto {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Array<RecurrentTransactionDto>;
   number?: number;
