@@ -13,6 +13,16 @@ import { CurrencyPipe } from '@angular/common';
 import '@angular/common/locales/global/el';
 import { userEvent } from '@testing-library/user-event';
 import { take } from 'rxjs';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  AmountInputComponent,
+  ChipsComponent,
+} from '@expense-tracker-ui/shared/formly';
 
 describe('HomepageComponent', () => {
   let component: RenderResult<HomepageComponent>;
@@ -20,9 +30,47 @@ describe('HomepageComponent', () => {
 
   const setup = async (isAuthenticated: boolean) => {
     component = await render(HomepageComponent, {
-      imports: [MatCardModule],
+      imports: [
+        MatCardModule,
+        ReactiveFormsModule,
+        FormlySelectModule,
+        FormlyMaterialModule,
+        FormlyMatDatepickerModule,
+        FormlyModule.forRoot({
+          types: [
+            {
+              name: 'chips',
+              component: ChipsComponent,
+              wrappers: ['form-field'],
+              defaultOptions: { defaultValue: [] },
+            },
+            {
+              name: 'amount-input',
+              component: AmountInputComponent,
+              wrappers: ['form-field'],
+            },
+          ],
+          validationMessages: [
+            { name: 'required', message: 'This field is required' },
+          ],
+        }),
+      ],
       providers: [
         CurrencyPipe,
+        provideMomentDateAdapter(
+          {
+            parse: {
+              dateInput: 'DD/MM/YYYY',
+            },
+            display: {
+              dateInput: 'DD/MM/YYYY',
+              monthYearLabel: 'MMMM YYYY',
+              dateA11yLabel: 'LL',
+              monthYearA11yLabel: 'MMMM YYYY',
+            },
+          },
+          { useUtc: true },
+        ),
         provideMockStore({
           selectors: [
             {
@@ -58,7 +106,6 @@ describe('HomepageComponent', () => {
     expect(screen.getByText('Transactions')).toBeInTheDocument();
   });
 
-  // TODO: during ngOnInit dispatch method of store has not been mocked yet so we use scannedActions$
   it('should dispatch initDashboard action on init', async () => {
     await setup(true);
     store.scannedActions$.pipe(take(1)).subscribe((action) => {

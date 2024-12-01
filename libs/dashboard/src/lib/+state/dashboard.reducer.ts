@@ -1,7 +1,8 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import * as DashboardActions from './dashboard.actions';
-import { DashboardDto } from '@expense-tracker-ui/shared/api';
+import { Category, DashboardDto } from '@expense-tracker-ui/shared/api';
 import { ChartData } from 'chart.js';
+import { categoryLabels } from '@expense-tracker-ui/transactions';
 
 export const DASHBOARD_FEATURE_KEY = 'dashboard';
 
@@ -30,7 +31,10 @@ export const dashboardFeature = createFeature({
   extraSelectors: ({ selectDashboard }) => ({
     selectChartData: createSelector(selectDashboard, (dashboard) => {
       return {
-        labels: dashboard?.expenseByCategory?.labels || [],
+        labels:
+          dashboard?.expenseByCategory?.labels.map(
+            (label) => categoryLabels[label as Category] || label,
+          ) || [],
         datasets: [
           {
             data:
