@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
@@ -11,6 +11,8 @@ import {
   FormlyFormOptions,
   FormlyModule,
 } from '@ngx-formly/core';
+import { MatButton } from '@angular/material/button';
+import moment, { Moment } from 'moment';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard',
@@ -23,6 +25,7 @@ import {
     BaseChartDirective,
     ReactiveFormsModule,
     FormlyModule,
+    MatButton,
   ],
   templateUrl: './dashboard.component.html',
   styles: [],
@@ -34,6 +37,11 @@ export class DashboardComponent {
     | null = null;
 
   @Input() dashboard: DashboardDto | undefined | null = null;
+
+  @Output() dateRangeChange = new EventEmitter<{
+    startDate: Moment;
+    endDate: Moment;
+  }>();
 
   form: FormGroup;
   model: any = { dateRange: 'lastYear' }; // Set default value to 'lastYear'
@@ -55,6 +63,9 @@ export class DashboardComponent {
               { value: 'custom', label: 'Custom Date Range' },
             ],
             subscriptSizing: 'dynamic',
+            change: (field, event) => {
+              this.changeDateDropDown(event.value);
+            },
           },
         },
         {
@@ -64,6 +75,12 @@ export class DashboardComponent {
             label: 'Start Date',
             placeholder: 'Pick start date',
             subscriptSizing: 'dynamic',
+            /*change: (field, event) => {
+              this.dateRangeChange.emit({
+                startDate: event.value,
+                endDate: new Date(),
+              });
+            },*/
           },
           hideExpression: (model) => model.dateRange !== 'custom',
         },
@@ -74,6 +91,12 @@ export class DashboardComponent {
             label: 'End Date',
             placeholder: 'Pick end date',
             subscriptSizing: 'dynamic',
+            /*  change: (field, event) => {
+              this.dateRangeChange.emit({
+                startDate: new Date(),
+                endDate: event.value,
+              });
+            },*/
           },
           hideExpression: (model) => model.dateRange !== 'custom',
         },
@@ -103,4 +126,56 @@ export class DashboardComponent {
       },
     },
   };
+
+  private changeDateDropDown(value: string) {
+    switch (value) {
+      case 'lastWeek':
+        this.dateRangeChange.emit(this.getLastWeekStartEndDates());
+        break;
+      case 'lastMonth':
+        this.dateRangeChange.emit(this.getLastMonthStartDateEndDates());
+        break;
+      case 'lastYear':
+        this.dateRangeChange.emit(this.getLastYearStartDateEndDates());
+        break;
+    }
+  }
+
+  private getLastWeekStartEndDates() {
+    const today = moment();
+    const lastWeekStart = moment().subtract(7, 'days');
+    return {
+      startDate: lastWeekStart,
+      endDate: today,
+    };
+  }
+
+  private getLastMonthStartDateEndDates() {
+    const today = moment();
+    const lastMonthStart = moment().subtract(1, 'month');
+    return {
+      startDate: lastMonthStart,
+      endDate: today,
+    };
+  }
+
+  private getLastYearStartDateEndDates() {
+    const today = moment();
+    const lastYearStart = moment().subtract(1, 'year');
+    return {
+      startDate: lastYearStart,
+      endDate: today,
+    };
+  }
+
+  isCustomFilter() {
+    return this.model.dateRange === 'custom';
+  }
+
+  applyCustomFilter() {
+    this.dateRangeChange.emit({
+      startDate: this.model.startDate,
+      endDate: this.model.endDate,
+    });
+  }
 }

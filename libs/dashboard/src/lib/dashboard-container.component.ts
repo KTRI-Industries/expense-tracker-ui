@@ -9,6 +9,7 @@ import {
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 import { ChartData } from 'chart.js';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-container',
@@ -17,7 +18,10 @@ import { ChartData } from 'chart.js';
   template: `
     <expense-tracker-ui-dashboard
       [dashboard]="dashboard$ | async"
-      [chartData]="chartData$ | async"></expense-tracker-ui-dashboard>
+      [chartData]="chartData$ | async"
+      (dateRangeChange)="
+        dateRangeChange($event)
+      "></expense-tracker-ui-dashboard>
   `,
 })
 export class DashboardContainerComponent implements OnInit {
@@ -31,5 +35,9 @@ export class DashboardContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(DashboardActions.initDashboard());
+  }
+
+  dateRangeChange($event: { startDate: Moment; endDate: Moment }) {
+    this.store.dispatch(DashboardActions.dateRangeChange($event));
   }
 }
