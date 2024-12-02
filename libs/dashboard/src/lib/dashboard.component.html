@@ -48,9 +48,9 @@
 <div class="mt-8">
   <mat-card class="p-4">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
-    <mat-card-content>
-      <!-- max width to something smal and margins left and righ to auto -->
-      <div class="w-full max-w-xs mx-auto">
+    <mat-card-content class="md:columns-2">
+      <!-- max width to something small and margins left and right to auto -->
+      <div class="max-w-xs mx-auto">
         @if (chartData !== null) {
           <canvas
             baseChart
@@ -59,6 +59,10 @@
             type="doughnut"></canvas>
         }
       </div>
+      <!-- Custom Legend -->
+      <expense-tracker-ui-chart-legend
+        [items]="generateLegend()"
+        [dashboard]="dashboard"></expense-tracker-ui-chart-legend>
     </mat-card-content>
   </mat-card>
 </div>
