@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { ChartData, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartFormattingService } from './chart-formatting.service';
 import { DashboardFilterComponent } from './dashboard-filter.component';
@@ -30,6 +30,11 @@ export class DashboardComponent {
     | undefined
     | null = null;
 
+  @Input() incomeExpensePerMonthChartData:
+    | ChartData<'bar', number[], string | string[]>
+    | undefined
+    | null = null;
+
   @Input() dashboard: DashboardDto | undefined | null = null;
 
   @Output() dateRangeChange = new EventEmitter<{
@@ -52,6 +57,17 @@ export class DashboardComponent {
       },
       legend: {
         display: false, // Disable the default legend
+      },
+    },
+  };
+
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    // We use these empty structures as placeholders for dynamic theming.
+    responsive: true,
+
+    plugins: {
+      legend: {
+        display: true,
       },
     },
   };
