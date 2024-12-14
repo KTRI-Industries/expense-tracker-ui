@@ -18,7 +18,7 @@ import { Moment } from 'moment';
   template: `
     <expense-tracker-ui-dashboard
       [dashboard]="dashboard$ | async"
-      [chartData]="chartData$ | async"
+      [groupedExpensesChartData]="groupedExpensesChartData$ | async"
       (dateRangeChange)="
         dateRangeChange($event)
       "></expense-tracker-ui-dashboard>
@@ -28,8 +28,9 @@ export class DashboardContainerComponent implements OnInit {
   dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
     DashboardSelectors.selectDashboard,
   );
-  chartData$: Observable<ChartData<'doughnut', number[], string | string[]>> =
-    this.store.select(DashboardSelectors.selectChartData);
+  groupedExpensesChartData$: Observable<
+    ChartData<'doughnut', number[], string | string[]>
+  > = this.store.select(DashboardSelectors.selectGroupedExpensesChartData);
 
   constructor(private store: Store) {}
 

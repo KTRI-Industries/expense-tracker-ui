@@ -78,7 +78,10 @@ describe('HomepageComponent', () => {
               value: isAuthenticated,
             },
             { selector: DashboardSelectors.selectDashboard, value: null },
-            { selector: DashboardSelectors.selectChartData, value: null },
+            {
+              selector: DashboardSelectors.selectGroupedExpensesChartData,
+              value: null,
+            },
           ],
         }),
       ],

@@ -29,21 +29,24 @@ export const dashboardFeature = createFeature({
     })),
   ),
   extraSelectors: ({ selectDashboard }) => ({
-    selectChartData: createSelector(selectDashboard, (dashboard) => {
-      return {
-        labels:
-          dashboard?.expenseByCategory?.labels.map(
-            (label) => categoryLabels[label as Category] || label,
-          ) || [],
-        datasets: [
-          {
-            data:
-              dashboard?.expenseByCategory?.values.map(
-                (value) => value.amount as number,
-              ) || [],
-          },
-        ],
-      } as ChartData<'doughnut', number[], string | string[]>;
-    }),
+    selectGroupedExpensesChartData: createSelector(
+      selectDashboard,
+      (dashboard) => {
+        return {
+          labels:
+            dashboard?.expenseByCategory?.labels.map(
+              (label) => categoryLabels[label as Category] || label,
+            ) || [],
+          datasets: [
+            {
+              data:
+                dashboard?.expenseByCategory?.values.map(
+                  (value) => value.amount as number,
+                ) || [],
+            },
+          ],
+        } as ChartData<'doughnut', number[], string | string[]>;
+      },
+    ),
   }),
 });

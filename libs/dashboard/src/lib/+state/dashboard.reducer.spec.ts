@@ -10,9 +10,10 @@ describe('Dashboard Reducer', () => {
         ...initialDashboardState,
         dashboard: undefined,
       };
-      const result = DashboardSelectors.selectChartData.projector(
-        state.dashboard,
-      );
+      const result =
+        DashboardSelectors.selectGroupedExpensesChartData.projector(
+          state.dashboard,
+        );
       expect(result).toEqual({
         labels: [],
         datasets: [{ data: [] }],
@@ -27,9 +28,10 @@ describe('Dashboard Reducer', () => {
         },
       } as DashboardDto;
       const state: DashboardState = { ...initialDashboardState, dashboard };
-      const result = DashboardSelectors.selectChartData.projector(
-        state.dashboard,
-      );
+      const result =
+        DashboardSelectors.selectGroupedExpensesChartData.projector(
+          state.dashboard,
+        );
       expect(result).toEqual({
         labels: ['Food', 'Transport'],
         datasets: [{ data: [100, 50] }],
@@ -39,9 +41,10 @@ describe('Dashboard Reducer', () => {
     it('returns empty chart data when expenseByCategory is undefined', () => {
       const dashboard: DashboardDto = {} as DashboardDto;
       const state: DashboardState = { ...initialDashboardState, dashboard };
-      const result = DashboardSelectors.selectChartData.projector(
-        state.dashboard,
-      );
+      const result =
+        DashboardSelectors.selectGroupedExpensesChartData.projector(
+          state.dashboard,
+        );
       expect(result).toEqual({
         labels: [],
         datasets: [{ data: [] }],

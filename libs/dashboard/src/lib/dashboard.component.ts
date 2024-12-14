@@ -25,7 +25,7 @@ import { ChartLegendComponent } from './chart-legend.component';
   styles: [],
 })
 export class DashboardComponent {
-  @Input() chartData:
+  @Input() groupedExpensesChartData:
     | ChartData<'doughnut', number[], string | string[]>
     | undefined
     | null = null;
@@ -69,12 +69,14 @@ export class DashboardComponent {
     percentage: number;
   }[] {
     if (
-      !this.chartData ||
-      !this.chartData.datasets[0] ||
-      !this.chartData.labels
+      !this.groupedExpensesChartData ||
+      !this.groupedExpensesChartData.datasets[0] ||
+      !this.groupedExpensesChartData.labels
     ) {
       return [];
     }
-    return this.chartFormattingService.customiseLegend(this.chartData);
+    return this.chartFormattingService.customiseLegend(
+      this.groupedExpensesChartData,
+    );
   }
 }
