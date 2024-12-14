@@ -18,6 +18,7 @@ model/createTransactionCommand.ts
 model/dashboardDto.ts
 model/disassociateTenantCommand.ts
 model/expenseByCategoryDto.ts
+model/incomeExpensePerMonthDto.ts
 model/inviteUserCommand.ts
 model/invitedUserDto.ts
 model/mainTransactionDataDto.ts

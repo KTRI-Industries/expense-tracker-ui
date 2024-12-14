@@ -12,8 +12,8 @@
 import { MonetaryAmount } from './monetaryAmount';
 
 export interface MainTransactionDataDto {
-  totalIncome: MonetaryAmount;
-  totalExpense: MonetaryAmount;
-  totalBalance: MonetaryAmount;
-  totalTransactions: number;
+  totalIncome?: MonetaryAmount;
+  totalExpense?: MonetaryAmount;
+  totalBalance?: MonetaryAmount;
+  totalTransactions?: number;
 }

@@ -9,13 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { MonetaryAmount } from './monetaryAmount';
 
-export interface PageableObject {
-  offset?: number;
-  sort?: Array<SortObject>;
-  unpaged?: boolean;
-  paged?: boolean;
-  pageSize?: number;
-  pageNumber?: number;
+export interface IncomeExpensePerMonthDto {
+  labels: Array<string>;
+  values: Array<Array<MonetaryAmount>>;
 }
