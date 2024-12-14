@@ -11,8 +11,10 @@
  */
 import { ExpenseByCategoryDto } from './expenseByCategoryDto';
 import { MainTransactionDataDto } from './mainTransactionDataDto';
+import { IncomeExpensePerMonthDto } from './incomeExpensePerMonthDto';
 
 export interface DashboardDto {
   mainTransactionData: MainTransactionDataDto;
   expenseByCategory: ExpenseByCategoryDto;
+  incomeExpensePerMonth: IncomeExpensePerMonthDto;
 }

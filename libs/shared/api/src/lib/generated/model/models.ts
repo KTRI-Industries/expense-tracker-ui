@@ -5,6 +5,7 @@ export * from './createTransactionCommand';
 export * from './dashboardDto';
 export * from './disassociateTenantCommand';
 export * from './expenseByCategoryDto';
+export * from './incomeExpensePerMonthDto';
 export * from './inviteUserCommand';
 export * from './invitedUserDto';
 export * from './mainTransactionDataDto';
