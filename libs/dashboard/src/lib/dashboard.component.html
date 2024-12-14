@@ -45,8 +45,8 @@
   </mat-card>
 </div>
 
-<div class="mt-8">
-  <mat-card class="p-4">
+<div class="mt-8 flex flex-wrap gap-4">
+  <mat-card class="p-4 flex-1">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
     <mat-card-content class="md:columns-2">
       <!-- max width to something small and margins left and right to auto -->
@@ -63,6 +63,24 @@
       <expense-tracker-ui-chart-legend
         [items]="generateLegend()"
         [dashboard]="dashboard"></expense-tracker-ui-chart-legend>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="p-4 flex-1">
+    <mat-card-title class="text-center">
+      Income/Expenses per Month
+    </mat-card-title>
+    <mat-card-content>
+      <!-- max width to something small and margins left and right to auto -->
+      <div>
+        @if (incomeExpensePerMonthChartData !== null) {
+          <canvas
+            baseChart
+            [data]="incomeExpensePerMonthChartData"
+            [options]="barChartOptions"
+            type="bar"></canvas>
+        }
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

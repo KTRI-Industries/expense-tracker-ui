@@ -48,5 +48,27 @@ export const dashboardFeature = createFeature({
         } as ChartData<'doughnut', number[], string | string[]>;
       },
     ),
+    selectIncomeExpensePerMonthChartData: createSelector(
+      selectDashboard,
+      (dashboard) => {
+        return {
+          labels: dashboard?.incomeExpensePerMonth?.labels || [],
+          datasets: [
+            {
+              label: 'Income',
+              data: dashboard?.incomeExpensePerMonth?.values[0].map(
+                (value) => value.amount as number,
+              ),
+            },
+            {
+              label: 'Expense',
+              data: dashboard?.incomeExpensePerMonth?.values[1].map(
+                (value) => value.amount as number,
+              ),
+            },
+          ],
+        } as ChartData<'bar', number[], string | string[]>;
+      },
+    ),
   }),
 });
