@@ -1,3 +1,4 @@
 import { dashboardFeature } from './dashboard.reducer';
 
-export const { selectDashboard, selectChartData } = dashboardFeature;
+export const { selectDashboard, selectGroupedExpensesChartData } =
+  dashboardFeature;

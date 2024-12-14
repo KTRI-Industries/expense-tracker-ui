@@ -51,10 +51,10 @@
     <mat-card-content class="md:columns-2">
       <!-- max width to something small and margins left and right to auto -->
       <div class="max-w-xs mx-auto">
-        @if (chartData !== null) {
+        @if (groupedExpensesChartData !== null) {
           <canvas
             baseChart
-            [data]="chartData"
+            [data]="groupedExpensesChartData"
             [options]="doughnutChartOptions"
             type="doughnut"></canvas>
         }
