@@ -83,16 +83,28 @@ export class DashboardFilterComponent {
   }
 
   private changeDateDropDown(value: string) {
+    let dateRange;
     switch (value) {
       case 'lastWeek':
-        this.dateRangeChange.emit(this.getLastWeekStartEndDates());
+        dateRange = this.getLastWeekStartEndDates();
         break;
       case 'lastMonth':
-        this.dateRangeChange.emit(this.getLastMonthStartDateEndDates());
+        dateRange = this.getLastMonthStartDateEndDates();
         break;
       case 'lastYear':
-        this.dateRangeChange.emit(this.getLastYearStartDateEndDates());
+        dateRange = this.getLastYearStartDateEndDates();
         break;
+      case 'custom':
+        // Do nothing for custom, as dates are manually selected
+        return;
+    }
+    if (dateRange) {
+      this.model = {
+        ...this.model,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      };
+      this.dateRangeChange.emit(dateRange);
     }
   }
 
