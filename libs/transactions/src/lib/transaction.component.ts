@@ -99,7 +99,10 @@ export class TransactionComponent implements OnInit {
       categories: this.selectedTransaction?.categories?.map((category) =>
         this.labelCategoryConverter.getLabelFromEnum(category),
       ),
-      txType: this.options.formState.txType,
+      txType:
+        (this.selectedTransaction?.amount?.amount ?? 0) >= 0
+          ? 'INCOME'
+          : 'EXPENSE',
       txId: this.selectedTransaction?.transactionId,
     };
 
