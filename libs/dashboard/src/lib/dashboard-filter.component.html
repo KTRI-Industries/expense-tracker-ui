@@ -16,7 +16,7 @@
     (click)="applyCustomFilter($event)">
     Apply
   </a>
-  <!-- Display the selected date range subtly -->
+  <!-- Display the selected date range -->
   <div class="text-sm text-gray-300 mt-4 lg:mt-0 lg:ml-4 lg:text-right">
     <div *ngIf="model.startDate">
       from: {{ model.startDate.format('DD/MM/YY') }}
