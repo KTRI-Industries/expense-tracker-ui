@@ -3,6 +3,7 @@ import { TransactionComponent } from './transaction.component';
 import {
   Category,
   CreateTransactionCommand,
+  TransactionDto,
 } from '@expense-tracker-ui/shared/api';
 import { FormlyModule } from '@ngx-formly/core';
 import {
@@ -145,5 +146,21 @@ describe('TransactionComponent', () => {
 
     // Assert that event was not emitted
     expect(component.create.emit).not.toHaveBeenCalled();
+  });
+
+  it('should set txType to INCOME when selectedTransaction amount is positive', () => {
+    const positiveTransaction: TransactionDto = {
+      amount: { amount: 100, currency: 'EUR' },
+      date: '2022-01-01',
+      description: 'Test',
+      categories: [Category.Bill],
+      transactionId: '1',
+      tenantId: '1',
+    };
+
+    component.selectedTransaction = positiveTransaction;
+    component.ngOnInit();
+
+    expect(component.model?.txType).toBe('INCOME');
   });
 });
