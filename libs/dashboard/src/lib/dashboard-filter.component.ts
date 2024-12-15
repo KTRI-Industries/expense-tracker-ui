@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   FormlyFieldConfig,
@@ -16,14 +16,18 @@ import { MatAnchor } from '@angular/material/button';
   templateUrl: './dashboard-filter.component.html',
   styleUrls: ['./dashboard-filter.component.css'],
 })
-export class DashboardFilterComponent {
+export class DashboardFilterComponent implements OnInit {
   @Output() dateRangeChange = new EventEmitter<{
     startDate: Moment;
     endDate: Moment;
   }>();
 
   form: FormGroup;
-  model: any = { dateRange: 'lastYear' }; // Set default value to 'lastYear'
+  model: any = {
+    dateRange: 'lastYear',
+    startDate: moment().subtract(1, 'year'),
+    endDate: moment(),
+  }; // Set default values
   options: FormlyFormOptions = {};
   fields: FormlyFieldConfig[] = [
     {
@@ -76,6 +80,13 @@ export class DashboardFilterComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({});
+  }
+
+  ngOnInit() {
+    this.dateRangeChange.emit({
+      startDate: this.model.startDate,
+      endDate: this.model.endDate,
+    });
   }
 
   private changeDateDropDown(value: string) {

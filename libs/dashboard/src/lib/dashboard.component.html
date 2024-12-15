@@ -9,7 +9,8 @@
   </mat-card-content>
 </mat-card>
 <!-- single column in small screens, 2 in medium 4 in large -->
-<div class="grid grid-cols-1 gap-4 lg:gap-20 md:grid-cols-2 lg:grid-cols-4">
+<div
+  class="grid grid-cols-1 gap-2 lg:gap-20 md:grid-cols-2 lg:grid-cols-4 mb-2">
   <mat-card class="p-4 text-center">
     <mat-card-title class="text-center text-green-500">
       {{
@@ -45,8 +46,9 @@
   </mat-card>
 </div>
 
-<div class="mt-8 flex flex-wrap gap-4">
-  <mat-card class="p-4 flex-1">
+<div class="flex flex-wrap gap-2">
+<!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
+  <mat-card class="lg:p-4 flex-1">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
     <mat-card-content class="md:columns-2">
       <!-- max width to something small and margins left and right to auto -->
@@ -66,7 +68,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="p-4 flex-1">
+  <mat-card class="lg:p-4 flex-1">
     <mat-card-title class="text-center">
       Income/Expenses per Month
     </mat-card-title>
