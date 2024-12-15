@@ -47,10 +47,10 @@
 </div>
 
 <div class="flex flex-wrap gap-2">
-<!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
+  <!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
   <mat-card class="lg:p-4 flex-1">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
-    <mat-card-content class="md:columns-2">
+    <mat-card-content class="lg:columns-2 md:flex md:items-center">
       <!-- max width to something small and margins left and right to auto -->
       <div class="max-w-xs mx-auto">
         @if (groupedExpensesChartData !== null) {
@@ -62,9 +62,12 @@
         }
       </div>
       <!-- Custom Legend -->
-      <expense-tracker-ui-chart-legend
-        [items]="generateLegend()"
-        [dashboard]="dashboard"></expense-tracker-ui-chart-legend>
+      <!-- max-w-xs mx-auto used for the div to take less width -->
+      <div class="max-w-xs mx-auto">
+        <expense-tracker-ui-chart-legend
+          [items]="generateLegend()"
+          [dashboard]="dashboard"></expense-tracker-ui-chart-legend>
+      </div>
     </mat-card-content>
   </mat-card>
 
