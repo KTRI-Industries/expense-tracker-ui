@@ -6,8 +6,8 @@ import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartFormattingService } from './chart-formatting.service';
 import { DashboardFilterComponent } from './dashboard-filter.component';
-import { Moment } from 'moment';
 import { ChartLegendComponent } from './chart-legend.component';
+import { FilterRange } from './+state/dashboard.reducer';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard',
@@ -37,10 +37,9 @@ export class DashboardComponent {
 
   @Input() dashboard: DashboardDto | undefined | null = null;
 
-  @Output() dateRangeChange = new EventEmitter<{
-    startDate: Moment;
-    endDate: Moment;
-  }>();
+  @Input() filterRange: FilterRange | undefined | null = null;
+
+  @Output() dateRangeChange = new EventEmitter<FilterRange>();
 
   public doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
@@ -74,7 +73,7 @@ export class DashboardComponent {
 
   constructor(private chartFormattingService: ChartFormattingService) {}
 
-  onDateRangeChange(event: { startDate: Moment; endDate: Moment }) {
+  onDateRangeChange(event: FilterRange) {
     this.dateRangeChange.emit(event);
   }
 

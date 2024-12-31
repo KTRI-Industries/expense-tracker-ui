@@ -3,15 +3,27 @@ import * as DashboardActions from './dashboard.actions';
 import { Category, DashboardDto } from '@expense-tracker-ui/shared/api';
 import { ChartData } from 'chart.js';
 import { categoryLabels } from '@expense-tracker-ui/transactions';
+import moment, { Moment } from 'moment';
 
 export const DASHBOARD_FEATURE_KEY = 'dashboard';
 
+export interface FilterRange {
+  startDate?: Moment;
+  endDate?: Moment;
+  dateRange?: string;
+}
 export interface DashboardState {
   dashboard: DashboardDto | undefined;
+  filterRange: FilterRange | undefined;
 }
 
 export const initialDashboardState: DashboardState = {
   dashboard: undefined,
+  filterRange: {
+    startDate: moment().subtract(1, 'year'),
+    endDate: moment(),
+    dateRange: 'lastYear',
+  },
 };
 
 export const dashboardFeature = createFeature({
@@ -27,8 +39,12 @@ export const dashboardFeature = createFeature({
       ...state,
       error,
     })),
+    on(DashboardActions.dateRangeChange, (state, { filterRange }) => ({
+      ...state,
+      filterRange,
+    })),
   ),
-  extraSelectors: ({ selectDashboard }) => ({
+  extraSelectors: ({ selectDashboard, selectFilterRange }) => ({
     selectGroupedExpensesChartData: createSelector(
       selectDashboard,
       (dashboard) => {
