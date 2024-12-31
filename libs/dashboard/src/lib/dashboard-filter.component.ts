@@ -1,13 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  FormlyFieldConfig,
-  FormlyFormOptions,
-  FormlyModule,
-} from '@ngx-formly/core';
-import moment, { Moment } from 'moment';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { MatAnchor } from '@angular/material/button';
+import { FilterRange } from './+state/dashboard.reducer';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-filter',
@@ -16,19 +13,22 @@ import { MatAnchor } from '@angular/material/button';
   templateUrl: './dashboard-filter.component.html',
   styleUrls: ['./dashboard-filter.component.css'],
 })
-export class DashboardFilterComponent implements OnInit {
-  @Output() dateRangeChange = new EventEmitter<{
-    startDate: Moment;
-    endDate: Moment;
-  }>();
+export class DashboardFilterComponent {
+  private _model: FilterRange | undefined;
+
+  @Input()
+  set model(value: FilterRange | null | undefined) {
+    this._model = value ? { ...value } : undefined;
+  }
+
+  get model(): FilterRange | null | undefined {
+    return this._model;
+  }
+
+  @Output() dateRangeChange = new EventEmitter<FilterRange>();
 
   form: FormGroup;
-  model: any = {
-    dateRange: 'lastYear',
-    startDate: moment().subtract(1, 'year'),
-    endDate: moment(),
-  }; // Set default values
-  options: FormlyFormOptions = {};
+
   fields: FormlyFieldConfig[] = [
     {
       fieldGroupClassName: 'lg:flex lg:flex-row lg:space-x-4',
@@ -82,13 +82,6 @@ export class DashboardFilterComponent implements OnInit {
     this.form = this.fb.group({});
   }
 
-  ngOnInit() {
-    this.dateRangeChange.emit({
-      startDate: this.model.startDate,
-      endDate: this.model.endDate,
-    });
-  }
-
   private changeDateDropDown(value: string) {
     switch (value) {
       case 'lastWeek':
@@ -109,6 +102,7 @@ export class DashboardFilterComponent implements OnInit {
     return {
       startDate: lastWeekStart,
       endDate: today,
+      dateRange: this.model?.dateRange,
     };
   }
 
@@ -118,6 +112,7 @@ export class DashboardFilterComponent implements OnInit {
     return {
       startDate: lastMonthStart,
       endDate: today,
+      dateRange: this.model?.dateRange,
     };
   }
 
@@ -127,18 +122,20 @@ export class DashboardFilterComponent implements OnInit {
     return {
       startDate: lastYearStart,
       endDate: today,
+      dateRange: this.model?.dateRange,
     };
   }
 
   isCustomFilter() {
-    return this.model.dateRange === 'custom';
+    return this.model?.dateRange === 'custom';
   }
 
   applyCustomFilter(event: Event) {
     event.preventDefault();
     this.dateRangeChange.emit({
-      startDate: this.model.startDate,
-      endDate: this.model.endDate,
+      startDate: this.model?.startDate,
+      endDate: this.model?.endDate,
+      dateRange: this.model?.dateRange,
     });
   }
 }

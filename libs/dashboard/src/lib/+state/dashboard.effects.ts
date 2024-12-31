@@ -28,11 +28,11 @@ export class DashboardEffects {
   filterDashboard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.dateRangeChange),
-      switchMap((value) =>
+      switchMap(({ filterRange }) =>
         this.client
           .getDashboard(
-            value.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
-            value.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
+            filterRange.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
+            filterRange.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
           )
           .pipe(
             map((dashboard) =>

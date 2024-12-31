@@ -5,11 +5,11 @@ import {
   DashboardActions,
   DashboardComponent,
   DashboardSelectors,
+  FilterRange,
 } from '../index';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 import { ChartData } from 'chart.js';
-import { Moment } from 'moment';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-container',
@@ -20,6 +20,7 @@ import { Moment } from 'moment';
       [dashboard]="dashboard$ | async"
       [groupedExpensesChartData]="groupedExpensesChartData$ | async"
       [incomeExpensePerMonthChartData]="incomeExpensePerMonthChartData$ | async"
+      [filterRange]="filterRange$ | async"
       (dateRangeChange)="
         dateRangeChange($event)
       "></expense-tracker-ui-dashboard>
@@ -28,6 +29,9 @@ import { Moment } from 'moment';
 export class DashboardContainerComponent implements OnInit {
   dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
     DashboardSelectors.selectDashboard,
+  );
+  filterRange$: Observable<FilterRange | undefined | null> = this.store.select(
+    DashboardSelectors.selectFilterRange,
   );
 
   groupedExpensesChartData$: Observable<
@@ -46,7 +50,7 @@ export class DashboardContainerComponent implements OnInit {
     this.store.dispatch(DashboardActions.initDashboard());
   }
 
-  dateRangeChange($event: { startDate: Moment; endDate: Moment }) {
-    this.store.dispatch(DashboardActions.dateRangeChange($event));
+  dateRangeChange(filterRange: FilterRange) {
+    this.store.dispatch(DashboardActions.dateRangeChange({ filterRange }));
   }
 }

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
-import { Moment } from 'moment';
+import { FilterRange } from './dashboard.reducer';
 
 export const initDashboard = createAction('[Dashboard Page] Init');
 
@@ -16,5 +16,5 @@ export const loadDashboardFailure = createAction(
 
 export const dateRangeChange = createAction(
   '[Dashboard Page] Date Range Change',
-  props<{ startDate?: Moment; endDate?: Moment }>(),
+  props<{ filterRange: FilterRange }>(),
 );

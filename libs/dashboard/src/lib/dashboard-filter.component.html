@@ -2,11 +2,7 @@
 <form
   [formGroup]="form"
   class="lg:flex lg:flex-wrap lg:items-center lg:space-x-4">
-  <formly-form
-    [form]="form"
-    [fields]="fields"
-    [model]="model"
-    [options]="options"></formly-form>
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
   <a
     *ngIf="isCustomFilter()"
     mat-button
@@ -18,9 +14,11 @@
   </a>
   <!-- Display the selected date range -->
   <div class="text-sm text-gray-300 mt-4 lg:mt-0 lg:ml-4 lg:text-right">
-    <div *ngIf="model.startDate">
-      from: {{ model.startDate.format('DD/MM/YY') }}
+    <div *ngIf="model?.startDate">
+      from: {{ model?.startDate?.format('DD/MM/YY') }}
     </div>
-    <div *ngIf="model.endDate">to: {{ model.endDate.format('DD/MM/YY') }}</div>
+    <div *ngIf="model?.endDate">
+      to: {{ model?.endDate?.format('DD/MM/YY') }}
+    </div>
   </div>
 </form>
