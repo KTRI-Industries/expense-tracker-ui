@@ -17,4 +17,7 @@ export interface DashboardDto {
   mainTransactionData: MainTransactionDataDto;
   expenseByCategory: ExpenseByCategoryDto;
   incomeExpensePerMonth: IncomeExpensePerMonthDto;
+  incomeExpensePerMonthPerIndividual: {
+    [key: string]: IncomeExpensePerMonthDto;
+  };
 }
