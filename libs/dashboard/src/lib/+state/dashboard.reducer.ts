@@ -86,5 +86,29 @@ export const dashboardFeature = createFeature({
         } as ChartData<'bar', number[], string | string[]>;
       },
     ),
+    selectExpensesPerUserChartData: createSelector(
+      selectDashboard,
+      (dashboard) => {
+        if (!dashboard) return null;
+
+        const datasets = Object.keys(
+          dashboard.incomeExpensePerMonthPerIndividual,
+        ).map((user) => {
+          return {
+            label: user,
+            data: dashboard.incomeExpensePerMonthPerIndividual[
+              user
+            ].values[1].map((value) => value.amount as number),
+            fill: false,
+            // borderColor: getRandomColor(), // Function to generate random colors for each user
+          };
+        });
+
+        return {
+          labels: dashboard.incomeExpensePerMonth.labels,
+          datasets: datasets,
+        } as ChartData<'line', number[], string | string[]>;
+      },
+    ),
   }),
 });

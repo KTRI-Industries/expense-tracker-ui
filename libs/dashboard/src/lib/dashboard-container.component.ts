@@ -20,6 +20,7 @@ import { ChartData } from 'chart.js';
       [dashboard]="dashboard$ | async"
       [groupedExpensesChartData]="groupedExpensesChartData$ | async"
       [incomeExpensePerMonthChartData]="incomeExpensePerMonthChartData$ | async"
+      [expensesPerUserChartData]="expensesPerUserChartData$ | async"
       [filterRange]="filterRange$ | async"
       (dateRangeChange)="
         dateRangeChange($event)
@@ -42,6 +43,14 @@ export class DashboardContainerComponent implements OnInit {
     ChartData<'bar', number[], string | string[]>
   > = this.store.select(
     DashboardSelectors.selectIncomeExpensePerMonthChartData,
+  );
+
+  expensesPerUserChartData$: Observable<ChartData<
+    'line',
+    number[],
+    string | string[]
+  > | null> = this.store.select(
+    DashboardSelectors.selectExpensesPerUserChartData,
   );
 
   constructor(private store: Store) {}

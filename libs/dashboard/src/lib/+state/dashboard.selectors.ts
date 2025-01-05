@@ -5,4 +5,5 @@ export const {
   selectFilterRange,
   selectGroupedExpensesChartData,
   selectIncomeExpensePerMonthChartData,
+  selectExpensesPerUserChartData,
 } = dashboardFeature;
