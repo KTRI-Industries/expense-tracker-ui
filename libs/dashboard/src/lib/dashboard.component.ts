@@ -35,6 +35,11 @@ export class DashboardComponent {
     | undefined
     | null = null;
 
+  @Input() expensesPerUserChartData:
+    | ChartData<'line', number[], string | string[]>
+    | undefined
+    | null = null;
+
   @Input() dashboard: DashboardDto | undefined | null = null;
 
   @Input() filterRange: FilterRange | undefined | null = null;
