@@ -4,7 +4,6 @@ import { DashboardDto } from '@expense-tracker-ui/shared/api';
 
 @Component({
   selector: 'expense-tracker-ui-chart-legend',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './chart-legend.component.html',
   styles: [],

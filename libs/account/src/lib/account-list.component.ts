@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {
   MatCard,
-  MatCardActions,
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
@@ -23,18 +22,14 @@ import {
   MatTable,
   MatTableDataSource,
 } from '@angular/material/table';
-import { MatIcon } from '@angular/material/icon';
-import { MatSortHeader } from '@angular/material/sort';
 import { MatChip, MatChipSet } from '@angular/material/chips';
 
 @Component({
   selector: 'expense-tracker-ui-account-list',
-  standalone: true,
   imports: [
     CommonModule,
     MatButton,
     MatCard,
-    MatCardActions,
     MatCardContent,
     MatCardHeader,
     MatCardTitle,
@@ -44,11 +39,9 @@ import { MatChip, MatChipSet } from '@angular/material/chips';
     MatHeaderCellDef,
     MatCellDef,
     MatCell,
-    MatIcon,
     MatHeaderRow,
     MatRow,
     MatColumnDef,
-    MatSortHeader,
     MatRowDef,
     MatHeaderRowDef,
     MatChipSet,

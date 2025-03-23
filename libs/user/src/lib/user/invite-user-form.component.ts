@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -14,10 +13,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'expense-tracker-ui-invite-user-form',
-  standalone: true,
   imports: [
     CommonModule,
-    ErrorHandlingComponent,
     FormlyModule,
     MatButton,
     MatCard,

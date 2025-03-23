@@ -9,7 +9,6 @@ import { AccountSelectors } from '../index';
 
 @Component({
   selector: 'expense-tracker-ui-account-list-container',
-  standalone: true,
   imports: [AsyncPipe, AccountListComponent],
   template: `
     <expense-tracker-ui-account-list

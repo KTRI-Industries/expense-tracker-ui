@@ -19,7 +19,6 @@ import {
   PageRecurrentTransactionDto,
   RecurrentTransactionDto,
 } from '@expense-tracker-ui/shared/api';
-import { MatList, MatListItem } from '@angular/material/list';
 import {
   MatCell,
   MatCellDef,
@@ -44,7 +43,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transactions',
-  standalone: true,
   imports: [
     CommonModule,
     MatCard,
@@ -52,8 +50,6 @@ import { RouterLink } from '@angular/router';
     MatCardTitle,
     MatCardSubtitle,
     MatCardHeader,
-    MatList,
-    MatListItem,
     MatTable,
     MatColumnDef,
     MatHeaderCell,

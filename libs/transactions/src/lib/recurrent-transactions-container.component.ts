@@ -15,7 +15,6 @@ import {
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transactions-container',
-  standalone: true,
   imports: [AsyncPipe, RecurrentTransactionsComponent],
   template: `
     @if (transactions$ | async; as transactions) {

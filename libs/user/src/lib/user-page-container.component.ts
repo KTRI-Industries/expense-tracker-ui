@@ -1,23 +1,10 @@
 import { Component } from '@angular/core';
-import { UserPageComponent } from './user-page.component';
-import { AsyncPipe } from '@angular/common';
-import {
-  MatTab,
-  MatTabGroup,
-  MatTabLink,
-  MatTabNav,
-  MatTabNavPanel,
-} from '@angular/material/tabs';
+import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-user-page-container',
-  standalone: true,
   imports: [
-    UserPageComponent,
-    AsyncPipe,
-    MatTabGroup,
-    MatTab,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,

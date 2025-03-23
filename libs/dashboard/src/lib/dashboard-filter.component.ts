@@ -8,7 +8,6 @@ import { FilterRange } from './+state/dashboard.reducer';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-filter',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormlyModule, MatAnchor],
   templateUrl: './dashboard-filter.component.html',
   styleUrls: ['./dashboard-filter.component.css'],

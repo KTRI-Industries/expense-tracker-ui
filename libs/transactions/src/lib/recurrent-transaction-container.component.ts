@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RecurrentTransactionActions } from './+state/transactions.actions';
-import { TransactionComponent } from './transaction.component';
 import {
   Category,
   CreateRecurrentTransactionCommand,
@@ -21,8 +20,7 @@ import { RecurrentTransactionComponent } from './recurrent-transaction.component
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction-container',
-  standalone: true,
-  imports: [TransactionComponent, AsyncPipe, RecurrentTransactionComponent],
+  imports: [AsyncPipe, RecurrentTransactionComponent],
   template: `
     @if (selectedTransaction$ | async; as selectedTransaction) {
       <expense-tracker-ui-recurrent-transaction

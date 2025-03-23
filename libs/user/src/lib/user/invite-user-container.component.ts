@@ -5,7 +5,6 @@ import { UserActions } from '../+state/user.actions';
 
 @Component({
   selector: 'expense-tracker-ui-invite-user-container',
-  standalone: true,
   imports: [InviteUserFormComponent],
   template: `
     <expense-tracker-ui-invite-user-form

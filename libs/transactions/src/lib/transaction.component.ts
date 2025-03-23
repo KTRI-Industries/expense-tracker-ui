@@ -19,17 +19,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
-import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 import {
   categoryLabels,
   CreateTransactionCommandUi,
 } from './transaction.model';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
-  standalone: true,
-
   templateUrl: './transaction.component.html',
   imports: [
     MatCard,
@@ -44,7 +40,6 @@ import { RouterLink } from '@angular/router';
     MatInputModule,
     MatButton,
     JsonPipe,
-    ErrorHandlingComponent,
   ],
 })
 export class TransactionComponent implements OnInit {

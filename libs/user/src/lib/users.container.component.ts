@@ -10,7 +10,6 @@ import { AccountSelectors } from '@expense-tracker-ui/account';
 
 @Component({
   selector: 'expense-tracker-ui-user-page-container',
-  standalone: true,
   imports: [UserPageComponent, AsyncPipe],
   template: `
     <expense-tracker-ui-user-page

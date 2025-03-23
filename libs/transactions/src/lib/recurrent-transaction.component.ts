@@ -27,7 +27,6 @@ import {
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction',
-  standalone: true,
   imports: [
     CommonModule,
     FormlyModule,

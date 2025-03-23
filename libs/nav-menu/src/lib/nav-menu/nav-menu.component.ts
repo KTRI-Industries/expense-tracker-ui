@@ -11,12 +11,11 @@ import {
 } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
-import { MatChip, MatChipListbox, MatChipSet } from '@angular/material/chips';
+import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
-  standalone: true,
   imports: [
     CommonModule,
     MatToolbar,
@@ -31,7 +30,6 @@ import { MatBadgeModule } from '@angular/material/badge';
     RouterLink,
     MatButton,
     MatChip,
-    MatChipSet,
     MatChipListbox,
   ],
   templateUrl: './nav-menu.component.html',

@@ -5,18 +5,17 @@ import { Store } from '@ngrx/store';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { NavMenuComponent } from '@expense-tracker-ui/nav-menu';
 import { AsyncPipe } from '@angular/common';
-import { NgHttpLoaderModule } from 'ng-http-loader';
 import { Observable } from 'rxjs';
 import { ErrorHandlingComponent } from '@expense-tracker-ui/shared/error-handling';
 import { AccountSelectors } from '@expense-tracker-ui/account';
+import { NgHttpLoaderComponent } from 'ng-http-loader';
 
 @Component({
-  standalone: true,
   imports: [
     RouterModule,
     NavMenuComponent,
     AsyncPipe,
-    NgHttpLoaderModule,
+    NgHttpLoaderComponent,
     ErrorHandlingComponent,
   ],
   selector: 'expense-tracker-ui-root',

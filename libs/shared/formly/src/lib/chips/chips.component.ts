@@ -3,14 +3,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldTypeConfig } from '@ngx-formly/core';
 import {
-  MatChip,
   MatChipGrid,
   MatChipInput,
   MatChipInputEvent,
   MatChipRemove,
   MatChipRow,
 } from '@angular/material/chips';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -28,12 +26,8 @@ import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT I
  */
 @Component({
   selector: 'expense-tracker-ui-formly',
-  standalone: true,
   imports: [
     CommonModule,
-    MatChip,
-    MatFormField,
-    MatLabel,
     MatChipGrid,
     MatChipRemove,
     MatChipRow,

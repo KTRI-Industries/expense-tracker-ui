@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserInfo } from '@expense-tracker-ui/shared/api';
 import {
-  MatList,
   MatListItem,
   MatListOption,
   MatSelectionList,
@@ -20,10 +19,8 @@ import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'expense-tracker-ui-user-page',
-  standalone: true,
   imports: [
     CommonModule,
-    MatList,
     MatListItem,
     MatSelectionList,
     MatListOption,

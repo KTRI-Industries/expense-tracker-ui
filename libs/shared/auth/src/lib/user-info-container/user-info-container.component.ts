@@ -19,7 +19,6 @@ import { Observable } from 'rxjs';
       (login)="onLogin()"
       (logout)="onLogout()"></expense-tracker-ui-user-info>
   `,
-  standalone: true,
 })
 export class UserInfoContainerComponent {
   isLoggedIn$ = this.store.select(AuthSelectors.selectIsLoggedIn);

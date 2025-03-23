@@ -6,7 +6,6 @@ import { tap } from 'rxjs';
 
 @Component({
   selector: 'expense-tracker-ui-error-handling',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './error-handling.component.html',
 })

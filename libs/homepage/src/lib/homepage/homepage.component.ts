@@ -8,7 +8,6 @@ import { DashboardContainerComponent } from '@expense-tracker-ui/dashboard';
 
 @Component({
   selector: 'expense-tracker-ui-homepage',
-  standalone: true,
   imports: [
     CommonModule,
     LandingPageComponent,

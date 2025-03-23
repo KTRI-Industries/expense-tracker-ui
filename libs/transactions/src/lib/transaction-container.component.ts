@@ -20,7 +20,6 @@ import {
 
 @Component({
   selector: 'expense-tracker-ui-transaction-container',
-  standalone: true,
   imports: [TransactionComponent, AsyncPipe],
   template: `
     @if (selectedTransaction$ | async; as selectedTransaction) {

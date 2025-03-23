@@ -8,7 +8,6 @@ import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'expense-tracker-ui-amount-input',
-  standalone: true,
   imports: [
     CommonModule,
     MatInput,

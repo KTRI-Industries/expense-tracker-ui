@@ -13,7 +13,6 @@ import { ChartData } from 'chart.js';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-container',
-  standalone: true,
   imports: [CommonModule, DashboardComponent],
   template: `
     <expense-tracker-ui-dashboard

@@ -11,7 +11,6 @@ import { FilterRange } from './+state/dashboard.reducer';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard',
-  standalone: true,
   imports: [
     CommonModule,
     MatCard,

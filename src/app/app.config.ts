@@ -1,9 +1,10 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
+  inject,
   isDevMode,
   LOCALE_ID,
+  provideAppInitializer,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
@@ -20,6 +21,7 @@ import {
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
+  withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import {
@@ -27,7 +29,6 @@ import {
   Configuration,
   ConfigurationParameters,
 } from '@expense-tracker-ui/shared/api';
-import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
@@ -55,6 +56,7 @@ import {
   AccountFeature,
   TenantIdHeaderInterceptorInterceptor,
 } from '@expense-tracker-ui/account';
+import { pendingRequestsInterceptor$ } from 'ng-http-loader';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -65,7 +67,10 @@ export function apiConfigFactory(): Configuration {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([pendingRequestsInterceptor$]),
+    ),
     provideEffects(AuthEffects, ErrorHandlingEffects, AccountEffects),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
@@ -74,12 +79,13 @@ export const appConfig: ApplicationConfig = {
     provideState(ErrorHandlingFeature.errorHandlingFeature),
     provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService, ExternalConfiguration],
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initializeKeycloak(
+        inject(KeycloakService),
+        inject(ExternalConfiguration),
+      );
+      return initializerFn();
+    }),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: KeycloakBearerInterceptor, // TODO investigate why this interceptor has to be provided here, according to docs this should be provided by default
@@ -108,7 +114,6 @@ export const appConfig: ApplicationConfig = {
     },
     importProvidersFrom(
       ApiModule.forRoot(apiConfigFactory),
-      NgHttpLoaderModule.forRoot(),
       FormlyModule.forRoot({
         types: [
           {
