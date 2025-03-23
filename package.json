@@ -68,7 +68,7 @@
     "@nx/js": "20.6.2",
     "@nx/web": "20.6.2",
     "@nx/workspace": "20.6.2",
-    "@openapitools/openapi-generator-cli": "2.15.0",
+    "@openapitools/openapi-generator-cli": "2.18.4",
     "@schematics/angular": "19.2.4",
     "@swc-node/register": "1.10.9",
     "@swc/core": "1.7.36",
