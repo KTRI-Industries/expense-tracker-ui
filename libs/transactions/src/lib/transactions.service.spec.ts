@@ -4,7 +4,7 @@ import {
   PageTransactionDto,
   RecurrentTransactionControllerService,
   TransactionControllerService,
-  TransactionDto
+  TransactionDto,
 } from '@expense-tracker-ui/shared/api';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -24,6 +24,7 @@ describe('TransactionsService', () => {
             update: jest.fn(),
             _delete: jest.fn(),
             retrieve1: jest.fn(),
+            retrieveTransactions: jest.fn(),
           },
         },
         {
@@ -44,7 +45,7 @@ describe('TransactionsService', () => {
       // fill with mock data
     };
     (
-      jest.spyOn(api, 'retrieve') as unknown as jest.SpyInstance<
+      jest.spyOn(api, 'retrieveTransactions') as unknown as jest.SpyInstance<
         Observable<PageTransactionDto>
       >
     ).mockReturnValue(of(transactions));
@@ -61,7 +62,9 @@ describe('TransactionsService', () => {
 
   it('handles errors when retrieving transactions', fakeAsync(() => {
     const error = new Error('Error retrieving transactions');
-    jest.spyOn(api, 'retrieve').mockReturnValue(throwError(() => error));
+    jest
+      .spyOn(api, 'retrieveTransactions')
+      .mockReturnValue(throwError(() => error));
 
     service.getAllTransactions().subscribe({
       error: (err) => {
@@ -225,7 +228,7 @@ describe('TransactionsService', () => {
       tenantId: '1',
     };
     (
-      jest.spyOn(api, 'retrieve1') as unknown as jest.SpyInstance<
+      jest.spyOn(api, 'retrieve') as unknown as jest.SpyInstance<
         Observable<TransactionDto>
       >
     ).mockReturnValue(of(transaction));
@@ -243,7 +246,7 @@ describe('TransactionsService', () => {
   it('handles errors when retrieving a transaction', fakeAsync(() => {
     const transactionId = '1';
     const error = new Error('Error retrieving transaction');
-    jest.spyOn(api, 'retrieve1').mockReturnValue(throwError(() => error));
+    jest.spyOn(api, 'retrieve').mockReturnValue(throwError(() => error));
 
     let resultError: Error | undefined;
     service.getTransaction(transactionId).subscribe({

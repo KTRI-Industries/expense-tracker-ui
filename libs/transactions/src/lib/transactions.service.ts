@@ -25,7 +25,7 @@ export class TransactionsService {
   );
 
   getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
-    return this.api.retrieve({
+    return this.api.retrieveTransactions({
       page: pageable?.page ?? 0,
       size: pageable?.size ?? 5,
       sort: pageable?.sort ?? ['date,desc'],
@@ -37,7 +37,7 @@ export class TransactionsService {
   }
 
   getTransaction(transactionId: string): Observable<TransactionDto> {
-    return this.api.retrieve1(transactionId);
+    return this.api.retrieve(transactionId);
   }
 
   deleteTransaction(transactionId: string) {
@@ -52,7 +52,7 @@ export class TransactionsService {
   }
 
   getAllRecurrentTransactions(pageable: Pageable) {
-    return this.recurrentApi.retrieveMany({
+    return this.recurrentApi.retrieveRecurrentTransactions({
       page: pageable.page,
       size: pageable.size,
       sort: pageable.sort,
@@ -60,7 +60,7 @@ export class TransactionsService {
   }
 
   getRecurrentTransaction(recurrentTransactionId: string) {
-    return this.recurrentApi.retrieve2(recurrentTransactionId);
+    return this.recurrentApi.retrieve1(recurrentTransactionId);
   }
 
   createRecurrentTransaction(

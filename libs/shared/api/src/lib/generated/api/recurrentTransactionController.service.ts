@@ -339,25 +339,25 @@ export class RecurrentTransactionControllerService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public retrieve2(
+  public retrieve1(
     id: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<RecurrentTransactionDto>;
-  public retrieve2(
+  public retrieve1(
     id: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<RecurrentTransactionDto>>;
-  public retrieve2(
+  public retrieve1(
     id: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<RecurrentTransactionDto>>;
-  public retrieve2(
+  public retrieve1(
     id: string,
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -365,7 +365,7 @@ export class RecurrentTransactionControllerService {
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
-        'Required parameter id was null or undefined when calling retrieve2.',
+        'Required parameter id was null or undefined when calling retrieve1.',
       );
     }
 
@@ -435,25 +435,25 @@ export class RecurrentTransactionControllerService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public retrieveMany(
+  public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<PageRecurrentTransactionDto>;
-  public retrieveMany(
+  public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<PageRecurrentTransactionDto>>;
-  public retrieveMany(
+  public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<PageRecurrentTransactionDto>>;
-  public retrieveMany(
+  public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -461,7 +461,7 @@ export class RecurrentTransactionControllerService {
   ): Observable<any> {
     if (pageable === null || pageable === undefined) {
       throw new Error(
-        'Required parameter pageable was null or undefined when calling retrieveMany.',
+        'Required parameter pageable was null or undefined when calling retrieveRecurrentTransactions.',
       );
     }
 

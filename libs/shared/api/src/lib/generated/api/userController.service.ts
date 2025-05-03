@@ -558,19 +558,19 @@ export class UserControllerService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<object>;
+  ): Observable<any>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<object>>;
+  ): Observable<HttpResponse<any>>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<object>>;
+  ): Observable<HttpEvent<any>>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe: any = 'body',
@@ -641,7 +641,7 @@ export class UserControllerService {
     }
 
     let localVarPath = `/users/reject-invite`;
-    return this.httpClient.request<object>(
+    return this.httpClient.request<any>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,
       {
@@ -777,19 +777,19 @@ export class UserControllerService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<object>;
+  ): Observable<any>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpResponse<object>>;
+  ): Observable<HttpResponse<any>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
-  ): Observable<HttpEvent<object>>;
+  ): Observable<HttpEvent<any>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe: any = 'body',
@@ -860,7 +860,7 @@ export class UserControllerService {
     }
 
     let localVarPath = `/users/uninvite`;
-    return this.httpClient.request<object>(
+    return this.httpClient.request<any>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,
       {
