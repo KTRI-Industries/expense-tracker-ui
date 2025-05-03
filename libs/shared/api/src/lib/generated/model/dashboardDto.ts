@@ -19,5 +19,5 @@ export interface DashboardDto {
   incomeExpensePerMonth: IncomeExpensePerMonthDto;
   incomeExpensePerMonthPerIndividual: {
     [key: string]: IncomeExpensePerMonthDto;
-  };
+  } | null;
 }

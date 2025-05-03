@@ -19,7 +19,7 @@ export interface PageRecurrentTransactionDto {
   size?: number;
   content?: Array<RecurrentTransactionDto>;
   number?: number;
-  sort?: Array<SortObject>;
+  sort?: SortObject;
   first?: boolean;
   last?: boolean;
   numberOfElements?: number;

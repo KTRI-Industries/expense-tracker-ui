@@ -19,7 +19,7 @@ export interface PageTransactionDto {
   size?: number;
   content?: Array<TransactionDto>;
   number?: number;
-  sort?: Array<SortObject>;
+  sort?: SortObject;
   first?: boolean;
   last?: boolean;
   numberOfElements?: number;

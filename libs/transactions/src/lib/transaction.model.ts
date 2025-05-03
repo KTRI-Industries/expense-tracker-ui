@@ -17,6 +17,13 @@ export const categoryLabels: Record<Category, string> = {
   SPORT: 'sport',
   TAXES: 'taxes',
   TRAVEL: 'travel',
+  TAX_RETURNS: 'tax returns',
+  FUEL: 'fuel',
+  INSURANCE: 'insurance',
+  ATM_WITHDRAWAL: 'ATM withdrawal',
+  BANK_FEE: 'bank fee',
+  SHOPPING: 'shopping',
+  CREDIT: 'credit',
 };
 /**
  * The chips component works only with strings, so to keep things simple
