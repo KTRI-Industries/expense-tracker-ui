@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import {
   CreateRecurrentTransactionCommand,
   CreateTransactionCommand,
+  ImportCsvControllerService,
   Pageable,
   PageTransactionDto,
   RecurrentTransactionControllerService,
@@ -22,6 +23,10 @@ export class TransactionsService {
 
   private recurrentApi: RecurrentTransactionControllerService = inject(
     RecurrentTransactionControllerService,
+  );
+
+  private importApi: ImportCsvControllerService = inject(
+    ImportCsvControllerService,
   );
 
   getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
@@ -80,5 +85,9 @@ export class TransactionsService {
       updateRecurrentTransactionCommand.recurrentTransactionId,
       updateRecurrentTransactionCommand,
     );
+  }
+
+  importTransactions(fileContent: File) {
+    return this.importApi._import(fileContent);
   }
 }

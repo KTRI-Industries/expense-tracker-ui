@@ -11,6 +11,7 @@ import { RecurrentTransactionContainerComponent } from './recurrent-transaction-
 import { recurrentTransactionsFeature } from './+state/recurrent-transactions.reducer';
 import { RecurrentTransactionsEffects } from './+state/recurrent-transactions.effects';
 import { TransactionsPageContainerComponent } from './transactions-page-container.component';
+import { ImportTransactionsContainerComponent } from './import-transactions-container.component';
 
 export const transactionsRoutes: Route[] = [
   {
@@ -73,6 +74,14 @@ export const transactionsRoutes: Route[] = [
           provideEffects(RecurrentTransactionsEffects),
         ],
         canActivate: [AppGuard],
+      },
+      {
+        path: 'import-transactions',
+        component: ImportTransactionsContainerComponent,
+        providers: [
+          provideState(transactionsFeature),
+          provideEffects(TransactionsEffects),
+        ],
       },
     ],
   },

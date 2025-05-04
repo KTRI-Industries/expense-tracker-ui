@@ -33,6 +33,11 @@ export const TransactionActions = createActionGroup({
     DeleteTransaction: props<{ transactionId: string }>(),
     'Delete Transaction Success': emptyProps(),
     'Delete Transaction Failure': props<{ error: Error }>(),
+
+    'Open Import Transactions From': emptyProps(),
+    ImportTransactions: props<{ fileContent: File }>(),
+    'Import Transactions Success': emptyProps(),
+    'Import Transactions Failure': props<{ error: Error }>(),
   },
 });
 
