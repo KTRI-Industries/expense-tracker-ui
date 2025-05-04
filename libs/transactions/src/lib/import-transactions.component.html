@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Import Transactions</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
+    <form class="md:w-6/12" [formGroup]="form">
+      <formly-form
+        [form]="form"
+        [fields]="fields"
+        [model]="model"
+        [options]="options"></formly-form>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onImport()"
+        [disabled]="!form.valid"
+        data-cy="import-transactions-button">
+        Import
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

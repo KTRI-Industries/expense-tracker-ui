@@ -35,6 +35,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import {
   AmountInputComponent,
   ChipsComponent,
+  FileUploadComponent,
 } from '@expense-tracker-ui/shared/formly';
 
 import {
@@ -127,6 +128,11 @@ export const appConfig: ApplicationConfig = {
           {
             name: 'amount-input',
             component: AmountInputComponent,
+            wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
+          },
+          {
+            name: 'file',
+            component: FileUploadComponent,
             wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
           },
         ],

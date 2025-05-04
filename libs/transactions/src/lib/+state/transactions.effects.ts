@@ -150,6 +150,35 @@ export class TransactionsEffects {
     ),
   );
 
+  openImportTransactionsForm$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.openImportTransactionsFrom),
+        tap(() =>
+          this.router.navigate(['transactions-page', 'import-transactions']),
+        ),
+      ),
+    { dispatch: false },
+  );
+
+  importTransactions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TransactionActions.importTransactions),
+      switchMap(({ fileContent }) =>
+        this.client.importTransactions(fileContent).pipe(
+          map((_) => TransactionActions.importTransactionsSuccess()),
+          tap(() =>
+            this.router.navigate(['transactions-page', 'transactions']),
+          ),
+          tap(() => this.snackBar.open('Transactions imported', 'Close')),
+          catchError((error) =>
+            of(TransactionActions.importTransactionsFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   clearError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
