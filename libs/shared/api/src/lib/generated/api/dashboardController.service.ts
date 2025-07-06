@@ -130,28 +130,40 @@ export class DashboardControllerService {
     endDate?: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<DashboardDto>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<DashboardDto>>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<DashboardDto>>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
     if (startDate !== undefined && startDate !== null) {

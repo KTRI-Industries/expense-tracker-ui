@@ -140,25 +140,37 @@ export class ImportCsvControllerService {
     file: Blob,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<string>;
   public _import(
     file: Blob,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<string>>;
   public _import(
     file: Blob,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<string>>;
   public _import(
     file: Blob,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (file === null || file === undefined) {
       throw new Error(

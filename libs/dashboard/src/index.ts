@@ -16,8 +16,6 @@ export {
 };
 
 export * from './lib/+state/dashboard.reducer';
-
-// export * from './lib/lib.routes';
-
+export * from './lib/dashboard-filter.component';
 export * from './lib/dashboard.component';
 export * from './lib/dashboard-container.component';

@@ -40,6 +40,10 @@ import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { categoryLabels } from './transaction.model';
 import { RouterLink } from '@angular/router';
+import {
+  DashboardFilterComponent,
+  FilterRange,
+} from '@expense-tracker-ui/dashboard';
 
 @Component({
   selector: 'expense-tracker-ui-transactions',
@@ -69,12 +73,15 @@ import { RouterLink } from '@angular/router';
     MatChipListbox,
     MatChipOption,
     RouterLink,
+    DashboardFilterComponent,
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent {
   private _transactions: PageTransactionDto | undefined;
+
+  @Input() filterRange: FilterRange | undefined | null;
 
   @Input()
   set transactions(value: PageTransactionDto | undefined) {
@@ -97,11 +104,24 @@ export class TransactionsComponent {
   transactionColumns = ['description', 'user', 'date', 'category', 'amount'];
 
   @Output() openTransactionForm = new EventEmitter<unknown>();
-  @Output() pageChange = new EventEmitter<Pageable>();
-  @Output() sortChange = new EventEmitter<Pageable>();
+  @Output() pageChange = new EventEmitter<{
+    pageable: Pageable;
+    filterRange: FilterRange | undefined | null;
+  }>();
+  @Output() sortChange = new EventEmitter<{
+    pageable: Pageable;
+    filterRange: FilterRange | undefined | null;
+  }>();
   @Output() rowSelected = new EventEmitter<TransactionDto>();
 
+  @Output() dateRangeChange = new EventEmitter<{
+    pageable: Pageable;
+    filterRange: FilterRange | undefined | null;
+  }>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 50, 100, 1000];
 
   pageSize = 5;
   currentSort: Sort | undefined;
@@ -120,28 +140,38 @@ export class TransactionsComponent {
     this.openTransactionForm.emit();
   }
 
+  onDateRangeChange(range: FilterRange) {
+    this.dateRangeChange.emit({ pageable: { page: 0 }, filterRange: range });
+  }
+
   onPageChange($event: PageEvent) {
-    this.pageChange.emit(
-      this.constructPageable(
-        this.currentSort?.active,
-        this.currentSort?.direction,
-        $event.pageIndex,
-      ),
+    this.pageSize = $event.pageSize;
+    const pageable = this.constructPageable(
+      this.currentSort?.active,
+      this.currentSort?.direction,
+      $event.pageIndex,
+      $event.pageSize,
     );
+    this.pageChange.emit({ pageable, filterRange: this.filterRange });
   }
 
   onSortChange($event: Sort) {
-    this.currentSort = $event; // we need to keep somewhere the current sort to use it when the page changes. for the moment keep it in local state
-    this.paginator.firstPage(); // reset paginator to the first page // TODO better way to do this?
-    this.sortChange.emit(
-      this.constructPageable($event.active, $event.direction),
-    );
+    this.currentSort = $event;
+    this.paginator.firstPage();
+    const pageable = this.constructPageable($event.active, $event.direction);
+    this.sortChange.emit({ pageable, filterRange: this.filterRange });
   }
 
-  private constructPageable(column = 'date', direction = 'desc', page = 0) {
+  private constructPageable(
+    column = 'date',
+    direction = 'desc',
+    page = 0,
+    size = this.pageSize,
+  ): Pageable {
     return {
       page: page,
       sort: [`${column},${direction}`],
+      size: size,
     };
   }
 

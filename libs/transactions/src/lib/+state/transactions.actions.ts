@@ -10,11 +10,15 @@ import {
   UpdateRecurrentTransactionCommand,
   UpdateTransactionCommand,
 } from '@expense-tracker-ui/shared/api';
+import { FilterRange } from '@expense-tracker-ui/dashboard';
 
 export const TransactionActions = createActionGroup({
   source: 'Transactions',
   events: {
-    InitTransactions: props<{ pageable: Pageable }>(),
+    InitTransactions: props<{
+      pageable: Pageable;
+      filterRange?: FilterRange | undefined | null;
+    }>(),
     'Load Transactions Success': props<{ transactions: PageTransactionDto }>(),
     'Load Transactions Failure': props<{ error: Error }>(),
     'Create New Transaction': props<{
@@ -38,6 +42,7 @@ export const TransactionActions = createActionGroup({
     ImportTransactions: props<{ fileContent: File }>(),
     'Import Transactions Success': emptyProps(),
     'Import Transactions Failure': props<{ error: Error }>(),
+    SetFilterRange: props<{ filterRange: FilterRange | undefined | null }>(),
   },
 });
 
