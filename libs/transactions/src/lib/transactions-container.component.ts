@@ -9,6 +9,7 @@ import {
   PageTransactionDto,
   TransactionDto,
 } from '@expense-tracker-ui/shared/api';
+import { FilterRange } from '@expense-tracker-ui/dashboard';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',
@@ -17,10 +18,14 @@ import {
     @if (transactions$ | async; as transactions) {
       <expense-tracker-ui-transactions
         [transactions]="transactions"
+        [filterRange]="filterRange$ | async"
         (openTransactionForm)="onOpenTransactionForm()"
         (pageChange)="onPageableChange($event)"
         (sortChange)="onPageableChange($event)"
-        (rowSelected)="onRowSelected($event)"></expense-tracker-ui-transactions>
+        (rowSelected)="onRowSelected($event)"
+        (dateRangeChange)="
+          onDateRangeChange($event)
+        "></expense-tracker-ui-transactions>
     }
   `,
   styles: ``,
@@ -29,6 +34,8 @@ export class TransactionsContainerComponent implements OnInit {
   transactions$: Observable<PageTransactionDto | undefined> = this.store.select(
     TransactionsSelectors.selectAugmentedTransactions,
   );
+
+  filterRange$ = this.store.select(TransactionsSelectors.selectFilterRange);
 
   constructor(private store: Store) {}
 
@@ -45,9 +52,18 @@ export class TransactionsContainerComponent implements OnInit {
   /**
    * Method used both when page changes and when sort changes.
    */
-  onPageableChange($event: Pageable) {
+  onPageableChange({
+    pageable,
+    filterRange,
+  }: {
+    pageable: Pageable;
+    filterRange: FilterRange | undefined | null;
+  }) {
     this.store.dispatch(
-      TransactionActions.initTransactions({ pageable: $event }),
+      TransactionActions.initTransactions({
+        pageable,
+        filterRange,
+      }),
     );
   }
 
@@ -55,6 +71,22 @@ export class TransactionsContainerComponent implements OnInit {
     this.store.dispatch(
       TransactionActions.editTransaction({
         transactionId: $event.transactionId,
+      }),
+    );
+  }
+
+  onDateRangeChange({
+    pageable,
+    filterRange,
+  }: {
+    pageable: Pageable;
+    filterRange: FilterRange | undefined | null;
+  }) {
+    this.store.dispatch(TransactionActions.setFilterRange({ filterRange }));
+    this.store.dispatch(
+      TransactionActions.initTransactions({
+        pageable: { page: 0 },
+        filterRange: filterRange,
       }),
     );
   }

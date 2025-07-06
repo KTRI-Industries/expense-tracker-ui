@@ -5,17 +5,20 @@ import {
 } from '@expense-tracker-ui/shared/api';
 import { TransactionActions } from './transactions.actions';
 import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { FilterRange } from '@expense-tracker-ui/dashboard';
 
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
 
 export interface TransactionsState {
   transactions: PageTransactionDto | undefined;
   selectedTransactionId: string | null;
+  filterRange: FilterRange | undefined | null;
 }
 
 export const initialTransactionsState: TransactionsState = {
   transactions: undefined,
   selectedTransactionId: null,
+  filterRange: undefined,
 };
 
 const initialTransaction: TransactionDto = {
@@ -40,6 +43,10 @@ export const transactionsFeature = createFeature({
         transactions,
       }),
     ),
+    on(TransactionActions.setFilterRange, (state, { filterRange }) => ({
+      ...state,
+      filterRange,
+    })),
     on(TransactionActions.openTransactionFrom, (state) => ({
       ...state,
       selectedTransactionId: null, // otherwise the form will be prefilled with the last selected transaction

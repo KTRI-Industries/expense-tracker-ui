@@ -136,25 +136,37 @@ export class TransactionControllerService {
     id: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any>;
   public _delete(
     id: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<any>>;
   public _delete(
     id: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<any>>;
   public _delete(
     id: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -208,7 +220,15 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({
+      name: 'id',
+      value: id,
+      in: 'path',
+      style: 'simple',
+      explode: false,
+      dataType: 'string',
+      dataFormat: 'uuid',
+    })}`;
     return this.httpClient.request<any>(
       'delete',
       `${this.configuration.basePath}${localVarPath}`,
@@ -232,25 +252,37 @@ export class TransactionControllerService {
     createTransactionCommand: CreateTransactionCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<TransactionDto>;
   public create(
     createTransactionCommand: CreateTransactionCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<TransactionDto>>;
   public create(
     createTransactionCommand: CreateTransactionCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<TransactionDto>>;
   public create(
     createTransactionCommand: CreateTransactionCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (
       createTransactionCommand === null ||
@@ -343,25 +375,37 @@ export class TransactionControllerService {
     id: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<TransactionDto>;
   public retrieve(
     id: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<TransactionDto>>;
   public retrieve(
     id: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<TransactionDto>>;
   public retrieve(
     id: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -415,7 +459,15 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({
+      name: 'id',
+      value: id,
+      in: 'path',
+      style: 'simple',
+      explode: false,
+      dataType: 'string',
+      dataFormat: 'uuid',
+    })}`;
     return this.httpClient.request<TransactionDto>(
       'get',
       `${this.configuration.basePath}${localVarPath}`,
@@ -432,32 +484,54 @@ export class TransactionControllerService {
 
   /**
    * @param pageable
+   * @param startDate
+   * @param endDate
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public retrieveTransactions(
     pageable: Pageable,
+    startDate?: string,
+    endDate?: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<PageTransactionDto>;
   public retrieveTransactions(
     pageable: Pageable,
+    startDate?: string,
+    endDate?: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<PageTransactionDto>>;
   public retrieveTransactions(
     pageable: Pageable,
+    startDate?: string,
+    endDate?: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<PageTransactionDto>>;
   public retrieveTransactions(
     pageable: Pageable,
+    startDate?: string,
+    endDate?: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (pageable === null || pageable === undefined) {
       throw new Error(
@@ -471,6 +545,20 @@ export class TransactionControllerService {
         localVarQueryParameters,
         <any>pageable,
         'pageable',
+      );
+    }
+    if (startDate !== undefined && startDate !== null) {
+      localVarQueryParameters = this.addToHttpParams(
+        localVarQueryParameters,
+        <any>startDate,
+        'startDate',
+      );
+    }
+    if (endDate !== undefined && endDate !== null) {
+      localVarQueryParameters = this.addToHttpParams(
+        localVarQueryParameters,
+        <any>endDate,
+        'endDate',
       );
     }
 
@@ -547,28 +635,40 @@ export class TransactionControllerService {
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<TransactionDto>;
   public update(
     id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<TransactionDto>>;
   public update(
     id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<TransactionDto>>;
   public update(
     id: string,
     updateTransactionCommand: UpdateTransactionCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -641,7 +741,15 @@ export class TransactionControllerService {
       }
     }
 
-    let localVarPath = `/transactions/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    let localVarPath = `/transactions/${this.configuration.encodeParam({
+      name: 'id',
+      value: id,
+      in: 'path',
+      style: 'simple',
+      explode: false,
+      dataType: 'string',
+      dataFormat: 'uuid',
+    })}`;
     return this.httpClient.request<TransactionDto>(
       'put',
       `${this.configuration.basePath}${localVarPath}`,

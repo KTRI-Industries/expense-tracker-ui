@@ -128,22 +128,34 @@ export class TenantControllerService {
   public generateTenant(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<TenantDto>;
   public generateTenant(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<TenantDto>>;
   public generateTenant(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<TenantDto>>;
   public generateTenant(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
@@ -213,22 +225,34 @@ export class TenantControllerService {
   public getUserTenants(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<Array<TenantWithUserDetails>>;
   public getUserTenants(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<Array<TenantWithUserDetails>>>;
   public getUserTenants(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<Array<TenantWithUserDetails>>>;
   public getUserTenants(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 

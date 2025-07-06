@@ -4,4 +4,5 @@ export const {
   selectTransactions,
   selectCurrentTransaction,
   selectAugmentedTransactions,
+  selectFilterRange,
 } = transactionsFeature;

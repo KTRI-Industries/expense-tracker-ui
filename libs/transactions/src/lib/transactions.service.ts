@@ -29,12 +29,20 @@ export class TransactionsService {
     ImportCsvControllerService,
   );
 
-  getAllTransactions(pageable?: Pageable): Observable<PageTransactionDto> {
-    return this.api.retrieveTransactions({
-      page: pageable?.page ?? 0,
-      size: pageable?.size ?? 5,
-      sort: pageable?.sort ?? ['date,desc'],
-    });
+  getAllTransactions(
+    pageable?: Pageable,
+    startDate?: string,
+    endDate?: string,
+  ): Observable<PageTransactionDto> {
+    return this.api.retrieveTransactions(
+      {
+        page: pageable?.page ?? 0,
+        size: pageable?.size ?? 5,
+        sort: pageable?.sort ?? ['date,desc'],
+      },
+      startDate,
+      endDate,
+    );
   }
 
   createTransaction(transaction: CreateTransactionCommand) {

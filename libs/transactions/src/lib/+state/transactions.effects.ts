@@ -26,15 +26,25 @@ export class TransactionsEffects {
   retrieveTransactions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionActions.initTransactions),
-      switchMap(({ pageable }) =>
-        this.client.getAllTransactions(pageable).pipe(
-          map((transactions: PageTransactionDto) =>
-            TransactionActions.loadTransactionsSuccess({ transactions }),
+      switchMap(({ pageable, filterRange }) =>
+        this.client
+          .getAllTransactions(
+            pageable,
+            filterRange?.startDate
+              ? filterRange.startDate?.format('YYYY-MM-DDTHH:mm:ss')
+              : undefined,
+            filterRange?.endDate
+              ? filterRange.endDate?.format('YYYY-MM-DDTHH:mm:ss')
+              : undefined,
+          )
+          .pipe(
+            map((transactions: PageTransactionDto) =>
+              TransactionActions.loadTransactionsSuccess({ transactions }),
+            ),
+            catchError((error) =>
+              of(TransactionActions.loadTransactionsFailure({ error })),
+            ),
           ),
-          catchError((error) =>
-            of(TransactionActions.loadTransactionsFailure({ error })),
-          ),
-        ),
       ),
     ),
   );
