@@ -5,13 +5,14 @@ import { transactionsFeature } from './+state/transactions.reducer';
 import { TransactionsEffects } from './+state/transactions.effects';
 import { TransactionsContainerComponent } from './transactions-container.component';
 import { TransactionContainerComponent } from './transaction-container.component';
-import { AppGuard } from '@expense-tracker-ui/shared/auth';
+import { AppGuard, AuthEffects } from '@expense-tracker-ui/shared/auth';
 import { RecurrentTransactionsContainerComponent } from './recurrent-transactions-container.component';
 import { RecurrentTransactionContainerComponent } from './recurrent-transaction-container.component';
 import { recurrentTransactionsFeature } from './+state/recurrent-transactions.reducer';
 import { RecurrentTransactionsEffects } from './+state/recurrent-transactions.effects';
 import { TransactionsPageContainerComponent } from './transactions-page-container.component';
 import { ImportTransactionsContainerComponent } from './import-transactions-container.component';
+import { UserEffects } from '@expense-tracker-ui/user';
 
 export const transactionsRoutes: Route[] = [
   {
@@ -28,7 +29,7 @@ export const transactionsRoutes: Route[] = [
         component: TransactionsContainerComponent,
         providers: [
           provideState(transactionsFeature),
-          provideEffects(TransactionsEffects),
+          provideEffects(AuthEffects, UserEffects, TransactionsEffects),
         ],
       },
       {

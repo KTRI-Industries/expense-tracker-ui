@@ -10,6 +10,7 @@ import {
   TransactionDto,
 } from '@expense-tracker-ui/shared/api';
 import { FilterRange } from '@expense-tracker-ui/dashboard';
+import { AuthActions } from '@expense-tracker-ui/shared/auth';
 
 @Component({
   selector: 'expense-tracker-ui-transactions-container',
@@ -40,6 +41,8 @@ export class TransactionsContainerComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.store.dispatch(AuthActions.retrieveTenantUsers());
+
     this.store.dispatch(
       TransactionActions.initTransactions({ pageable: { page: 0 } }),
     );
