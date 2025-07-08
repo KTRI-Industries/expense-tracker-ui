@@ -88,8 +88,8 @@ export class TransactionsContainerComponent implements OnInit {
     this.store.dispatch(TransactionActions.setFilterRange({ filterRange }));
     this.store.dispatch(
       TransactionActions.initTransactions({
-        pageable: { page: 0 },
-        filterRange: filterRange,
+        pageable,
+        filterRange,
       }),
     );
   }
