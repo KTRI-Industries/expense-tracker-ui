@@ -141,7 +141,10 @@ export class TransactionsComponent {
   }
 
   onDateRangeChange(range: FilterRange) {
-    this.dateRangeChange.emit({ pageable: { page: 0 }, filterRange: range });
+    this.dateRangeChange.emit({
+      pageable: { page: 0, size: this.pageSize },
+      filterRange: range,
+    });
   }
 
   onPageChange($event: PageEvent) {
