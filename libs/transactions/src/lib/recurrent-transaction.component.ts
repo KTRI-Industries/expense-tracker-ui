@@ -5,10 +5,7 @@ import {
   RecurrenceFrequency,
   RecurrentTransactionDto,
 } from '@expense-tracker-ui/shared/api';
-import {
-  categoryLabels,
-  CreateRecurrentTransactionCommandUi,
-} from './transaction.model';
+import { CreateRecurrentTransactionCommandUi } from './transaction.model';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
 import {
   FormlyFieldConfig,
@@ -24,6 +21,7 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction',

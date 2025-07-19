@@ -13,6 +13,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { LOCALE_ID } from '@angular/core';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import '@angular/common/locales/global/el';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
 
 describe('TransactionsContainerComponent', () => {
   let renderResult: RenderResult<TransactionsContainerComponent>;
@@ -138,7 +140,8 @@ describe('TransactionsContainerComponent', () => {
     // Assert that initTransactions action is dispatched with correct pageable value
     expect(dispatchSpy).toHaveBeenCalledWith(
       TransactionActions.initTransactions({
-        pageable: { page: 1, sort: ['date,desc'] },
+        pageable: { page: 1, sort: ['date,desc'], size: 5 },
+        filterRange: undefined,
       }),
     );
 
@@ -154,7 +157,8 @@ describe('TransactionsContainerComponent', () => {
     // Assert that initTransactions action is dispatched with correct pageable value
     expect(dispatchSpy).toHaveBeenCalledWith(
       TransactionActions.initTransactions({
-        pageable: { page: 0, sort: ['date,desc'] },
+        pageable: { page: 0, sort: ['date,desc'], size: 5 },
+        filterRange: undefined,
       }),
     );
   });
@@ -192,7 +196,8 @@ describe('TransactionsContainerComponent', () => {
     // Assert that initTransactions action is dispatched with correct pageable value
     expect(dispatchSpy).toHaveBeenCalledWith(
       TransactionActions.initTransactions({
-        pageable: { page: 0, sort: ['date,asc'] },
+        pageable: { page: 0, sort: ['date,asc'], size: 5 },
+        filterRange: undefined,
       }),
     );
   });
@@ -217,5 +222,6 @@ async function setup(transactions: PageTransactionDto) {
         useValue: { dateFormat: 'shortDate' },
       },
     ],
+    imports: [FormlyModule.forRoot(), FormlyMaterialModule],
   });
 }

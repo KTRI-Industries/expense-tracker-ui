@@ -17,7 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideMockStore } from '@ngrx/store/testing';
-import { categoryLabels } from './transaction.model';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 describe('TransactionComponent', () => {
   let component: TransactionComponent;

@@ -1,6 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TransactionsService } from './transactions.service';
 import {
+  ImportCsvControllerService,
   PageTransactionDto,
   RecurrentTransactionControllerService,
   TransactionControllerService,
@@ -32,6 +33,10 @@ describe('TransactionsService', () => {
           useValue: {
             retrieveMany: jest.fn(),
           },
+        },
+        {
+          provide: ImportCsvControllerService,
+          useValue: { _import: jest.fn() },
         },
       ],
     });

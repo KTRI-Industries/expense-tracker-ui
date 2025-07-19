@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@expense-tracker-ui/account": ["libs/account/src/index.ts"],
+      "@expense-tracker-ui/constants": ["libs/shared/constants/src/index.ts"],
       "@expense-tracker-ui/dashboard": ["libs/dashboard/src/index.ts"],
       "@expense-tracker-ui/homepage": ["libs/homepage/src/index.ts"],
       "@expense-tracker-ui/nav-menu": ["libs/nav-menu/src/index.ts"],
@@ -28,7 +29,8 @@
       "@expense-tracker-ui/transactions": ["libs/transactions/src/index.ts"],
       "@expense-tracker-ui/user": ["libs/user/src/index.ts"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -12,4 +12,5 @@ module.exports = {
     '<rootDir>/dist/',
     '<rootDir>/libs/shared/api/',
   ],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|lodash-es|ng2-charts)'],
 };

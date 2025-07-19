@@ -38,8 +38,9 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
-import { categoryLabels, recurrenceFrequencyLabels } from './transaction.model';
+import { recurrenceFrequencyLabels } from './transaction.model';
 import { RouterLink } from '@angular/router';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transactions',

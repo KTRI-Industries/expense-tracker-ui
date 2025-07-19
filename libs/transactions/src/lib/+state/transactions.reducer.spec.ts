@@ -114,6 +114,7 @@ describe('Transactions Reducer', () => {
         content: [mockTransaction],
       },
       selectedTransactionId: null,
+      filterRange: null,
     };
 
     const action = TransactionActions.loadTransactionSuccess({
