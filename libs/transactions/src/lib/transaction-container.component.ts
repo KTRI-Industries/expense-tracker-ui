@@ -13,10 +13,8 @@ import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
-import {
-  categoryLabels,
-  CreateTransactionCommandUi,
-} from './transaction.model';
+import { CreateTransactionCommandUi } from './transaction.model';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-transaction-container',

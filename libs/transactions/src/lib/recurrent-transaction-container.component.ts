@@ -12,11 +12,9 @@ import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
-import {
-  categoryLabels,
-  CreateRecurrentTransactionCommandUi,
-} from './transaction.model';
+import { CreateRecurrentTransactionCommandUi } from './transaction.model';
 import { RecurrentTransactionComponent } from './recurrent-transaction.component';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction-container',

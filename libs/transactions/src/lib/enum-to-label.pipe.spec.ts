@@ -1,6 +1,6 @@
 import { EnumToLabelPipe } from './enum-to-label.pipe';
 import { Category } from '@expense-tracker-ui/shared/api';
-import { categoryLabels } from './transaction.model';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 describe('EnumToLabelPipe', () => {
   let pipe: EnumToLabelPipe;

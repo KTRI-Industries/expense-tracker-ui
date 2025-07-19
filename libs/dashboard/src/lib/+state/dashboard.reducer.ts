@@ -2,8 +2,8 @@ import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import * as DashboardActions from './dashboard.actions';
 import { Category, DashboardDto } from '@expense-tracker-ui/shared/api';
 import { ChartData } from 'chart.js';
-import { categoryLabels } from '@expense-tracker-ui/transactions';
 import moment, { Moment } from 'moment';
+import { categoryLabels } from '@expense-tracker-ui/constants';
 
 export const DASHBOARD_FEATURE_KEY = 'dashboard';
 
@@ -12,6 +12,7 @@ export interface FilterRange {
   endDate?: Moment;
   dateRange?: string;
 }
+
 export interface DashboardState {
   dashboard: DashboardDto | undefined;
   filterRange: FilterRange | undefined;
