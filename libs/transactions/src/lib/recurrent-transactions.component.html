@@ -14,7 +14,7 @@
   <mat-card-content>
     @if (transactions?.content?.length !== 0) {
       <!-- lg:w-10/12 xl:w-3/5 to reduce the width of the table in bigger screens -->
-      <div class="mat-elevation-z8 lg:w-10/12 xl:w-4/5">
+      <div class="data-table-container">
         <mat-table
           [dataSource]="transactionDatasource || []"
           matSort
@@ -23,7 +23,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header>
               Description
             </mat-header-cell>
-            <mat-cell *matCellDef="let element" data-label="Description">
+            <mat-cell *matCellDef="let element" data-label="Description" class="table-cell-text">
               {{ element.description }}
             </mat-cell>
           </ng-container>

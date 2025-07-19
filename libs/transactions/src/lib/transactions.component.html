@@ -15,16 +15,16 @@
     <mat-card class="lg:inline-block mb-2">
       <!-- py-2 and px-2 decrease the default padding around the card content -->
       <mat-card-content class="py-2 px-2">
-    <expense-tracker-ui-dashboard-filter
-      [model]="filterRange"
-      (dateRangeChange)="
+        <expense-tracker-ui-dashboard-filter
+          [model]="filterRange"
+          (dateRangeChange)="
         onDateRangeChange($event)
       "></expense-tracker-ui-dashboard-filter>
       </mat-card-content>
     </mat-card>
     @if (transactions?.content?.length !== 0) {
       <!-- lg:w-10/12 xl:w-3/5 to reduce the width of the table in bigger screens -->
-      <div class="mat-elevation-z8 lg:w-10/12 xl:w-4/5">
+      <div class="data-table-container lg:w-10/12 xl:w-4/5">
         <mat-table
           [dataSource]="transactionDatasource || []"
           matSort
@@ -36,7 +36,7 @@
             <mat-cell
               *matCellDef="let element"
               data-label="Description"
-              class="max-w-[250px] whitespace-normal break-words break-all">
+              class="table-cell-text">
               {{ element.description }}
             </mat-cell>
           </ng-container>
