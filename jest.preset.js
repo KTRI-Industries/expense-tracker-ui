@@ -6,6 +6,7 @@ module.exports = {
     'src/**/*.{ts,js}',
     '!**/node_modules/**',
     '!**/vendor/**',
+    '!**/index.ts',
   ],
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
