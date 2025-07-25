@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import {
-  DashboardActions,
-  DashboardComponent,
-  DashboardSelectors,
-  FilterRange,
-} from '../index';
+import { DashboardComponent, DashboardSelectors, FilterRange } from '../index';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { Observable } from 'rxjs';
 import { ChartData } from 'chart.js';
+import { DashboardActions } from './+state/dashboard.actions';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-container',
@@ -24,14 +20,14 @@ import { ChartData } from 'chart.js';
       (dateRangeChange)="
         dateRangeChange($event)
       "></expense-tracker-ui-dashboard>
-  `,
+  `
 })
 export class DashboardContainerComponent implements OnInit {
   dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
-    DashboardSelectors.selectDashboard,
+    DashboardSelectors.selectDashboard
   );
   filterRange$: Observable<FilterRange | undefined | null> = this.store.select(
-    DashboardSelectors.selectFilterRange,
+    DashboardSelectors.selectFilterRange
   );
 
   groupedExpensesChartData$: Observable<
@@ -41,7 +37,7 @@ export class DashboardContainerComponent implements OnInit {
   incomeExpensePerMonthChartData$: Observable<
     ChartData<'bar', number[], string | string[]>
   > = this.store.select(
-    DashboardSelectors.selectIncomeExpensePerMonthChartData,
+    DashboardSelectors.selectIncomeExpensePerMonthChartData
   );
 
   expensesPerUserChartData$: Observable<ChartData<
@@ -49,10 +45,11 @@ export class DashboardContainerComponent implements OnInit {
     number[],
     string | string[]
   > | null> = this.store.select(
-    DashboardSelectors.selectExpensesPerUserChartData,
+    DashboardSelectors.selectExpensesPerUserChartData
   );
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(DashboardActions.initDashboard());
