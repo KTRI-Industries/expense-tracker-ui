@@ -37,6 +37,7 @@ describe('TransactionsEffects', () => {
             createTransaction: jest.fn(),
             deleteTransaction: jest.fn(),
             updateTransaction: jest.fn(),
+            importTransactions: jest.fn(),
           },
         },
         {
@@ -222,26 +223,18 @@ describe('TransactionsEffects', () => {
         amount: 100,
       },
       date: new Date().toDateString(),
-      description: 'Test',
+      description: 'Updated transaction',
       tenantId: '1',
     };
-    jest
-      .spyOn(service, 'updateTransaction')
-      .mockReturnValue(of(mockTransaction)); // Mock to return Observable<TransactionDto>
+    jest.spyOn(service, 'updateTransaction').mockReturnValue(of(mockTransaction));
     jest.spyOn(router, 'navigate');
     jest.spyOn(snackBar, 'open');
 
-    const action = TransactionActions.updateTransaction({
-      transaction: mockTransaction,
-    });
-    const completion = TransactionActions.updateTransactionSuccess({
-      transaction: mockTransaction,
-    });
+    actions$ = of(
+      TransactionActions.updateTransaction({ transaction: mockTransaction }),
+    );
 
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
-
-    expect(effects.updateTransaction$).toBeObservable(expected);
+    effects.updateTransaction$.subscribe();
 
     expect(service.updateTransaction).toHaveBeenCalledWith(mockTransaction);
     expect(router.navigate).toHaveBeenCalledWith([
@@ -249,5 +242,146 @@ describe('TransactionsEffects', () => {
       'transactions',
     ]);
     expect(snackBar.open).toHaveBeenCalledWith('Transaction updated', 'Close');
+  });
+
+  it('should handle errors when updating a transaction', () => {
+    const error = new Error('Error updating transaction');
+    jest
+      .spyOn(service, 'updateTransaction')
+      .mockReturnValue(throwError(() => error));
+    const mockTransaction: TransactionDto = {
+      transactionId: '1',
+      amount: {
+        currency: 'EUR',
+        amount: 100,
+      },
+      date: new Date().toDateString(),
+      description: 'Updated transaction',
+      tenantId: '1',
+    };
+    const action = TransactionActions.updateTransaction({
+      transaction: mockTransaction,
+    });
+    const completion = TransactionActions.updateTransactionFailure({ error });
+
+    actions$ = hot('-a', { a: action });
+    const expected = cold('-b', { b: completion });
+
+    expect(effects.updateTransaction$).toBeObservable(expected);
+  });
+
+  describe('Import Transactions Effects', () => {
+    it('should open the import transactions form', () => {
+      jest.spyOn(router, 'navigate');
+
+      actions$ = of(TransactionActions.openImportTransactionsFrom());
+
+      effects.openImportTransactionsForm$.subscribe();
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        TRANSACTIONS_PAGE_ROUTE,
+        'import-transactions',
+      ]);
+    });
+
+    it('should import transactions successfully', () => {
+      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test'], 'test.csv', {
+        type: 'text/csv'
+      });
+      jest.spyOn(service, 'importTransactions').mockReturnValue(of('Import successful'));
+      jest.spyOn(router, 'navigate');
+      jest.spyOn(snackBar, 'open');
+
+      const action = TransactionActions.importTransactions({ fileContent: mockFile });
+      const completion = TransactionActions.importTransactionsSuccess();
+
+      actions$ = hot('-a', { a: action });
+      const expected = cold('-b', { b: completion });
+
+      expect(effects.importTransactions$).toBeObservable(expected);
+
+      effects.importTransactions$.subscribe(() => {
+        expect(service.importTransactions).toHaveBeenCalledWith(mockFile);
+        expect(router.navigate).toHaveBeenCalledWith([
+          TRANSACTIONS_PAGE_ROUTE,
+          'transactions',
+        ]);
+        expect(snackBar.open).toHaveBeenCalledWith('Transactions imported', 'Close');
+      });
+    });
+
+    it('should handle errors when importing transactions', () => {
+      const error = new Error('Error importing transactions');
+      const mockFile = new File(['invalid,csv,content'], 'invalid.csv', {
+        type: 'text/csv'
+      });
+      jest
+        .spyOn(service, 'importTransactions')
+        .mockReturnValue(throwError(() => error));
+
+      const action = TransactionActions.importTransactions({ fileContent: mockFile });
+      const completion = TransactionActions.importTransactionsFailure({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected = cold('-b', { b: completion });
+
+      expect(effects.importTransactions$).toBeObservable(expected);
+    });
+
+    it('should import transactions with file content and trigger side effects', () => {
+      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test transaction'], 'transactions.csv', {
+        type: 'text/csv'
+      });
+      jest.spyOn(service, 'importTransactions').mockReturnValue(of('Import completed'));
+      jest.spyOn(router, 'navigate');
+      jest.spyOn(snackBar, 'open');
+
+      actions$ = of(TransactionActions.importTransactions({ fileContent: mockFile }));
+
+      effects.importTransactions$.subscribe();
+
+      expect(service.importTransactions).toHaveBeenCalledWith(mockFile);
+      expect(router.navigate).toHaveBeenCalledWith([
+        TRANSACTIONS_PAGE_ROUTE,
+        'transactions',
+      ]);
+      expect(snackBar.open).toHaveBeenCalledWith('Transactions imported', 'Close');
+    });
+
+    it('should handle network errors during import', () => {
+      const networkError = new Error('Network connection failed');
+      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test'], 'test.csv', {
+        type: 'text/csv'
+      });
+      jest
+        .spyOn(service, 'importTransactions')
+        .mockReturnValue(throwError(() => networkError));
+
+      const action = TransactionActions.importTransactions({ fileContent: mockFile });
+      const completion = TransactionActions.importTransactionsFailure({ error: networkError });
+
+      actions$ = hot('-a', { a: action });
+      const expected = cold('-b', { b: completion });
+
+      expect(effects.importTransactions$).toBeObservable(expected);
+    });
+
+    it('should handle validation errors during import', () => {
+      const validationError = new Error('Invalid CSV format');
+      const invalidFile = new File(['invalid;format;here'], 'invalid.csv', {
+        type: 'text/csv'
+      });
+      jest
+        .spyOn(service, 'importTransactions')
+        .mockReturnValue(throwError(() => validationError));
+
+      const action = TransactionActions.importTransactions({ fileContent: invalidFile });
+      const completion = TransactionActions.importTransactionsFailure({ error: validationError });
+
+      actions$ = hot('-a', { a: action });
+      const expected = cold('-b', { b: completion });
+
+      expect(effects.importTransactions$).toBeObservable(expected);
+    });
   });
 });
