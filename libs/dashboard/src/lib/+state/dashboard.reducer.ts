@@ -1,9 +1,9 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import * as DashboardActions from './dashboard.actions';
 import { Category, DashboardDto } from '@expense-tracker-ui/shared/api';
 import { ChartData } from 'chart.js';
 import moment, { Moment } from 'moment';
 import { categoryLabels } from '@expense-tracker-ui/constants';
+import { DashboardActions } from './dashboard.actions';
 
 export const DASHBOARD_FEATURE_KEY = 'dashboard';
 

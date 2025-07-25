@@ -3,7 +3,6 @@ import { HomepageComponent } from './homepage.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import {
-  DashboardActions,
   DashboardSelectors,
 } from '@expense-tracker-ui/dashboard';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +22,7 @@ import {
   AmountInputComponent,
   ChipsComponent,
 } from '@expense-tracker-ui/shared/formly';
+import { DashboardActions } from '@expense-tracker-ui/dashboard';
 
 describe('HomepageComponent', () => {
   let component: RenderResult<HomepageComponent>;
