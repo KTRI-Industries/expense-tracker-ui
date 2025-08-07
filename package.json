@@ -82,7 +82,7 @@
     "@typescript-eslint/parser": "8.27.0",
     "@typescript-eslint/utils": "^8.0.0",
     "autoprefixer": "^10.4.20",
-    "cypress": "13.17.0",
+    "cypress": "14.5.4",
     "eslint": "9.23.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-cypress": "^4.0.0",
