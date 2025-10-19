@@ -14,7 +14,7 @@
   <mat-card-content>
     @if (transactions?.content?.length !== 0) {
       <!-- lg:w-10/12 xl:w-3/5 to reduce the width of the table in bigger screens -->
-      <div class="data-table-container">
+      <div class="data-table-container mat-elevation-z8">
         <mat-table
           [dataSource]="transactionDatasource || []"
           matSort
