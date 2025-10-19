@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/shared/api';
+import { FeatureFlagActions } from '@expense-tracker-ui/shared/feature-flags';
 
 @Injectable()
 export class AuthEffects {
@@ -77,6 +78,13 @@ export class AuthEffects {
           email: selectUserProfile?.email ?? '',
         }),
       ),
+    ),
+  );
+
+  loadFeatureFlagsAfterLogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess),
+      map(() => FeatureFlagActions.loadFeatureFlags()),
     ),
   );
 

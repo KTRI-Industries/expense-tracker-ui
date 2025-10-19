@@ -58,6 +58,10 @@ import {
   TenantIdHeaderInterceptorInterceptor,
 } from '@expense-tracker-ui/account';
 import { pendingRequestsInterceptor$ } from 'ng-http-loader';
+import {
+  FeatureFlagsEffects,
+  FeatureFlagsFeature,
+} from '@expense-tracker-ui/shared/feature-flags';
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
@@ -72,12 +76,18 @@ export const appConfig: ApplicationConfig = {
       withInterceptorsFromDi(),
       withInterceptors([pendingRequestsInterceptor$]),
     ),
-    provideEffects(AuthEffects, ErrorHandlingEffects, AccountEffects),
+    provideEffects(
+      AuthEffects,
+      ErrorHandlingEffects,
+      AccountEffects,
+      FeatureFlagsEffects,
+    ),
     provideStore({ router: routerReducer }),
     provideRouterStore(),
     provideState(AuthFeature.authFeature),
     provideState(AccountFeature.accountFeature),
     provideState(ErrorHandlingFeature.errorHandlingFeature),
+    provideState(FeatureFlagsFeature.featureFlagsFeature),
     provideRouter(appRoutes), //  TODO why is this needed? keycloak redirect goes on loop when enabled withEnabledBlockingInitialNavigation()
     KeycloakService,
     provideAppInitializer(() => {
