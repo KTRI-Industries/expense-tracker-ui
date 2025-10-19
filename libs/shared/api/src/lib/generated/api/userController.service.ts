@@ -140,34 +140,22 @@ export class UserControllerService {
   public allUsers(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<Array<UserInfo>>;
   public allUsers(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<Array<UserInfo>>>;
   public allUsers(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<Array<UserInfo>>>;
   public allUsers(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
@@ -239,37 +227,25 @@ export class UserControllerService {
     associateTenantCommand: AssociateTenantCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<UserInfo>;
   public associateTenant(
     associateTenantCommand: AssociateTenantCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<UserInfo>>;
   public associateTenant(
     associateTenantCommand: AssociateTenantCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<UserInfo>>;
   public associateTenant(
     associateTenantCommand: AssociateTenantCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (
       associateTenantCommand === null ||
@@ -362,37 +338,25 @@ export class UserControllerService {
     disassociateTenantCommand: DisassociateTenantCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<UserInfo>;
   public disassociateTenant(
     disassociateTenantCommand: DisassociateTenantCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<UserInfo>>;
   public disassociateTenant(
     disassociateTenantCommand: DisassociateTenantCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<UserInfo>>;
   public disassociateTenant(
     disassociateTenantCommand: DisassociateTenantCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (
       disassociateTenantCommand === null ||
@@ -485,37 +449,25 @@ export class UserControllerService {
     inviteUserCommand: InviteUserCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<InvitedUserDto>;
   public inviteUser(
     inviteUserCommand: InviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<InvitedUserDto>>;
   public inviteUser(
     inviteUserCommand: InviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<InvitedUserDto>>;
   public inviteUser(
     inviteUserCommand: InviteUserCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (inviteUserCommand === null || inviteUserCommand === undefined) {
       throw new Error(
@@ -605,37 +557,25 @@ export class UserControllerService {
     rejectInviteCommand: RejectInviteCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<any>>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<any>>;
   public rejectInvite(
     rejectInviteCommand: RejectInviteCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (rejectInviteCommand === null || rejectInviteCommand === undefined) {
       throw new Error(
@@ -725,37 +665,25 @@ export class UserControllerService {
     setDefaultTenantCommand: SetDefaultTenantCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<UserInfo>;
   public setDefaultTenant(
     setDefaultTenantCommand: SetDefaultTenantCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<UserInfo>>;
   public setDefaultTenant(
     setDefaultTenantCommand: SetDefaultTenantCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<UserInfo>>;
   public setDefaultTenant(
     setDefaultTenantCommand: SetDefaultTenantCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (
       setDefaultTenantCommand === null ||
@@ -848,37 +776,25 @@ export class UserControllerService {
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpResponse<any>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<HttpEvent<any>>;
   public unInviteUser(
     uninviteUserCommand: UninviteUserCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json';
-      context?: HttpContext;
-    },
+    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
   ): Observable<any> {
     if (uninviteUserCommand === null || uninviteUserCommand === undefined) {
       throw new Error(

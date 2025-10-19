@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/dashboardController.service.ts
+api/featureFlagsController.service.ts
 api/importCsvController.service.ts
 api/recurrentTransactionController.service.ts
 api/tenantController.service.ts
@@ -19,6 +20,7 @@ model/createTransactionCommand.ts
 model/dashboardDto.ts
 model/disassociateTenantCommand.ts
 model/expenseByCategoryDto.ts
+model/featureFlagsResponse.ts
 model/incomeExpensePerMonthDto.ts
 model/inviteUserCommand.ts
 model/invitedUserDto.ts
