@@ -12,12 +12,14 @@ import { DashboardService } from '../dashboard.service';
 
 describe('DashboardEffects', () => {
   let actions$: Observable<Action>;
-  let effects: DashboardEffects;
   let service: DashboardService;
 
-  const createMonetaryAmount = (amount: number, currency = 'EUR'): MonetaryAmount => ({
+  const createMonetaryAmount = (
+    amount: number,
+    currency = 'EUR',
+  ): MonetaryAmount => ({
     amount,
-    currency
+    currency,
   });
 
   const createMockDashboard = (): DashboardDto => ({
@@ -25,17 +27,17 @@ describe('DashboardEffects', () => {
       totalExpense: createMonetaryAmount(1000),
       totalIncome: createMonetaryAmount(2000),
       totalBalance: createMonetaryAmount(1000),
-      totalTransactions: 10
+      totalTransactions: 10,
     },
     expenseByCategory: {
       labels: [],
-      values: []
+      values: [],
     },
     incomeExpensePerMonth: {
       labels: [],
-      values: []
+      values: [],
     },
-    incomeExpensePerMonthPerIndividual: null
+    incomeExpensePerMonthPerIndividual: null,
   });
 
   beforeEach(() => {
@@ -47,13 +49,12 @@ describe('DashboardEffects', () => {
         {
           provide: DashboardService,
           useValue: {
-            getDashboard: jest.fn()
-          }
-        }
-      ]
+            getDashboard: jest.fn(),
+          },
+        },
+      ],
     });
 
-    effects = TestBed.inject(DashboardEffects);
     service = TestBed.inject(DashboardService);
   });
 
@@ -64,13 +65,13 @@ describe('DashboardEffects', () => {
 
     const action = DashboardActions.initDashboard();
     const completion = DashboardActions.loadDashboardSuccess({
-      dashboard: mockDashboard
+      dashboard: mockDashboard,
     });
 
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(effects.loadDashboard$).toBeObservable(expected);
+    expect(new DashboardEffects().loadDashboard$).toBeObservable(expected);
   });
 
   it('should filter dashboard by date range successfully', () => {
@@ -81,23 +82,23 @@ describe('DashboardEffects', () => {
     const filterRange = {
       startDate: moment('2025-07-01'),
       endDate: moment('2025-07-15'),
-      dateRange: 'custom'
+      dateRange: 'custom',
     };
 
     jest.spyOn(service, 'getDashboard').mockReturnValue(of(mockDashboard));
 
     const action = DashboardActions.dateRangeChange({ filterRange });
     const completion = DashboardActions.loadDashboardSuccess({
-      dashboard: mockDashboard
+      dashboard: mockDashboard,
     });
 
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(effects.filterDashboard$).toBeObservable(expected);
+    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
     expect(service.getDashboard).toHaveBeenCalledWith(
       '2025-07-01T00:00:00',
-      '2025-07-15T00:00:00'
+      '2025-07-15T00:00:00',
     );
   });
 
@@ -107,33 +108,35 @@ describe('DashboardEffects', () => {
     const filterRange = {
       startDate: undefined,
       endDate: undefined,
-      dateRange: 'lastWeek'
+      dateRange: 'lastWeek',
     };
 
     jest.spyOn(service, 'getDashboard').mockReturnValue(of(mockDashboard));
 
     const action = DashboardActions.dateRangeChange({ filterRange });
     const completion = DashboardActions.loadDashboardSuccess({
-      dashboard: mockDashboard
+      dashboard: mockDashboard,
     });
 
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(effects.filterDashboard$).toBeObservable(expected);
+    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
     expect(service.getDashboard).toHaveBeenCalledWith(undefined, undefined);
   });
 
   it('should handle errors when loading dashboard', () => {
     const error = new Error('Error loading dashboard');
-    jest.spyOn(service, 'getDashboard').mockReturnValue(throwError(() => error));
+    jest
+      .spyOn(service, 'getDashboard')
+      .mockReturnValue(throwError(() => error));
 
     const action = DashboardActions.initDashboard();
 
     actions$ = hot('-a', { a: action });
     const expected = cold('-#', {}, error);
 
-    expect(effects.loadDashboard$).toBeObservable(expected);
+    expect(new DashboardEffects().loadDashboard$).toBeObservable(expected);
   });
 
   it('should handle errors when filtering dashboard', () => {
@@ -141,16 +144,18 @@ describe('DashboardEffects', () => {
     const filterRange = {
       startDate: moment('2025-07-01'),
       endDate: moment('2025-07-15'),
-      dateRange: 'custom'
+      dateRange: 'custom',
     };
 
-    jest.spyOn(service, 'getDashboard').mockReturnValue(throwError(() => error));
+    jest
+      .spyOn(service, 'getDashboard')
+      .mockReturnValue(throwError(() => error));
 
     const action = DashboardActions.dateRangeChange({ filterRange });
 
     actions$ = hot('-a', { a: action });
     const expected = cold('-#', {}, error);
 
-    expect(effects.filterDashboard$).toBeObservable(expected);
+    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
   });
 });
