@@ -35,7 +35,9 @@ describe('ErrorInterceptorServiceService', () => {
   );
 
   it('should be created', () => {
-    const service: GlobalErrorInterceptor = TestBed.get(GlobalErrorInterceptor);
+    const service: GlobalErrorInterceptor = TestBed.inject(
+      GlobalErrorInterceptor,
+    );
     expect(service).toBeTruthy();
   });
 
