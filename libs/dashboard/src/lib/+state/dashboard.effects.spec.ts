@@ -12,6 +12,7 @@ import { DashboardService } from '../dashboard.service';
 
 describe('DashboardEffects', () => {
   let actions$: Observable<Action>;
+  let effects: DashboardEffects;
   let service: DashboardService;
 
   const createMonetaryAmount = (
@@ -55,6 +56,7 @@ describe('DashboardEffects', () => {
       ],
     });
 
+    effects = TestBed.inject(DashboardEffects);
     service = TestBed.inject(DashboardService);
   });
 
@@ -71,7 +73,7 @@ describe('DashboardEffects', () => {
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(new DashboardEffects().loadDashboard$).toBeObservable(expected);
+    expect(effects.loadDashboard$).toBeObservable(expected);
   });
 
   it('should filter dashboard by date range successfully', () => {
@@ -95,7 +97,7 @@ describe('DashboardEffects', () => {
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
+    expect(effects.filterDashboard$).toBeObservable(expected);
     expect(service.getDashboard).toHaveBeenCalledWith(
       '2025-07-01T00:00:00',
       '2025-07-15T00:00:00',
@@ -121,7 +123,7 @@ describe('DashboardEffects', () => {
     actions$ = hot('-a', { a: action });
     const expected = cold('-b', { b: completion });
 
-    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
+    expect(effects.filterDashboard$).toBeObservable(expected);
     expect(service.getDashboard).toHaveBeenCalledWith(undefined, undefined);
   });
 
@@ -136,7 +138,7 @@ describe('DashboardEffects', () => {
     actions$ = hot('-a', { a: action });
     const expected = cold('-#', {}, error);
 
-    expect(new DashboardEffects().loadDashboard$).toBeObservable(expected);
+    expect(effects.loadDashboard$).toBeObservable(expected);
   });
 
   it('should handle errors when filtering dashboard', () => {
@@ -156,6 +158,6 @@ describe('DashboardEffects', () => {
     actions$ = hot('-a', { a: action });
     const expected = cold('-#', {}, error);
 
-    expect(new DashboardEffects().filterDashboard$).toBeObservable(expected);
+    expect(effects.filterDashboard$).toBeObservable(expected);
   });
 });

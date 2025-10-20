@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
@@ -20,12 +20,14 @@ import { KeycloakService } from 'keycloak-angular';
 
 @Injectable()
 export class UserEffects {
-  private actions$ = inject(Actions);
-  private userService = inject(UserService);
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  private store = inject(Store);
-  private keycloak = inject(KeycloakService);
+  constructor(
+    private actions$: Actions,
+    private userService: UserService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private store: Store,
+    private keycloak: KeycloakService,
+  ) {}
 
   inviteUser$ = createEffect(() =>
     this.actions$.pipe(
