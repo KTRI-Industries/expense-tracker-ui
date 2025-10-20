@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
@@ -21,10 +21,12 @@ import { FeatureFlagActions } from '@expense-tracker-ui/shared/feature-flags';
 
 @Injectable()
 export class AuthEffects {
-  private actions$ = inject(Actions);
-  private keycloak = inject(KeycloakService);
-  private authService = inject(AuthService);
-  private store = inject(Store);
+  constructor(
+    private actions$: Actions,
+    private keycloak: KeycloakService,
+    private authService: AuthService,
+    private store: Store,
+  ) {}
 
   login$ = createEffect(
     () =>
@@ -71,8 +73,6 @@ export class AuthEffects {
     ),
   );
 
-  // NOTE: this effect and the next one needs to be in auth because the user profile is updated
-  // in the reducer with the tenantId after generateNewTenantSuccess
   checkTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
@@ -125,9 +125,6 @@ export class AuthEffects {
     ),
   );
 
-  /**
-   * This is needed because the initial token, before tenant generation, does not have the new tenantId!
-   */
   refreshTokenAfterTenantGenerated$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.generateNewTenantSuccess),
@@ -144,14 +141,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap(() => of(this.keycloak.logout(window.location.origin))), // redirect to base url after logout
+        tap(() => of(this.keycloak.logout(window.location.origin))),
       ),
     { dispatch: false },
   );
 
-  /**
-   * Without the refreshed token the roles are not updated.
-   */
   async refreshRoles(): Promise<string[]> {
     await this.keycloak.updateToken(-1);
     return this.keycloak.getUserRoles(true);

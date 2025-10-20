@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
@@ -20,12 +20,13 @@ import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling'
 
 @Injectable()
 export class TransactionsEffects {
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  private store = inject(Store);
-
-  private actions$ = inject(Actions);
-  private client = inject(TransactionsService);
+  constructor(
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private store: Store,
+    private actions$: Actions,
+    private client: TransactionsService,
+  ) {}
 
   retrieveTransactions$ = createEffect(() =>
     this.actions$.pipe(

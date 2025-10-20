@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -7,10 +7,11 @@ import { DashboardService } from '../dashboard.service';
 
 @Injectable()
 export class DashboardEffects {
-  private store = inject(Store);
-
-  private actions$ = inject(Actions);
-  private dashboardService = inject(DashboardService);
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private dashboardService: DashboardService,
+  ) {}
 
   loadDashboard$ = createEffect(() =>
     this.actions$.pipe(
@@ -20,11 +21,11 @@ export class DashboardEffects {
           .getDashboard()
           .pipe(
             map((dashboard) =>
-              DashboardActions.loadDashboardSuccess({ dashboard })
-            )
-          )
-      )
-    )
+              DashboardActions.loadDashboardSuccess({ dashboard }),
+            ),
+          ),
+      ),
+    ),
   );
 
   filterDashboard$ = createEffect(() =>
@@ -34,14 +35,14 @@ export class DashboardEffects {
         this.dashboardService
           .getDashboard(
             filterRange.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
-            filterRange.endDate?.format('YYYY-MM-DDTHH:mm:ss')
+            filterRange.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
           )
           .pipe(
             map((dashboard) =>
-              DashboardActions.loadDashboardSuccess({ dashboard })
-            )
-          )
-      )
-    )
+              DashboardActions.loadDashboardSuccess({ dashboard }),
+            ),
+          ),
+      ),
+    ),
   );
 }

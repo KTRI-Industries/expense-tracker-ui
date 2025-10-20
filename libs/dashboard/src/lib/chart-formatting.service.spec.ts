@@ -8,7 +8,7 @@ describe('ChartFormattingService', () => {
 
   beforeEach(() => {
     currencyPipe = new CurrencyPipe('el-GR');
-    service = new ChartFormattingService();
+    service = new ChartFormattingService(currencyPipe);
   });
 
   it('formats tooltip label with valid value and currency', () => {

@@ -48,7 +48,14 @@ describe('UserEffects', () => {
       }),
     );
 
-    const userEffects = new UserEffects();
+    const userEffects = new UserEffects(
+      actions$,
+      userService,
+      router,
+      snackBar,
+      createMockStore({}),
+      keycloakService,
+    );
 
     const expectedAction = UserActions.inviteUserSuccess({
       invitedUser: {
@@ -77,7 +84,14 @@ describe('UserEffects', () => {
       }),
     );
 
-    const userEffects = new UserEffects();
+    const userEffects = new UserEffects(
+      actions$,
+      userService,
+      router,
+      snackBar,
+      createMockStore({}),
+      keycloakService,
+    );
 
     const expectedAction = UserActions.unInviteUserSuccess();
 
@@ -112,7 +126,24 @@ describe('UserEffects', () => {
 
     jest.spyOn(userService, 'retrieveTenantUsers').mockReturnValue(of(users));
 
-    const userEffects = new UserEffects();
+    const userEffects = new UserEffects(
+      actions$,
+      userService,
+      router,
+      snackBar,
+      createMockStore({
+        initialState: {
+          auth: {
+            userProfile: {
+              tenantId: 'tenant-123',
+              // other properties...
+            },
+            // other state properties...
+          },
+        },
+      }),
+      keycloakService,
+    );
 
     const expectedAction = AuthActions.retrieveTenantUsersSuccess({ users });
 

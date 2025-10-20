@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -9,10 +9,12 @@ import { KeycloakService } from 'keycloak-angular';
 
 @Injectable()
 export class AccountEffects {
-  private actions$ = inject(Actions);
-  private accountService = inject(AccountService);
-  private store = inject(Store);
-  private keycloak = inject(KeycloakService);
+  constructor(
+    private actions$: Actions,
+    private accountService: AccountService,
+    private store: Store,
+    private keycloak: KeycloakService,
+  ) {}
 
   retrieveUserAccounts$ = createEffect(() =>
     this.actions$.pipe(
@@ -99,7 +101,6 @@ export class AccountEffects {
     ),
   );
 
-  // TODO this is not a great effect since it does two things, refreshes the keycloak token and retrieves the users
   refreshTokenAndRetrieveUsersForAccountAssociatedOrLeft$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -115,9 +116,6 @@ export class AccountEffects {
     ),
   );
 
-  /**
-   * This effect is needed on initial load because we need to retrieve invitations to accounts and current account which are displayed in the nav menu.
-   */
   retrieveTenantsAfterUserProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.retrieveUserProfileSuccess),
