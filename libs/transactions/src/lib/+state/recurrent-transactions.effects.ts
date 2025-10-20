@@ -20,6 +20,10 @@ import { selectRecurrentTransactions } from './recurrent-transactions.selectors'
 
 @Injectable()
 export class RecurrentTransactionsEffects {
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private store = inject(Store);
+
   private actions$ = inject(Actions);
   private client = inject(TransactionsService);
 
@@ -209,10 +213,4 @@ export class RecurrentTransactionsEffects {
       map(() => ErrorHandlingActions.clearBackEndError()),
     ),
   );
-
-  constructor(
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private store: Store,
-  ) {}
 }

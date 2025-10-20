@@ -11,15 +11,14 @@ import { KeycloakService } from 'keycloak-angular';
 import { ProblemDetail } from '@expense-tracker-ui/shared/api';
 import { Store } from '@ngrx/store';
 import { ErrorHandlingActions } from './+state/error-handling.actions';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private snackBar: MatSnackBar,
-    private keycloak: KeycloakService,
-    private store: Store,
-  ) {}
+  private snackBar = inject(MatSnackBar);
+  private keycloak = inject(KeycloakService);
+  private store = inject(Store);
+
 
   intercept(
     request: HttpRequest<any>,

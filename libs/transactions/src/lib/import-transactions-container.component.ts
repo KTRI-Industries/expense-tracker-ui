@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ImportTransactionsComponent } from './import-transactions.component';
 import { TransactionActions } from './+state/transactions.actions';
 import { Store } from '@ngrx/store';
@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
   imports: [ImportTransactionsComponent],
 })
 export class ImportTransactionsContainerComponent {
+  private store = inject(Store);
+
   onImport(file: File): void {
     this.store.dispatch(
       TransactionActions.importTransactions({
@@ -20,6 +22,4 @@ export class ImportTransactionsContainerComponent {
       }),
     );
   }
-
-  constructor(private store: Store) {}
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { InviteUserFormComponent } from './invite-user-form.component';
 import { UserActions } from '../+state/user.actions';
@@ -13,11 +13,11 @@ import { UserActions } from '../+state/user.actions';
   styles: ``,
 })
 export class InviteUserContainerComponent {
+  private store = inject(Store);
+
   onInvite($event: any) {
     this.store.dispatch(
       UserActions.inviteUser({ recipientEmail: $event.email }),
     );
   }
-
-  constructor(private store: Store) {}
 }

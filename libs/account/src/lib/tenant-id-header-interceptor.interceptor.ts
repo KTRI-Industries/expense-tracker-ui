@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpEvent,
   HttpHandler,
@@ -11,7 +11,8 @@ import { AccountSelectors } from '../index';
 
 @Injectable()
 export class TenantIdHeaderInterceptorInterceptor implements HttpInterceptor {
-  constructor(private store: Store) {}
+  private store = inject(Store);
+
 
   intercept(
     request: HttpRequest<unknown>,

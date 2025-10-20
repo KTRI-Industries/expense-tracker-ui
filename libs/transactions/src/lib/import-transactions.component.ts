@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   FormlyFieldConfig,
@@ -28,6 +28,8 @@ import { MatButton } from '@angular/material/button';
   ],
 })
 export class ImportTransactionsComponent {
+  private fb = inject(FormBuilder);
+
   @Output() import = new EventEmitter<File>();
 
   form = this.fb.group({});
@@ -47,8 +49,6 @@ export class ImportTransactionsComponent {
       },
     },
   ];
-
-  constructor(private fb: FormBuilder) {}
 
   onImport(): void {
     if (this.form.valid && this.model.file) {

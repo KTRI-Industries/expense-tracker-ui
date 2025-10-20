@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -9,6 +9,11 @@ import { KeycloakService } from 'keycloak-angular';
 
 @Injectable()
 export class AccountEffects {
+  private actions$ = inject(Actions);
+  private accountService = inject(AccountService);
+  private store = inject(Store);
+  private keycloak = inject(KeycloakService);
+
   retrieveUserAccounts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AccountActions.retrieveAccounts),
@@ -119,11 +124,4 @@ export class AccountEffects {
       map(() => AccountActions.retrieveAccounts()),
     ),
   );
-
-  constructor(
-    private actions$: Actions,
-    private accountService: AccountService,
-    private store: Store,
-    private keycloak: KeycloakService,
-  ) {}
 }

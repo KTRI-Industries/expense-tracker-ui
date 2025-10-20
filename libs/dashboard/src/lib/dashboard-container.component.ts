@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { DashboardComponent, DashboardSelectors, FilterRange } from '../index';
@@ -23,6 +23,8 @@ import { DashboardActions } from './+state/dashboard.actions';
   `
 })
 export class DashboardContainerComponent implements OnInit {
+  private store = inject(Store);
+
   dashboard$: Observable<DashboardDto | undefined | null> = this.store.select(
     DashboardSelectors.selectDashboard
   );
@@ -47,9 +49,6 @@ export class DashboardContainerComponent implements OnInit {
   > | null> = this.store.select(
     DashboardSelectors.selectExpensesPerUserChartData
   );
-
-  constructor(private store: Store) {
-  }
 
   ngOnInit(): void {
     this.store.dispatch(DashboardActions.initDashboard());

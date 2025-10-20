@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatTabLink, MatTabNav, MatTabNavPanel } from '@angular/material/tabs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
@@ -53,9 +53,9 @@ import { FeatureFlagSelectors } from '@expense-tracker-ui/shared/feature-flags';
   styles: ``,
 })
 export class TransactionsPageContainerComponent {
+  private store = inject(Store);
+
   importTransactionsEnabled$ = this.store.select(
     FeatureFlagSelectors.selectImportTransactionsEnabled,
   );
-
-  constructor(private store: Store) {}
 }

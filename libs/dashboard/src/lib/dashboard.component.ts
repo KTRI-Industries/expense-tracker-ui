@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardDto } from '@expense-tracker-ui/shared/api';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
@@ -24,6 +24,8 @@ import { FilterRange } from './+state/dashboard.reducer';
   styles: [],
 })
 export class DashboardComponent {
+  private chartFormattingService = inject(ChartFormattingService);
+
   @Input() groupedExpensesChartData:
     | ChartData<'doughnut', number[], string | string[]>
     | undefined
@@ -74,8 +76,6 @@ export class DashboardComponent {
       },
     },
   };
-
-  constructor(private chartFormattingService: ChartFormattingService) {}
 
   onDateRangeChange(event: FilterRange) {
     this.dateRangeChange.emit(event);

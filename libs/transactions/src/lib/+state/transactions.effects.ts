@@ -20,6 +20,10 @@ import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling'
 
 @Injectable()
 export class TransactionsEffects {
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private store = inject(Store);
+
   private actions$ = inject(Actions);
   private client = inject(TransactionsService);
 
@@ -199,10 +203,4 @@ export class TransactionsEffects {
       map(() => ErrorHandlingActions.clearBackEndError()),
     ),
   );
-
-  constructor(
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private store: Store,
-  ) {}
 }

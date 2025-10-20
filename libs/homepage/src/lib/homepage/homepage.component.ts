@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { Store } from '@ngrx/store';
@@ -19,9 +19,9 @@ import { DashboardContainerComponent } from '@expense-tracker-ui/dashboard';
   styleUrl: './homepage.component.css',
 })
 export class HomepageComponent {
-  isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
+  private store = inject(Store);
 
-  constructor(private store: Store) {}
+  isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
 
   onLogin() {
     this.store.dispatch(AuthActions.login());

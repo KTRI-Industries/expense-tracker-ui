@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
@@ -21,6 +21,8 @@ import { AccountSelectors } from '@expense-tracker-ui/account';
   styles: ``,
 })
 export class UsersContainerComponent implements OnInit {
+  private store = inject(Store);
+
   users$: Observable<UserInfo[]> = this.store.select(
     AuthSelectors.selectTenantUsers,
   );
@@ -28,8 +30,6 @@ export class UsersContainerComponent implements OnInit {
     AccountSelectors.selectIsUserCurrentAccountOwner,
   );
   email$ = this.store.select(AuthSelectors.selectUserEmail);
-
-  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(AuthActions.retrieveTenantUsers());
