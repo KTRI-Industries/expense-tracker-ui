@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { UserInfo } from '@expense-tracker-ui/shared/api';
 import {
   MatListItem,
@@ -20,7 +20,6 @@ import { MatButton } from '@angular/material/button';
 @Component({
   selector: 'expense-tracker-ui-user-page',
   imports: [
-    CommonModule,
     MatListItem,
     MatSelectionList,
     MatListOption,

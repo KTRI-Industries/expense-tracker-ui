@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatButton } from '@angular/material/button';
 import {
   MatCard,
@@ -27,7 +27,6 @@ import { MatChip, MatChipSet } from '@angular/material/chips';
 @Component({
   selector: 'expense-tracker-ui-account-list',
   imports: [
-    CommonModule,
     MatButton,
     MatCard,
     MatCardContent,

@@ -3,14 +3,15 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/error-handling/src",
   "prefix": "expense-tracker-ui",
-  "tags": [],
   "projectType": "library",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/error-handling/jest.config.ts"
+        "jestConfig": "libs/shared/error-handling/jest.config.ts",
+        "tsConfig": "libs/shared/error-handling/tsconfig.spec.json"
       }
     },
     "lint": {

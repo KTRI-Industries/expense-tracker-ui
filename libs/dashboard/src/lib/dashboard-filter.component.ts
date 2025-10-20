@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import moment from 'moment';
-import { CommonModule } from '@angular/common';
+
 import { MatAnchor } from '@angular/material/button';
 import { FilterRange } from './+state/dashboard.reducer';
 
 @Component({
   selector: 'expense-tracker-ui-dashboard-filter',
-  imports: [CommonModule, ReactiveFormsModule, FormlyModule, MatAnchor],
+  imports: [ReactiveFormsModule, FormlyModule, MatAnchor],
   templateUrl: './dashboard-filter.component.html',
   styleUrls: ['./dashboard-filter.component.css'],
 })

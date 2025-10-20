@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FieldTypeConfig } from '@ngx-formly/core';
 import {
   MatChipGrid,
@@ -27,7 +27,6 @@ import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT I
 @Component({
   selector: 'expense-tracker-ui-formly',
   imports: [
-    CommonModule,
     MatChipGrid,
     MatChipRemove,
     MatChipRow,

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { MatInput } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -8,13 +8,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'expense-tracker-ui-amount-input',
-  imports: [
-    CommonModule,
-    MatInput,
-    ReactiveFormsModule,
-    FormlyModule,
-    NgxMaskDirective,
-  ],
+  imports: [MatInput, ReactiveFormsModule, FormlyModule, NgxMaskDirective],
   template: `
     <input
       matInput
