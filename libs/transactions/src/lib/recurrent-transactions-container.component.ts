@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -31,12 +31,12 @@ import {
   styles: ``,
 })
 export class RecurrentTransactionsContainerComponent implements OnInit {
+  private store = inject(Store);
+
   transactions$: Observable<PageRecurrentTransactionDto | undefined> =
     this.store.select(
       RecurrentTransactionsSelectors.selectAugmentedRecurrentTransactions,
     );
-
-  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(

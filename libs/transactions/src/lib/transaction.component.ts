@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import {
   MatCard,
   MatCardContent,
@@ -41,6 +41,8 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
   ],
 })
 export class TransactionComponent implements OnInit {
+  private fb = inject(FormBuilder);
+
   /**
    * The transaction that will be edited (or the initial transaction data in case of creation).
    */
@@ -77,8 +79,6 @@ export class TransactionComponent implements OnInit {
   private labelCategoryConverter = new EnumToLabelConverter<Category>(
     categoryLabels,
   );
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     // ic case where we are editing  an existing transaction, pre-populate the model with the transaction data.

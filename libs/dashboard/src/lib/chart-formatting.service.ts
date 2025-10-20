@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { ChartData, ChartType } from 'chart.js';
 
@@ -6,7 +6,8 @@ import { ChartData, ChartType } from 'chart.js';
   providedIn: 'root',
 })
 export class ChartFormattingService {
-  constructor(private currencyPipe: CurrencyPipe) {}
+  private currencyPipe = inject(CurrencyPipe);
+
 
   formatTooltipLabel(value: number, currency: string): string {
     return `${this.currencyPipe.transform(value, currency)}`;

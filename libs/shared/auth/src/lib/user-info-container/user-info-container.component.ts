@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
@@ -21,11 +21,11 @@ import { Observable } from 'rxjs';
   `,
 })
 export class UserInfoContainerComponent {
+  private store = inject(Store);
+
   isLoggedIn$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   userProfile$: Observable<TenantAwareKeycloakProfile | null> =
     this.store.select(AuthSelectors.selectUserProfile);
-
-  constructor(private store: Store) {}
 
   public onLogin() {
     this.store.dispatch(AuthActions.login());

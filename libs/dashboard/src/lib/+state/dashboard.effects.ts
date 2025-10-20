@@ -7,6 +7,8 @@ import { DashboardService } from '../dashboard.service';
 
 @Injectable()
 export class DashboardEffects {
+  private store = inject(Store);
+
   private actions$ = inject(Actions);
   private dashboardService = inject(DashboardService);
 
@@ -42,7 +44,4 @@ export class DashboardEffects {
       )
     )
   );
-
-  constructor(private store: Store) {
-  }
 }

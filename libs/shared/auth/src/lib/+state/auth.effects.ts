@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
@@ -21,6 +21,11 @@ import { FeatureFlagActions } from '@expense-tracker-ui/shared/feature-flags';
 
 @Injectable()
 export class AuthEffects {
+  private actions$ = inject(Actions);
+  private keycloak = inject(KeycloakService);
+  private authService = inject(AuthService);
+  private store = inject(Store);
+
   login$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -143,13 +148,6 @@ export class AuthEffects {
       ),
     { dispatch: false },
   );
-
-  constructor(
-    private actions$: Actions,
-    private keycloak: KeycloakService,
-    private authService: AuthService,
-    private store: Store,
-  ) {}
 
   /**
    * Without the refreshed token the roles are not updated.

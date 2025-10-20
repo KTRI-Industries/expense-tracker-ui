@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TransactionActions, TransactionsSelectors } from '../index';
 import { AsyncPipe } from '@angular/common';
@@ -32,13 +32,13 @@ import { AuthActions } from '@expense-tracker-ui/shared/auth';
   styles: ``,
 })
 export class TransactionsContainerComponent implements OnInit {
+  private store = inject(Store);
+
   transactions$: Observable<PageTransactionDto | undefined> = this.store.select(
     TransactionsSelectors.selectAugmentedTransactions,
   );
 
   filterRange$ = this.store.select(TransactionsSelectors.selectFilterRange);
-
-  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(AuthActions.retrieveTenantUsers());

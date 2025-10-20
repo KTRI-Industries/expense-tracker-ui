@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { selectMessage } from '../+state/error-handling.selectors';
@@ -10,8 +10,9 @@ import { tap } from 'rxjs';
   templateUrl: './error-handling.component.html',
 })
 export class ErrorHandlingComponent {
+  private store = inject(Store);
+
   errorMessage$ = this.store
     .select(selectMessage)
     .pipe(tap((message) => console.log(message)));
-  constructor(private store: Store) {}
 }

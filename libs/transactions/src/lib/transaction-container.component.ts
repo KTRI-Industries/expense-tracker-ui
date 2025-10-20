@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TransactionActions } from './+state/transactions.actions';
 import { TransactionComponent } from './transaction.component';
@@ -31,17 +31,15 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
   styles: ``,
 })
 export class TransactionContainerComponent implements OnInit {
+  private store = inject(Store);
+  private route = inject(ActivatedRoute);
+
   selectedTransaction$: Observable<TransactionDto | undefined> =
     this.store.select(selectCurrentTransaction);
 
   private labelCategoryConverter = new EnumToLabelConverter<Category>(
     categoryLabels,
   );
-
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-  ) {}
 
   /**
    * Load the transaction if the id is present in the route. (case where user navigates directly to url).

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,9 @@ import { NgHttpLoaderComponent } from 'ng-http-loader';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  private keycloak = inject(KeycloakService);
+  private store = inject(Store);
+
   username$ = this.store.select(AuthSelectors.selectUserName);
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   isUserAccountOwner$ = this.store.select(
@@ -37,11 +40,6 @@ export class AppComponent implements OnInit {
   );
 
   title = 'expense-tracker-ui';
-
-  constructor(
-    private keycloak: KeycloakService,
-    private store: Store,
-  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(AuthActions.checkLogin());

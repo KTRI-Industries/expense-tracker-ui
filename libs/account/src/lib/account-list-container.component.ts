@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
@@ -23,14 +23,14 @@ import { AccountSelectors } from '../index';
   styles: ``,
 })
 export class AccountListContainerComponent implements OnInit {
+  private store = inject(Store);
+
   accounts$: Observable<TenantWithUserDetails[]> = this.store.select(
     AccountSelectors.selectAccounts,
   );
   currentTenantId$: Observable<string> = this.store.select(
     AccountSelectors.selectCurrentAccount,
   );
-
-  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(AccountActions.retrieveAccounts());

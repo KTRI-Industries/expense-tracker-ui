@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   Category,
@@ -40,6 +40,8 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
   styles: ``,
 })
 export class RecurrentTransactionComponent implements OnInit {
+  private fb = inject(FormBuilder);
+
   /**
    * The transaction that will be edited (or the initial transaction data in case of creation).
    */
@@ -76,8 +78,6 @@ export class RecurrentTransactionComponent implements OnInit {
   private labelCategoryConverter = new EnumToLabelConverter<Category>(
     categoryLabels,
   );
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     // ic case where we are editing  an existing transaction, pre-populate the model with the transaction data.

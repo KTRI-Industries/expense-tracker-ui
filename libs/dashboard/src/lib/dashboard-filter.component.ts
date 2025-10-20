@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import moment from 'moment';
@@ -13,6 +13,8 @@ import { FilterRange } from './+state/dashboard.reducer';
   styleUrls: ['./dashboard-filter.component.css'],
 })
 export class DashboardFilterComponent {
+  private fb = inject(FormBuilder);
+
   private _model: FilterRange | undefined;
 
   @Input()
@@ -77,7 +79,7 @@ export class DashboardFilterComponent {
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.form = this.fb.group({});
   }
 

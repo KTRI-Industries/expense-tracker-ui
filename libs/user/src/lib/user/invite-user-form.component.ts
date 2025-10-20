@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { MatButton } from '@angular/material/button';
@@ -26,14 +26,14 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './invite-user-form.component.html',
 })
 export class InviteUserFormComponent implements OnInit {
+  private fb = inject(FormBuilder);
+
   inviteUserForm = this.fb.group({});
   fields: FormlyFieldConfig[] = [];
   model: any = {};
 
   @Output()
   invite = new EventEmitter();
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.fields = [
