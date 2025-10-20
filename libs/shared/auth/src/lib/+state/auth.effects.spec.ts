@@ -36,12 +36,7 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'login');
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     authEffects.login$.subscribe();
 
@@ -55,12 +50,7 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'logout');
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     authEffects.logout$.subscribe();
 
@@ -81,12 +71,7 @@ describe('AuthEffects', () => {
       .spyOn(keycloakService, 'loadUserProfile')
       .mockImplementation(() => Promise.resolve(userProfile));
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
       keycloakUserProfile: userProfile,
@@ -107,12 +92,7 @@ describe('AuthEffects', () => {
 
     jest.spyOn(keycloakService, 'isLoggedIn').mockImplementation(() => true);
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     const expectedAction = AuthActions.loginSuccess();
 
@@ -134,12 +114,7 @@ describe('AuthEffects', () => {
       .spyOn(keycloakService, 'loadUserProfile')
       .mockImplementation(() => Promise.reject(error));
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
     const expectedAction = AuthActions.retrieveUserProfileFailure({
       error,
     });
@@ -161,12 +136,7 @@ describe('AuthEffects', () => {
 
     jest.spyOn(authService, 'generateTenant').mockReturnValue(of(tenant));
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     const expectedAction = AuthActions.generateNewTenantSuccess({
       tenantId: tenant.id,
@@ -191,12 +161,7 @@ describe('AuthEffects', () => {
       .spyOn(authService, 'generateTenant')
       .mockReturnValue(throwError(error));
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     const expectedAction = AuthActions.generateNewTenantFailure({
       error,
@@ -390,12 +355,7 @@ describe('AuthEffects', () => {
       }),
     );
 
-    const authEffects = new AuthEffects(
-      actions$,
-      keycloakService,
-      authService,
-      createMockStore({}),
-    );
+    const authEffects = new AuthEffects();
 
     jest
       .spyOn(authEffects, 'refreshRoles')

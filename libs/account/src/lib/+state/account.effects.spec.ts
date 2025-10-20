@@ -41,17 +41,12 @@ describe('AccountEffects', () => {
       .spyOn(accountService, 'associateUserWithAccount')
       .mockReturnValue(of(userInfo));
 
-    const accountEffects = new AccountEffects(
-      actions$,
-      accountService,
-      createMockStore({}),
-      keycloakService,
-    );
+    const effects = new AccountEffects();
 
     const expectedAction = AccountActions.associateUserWithAccountSuccess();
 
     let result: any;
-    accountEffects.associateUserWithAccount$.subscribe((action) => {
+    effects.associateUserWithAccount$.subscribe((action) => {
       result = action;
     });
 
@@ -70,17 +65,12 @@ describe('AccountEffects', () => {
       .spyOn(accountService, 'setDefaultAccount')
       .mockReturnValue(of(userInfo));
 
-    const accountEffects = new AccountEffects(
-      actions$,
-      accountService,
-      createMockStore({}),
-      keycloakService,
-    );
+    const effects = new AccountEffects();
 
     const expectedAction = AccountActions.setDefaultAccountSuccess();
 
     let result: any;
-    accountEffects.setDefaultAccount$.subscribe((action) => {
+    effects.setDefaultAccount$.subscribe((action) => {
       result = action;
     });
 
@@ -112,17 +102,12 @@ describe('AccountEffects', () => {
       .spyOn(accountService, 'retrieveAccounts')
       .mockReturnValue(of(accounts));
 
-    const accountEffects = new AccountEffects(
-      actions$,
-      accountService,
-      createMockStore({}),
-      keycloakService,
-    );
+    const effects = new AccountEffects();
 
     const expectedAction = AccountActions.retrieveAccountsSuccess({ accounts });
 
     let result: any;
-    accountEffects.retrieveUserAccounts$.subscribe((action) => {
+    effects.retrieveUserAccounts$.subscribe((action) => {
       result = action;
     });
 
@@ -138,17 +123,12 @@ describe('AccountEffects', () => {
     const userInfo = {} as UserInfo;
     jest.spyOn(accountService, 'leaveAccount').mockReturnValue(of(userInfo));
 
-    const accountEffects = new AccountEffects(
-      actions$,
-      accountService,
-      createMockStore({}),
-      keycloakService,
-    );
+    const effects = new AccountEffects();
 
     const expectedAction = AccountActions.leaveAccountSuccess();
 
     let result: any;
-    accountEffects.leaveAccount$.subscribe((action) => {
+    effects.leaveAccount$.subscribe((action) => {
       result = action;
     });
 
