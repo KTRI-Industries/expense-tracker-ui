@@ -1,53 +1,66 @@
 /* Global styles and Tailwind layers */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-/* You can add global styles to this file, and also import other style files */
+@config '../tailwind.config.js';
 
-html {
-    height: 100%;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-body {
+@utility form-container {
+  /* Form container - used across multiple form components (4 times) */
+  @apply md:w-6/12;
+}
+@utility data-table-container {
+  /* Data table container - used in transactions and recurrent transactions (2 times) */
+  @apply lg:w-10/12 xl:w-4/5;
+}
+@utility table-cell-text {
+  /* Text wrapping for table cells - used in multiple table components */
+  @apply max-w-[250px] whitespace-normal wrap-break-word break-all;
+}
+@utility error-alert-header {
+  /* Error alert header - combines multiple styling utilities */
+  @apply bg-red-500 text-white font-bold rounded-t px-4 py-2;
+}
+@utility error-alert-body {
+  /* Error alert body - combines multiple styling utilities */
+  @apply border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700;
+}
+@utility nav-flex-container {
+  /* Navigation flex container - combines multiple layout utilities */
+  @apply hidden md:flex grow items-center px-3;
+}
+@utility link {
+  /* Link styling - combines hover and color utilities */
+  @apply hover:underline text-blue-600;
+}
+
+@layer utilities {
+  /* You can add global styles to this file, and also import other style files */
+
+  html {
+    height: 100%;
+  }
+
+  body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
+  }
 
-/* Component styles using @apply for repeated Tailwind patterns */
-@layer components {
-    /* Form container - used across multiple form components (4 times) */
-    .form-container {
-        @apply md:w-6/12;
-    }
-
-    /* Data table container - used in transactions and recurrent transactions (2 times) */
-    .data-table-container {
-        @apply lg:w-10/12 xl:w-4/5;
-    }
-
-    /* Text wrapping for table cells - used in multiple table components */
-    .table-cell-text {
-        @apply max-w-[250px] whitespace-normal break-words break-all;
-    }
-
-    /* Error alert header - combines multiple styling utilities */
-    .error-alert-header {
-        @apply bg-red-500 text-white font-bold rounded-t px-4 py-2;
-    }
-
-    /* Error alert body - combines multiple styling utilities */
-    .error-alert-body {
-        @apply border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700;
-    }
-
-    /* Navigation flex container - combines multiple layout utilities */
-    .nav-flex-container {
-        @apply hidden md:flex grow items-center px-3;
-    }
-
-    /* Link styling - combines hover and color utilities */
-    .link {
-        @apply hover:underline text-blue-600
-    }
+  /* Component styles using @apply for repeated Tailwind patterns */
 }
