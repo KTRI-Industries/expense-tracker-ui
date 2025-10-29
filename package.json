@@ -71,7 +71,7 @@
     "@openapitools/openapi-generator-cli": "2.25.0",
     "@schematics/angular": "20.3.7",
     "@swc-node/register": "1.11.1",
-    "@swc/core": "1.13.21",
+    "@swc/core": "1.14.0",
     "@swc/helpers": "0.5.17",
     "@tailwindcss/postcss": "^4.1.16",
     "@testing-library/angular": "^18.1.0",
