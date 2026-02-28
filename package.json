@@ -40,7 +40,7 @@
     "@nx/angular": "22.0.1",
     "chart.js": "^4.5.1",
     "keycloak-angular": "20.0.0",
-    "keycloak-js": "^25.0.6",
+    "keycloak-js": "^26.0.0",
     "moment": "^2.30.1",
     "ng-http-loader": "18.0.0",
     "ng2-charts": "8.0.0",
