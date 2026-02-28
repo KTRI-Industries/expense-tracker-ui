@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
+  exhaustMap,
   filter,
   forkJoin,
   from,
@@ -96,7 +97,7 @@ export class AuthEffects {
   generateTenant$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.generateNewTenant),
-      switchMap((action) =>
+      exhaustMap((action) =>
         this.authService.generateTenant(action.email).pipe(
           map((tenant: TenantDto) =>
             AuthActions.generateNewTenantSuccess({ tenantId: tenant.id }),

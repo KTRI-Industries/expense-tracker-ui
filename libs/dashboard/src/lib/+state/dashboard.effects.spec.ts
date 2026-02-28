@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { DashboardEffects } from './dashboard.effects';
 import { DashboardDto, MonetaryAmount } from '@expense-tracker-ui/shared/api';
 import { DashboardActions } from './dashboard.actions';
 import { cold, hot } from 'jasmine-marbles';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import moment from 'moment';
 import { DashboardService } from '../dashboard.service';
 
@@ -14,6 +14,7 @@ describe('DashboardEffects', () => {
   let actions$: Observable<Action>;
   let effects: DashboardEffects;
   let service: DashboardService;
+  let store: MockStore;
 
   const createMonetaryAmount = (
     amount: number,
@@ -46,7 +47,13 @@ describe('DashboardEffects', () => {
       providers: [
         DashboardEffects,
         provideMockActions(() => actions$),
-        provideMockStore(),
+        provideMockStore({
+          initialState: {
+            account: {
+              currentAccount: 'tenant-id',
+            },
+          },
+        }),
         {
           provide: DashboardService,
           useValue: {
@@ -58,6 +65,7 @@ describe('DashboardEffects', () => {
 
     effects = TestBed.inject(DashboardEffects);
     service = TestBed.inject(DashboardService);
+    store = TestBed.inject(MockStore);
   });
 
   it('should load dashboard successfully', () => {
@@ -159,5 +167,38 @@ describe('DashboardEffects', () => {
     const expected = cold('-#', {}, error);
 
     expect(effects.filterDashboard$).toBeObservable(expected);
+  });
+
+  it('should call getDashboard when currentAccount becomes available afterwards', () => {
+    const mockDashboard = createMockDashboard();
+    const actionSubject = new Subject<Action>();
+    const emissions: Action[] = [];
+
+    store.setState({
+      account: {
+        currentAccount: '',
+      },
+    });
+    store.refreshState();
+    jest.spyOn(service, 'getDashboard').mockReturnValue(of(mockDashboard));
+
+    actions$ = actionSubject.asObservable();
+    effects.loadDashboard$.subscribe((action) => emissions.push(action));
+
+    actionSubject.next(DashboardActions.initDashboard());
+    expect(service.getDashboard).not.toHaveBeenCalled();
+
+    store.setState({
+      account: {
+        currentAccount: 'tenant-id',
+      },
+    });
+    store.refreshState();
+    actionSubject.complete();
+
+    expect(service.getDashboard).toHaveBeenCalledTimes(1);
+    expect(emissions).toEqual([
+      DashboardActions.loadDashboardSuccess({ dashboard: mockDashboard }),
+    ]);
   });
 });
