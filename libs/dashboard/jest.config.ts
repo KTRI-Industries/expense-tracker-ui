@@ -9,10 +9,11 @@ export default {
       {
         tsconfig: '<rootDir>/tsconfig.spec.json',
         stringifyContentPathRegex: '\\.(html|svg)$',
+        isolatedModules: true,
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|lodash-es|ng2-charts)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|keycloak-js|keycloak-angular|lodash-es|ng2-charts)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

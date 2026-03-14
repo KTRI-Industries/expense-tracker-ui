@@ -10,11 +10,12 @@ export default {
       {
         tsconfig: '<rootDir>/tsconfig.spec.json',
         stringifyContentPathRegex: '\\.(html|svg)$',
+        isolatedModules: true,
       },
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!.*\\.mjs$)',
+    'node_modules/(?!.*\\.mjs$|keycloak-js|keycloak-angular)',
     // '../../node_modules/(?!${ng2-charts})',
   ],
   snapshotSerializers: [

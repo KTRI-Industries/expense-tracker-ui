@@ -13,5 +13,5 @@ module.exports = {
     '<rootDir>/dist/',
     '<rootDir>/libs/shared/api/',
   ],
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|lodash-es|ng2-charts)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|keycloak-js|keycloak-angular|lodash-es|ng2-charts)'],
 };
