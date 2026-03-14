@@ -1,5 +1,4 @@
 import { UserInfoContainerComponent } from './user-info-container.component';
-import { MockProvider } from 'ng-mocks';
 import { render, RenderResult, screen } from '@testing-library/angular';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
@@ -82,7 +81,7 @@ describe('UserInfoContainerComponent', () => {
 async function setup(isLoggedIn: boolean, userProfile: KeycloakProfile | null) {
   return await render(UserInfoContainerComponent, {
     providers: [
-      MockProvider(KeycloakService),
+      { provide: KeycloakService, useValue: {} },
       provideMockStore({
         selectors: [
           {
