@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: FileValueAccessorDirective,
+      useExisting: forwardRef(() => FileValueAccessorDirective),
       multi: true,
     },
   ],

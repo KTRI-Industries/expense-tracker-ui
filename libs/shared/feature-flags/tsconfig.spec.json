@@ -2,12 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "node16",
     "types": [
       "jest",
       "node"
     ],
-    "moduleResolution": "node16",
     "isolatedModules": true
   },
   "files": [
