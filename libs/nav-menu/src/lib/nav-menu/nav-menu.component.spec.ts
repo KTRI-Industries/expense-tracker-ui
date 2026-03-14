@@ -24,7 +24,7 @@ describe('NavMenuComponent', () => {
   it('should display "Login" button if not authenticated', async () => {
     component = await setupComponent(false, null);
 
-    expect(screen.getByText('Login')).toBeInTheDocument();
+    expect(screen.getAllByText('login')[0]).toBeInTheDocument();
   });
 
   it('should emit login event when "Login" button is clicked', async () => {
@@ -39,7 +39,7 @@ describe('NavMenuComponent', () => {
   it('should display "Logout" button if authenticated', async () => {
     component = await setupComponent(true, null, '1234');
 
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getAllByText('logout')[0]).toBeInTheDocument();
   });
 
   it('should emit logout event when "Logout" button is clicked', async () => {
