@@ -11,7 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[type=file]',
   host: {
-    '(change)': 'onChange($event.target.files)',
+    '(change)': 'onChange($any($event.target).files)',
   },
   providers: [
     {
