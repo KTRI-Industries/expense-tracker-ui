@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   private store = inject(Store);
 
   username$ = this.store.select(AuthSelectors.selectUserName);
+  email$ = this.store.select(AuthSelectors.selectUserEmail);
   isAuthenticated$ = this.store.select(AuthSelectors.selectIsLoggedIn);
   isUserAccountOwner$ = this.store.select(
     AccountSelectors.selectIsUserCurrentAccountOwner,
@@ -51,5 +52,16 @@ export class AppComponent implements OnInit {
 
   onLogout() {
     this.store.dispatch(AuthActions.logout());
+  }
+
+  onManageSecurity() {
+    const url = this.keycloak.getKeycloakInstance().createAccountUrl();
+    // createAccountUrl() returns: /account?referrer=... (no trailing slash in Keycloak 26)
+    // Keycloak 26 Account Console uses path routing, not hash routing
+    const accountIndex = url.indexOf('/account');
+    const base = url.substring(0, accountIndex + '/account'.length);
+    const query = url.includes('?') ? url.substring(url.indexOf('?')) : '';
+    const securityUrl = `${base}/account-security/signing-in${query}`;
+    window.open(securityUrl, '_blank');
   }
 }

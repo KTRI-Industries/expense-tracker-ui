@@ -79,20 +79,36 @@
           </mat-chip-listbox>
         </span>
       }
-      <a
-        routerLink="/user-page"
-        matTooltip="Go to User Page"
-        class="hover:underline"
-        data-cy="username-link">
-        {{ username }}
-      </a>
+      <!-- User avatar button — opens dropdown menu -->
       <button
         mat-icon-button
-        matTooltip="Logout"
-        (click)="onLogout()"
-        data-cy="logout-button">
-        <mat-icon>logout</mat-icon>
+        [matMenuTriggerFor]="userMenu"
+        aria-label="User menu"
+        data-cy="user-menu-button">
+        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-xs font-medium leading-none">{{ initials }}</span>
       </button>
+
+      <mat-menu #userMenu="matMenu" xPosition="before">
+        <!-- Non-interactive header showing user identity -->
+        <div class="px-4 py-2 pointer-events-none select-none">
+          <div class="font-medium">{{ username }}</div>
+          <div class="text-sm opacity-60">{{ email }}</div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/user-page" data-cy="profile-menu-item">
+          <mat-icon>person</mat-icon>
+          Profile
+        </button>
+        <button mat-menu-item (click)="onManageSecurity()" data-cy="security-menu-item">
+          <mat-icon>key</mat-icon>
+          Security
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="onLogout()" data-cy="logout-button">
+          <mat-icon>logout</mat-icon>
+          Sign out
+        </button>
+      </mat-menu>
     }
   }
 </ng-template>

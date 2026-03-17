@@ -15,10 +15,13 @@ describe('NavMenuComponent', () => {
     expect(component.fixture.componentInstance).toBeTruthy();
   });
 
-  it('should display username if authenticated', async () => {
+  it('should display username initials in avatar if authenticated', async () => {
     component = await setupComponent(true, 'JohnDoe', '1234');
 
-    expect(screen.getAllByText('JohnDoe')).toHaveLength(2);
+    // Avatar button should be present
+    expect(screen.getAllByRole('button', { name: /user menu/i }).length).toBeGreaterThanOrEqual(1);
+    // Initials derived from 'JohnDoe' → 'JO'
+    expect(screen.getAllByText('JO').length).toBeGreaterThanOrEqual(1);
   });
 
   it('should display "Login" button if not authenticated', async () => {
@@ -36,22 +39,55 @@ describe('NavMenuComponent', () => {
     expect(loginSpy).toHaveBeenCalled();
   });
 
-  it('should display "Logout" button if authenticated', async () => {
-    component = await setupComponent(true, null, '1234');
-
-    expect(screen.getAllByText('logout')[0]).toBeInTheDocument();
-  });
-
-  it('should emit logout event when "Logout" button is clicked', async () => {
+  it('should emit logout event when "Sign out" menu item is clicked', async () => {
     component = await setupComponent(true, null, '1234');
     const logoutSpy = jest.spyOn(
       component.fixture.componentInstance,
       'onLogout',
     );
 
-    fireEvent.click(screen.getAllByText('logout')[0]);
+    // Open the user menu first
+    fireEvent.click(screen.getAllByRole('button', { name: /user menu/i })[0]);
+    component.fixture.detectChanges();
+
+    fireEvent.click(screen.getByText('Sign out'));
 
     expect(logoutSpy).toHaveBeenCalled();
+  });
+
+  it('should emit manageSecurity event when "Security" menu item is clicked', async () => {
+    component = await setupComponent(true, null, '1234');
+    const manageSecuritySpy = jest.spyOn(
+      component.fixture.componentInstance,
+      'onManageSecurity',
+    );
+
+    // Open the user menu first
+    fireEvent.click(screen.getAllByRole('button', { name: /user menu/i })[0]);
+    component.fixture.detectChanges();
+
+    fireEvent.click(screen.getByText('Security'));
+
+    expect(manageSecuritySpy).toHaveBeenCalled();
+  });
+
+  it('should show user avatar button when authenticated with tenantId', async () => {
+    component = await setupComponent(true, 'atrifyllis', '1234');
+
+    expect(screen.getAllByRole('button', { name: /user menu/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByText('AT').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should compute initials correctly', () => {
+    const instance = new NavMenuComponent();
+    instance.username = 'atrifyllis';
+    expect(instance.initials).toBe('AT');
+
+    instance.username = 'J';
+    expect(instance.initials).toBe('J');
+
+    instance.username = null;
+    expect(instance.initials).toBe('');
   });
 });
 

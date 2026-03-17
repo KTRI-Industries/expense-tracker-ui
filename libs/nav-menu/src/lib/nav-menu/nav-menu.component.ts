@@ -13,6 +13,8 @@ import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
@@ -31,20 +33,30 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatButton,
     MatChip,
     MatChipListbox,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
+    MatDivider,
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css',
 })
 export class NavMenuComponent {
   @Input() username: string | null | undefined = '';
+  @Input() email: string | null | undefined = '';
   @Input() isAuthenticated: boolean | null | undefined = false;
   @Input() isUserAccountOwner: boolean | null | undefined = false;
   @Input() tenantId: string | null | undefined;
   @Input() currentAccount: string | null | undefined;
   @Input() pendingAccountInvitations: number | null | undefined = 0;
 
+  get initials(): string {
+    return (this.username ?? '').slice(0, 2).toUpperCase();
+  }
+
   @Output() login = new EventEmitter<void>();
   @Output() logout = new EventEmitter<void>();
+  @Output() manageSecurity = new EventEmitter<void>();
 
   onLogin() {
     this.login.emit();
@@ -52,5 +64,9 @@ export class NavMenuComponent {
 
   onLogout() {
     this.logout.emit();
+  }
+
+  onManageSecurity() {
+    this.manageSecurity.emit();
   }
 }
