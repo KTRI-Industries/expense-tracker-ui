@@ -56,12 +56,10 @@ export class AppComponent implements OnInit {
 
   onManageSecurity() {
     const url = this.keycloak.getKeycloakInstance().createAccountUrl();
-    // createAccountUrl() returns: /account?referrer=... (no trailing slash in Keycloak 26)
-    // Keycloak 26 Account Console uses path routing, not hash routing
-    const accountIndex = url.indexOf('/account');
-    const base = url.substring(0, accountIndex + '/account'.length);
-    const query = url.includes('?') ? url.substring(url.indexOf('?')) : '';
-    const securityUrl = `${base}/account-security/signing-in${query}`;
-    window.open(securityUrl, '_blank');
+    // createAccountUrl() returns an absolute URL ending with /account?referrer=...
+    // Append the Account Console path for passkey/signing-in management.
+    const accountUrl = new URL(url);
+    accountUrl.pathname = `${accountUrl.pathname}/account-security/signing-in`;
+    window.open(accountUrl.toString(), '_blank', 'noopener,noreferrer');
   }
 }
