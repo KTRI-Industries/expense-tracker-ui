@@ -15,7 +15,9 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'expense-tracker-ui-user-page',
@@ -31,6 +33,9 @@ import { MatButton } from '@angular/material/button';
     RouterLink,
     MatCardActions,
     MatButton,
+    MatIconButton,
+    MatIcon,
+    MatTooltip,
   ],
   templateUrl: './user-page.component.html',
   styles: ``,
@@ -41,6 +46,7 @@ export class UserPageComponent {
   @Input() email: string | null | undefined = '';
 
   @Output() delete = new EventEmitter<string>();
+  @Output() manageSecurity = new EventEmitter<void>();
 
   onDelete(value: string) {
     console.log(value);

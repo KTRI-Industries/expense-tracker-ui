@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
 import { Store } from '@ngrx/store';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
 import { NavMenuComponent } from '@expense-tracker-ui/nav-menu';
@@ -23,7 +22,6 @@ import { NgHttpLoaderComponent } from 'ng-http-loader';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  private keycloak = inject(KeycloakService);
   private store = inject(Store);
 
   username$ = this.store.select(AuthSelectors.selectUserName);
