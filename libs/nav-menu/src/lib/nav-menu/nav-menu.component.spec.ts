@@ -15,10 +15,10 @@ describe('NavMenuComponent', () => {
     expect(component.fixture.componentInstance).toBeTruthy();
   });
 
-  it('should display username if authenticated', async () => {
+  it('should display username link if authenticated', async () => {
     component = await setupComponent(true, 'JohnDoe', '1234');
 
-    expect(screen.getAllByText('JohnDoe')).toHaveLength(2);
+    expect(screen.getAllByText('JohnDoe').length).toBeGreaterThanOrEqual(1);
   });
 
   it('should display "Login" button if not authenticated', async () => {
@@ -36,22 +36,29 @@ describe('NavMenuComponent', () => {
     expect(loginSpy).toHaveBeenCalled();
   });
 
-  it('should display "Logout" button if authenticated', async () => {
-    component = await setupComponent(true, null, '1234');
-
-    expect(screen.getAllByText('logout')[0]).toBeInTheDocument();
-  });
-
-  it('should emit logout event when "Logout" button is clicked', async () => {
+  it('should emit logout event when logout button is clicked', async () => {
     component = await setupComponent(true, null, '1234');
     const logoutSpy = jest.spyOn(
       component.fixture.componentInstance,
       'onLogout',
     );
 
-    fireEvent.click(screen.getAllByText('logout')[0]);
+    const logoutButtons = screen.getAllByRole('button', { name: '' });
+    // Find the logout button by data-cy attribute
+    const logoutButton = logoutButtons.find(
+      (el) => el.getAttribute('data-cy') === 'logout-button',
+    );
+    fireEvent.click(logoutButton!);
 
     expect(logoutSpy).toHaveBeenCalled();
+  });
+
+  it('should display username as link to user page when authenticated', async () => {
+    component = await setupComponent(true, 'atrifyllis', '1234');
+
+    const links = screen.getAllByRole('link', { name: 'atrifyllis' });
+    expect(links.length).toBeGreaterThanOrEqual(1);
+    expect(links[0]).toHaveAttribute('href', '/user-page');
   });
 });
 

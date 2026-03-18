@@ -49,3 +49,23 @@
 </mat-card>
 
 <div class="my-2"></div>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Security</mat-card-title>
+    <mat-card-subtitle>
+      Manage your passkeys and other security settings.
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      (click)="manageSecurity.emit()"
+      data-cy="security-settings-button">
+      <mat-icon>key</mat-icon>
+      Manage Security
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<div class="my-2"></div>
