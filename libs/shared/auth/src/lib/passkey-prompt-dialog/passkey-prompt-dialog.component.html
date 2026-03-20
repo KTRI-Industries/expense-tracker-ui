@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>
+  <mat-icon>key</mat-icon>
+  Simplify your sign-in
+</h2>
+<mat-dialog-content>
+  <p>
+    Set up a passkey to sign in faster using your fingerprint or face — no
+    password needed.
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onDontAskAgain()" data-cy="passkey-dont-ask">
+    Don't ask again
+  </button>
+  <button mat-button (click)="onNotNow()" data-cy="passkey-not-now">
+    Not now
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSetup()"
+    data-cy="passkey-setup">
+    <mat-icon>key</mat-icon>
+    Set up passkey
+  </button>
+</mat-dialog-actions>

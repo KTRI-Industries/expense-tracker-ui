@@ -41,5 +41,10 @@ export const AuthActions = createActionGroup({
     /* 'Retrieve Tenants': emptyProps(),
     'Retrieve Tenants Success': props<{ tenants: TenantWithUserDetails[] }>(),
     'Retrieve Tenants Failure': props<{ error: Error }>(),*/
+
+    'Show Passkey Prompt': emptyProps(),
+    'Passkey Prompt Completed': props<{
+      choice: 'setup' | 'later' | 'never';
+    }>(),
   },
 });
