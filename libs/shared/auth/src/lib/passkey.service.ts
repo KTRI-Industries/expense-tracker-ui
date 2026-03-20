@@ -43,9 +43,8 @@ export class PasskeyService {
   }
 
   getSecurityUrl(): string {
+    const base = this.getAccountBaseUrl();
     const url = this.keycloak.getKeycloakInstance().createAccountUrl();
-    const accountIndex = url.indexOf('/account');
-    const base = url.substring(0, accountIndex + '/account'.length);
     const query = url.includes('?') ? url.substring(url.indexOf('?')) : '';
     return `${base}/account-security/signing-in${query}`;
   }
