@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
+  EMPTY,
   exhaustMap,
   filter,
   forkJoin,
@@ -19,6 +20,12 @@ import { selectUserProfile } from './auth.selectors';
 import { AuthService } from '../auth.service';
 import { TenantDto } from '@expense-tracker-ui/shared/api';
 import { FeatureFlagActions } from '@expense-tracker-ui/shared/feature-flags';
+import { PasskeyService } from '../passkey.service';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  PasskeyPromptDialogComponent,
+  PasskeyPromptResult,
+} from '../passkey-prompt-dialog/passkey-prompt-dialog.component';
 
 @Injectable()
 export class AuthEffects {
@@ -27,6 +34,8 @@ export class AuthEffects {
     private keycloak: KeycloakService,
     private authService: AuthService,
     private store: Store,
+    private passkeyService: PasskeyService,
+    private dialog: MatDialog,
   ) {}
 
   login$ = createEffect(
@@ -136,6 +145,59 @@ export class AuthEffects {
         ),
       ),
     ),
+  );
+
+  checkPasskeyStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.retrieveUserProfileSuccess),
+      filter(() => this.passkeyService.shouldShowPasskeyPrompt()),
+      switchMap(() =>
+        this.passkeyService.hasPasskey().pipe(
+          filter((hasPasskey) => !hasPasskey),
+          map(() => AuthActions.showPasskeyPrompt()),
+          catchError(() => EMPTY),
+        ),
+      ),
+    ),
+  );
+
+  showPasskeyPrompt$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.showPasskeyPrompt),
+      exhaustMap(() => {
+        const dialogRef = this.dialog.open<
+          PasskeyPromptDialogComponent,
+          void,
+          PasskeyPromptResult
+        >(PasskeyPromptDialogComponent);
+
+        return dialogRef.afterClosed().pipe(
+          map((choice) =>
+            AuthActions.passkeyPromptCompleted({ choice: choice ?? 'later' }),
+          ),
+        );
+      }),
+    ),
+  );
+
+  openPasskeySecurityPage$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.passkeyPromptCompleted),
+        filter(({ choice }) => choice === 'setup'),
+        tap(() => this.passkeyService.openSecurityPage()),
+      ),
+    { dispatch: false },
+  );
+
+  persistPasskeyPromptDismissal$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.passkeyPromptCompleted),
+        filter(({ choice }) => choice === 'never'),
+        tap(() => this.passkeyService.dismissPasskeyPrompt()),
+      ),
+    { dispatch: false },
   );
 
   logout$ = createEffect(
