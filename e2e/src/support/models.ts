@@ -14,3 +14,9 @@ export interface RecurrentTransactionDraft {
   date: string;
   description?: string;
 }
+
+export interface ApiSessionContext {
+  accessToken: string;
+  currentTenantId: string | undefined;
+  email: string | undefined;
+}
