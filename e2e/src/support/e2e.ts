@@ -8,6 +8,7 @@ declare global {
       login(email: string, password: string): void;
       loginWithoutSession(email: string, password: string): void;
       addNewTransaction(transaction: TransactionDraft): void;
+      seedTransaction(transaction: TransactionDraft): void;
       editTransaction(transaction: TransactionDraft): void;
       editRecurrentTransaction(transaction: RecurrentTransactionDraft): void;
       deleteVisibleTransactions(): void;
@@ -20,6 +21,7 @@ declare global {
       leaveTenant(): void;
 
       addNewRecurrentTransaction(transaction: RecurrentTransactionDraft): void;
+      seedRecurrentTransaction(transaction: RecurrentTransactionDraft): void;
       dismissPasskeyPrompt(): void;
     }
   }

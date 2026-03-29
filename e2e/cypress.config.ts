@@ -18,8 +18,13 @@ const cypressJsonConfig = {
     keycloakUrl:
       process.env['CYPRESS_KEYCLOAK_URL'] ??
       'https://keycloak.127.0.0.1.nip.io:8443',
+    keycloakRealm:
+      process.env['CYPRESS_KEYCLOAK_REALM'] ?? 'expense-tracker-realm',
+    keycloakClientId:
+      process.env['CYPRESS_KEYCLOAK_CLIENT_ID'] ?? 'expense-tracker-ui',
     mailhogUrl:
       process.env['CYPRESS_MAILHOG_URL'] ?? 'https://mailhog.127.0.0.1.nip.io',
+    apiBaseUrl: process.env['CYPRESS_API_BASE_URL'] ?? 'http://localhost:8080',
     ownerUsername: process.env['CYPRESS_OWNER_USERNAME'] ?? 'test_user',
     ownerPassword: process.env['CYPRESS_OWNER_PASSWORD'] ?? 'open123',
     invitedUserEmail:

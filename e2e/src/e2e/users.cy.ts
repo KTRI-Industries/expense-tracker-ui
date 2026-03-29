@@ -15,14 +15,13 @@ import {
 } from '../support/user-page.po';
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
-import { Method } from 'cypress/types/net-stubbing';
-import { KEYCLOAK_URL } from '../support/commands';
 
 describe('users', () => {
   before(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
-    cy.deleteAllInvitedUsers()
-    cy.addNewTransaction({
+    cy.deleteAllInvitedUsers();
+    cy.deleteVisibleTransactions();
+    cy.seedTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
@@ -53,11 +52,6 @@ describe('users', () => {
   });
 
   it('should invite user and invited user should login', () => {
-    cy.intercept(
-      'POST' as Method,
-      KEYCLOAK_URL+ '/realms/expense-tracker-realm/login-actions/authenticate*',
-    ).as('apiCheckAuth');
-
     getUsernameLink().click();
     getUserInviteLink().click();
 
@@ -67,39 +61,20 @@ describe('users', () => {
     getUserList().should('contain', TEST_GUEST_EMAIL);
 
     cy.logout();
-
-    cy.intercept(
-      'GET',
-      KEYCLOAK_URL + '/realms/expense-tracker-realm/account',
-    ).as('apiCheck1');
-
     cy.loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
+    getUsernameLink().should('contain', TEST_GUEST_USERNAME);
 
-    cy.wait('@apiCheckAuth').then((interception) => {
-      const responseBody = interception?.response?.body;
+    getUsernameLink().click();
 
-      // TODO register is not working, it redirects to login contrary to manual flow
-      if (responseBody.toString().includes('Invalid username or password')) {
-        cy.register(TEST_GUEST_EMAIL, TEST_PASSWORD);
-        cy.confirmRegistration();
-      }
+    getAccountsTab().click();
 
-      cy.wait('@apiCheck1').then((interception) => {
-        getUsernameLink().should('contain', TEST_GUEST_USERNAME);
+    cy.acceptInvitation();
 
-        getUsernameLink().click();
+    getTransactionMenu().click();
 
-        getAccountsTab().click();
+    getFirstAmountCell().should('contain.text', '-100');
 
-        cy.acceptInvitation();
-
-        getTransactionMenu().click();
-
-        getFirstAmountCell().should('contain.text', '-100');
-
-        cy.leaveTenant();
-      });
-    });
+    cy.leaveTenant();
   });
 
   afterEach(() => {
