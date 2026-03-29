@@ -91,7 +91,7 @@ describe('users', () => {
 
         getAccountsTab().click();
 
-        cy.acceptInvitation(TEST_GUEST_USERNAME);
+        cy.acceptInvitation();
 
         getTransactionMenu().click();
 
