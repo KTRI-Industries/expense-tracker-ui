@@ -1,4 +1,4 @@
-const FIRST_USER_COLUMN = 'mat-selection-list :nth-child(1)';
+const FIRST_USER_COLUMN = 'mat-selection-list mat-list-option:not([aria-disabled="true"])';
 
 export const getUserInviteLink = () => cy.get('[data-cy="invite-link"]');
 
