@@ -33,12 +33,21 @@ import {
   hasRecurrentTransactionInTable,
 } from './recurrent-transactions.po';
 
+export const KEYCLOAK_URL = 'https://keycloak.127.0.0.1.nip.io:8443';
+
+Cypress.Commands.add('dismissPasskeyPrompt', () => {
+  cy.window().then((win) => {
+    win.localStorage.setItem('passkey-prompt-dismissed', 'true');
+  });
+});
+
 Cypress.Commands.add('login', (email, password) => {
   cy.session([email, password], () => {
     cy.visit('/');
+    cy.dismissPasskeyPrompt();
     getLoginButton().click();
     cy.origin(
-      'https://keycloak.127.0.0.1.nip.io',
+      KEYCLOAK_URL,
       { args: { email, password } },
       ({ email, password }) => {
         cy.get('#username').type(email);
@@ -49,10 +58,12 @@ Cypress.Commands.add('login', (email, password) => {
   });
 });
 
+
 Cypress.Commands.add('loginWithoutSession', (email, password) => {
+  cy.dismissPasskeyPrompt();
   getLoginButton().click();
   cy.origin(
-    'https://keycloak.127.0.0.1.nip.io',
+    KEYCLOAK_URL,
     { args: { email, password } },
     ({ email, password }) => {
       cy.get('#username').type(email);
@@ -173,7 +184,7 @@ Cypress.Commands.add('logout', () => {
 
 Cypress.Commands.add('register', (email, password) => {
   cy.origin(
-    'https://keycloak.127.0.0.1.nip.io',
+    KEYCLOAK_URL,
     { args: { email, password } },
     ({ email, password }) => {
       cy.get('#kc-registration a').click();

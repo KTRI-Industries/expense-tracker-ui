@@ -20,6 +20,7 @@ declare global {
       leaveTenant(): void;
 
       addNewRecurrentTransaction(transaction: any): void;
+      dismissPasskeyPrompt(): void;
     }
   }
 }

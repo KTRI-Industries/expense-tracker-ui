@@ -91,7 +91,7 @@ export class RecurrentTransactionComponent implements OnInit {
         this.labelCategoryConverter.getLabelFromEnum(category),
       ),
       txType:
-        (this.selectedTransaction?.amount?.amount ?? 0) >= 0
+        (this.selectedTransaction?.amount?.amount ?? 0) > 0
           ? 'INCOME'
           : 'EXPENSE',
       recurrentTxId: this.selectedTransaction?.recurrentTransactionId,

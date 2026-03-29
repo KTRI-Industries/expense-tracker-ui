@@ -15,9 +15,8 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'expense-tracker-ui-user-page',
@@ -33,9 +32,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     RouterLink,
     MatCardActions,
     MatButton,
-    MatIconButton,
     MatIcon,
-    MatTooltip,
   ],
   templateUrl: './user-page.component.html',
   styles: ``,
