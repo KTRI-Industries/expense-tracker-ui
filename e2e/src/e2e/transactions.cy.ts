@@ -50,7 +50,7 @@ describe('transactions', () => {
 
   it('should delete a transaction', () => {
     cy.seedTransaction({
-      amount: 100,
+      amount: -100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
@@ -79,7 +79,7 @@ describe('transactions', () => {
 
   it('should edit existing transaction', () => {
     cy.seedTransaction({
-      amount: 100,
+      amount: -100,
       date: '28/04/2024',
       description: 'Test transaction',
     });

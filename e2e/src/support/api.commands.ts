@@ -49,15 +49,20 @@ export function registerApiCommands(): void {
         method: 'POST',
         url: `${API_BASE_URL}/transactions`,
         headers: buildTenantHeaders(context),
-        body: {
-          amount: {
-            amount: -Math.abs(Number(transaction.amount)),
-            currency: 'EUR',
-          },
-          date: toApiDateTime(transaction.date),
-          description: transaction.description ?? 'Seeded transaction',
-          categories: [],
-        },
+        body: buildTransactionRequestBody(transaction),
+      });
+    });
+  });
+
+  Cypress.Commands.add('seedTransactions', (transactions: TransactionDraft[]) => {
+    getApiSessionContext().then((context) => {
+      transactions.forEach((transaction) => {
+        cy.request({
+          method: 'POST',
+          url: `${API_BASE_URL}/transactions`,
+          headers: buildTenantHeaders(context),
+          body: buildTransactionRequestBody(transaction),
+        });
       });
     });
   });
@@ -87,6 +92,18 @@ export function registerApiCommands(): void {
       });
     },
   );
+}
+
+function buildTransactionRequestBody(transaction: TransactionDraft) {
+  return {
+    amount: {
+      amount: Number(transaction.amount),
+      currency: 'EUR',
+    },
+    date: toApiDateTime(transaction.date),
+    description: transaction.description ?? 'Seeded transaction',
+    categories: [],
+  };
 }
 
 export function deleteAllTransactionsByApi() {

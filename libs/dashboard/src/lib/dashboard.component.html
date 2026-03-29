@@ -1,5 +1,7 @@
 <!-- inline block used to make the card width match the content width -->
-<mat-card class="lg:inline-block mb-2">
+<mat-card
+  class="lg:inline-block mb-2"
+  data-cy="dashboard-filter-card">
   <!-- py-2 and px-2 decrease the default padding around the card content -->
   <mat-card-content class="py-2 px-2">
     <expense-tracker-ui-dashboard-filter
@@ -12,7 +14,9 @@
 <!-- single column in small screens, 2 in medium 4 in large -->
 <div
   class="grid grid-cols-1 gap-2 lg:gap-20 md:grid-cols-2 lg:grid-cols-4 mb-2">
-  <mat-card class="p-4 text-center">
+  <mat-card
+    class="p-4 text-center"
+    data-cy="dashboard-income-card">
     <mat-card-title class="text-center text-green-500">
       {{
         dashboard?.mainTransactionData?.totalIncome?.amount ?? 0
@@ -21,7 +25,9 @@
     </mat-card-title>
     <mat-card-content class="text-center">Income</mat-card-content>
   </mat-card>
-  <mat-card class="p-4 text-center">
+  <mat-card
+    class="p-4 text-center"
+    data-cy="dashboard-expenses-card">
     <mat-card-title class="text-center text-red-500">
       {{
         dashboard?.mainTransactionData?.totalExpense?.amount ?? 0
@@ -30,7 +36,9 @@
     </mat-card-title>
     <mat-card-content class="text-center">Expenses</mat-card-content>
   </mat-card>
-  <mat-card class="p-4 text-center">
+  <mat-card
+    class="p-4 text-center"
+    data-cy="dashboard-balance-card">
     <mat-card-title class="text-center text-blue-500">
       {{
         dashboard?.mainTransactionData?.totalBalance?.amount ?? 0
@@ -39,7 +47,9 @@
     </mat-card-title>
     <mat-card-content class="text-center">Balance</mat-card-content>
   </mat-card>
-  <mat-card class="p-4 text-center">
+  <mat-card
+    class="p-4 text-center"
+    data-cy="dashboard-transactions-card">
     <mat-card-title class="text-center text-purple-500">
       {{ dashboard?.mainTransactionData?.totalTransactions }}
     </mat-card-title>
@@ -49,7 +59,9 @@
 
 <div class="flex flex-wrap gap-2 mb-2">
   <!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
-  <mat-card class="lg:p-4 flex-1">
+  <mat-card
+    class="lg:p-4 flex-1"
+    data-cy="dashboard-category-chart">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
     <mat-card-content class="lg:columns-2 md:flex md:items-center">
       <!-- max width to something small and margins left and right to auto -->
@@ -72,7 +84,9 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="lg:p-4 flex-1">
+  <mat-card
+    class="lg:p-4 flex-1"
+    data-cy="dashboard-monthly-chart">
     <mat-card-title class="text-center">
       Income/Expenses per Month
     </mat-card-title>
@@ -92,7 +106,9 @@
 
 <div class="mb-2">
   <!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
-  <mat-card class="lg:p-4 flex-1 lg:w-1/2">
+  <mat-card
+    class="lg:p-4 flex-1 lg:w-1/2"
+    data-cy="dashboard-per-user-chart">
     <mat-card-title class="text-center">Expenses per User</mat-card-title>
     <!-- max width to something small and margins left and right to auto -->
     <div class="">

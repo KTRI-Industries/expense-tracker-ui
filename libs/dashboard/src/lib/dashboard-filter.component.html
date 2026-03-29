@@ -1,7 +1,8 @@
 <!-- flex flex-wrap lg:items-center lg:space-x-4 makes the form items align in a row with the button -->
 <form
   [formGroup]="form"
-  class="lg:flex lg:flex-wrap lg:items-center lg:space-x-4">
+  class="lg:flex lg:flex-wrap lg:items-center lg:space-x-4"
+  data-cy="dashboard-filter-form">
   <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
   @if (isCustomFilter()) {
     <a
@@ -9,6 +10,7 @@
       color="primary"
       class="mt-4 lg:mt-0"
       href="#"
+      data-cy="dashboard-apply-filter-button"
       (click)="applyCustomFilter($event)">
       Apply
     </a>

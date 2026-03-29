@@ -39,6 +39,9 @@ export class DashboardFilterComponent {
           type: 'select',
           props: {
             label: 'Select Date Range',
+            attributes: {
+              'data-cy': 'dashboard-date-range-select',
+            },
             options: [
               { value: 'lastWeek', label: 'Last Week' },
               { value: 'lastMonth', label: 'Last Month' },
@@ -58,6 +61,9 @@ export class DashboardFilterComponent {
             label: 'Start Date',
             placeholder: 'Pick start date',
             subscriptSizing: 'dynamic', // used to remove the subscript error div
+            attributes: {
+              'data-cy': 'dashboard-start-date-input',
+            },
           },
           expressions: {
             hide: (model) => model.model.dateRange !== 'custom',
@@ -70,6 +76,9 @@ export class DashboardFilterComponent {
             label: 'End Date',
             placeholder: 'Pick end date',
             subscriptSizing: 'dynamic',
+            attributes: {
+              'data-cy': 'dashboard-end-date-input',
+            },
           },
           expressions: {
             hide: (model) => model.model.dateRange !== 'custom',
