@@ -6,20 +6,18 @@ import {
   getFirstRecurrentDescriptionCell,
   getRecurrentTransactionTab,
 } from '../support/recurrent-transactions.po';
-import { getFirstAmountCell } from '../support/transactions.po';
 import { getUpdateTransactionButton } from '../support/transaction-form.po';
 
 describe('recurrent transactions', () => {
   before(() => {
-    // ensure clean test slate for these tests
     cy.then(Cypress.session.clearCurrentSessionData);
   });
 
   beforeEach(() => {
-    cy
-      // .visit('/')
-      .login(TEST_USERNAME, TEST_PASSWORD);
+    cy.login(TEST_USERNAME, TEST_PASSWORD);
     cy.visit('/');
+    cy.deleteVisibleTransactions();
+    cy.deleteVisibleRecurrentTransactions();
   });
 
   it('should display recurrent transactions page', () => {
@@ -30,7 +28,6 @@ describe('recurrent transactions', () => {
   });
 
   it('should add a recurrent transaction', () => {
-    // CAUTION: intercept should be before the action that triggers the request!!!
     cy.intercept('POST', '/recurrent-transactions').as('apiCheck');
 
     cy.addNewRecurrentTransaction({
@@ -44,28 +41,21 @@ describe('recurrent transactions', () => {
       expect(interception?.response?.body.amount.amount).to.eq(-100);
     });
 
-    // make sure we re back to the tx list page and the new tx is showing in the table
     getAddRecurrentTransactionButton().should('be.visible');
 
     getFirstRecurrentAmountCell().should('contain.text', '-100');
-
-    getTransactionMenu().click();
-    getFirstAmountCell();
-  });
-
-  afterEach(() => {
-    cy.deleteVisibleTransactions();
-    getRecurrentTransactionTab().click();
-    cy.deleteVisibleRecurrentTransactions();
   });
 
   it('should edit existing recurrent transaction', () => {
-    cy.addNewRecurrentTransaction({
+    cy.seedRecurrentTransaction({
       amount: 100,
       date: new Date().toLocaleDateString('el-GR'),
       description: 'Test transaction',
     });
 
+    getTransactionMenu().click();
+    getRecurrentTransactionTab().click();
+    getFirstRecurrentAmountCell().should('contain.text', '-100');
     getFirstRecurrentDescriptionCell().click();
 
     cy.intercept('PUT', '/recurrent-transactions/*').as('apiCheck');
@@ -86,6 +76,6 @@ describe('recurrent transactions', () => {
       );
     });
 
-    getFirstAmountCell().should('contain.text', '-200');
+    getFirstRecurrentAmountCell().should('contain.text', '-200');
   });
 });

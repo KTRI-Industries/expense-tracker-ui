@@ -13,15 +13,13 @@ import { TEST_PASSWORD, TEST_USERNAME } from '../support/app.po';
 
 describe('transactions', () => {
   before(() => {
-    // ensure clean test slate for these tests
     cy.then(Cypress.session.clearCurrentSessionData);
   });
 
   beforeEach(() => {
-    cy
-      // .visit('/')
-      .login(TEST_USERNAME, TEST_PASSWORD);
+    cy.login(TEST_USERNAME, TEST_PASSWORD);
     cy.visit('/');
+    cy.deleteVisibleTransactions();
   });
 
   it('should display transactions page', () => {
@@ -31,7 +29,6 @@ describe('transactions', () => {
   });
 
   it('should add a transaction', () => {
-    // CAUTION: intercept should be before the action that triggers the request!!!
     cy.intercept('POST', '/transactions').as('apiCheck');
 
     cy.addNewTransaction({
@@ -52,18 +49,16 @@ describe('transactions', () => {
   });
 
   it('should delete a transaction', () => {
-    cy.addNewTransaction({
+    cy.seedTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
 
+    getFirstAmountCell().should('contain.text', '-100');
     getFirstDescriptionCell().click();
 
-    // CAUTION: intercept should be before the action that triggers the request!!!
-    cy.intercept('GET', '/transactions?page=0&size=5&sort=date%2Cdesc').as(
-      'apiCheck',
-    );
+    cy.intercept('DELETE', '/transactions/*').as('apiCheck');
 
     getDeleteTransactionButton().click();
 
@@ -81,17 +76,14 @@ describe('transactions', () => {
     getDescriptionInput().should('have.class', 'ng-invalid');
   });
 
-  afterEach(() => {
-    cy.deleteVisibleTransactions();
-  });
-
   it('should edit existing transaction', () => {
-    cy.addNewTransaction({
+    cy.seedTransaction({
       amount: 100,
       date: '28/04/2024',
       description: 'Test transaction',
     });
 
+    getFirstAmountCell().should('contain.text', '-100');
     getFirstDescriptionCell().click();
 
     cy.intercept('PUT', '/transactions/*').as('apiCheck');

@@ -15,8 +15,6 @@ declare global {
       deleteVisibleRecurrentTransactions(): void;
       deleteAllInvitedUsers(): void;
       logout(): void;
-      register(email: string, password: string): void;
-      confirmRegistration(): void;
       acceptInvitation(): void;
       leaveTenant(): void;
 

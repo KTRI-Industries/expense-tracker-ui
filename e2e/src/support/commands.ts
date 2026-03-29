@@ -7,5 +7,3 @@ registerAuthCommands();
 registerApiCommands();
 registerTransactionCommands();
 registerUserCommands();
-
-export { KEYCLOAK_URL } from './test-config';
