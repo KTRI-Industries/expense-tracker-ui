@@ -6,6 +6,19 @@ export function registerAuthCommands(): void {
     Cypress.env('currentCredentials', { email, password });
   };
 
+  const completeLogin = (email: string, password: string) => {
+    getLoginButton().click();
+    cy.origin(
+      KEYCLOAK_URL,
+      { args: { email, password } },
+      ({ email, password }) => {
+        cy.get('#username').type(email);
+        cy.get('#password').type(password);
+        cy.get('#kc-login').click();
+      },
+    );
+  };
+
   Cypress.Commands.add('dismissPasskeyPrompt', () => {
     cy.window().then((win) => {
       win.localStorage.setItem('passkey-prompt-dismissed', 'true');
@@ -17,32 +30,19 @@ export function registerAuthCommands(): void {
     cy.session([email, password], () => {
       cy.visit('/');
       cy.dismissPasskeyPrompt();
-      getLoginButton().click();
-      cy.origin(
-        KEYCLOAK_URL,
-        { args: { email, password } },
-        ({ email, password }) => {
-          cy.get('#username').type(email);
-          cy.get('#password').type(password);
-          cy.get('#kc-login').click();
-        },
-      );
+      completeLogin(email, password);
     });
   });
 
   Cypress.Commands.add('loginWithoutSession', (email, password) => {
     rememberCurrentCredentials(email, password);
     cy.dismissPasskeyPrompt();
-    getLoginButton().click();
-    cy.origin(
-      KEYCLOAK_URL,
-      { args: { email, password } },
-      ({ email, password }) => {
-        cy.get('#username').type(email);
-        cy.get('#password').type(password);
-        cy.get('#kc-login').click();
-      },
-    );
+    completeLogin(email, password);
+  });
+
+  Cypress.Commands.add('loginWithoutPasskeyDismissal', (email, password) => {
+    rememberCurrentCredentials(email, password);
+    completeLogin(email, password);
   });
 
   Cypress.Commands.add('logout', () => {

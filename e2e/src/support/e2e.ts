@@ -7,6 +7,7 @@ declare global {
     interface Chainable<Subject> {
       login(email: string, password: string): void;
       loginWithoutSession(email: string, password: string): void;
+      loginWithoutPasskeyDismissal(email: string, password: string): void;
       addNewTransaction(transaction: TransactionDraft): void;
       seedTransaction(transaction: TransactionDraft): void;
       seedTransactions(transactions: TransactionDraft[]): void;
