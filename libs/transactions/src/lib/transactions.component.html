@@ -36,6 +36,7 @@
             <mat-cell
               *matCellDef="let element"
               data-label="Description"
+              data-cy="transaction-description-cell"
               class="table-cell-text">
               {{ element.description }}
             </mat-cell>
@@ -81,6 +82,7 @@
             <mat-cell
               *matCellDef="let element"
               data-label="Amount"
+              data-cy="transaction-amount-cell"
               class="justify-end">
               {{ element.amount.amount | currency: element.amount.currency }}
             </mat-cell>
@@ -91,6 +93,7 @@
 
           <mat-row
             *matRowDef="let row; columns: transactionColumns"
+            data-cy="transaction-row"
             (click)="onRowSelected(row)"
             (keydown.enter)="onRowSelected(row)"
             (keydown.space)="onRowSelected(row)"></mat-row>

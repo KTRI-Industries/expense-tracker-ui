@@ -1,6 +1,3 @@
-const FIRST_DESCRIPTION_COLUMN =
-  'mat-table :nth-child(2) > .cdk-column-description';
-
 export const getRecurrentTransactionTab = () =>
   cy.get('[data-cy="recurrent-transactions-tab"]');
 
@@ -20,12 +17,15 @@ export const getCreateRecurrentTransactionButton = () =>
   cy.get('[data-cy="create-recurrent-tx-button"]');
 
 export const getFirstRecurrentAmountCell = () =>
-  cy.get('mat-table :nth-child(2) > .justify-end');
+  cy.get('[data-cy="recurrent-transaction-amount-cell"]').first();
+
+export const getFirstRecurrentDescriptionCell = () =>
+  cy.get('[data-cy="recurrent-transaction-description-cell"]').first();
 
 export const getDeleteRecurrentTransactionButton = () =>
   cy.get('[data-cy="delete-recurrent-tx-button"]');
 
 export const hasRecurrentTransactionInTable = () =>
   cy
-    .get('body expense-tracker-ui-recurrent-transactions')
-    .then(($body) => $body.find(FIRST_DESCRIPTION_COLUMN).length !== 0);
+    .get('body')
+    .then(($body) => $body.find('[data-cy="recurrent-transaction-row"]').length !== 0);

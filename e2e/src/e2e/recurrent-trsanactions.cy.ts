@@ -3,12 +3,10 @@ import { getTransactionMenu } from '../support/navigation-menu.po';
 import {
   getAddRecurrentTransactionButton,
   getFirstRecurrentAmountCell,
+  getFirstRecurrentDescriptionCell,
   getRecurrentTransactionTab,
 } from '../support/recurrent-transactions.po';
-import {
-  getFirstAmountCell,
-  getFirstDescriptionCell,
-} from '../support/transactions.po';
+import { getFirstAmountCell } from '../support/transactions.po';
 import { getUpdateTransactionButton } from '../support/transaction-form.po';
 
 describe('recurrent transactions', () => {
@@ -68,7 +66,7 @@ describe('recurrent transactions', () => {
       description: 'Test transaction',
     });
 
-    getFirstDescriptionCell().click();
+    getFirstRecurrentDescriptionCell().click();
 
     cy.intercept('PUT', '/recurrent-transactions/*').as('apiCheck');
 
