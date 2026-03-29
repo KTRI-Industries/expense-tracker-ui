@@ -55,6 +55,7 @@ describe('transactions', () => {
       description: 'Test transaction',
     });
 
+    getTransactionMenu().click();
     getFirstAmountCell().should('contain.text', '-100');
     getFirstDescriptionCell().click();
 
@@ -83,6 +84,7 @@ describe('transactions', () => {
       description: 'Test transaction',
     });
 
+    getTransactionMenu().click();
     getFirstAmountCell().should('contain.text', '-100');
     getFirstDescriptionCell().click();
 
