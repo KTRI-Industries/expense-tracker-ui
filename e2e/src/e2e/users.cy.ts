@@ -17,24 +17,11 @@ import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
 
 describe('users', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
     cy.deleteAllInvitedUsers();
     cy.deleteVisibleTransactions();
-    cy.seedTransaction({
-      amount: 100,
-      date: '28/04/2024',
-      description: 'Test transaction',
-    });
-
-    getFirstAmountCell().should('contain.text', '-100');
-
-    cy.logout();
   });
-
-  beforeEach(() =>
-    cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD),
-  );
 
   it('should display users page with invite link', () => {
     getUsernameLink().click();
@@ -52,6 +39,12 @@ describe('users', () => {
   });
 
   it('should invite user and invited user should login', () => {
+    cy.seedTransaction({
+      amount: 100,
+      date: '28/04/2024',
+      description: 'Test transaction',
+    });
+
     getUsernameLink().click();
     getUserInviteLink().click();
 
@@ -78,13 +71,10 @@ describe('users', () => {
   });
 
   afterEach(() => {
-    cy.logout();
-    cy.loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
-
-    cy.deleteAllInvitedUsers();
-  });
-
-  after(() => {
-    cy.deleteVisibleTransactions();
+    cy.get('body').then(($body) => {
+      if ($body.find('[data-cy="logout-button"]:visible').length > 0) {
+        cy.logout();
+      }
+    });
   });
 });

@@ -25,6 +25,29 @@ nx g @nx/angular:ngrx-root-store  --facade=true  --addDevTools=true --project=ex
 
 The above command adds all necessary dependencies and performs initial configuration by registering the store and effects providers in the main app standalone component.
 
+=== E2E setup
+
+The Cypress suite assumes a running local backend, Keycloak realm, and two fixed users:
+
+- owner user: `CYPRESS_OWNER_USERNAME` / `CYPRESS_OWNER_PASSWORD`
+- invited user email for invite-only checks: `CYPRESS_INVITED_USER_EMAIL`
+- guest user login: `CYPRESS_GUEST_EMAIL` / `CYPRESS_OWNER_PASSWORD`
+- guest display name after login: `CYPRESS_GUEST_USERNAME`
+
+The local defaults point to:
+
+- API: `CYPRESS_API_BASE_URL=http://localhost:8080`
+- Keycloak: `CYPRESS_KEYCLOAK_URL=https://keycloak.127.0.0.1.nip.io:8443`
+- Realm: `CYPRESS_KEYCLOAK_REALM=expense-tracker-realm`
+- Client ID: `CYPRESS_KEYCLOAK_CLIENT_ID=expense-tracker-ui`
+
+Tests now reset and seed transactions, recurrent transactions, and invitations through API calls so each spec starts from a known state without relying on UI cleanup flows.
+
+Run the suite with:
+
+[source,shell]
+npx nx e2e e2e --skip-nx-cache
+
 == Prod environment setup and deployment
 
 TODO

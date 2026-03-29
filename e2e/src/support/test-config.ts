@@ -10,10 +10,6 @@ export const KEYCLOAK_CLIENT_ID = readEnv(
   'keycloakClientId',
   'expense-tracker-ui',
 );
-export const MAILHOG_URL = readEnv(
-  'mailhogUrl',
-  'https://mailhog.127.0.0.1.nip.io',
-);
 export const API_BASE_URL = readEnv('apiBaseUrl', 'http://localhost:8080');
 
 export const TEST_USERNAME = readEnv('ownerUsername', 'test_user');
