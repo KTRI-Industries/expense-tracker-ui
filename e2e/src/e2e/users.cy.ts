@@ -40,7 +40,7 @@ describe('users', () => {
 
   it('should invite user and invited user should login', () => {
     cy.seedTransaction({
-      amount: 100,
+      amount: -100,
       date: '28/04/2024',
       description: 'Test transaction',
     });

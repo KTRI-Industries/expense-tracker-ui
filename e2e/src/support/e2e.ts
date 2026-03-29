@@ -9,6 +9,7 @@ declare global {
       loginWithoutSession(email: string, password: string): void;
       addNewTransaction(transaction: TransactionDraft): void;
       seedTransaction(transaction: TransactionDraft): void;
+      seedTransactions(transactions: TransactionDraft[]): void;
       editTransaction(transaction: TransactionDraft): void;
       editRecurrentTransaction(transaction: RecurrentTransactionDraft): void;
       deleteVisibleTransactions(): void;
