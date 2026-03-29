@@ -11,7 +11,7 @@ import {
 } from '../support/transactions.po';
 import { getUpdateTransactionButton } from '../support/transaction-form.po';
 
-describe.only('recurrent transactions', () => {
+describe('recurrent transactions', () => {
   before(() => {
     // ensure clean test slate for these tests
     cy.then(Cypress.session.clearCurrentSessionData);

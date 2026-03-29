@@ -93,7 +93,7 @@ export class TransactionComponent implements OnInit {
         this.labelCategoryConverter.getLabelFromEnum(category),
       ),
       txType:
-        (this.selectedTransaction?.amount?.amount ?? 0) >= 0
+        (this.selectedTransaction?.amount?.amount ?? 0) > 0
           ? 'INCOME'
           : 'EXPENSE',
       txId: this.selectedTransaction?.transactionId,
