@@ -23,7 +23,11 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header>
               Description
             </mat-header-cell>
-            <mat-cell *matCellDef="let element" data-label="Description" class="table-cell-text">
+            <mat-cell
+              *matCellDef="let element"
+              data-label="Description"
+              data-cy="recurrent-transaction-description-cell"
+              class="table-cell-text">
               {{ element.description }}
             </mat-cell>
           </ng-container>
@@ -87,6 +91,7 @@
             <mat-cell
               *matCellDef="let element"
               data-label="Amount"
+              data-cy="recurrent-transaction-amount-cell"
               class="justify-end">
               {{ element.amount.amount | currency: element.amount.currency }}
             </mat-cell>
@@ -97,6 +102,7 @@
 
           <mat-row
             *matRowDef="let row; columns: transactionColumns"
+            data-cy="recurrent-transaction-row"
             (click)="onRowSelected(row)"
             (keydown.enter)="onRowSelected(row)"
             (keydown.space)="onRowSelected(row)"></mat-row>

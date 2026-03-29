@@ -15,7 +15,10 @@
         data-cy="account-list">
         <ng-container matColumnDef="mainUserEmail">
           <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Owner">
+          <mat-cell
+            *matCellDef="let element"
+            data-label="Owner"
+            data-cy="account-owner-cell">
             <!-- flex-col: elements are on a column and items-end: elements are aligned on the right
               unless it is a big screen then lg:flex-row: elements are on a row and elements are vertically aligned middle -->
             <div class="flex flex-col lg:flex-row items-end lg:items-center">
@@ -31,7 +34,10 @@
 
         <ng-container matColumnDef="isAssociated">
           <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-          <mat-cell *matCellDef="let element" data-label="Actions">
+          <mat-cell
+            *matCellDef="let element"
+            data-label="Actions"
+            data-cy="account-actions-cell">
             <div
               class="flex flex-col lg:flex-row lg:space-x-1 lg:space-y-0 space-y-1 items-end">
               @if (!element.isCurrentUserOwner) {
@@ -94,7 +100,9 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        <mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          data-cy="account-row"></mat-row>
       </mat-table>
     }
   </mat-card-content>
