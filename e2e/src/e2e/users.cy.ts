@@ -12,9 +12,20 @@ import {
   getUserEmailInput,
   getUserInviteLink,
   getUserList,
+  getUnInviteUserButton,
 } from '../support/user-page.po';
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
+
+function inviteGuestUser() {
+  getUsernameLink().click();
+  getUserInviteLink().click();
+
+  getUserEmailInput().type(TEST_GUEST_EMAIL);
+  getInviteButton().click();
+
+  getUserList().should('contain', TEST_GUEST_EMAIL);
+}
 
 describe('users', () => {
   beforeEach(() => {
@@ -45,13 +56,7 @@ describe('users', () => {
       description: 'Test transaction',
     });
 
-    getUsernameLink().click();
-    getUserInviteLink().click();
-
-    getUserEmailInput().type(TEST_GUEST_EMAIL);
-    getInviteButton().click();
-
-    getUserList().should('contain', TEST_GUEST_EMAIL);
+    inviteGuestUser();
 
     cy.logout();
     cy.loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
@@ -68,6 +73,32 @@ describe('users', () => {
     getFirstAmountCell().should('contain.text', '-100');
 
     cy.leaveTenant();
+  });
+
+  it('should delete a linked user as the account owner', () => {
+    inviteGuestUser();
+
+    cy.logout();
+    cy.visit('/').loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
+
+    getUsernameLink().click();
+    getAccountsTab().click();
+    cy.acceptInvitation();
+
+    cy.logout();
+    cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
+
+    getUsernameLink().click();
+    cy.contains('[data-cy="user-row"]', TEST_GUEST_EMAIL).click();
+
+    cy.intercept('PUT', '/users/uninvite').as('uninviteUser');
+    getUnInviteUserButton().click();
+
+    cy.wait('@uninviteUser')
+      .its('response.statusCode')
+      .should('eq', 204);
+
+    getUserList().should('not.contain', TEST_GUEST_EMAIL);
   });
 
   afterEach(() => {
