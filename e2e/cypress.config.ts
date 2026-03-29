@@ -14,6 +14,20 @@ const cypressJsonConfig = {
   experimentalRunAllSpecs: true,
   defaultCommandTimeout: 10000,
   requestTimeout: 10000,
+  env: {
+    keycloakUrl:
+      process.env['CYPRESS_KEYCLOAK_URL'] ??
+      'https://keycloak.127.0.0.1.nip.io:8443',
+    mailhogUrl:
+      process.env['CYPRESS_MAILHOG_URL'] ?? 'https://mailhog.127.0.0.1.nip.io',
+    ownerUsername: process.env['CYPRESS_OWNER_USERNAME'] ?? 'test_user',
+    ownerPassword: process.env['CYPRESS_OWNER_PASSWORD'] ?? 'open123',
+    invitedUserEmail:
+      process.env['CYPRESS_INVITED_USER_EMAIL'] ?? 'test@test.com',
+    guestUsername: process.env['CYPRESS_GUEST_USERNAME'] ?? 'test_admin',
+    guestEmail:
+      process.env['CYPRESS_GUEST_EMAIL'] ?? 'test_admin@email.com',
+  },
 };
 
 export default defineConfig({
