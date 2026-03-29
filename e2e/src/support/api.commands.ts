@@ -54,7 +54,7 @@ export function registerApiCommands(): void {
             amount: -Math.abs(Number(transaction.amount)),
             currency: 'EUR',
           },
-          date: toApiDate(transaction.date),
+          date: toApiDateTime(transaction.date),
           description: transaction.description ?? 'Seeded transaction',
           categories: [],
         },
@@ -281,10 +281,23 @@ function buildTenantHeaders(context: ApiSessionContext): Record<string, string> 
 }
 
 function toApiDate(date: string): string {
+  if (date.includes('T')) {
+    return date.split('T')[0];
+  }
+
   if (date.includes('-')) {
-    return date;
+    const [year, month, day] = date.split('-');
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
   }
 
   const [day, month, year] = date.split('/');
-  return `${year}-${month}-${day}`;
+  return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+}
+
+function toApiDateTime(date: string): string {
+  if (date.includes('T')) {
+    return date;
+  }
+
+  return `${toApiDate(date)}T00:00:00`;
 }

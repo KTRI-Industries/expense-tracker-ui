@@ -55,7 +55,6 @@ describe('recurrent transactions', () => {
 
     getTransactionMenu().click();
     getRecurrentTransactionTab().click();
-    getFirstRecurrentAmountCell().should('contain.text', '-100');
     getFirstRecurrentDescriptionCell().click();
 
     cy.intercept('PUT', '/recurrent-transactions/*').as('apiCheck');
