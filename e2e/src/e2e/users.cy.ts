@@ -16,11 +16,12 @@ import {
 import { getTransactionMenu } from '../support/navigation-menu.po';
 import { getFirstAmountCell } from '../support/transactions.po';
 import { Method } from 'cypress/types/net-stubbing';
+import { KEYCLOAK_URL } from '../support/commands';
 
 describe('users', () => {
   before(() => {
     cy.visit('/').loginWithoutSession(TEST_USERNAME, TEST_PASSWORD);
-
+    cy.deleteAllInvitedUsers()
     cy.addNewTransaction({
       amount: 100,
       date: '28/04/2024',
@@ -54,7 +55,7 @@ describe('users', () => {
   it('should invite user and invited user should login', () => {
     cy.intercept(
       'POST' as Method,
-      'https://keycloak.127.0.0.1.nip.io/realms/expense-tracker-realm/login-actions/authenticate*',
+      KEYCLOAK_URL+ '/realms/expense-tracker-realm/login-actions/authenticate*',
     ).as('apiCheckAuth');
 
     getUsernameLink().click();
@@ -69,7 +70,7 @@ describe('users', () => {
 
     cy.intercept(
       'GET',
-      'https://keycloak.127.0.0.1.nip.io/realms/expense-tracker-realm/account',
+      KEYCLOAK_URL + '/realms/expense-tracker-realm/account',
     ).as('apiCheck1');
 
     cy.loginWithoutSession(TEST_GUEST_EMAIL, TEST_PASSWORD);
