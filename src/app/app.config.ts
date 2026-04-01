@@ -114,15 +114,6 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
 
-    {
-      provide: Configuration,
-      useFactory: (externalConfig: ExternalConfiguration) =>
-        new Configuration({
-          basePath: externalConfig.basePath,
-        }),
-      deps: [KeycloakService],
-      multi: false,
-    },
     importProvidersFrom(
       ApiModule.forRoot(apiConfigFactory),
       FormlyModule.forRoot({
@@ -153,6 +144,15 @@ export const appConfig: ApplicationConfig = {
       FormlyMaterialModule,
       FormlyMatDatepickerModule,
     ), // TODO I have no idea what I m doing anymore
+    {
+      provide: Configuration,
+      useFactory: (externalConfig: ExternalConfiguration) =>
+        new Configuration({
+          basePath: externalConfig.basePath,
+        }),
+      deps: [ExternalConfiguration],
+      multi: false,
+    },
     provideEnvironmentNgxMask({
       decimalMarker: ',',
       thousandSeparator: '.',
@@ -186,7 +186,7 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 
-function initializeKeycloak(
+export function initializeKeycloak(
   keycloak: KeycloakService,
   externalConfig: ExternalConfiguration,
 ) {
