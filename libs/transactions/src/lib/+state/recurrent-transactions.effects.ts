@@ -72,6 +72,13 @@ export class RecurrentTransactionsEffects {
               recurrentTransaction,
             }),
           ),
+          catchError((error) =>
+            of(
+              RecurrentTransactionActions.loadRecurrentTransactionFailure({
+                error,
+              }),
+            ),
+          ),
         ),
       ),
     ),

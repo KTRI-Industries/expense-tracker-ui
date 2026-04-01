@@ -76,6 +76,9 @@ export class TransactionsEffects {
             map((transaction) =>
               TransactionActions.loadTransactionSuccess({ transaction }),
             ),
+            catchError((error) =>
+              of(TransactionActions.loadTransactionFailure({ error })),
+            ),
           ),
       ),
     ),

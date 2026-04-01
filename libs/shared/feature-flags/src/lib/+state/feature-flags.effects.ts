@@ -6,8 +6,10 @@ import { FeatureFlagsControllerService } from '@expense-tracker-ui/shared/api';
 
 @Injectable()
 export class FeatureFlagsEffects {
-  private actions$ = inject(Actions);
-  private featureFlagsController = inject(FeatureFlagsControllerService);
+  private readonly actions$ = inject(Actions);
+  private readonly featureFlagsController = inject(
+    FeatureFlagsControllerService,
+  );
 
   loadFeatureFlags$ = createEffect(() =>
     this.actions$.pipe(

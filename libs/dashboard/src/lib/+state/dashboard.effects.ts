@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { combineLatest, filter, map, switchMap } from 'rxjs';
+import { catchError, combineLatest, filter, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { DashboardActions } from './dashboard.actions';
 import { DashboardService } from '../dashboard.service';
@@ -24,13 +24,16 @@ export class DashboardEffects {
       this.actions$.pipe(ofType(DashboardActions.initDashboard)),
       this.store.select(AccountSelectors.selectCurrentAccount),
     ]).pipe(
-      filter(([_, currentAccount]) => !!currentAccount),
+      filter(([, currentAccount]) => !!currentAccount),
       switchMap(() =>
         this.dashboardService
           .getDashboard()
           .pipe(
             map((dashboard) =>
               DashboardActions.loadDashboardSuccess({ dashboard }),
+            ),
+            catchError((error) =>
+              of(DashboardActions.loadDashboardFailure({ error })),
             ),
           ),
       ),
@@ -49,6 +52,9 @@ export class DashboardEffects {
           .pipe(
             map((dashboard) =>
               DashboardActions.loadDashboardSuccess({ dashboard }),
+            ),
+            catchError((error) =>
+              of(DashboardActions.loadDashboardFailure({ error })),
             ),
           ),
       ),
