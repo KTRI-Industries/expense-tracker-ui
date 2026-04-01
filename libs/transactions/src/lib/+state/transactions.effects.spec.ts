@@ -1,387 +1,421 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { Actions } from '@ngrx/effects';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Action, ActionsSubject, Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
+import moment from 'moment';
+import {
+  Category,
+  MonetaryAmount,
+  PageTransactionDto,
+  Pageable,
+  TransactionDto,
+} from '@expense-tracker-ui/shared/api';
+import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
 import { TransactionsEffects } from './transactions.effects';
 import { TransactionsService } from '../transactions.service';
 import { TransactionActions } from './transactions.actions';
-import {
-  Pageable,
-  PageTransactionDto,
-  TransactionDto,
-} from '@expense-tracker-ui/shared/api';
-import { cold, hot } from 'jasmine-marbles';
-import { Action } from '@ngrx/store';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { provideMockStore } from '@ngrx/store/testing';
-
-const TRANSACTIONS_PAGE_ROUTE = 'transactions-page';
+import { selectTransactions } from './transactions.selectors';
 
 describe('TransactionsEffects', () => {
-  let actions$: Observable<Action>;
+  let actions$: ActionsSubject;
+  let transactions$: BehaviorSubject<PageTransactionDto | undefined>;
   let effects: TransactionsEffects;
-  let service: TransactionsService;
-  let router: Router;
-  let snackBar: MatSnackBar;
+  let service: jest.Mocked<
+    Pick<
+      TransactionsService,
+      | 'getAllTransactions'
+      | 'getTransaction'
+      | 'createTransaction'
+      | 'deleteTransaction'
+      | 'updateTransaction'
+      | 'importTransactions'
+    >
+  >;
+  let router: jest.Mocked<Pick<Router, 'navigate'>>;
+  let snackBar: jest.Mocked<Pick<MatSnackBar, 'open'>>;
+  let store: Pick<Store, 'select'>;
+  let subscriptions: Subscription[];
+
+  const createMonetaryAmount = (
+    amount: number,
+    currency = 'EUR',
+  ): MonetaryAmount => ({
+    amount,
+    currency,
+  });
+
+  const createTransaction = (
+    overrides: Partial<TransactionDto> = {},
+  ): TransactionDto => ({
+    transactionId: 'transaction-1',
+    amount: createMonetaryAmount(-100),
+    date: '2025-01-01',
+    description: 'Groceries',
+    tenantId: 'tenant-1',
+    categories: [Category.Groceries],
+    ...overrides,
+  });
+
+  const createTransactionPage = (
+    content: TransactionDto[] = [createTransaction()],
+  ): PageTransactionDto => ({
+    content,
+    totalElements: content.length,
+    totalPages: 1,
+    size: 10,
+    number: 0,
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        TransactionsEffects,
-        provideMockActions(() => actions$),
-        provideMockStore(),
-        {
-          provide: TransactionsService,
-          useValue: {
-            getAllTransactions: jest.fn(),
-            createTransaction: jest.fn(),
-            deleteTransaction: jest.fn(),
-            updateTransaction: jest.fn(),
-            importTransactions: jest.fn(),
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate: jest.fn(),
-          },
-        },
-        {
-          provide: MatSnackBar,
-          useValue: {
-            open: jest.fn(),
-          },
-        },
-      ],
-    });
+    actions$ = new ActionsSubject();
+    transactions$ = new BehaviorSubject<PageTransactionDto | undefined>(
+      undefined,
+    );
+    subscriptions = [];
+    service = {
+      getAllTransactions: jest.fn(),
+      getTransaction: jest.fn(),
+      createTransaction: jest.fn(),
+      deleteTransaction: jest.fn(),
+      updateTransaction: jest.fn(),
+      importTransactions: jest.fn(),
+    };
+    router = {
+      navigate: jest.fn(),
+    };
+    snackBar = {
+      open: jest.fn(),
+    };
+    store = {
+      select: jest.fn((selector) => {
+        if (selector === selectTransactions) {
+          return transactions$.asObservable();
+        }
 
-    effects = TestBed.inject(TransactionsEffects);
-    service = TestBed.inject(TransactionsService);
-    router = TestBed.inject(Router);
-    snackBar = TestBed.inject(MatSnackBar);
+        return of(undefined);
+      }),
+    };
+
+    effects = new TransactionsEffects(
+      router as unknown as Router,
+      snackBar as unknown as MatSnackBar,
+      store as Store,
+      actions$ as unknown as Actions,
+      service as unknown as TransactionsService,
+    );
   });
 
-  it('should load transactions successfully', () => {
-    const transactions: PageTransactionDto = {
-      // fill with mock data
-    };
-    jest.spyOn(service, 'getAllTransactions').mockReturnValue(of(transactions));
-    const action = TransactionActions.initTransactions({
-      pageable: {} as Pageable,
-    });
-    const completion = TransactionActions.loadTransactionsSuccess({
-      transactions,
-    });
-
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
-
-    expect(effects.retrieveTransactions$).toBeObservable(expected);
+  afterEach(() => {
+    subscriptions.forEach((subscription) => subscription.unsubscribe());
+    actions$.complete();
+    transactions$.complete();
   });
 
-  it('should handle errors when loading transactions', () => {
-    const error = new Error('Error loading transactions');
-    jest
-      .spyOn(service, 'getAllTransactions')
-      .mockReturnValue(throwError(error));
-    const action = TransactionActions.initTransactions({
-      pageable: {} as Pageable,
-    });
-    const completion = TransactionActions.loadTransactionsFailure({ error });
+  function collect(effect$: Observable<Action>) {
+    const emittedActions: Action[] = [];
+    subscriptions.push(effect$.subscribe((action) => emittedActions.push(action)));
 
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
+    return emittedActions;
+  }
 
-    expect(effects.retrieveTransactions$).toBeObservable(expected);
-  });
+  it('loads transactions with the formatted filter range', () => {
+    const transactions = createTransactionPage();
+    const pageable: Pageable = { page: 0, size: 10 };
+    service.getAllTransactions.mockReturnValue(of(transactions));
+    const emittedActions = collect(effects.retrieveTransactions$);
 
-  it('should create a transaction successfully', () => {
-    const mockTransaction = {
-      amount: {
-        currency: 'EUR',
-        amount: 100,
-      },
-      date: new Date().toDateString(),
-    };
-    const mockResponse: TransactionDto = {
-      transactionId: '1',
-      amount: {
-        currency: 'EUR',
-        amount: 100,
-      },
-      date: new Date().toDateString(),
-      description: 'Test',
-      tenantId: '1',
-    };
-    jest.spyOn(service, 'createTransaction').mockReturnValue(of(mockResponse));
-    jest.spyOn(router, 'navigate');
-    jest.spyOn(snackBar, 'open');
-
-    actions$ = of(
-      TransactionActions.createNewTransaction({ transaction: mockTransaction }),
+    actions$.next(
+      TransactionActions.initTransactions({
+        pageable,
+        filterRange: {
+          startDate: moment('2025-07-01'),
+          endDate: moment('2025-07-15'),
+          dateRange: 'custom',
+        },
+      }),
     );
 
-    effects.createTransaction$.subscribe();
+    expect(service.getAllTransactions).toHaveBeenCalledWith(
+      pageable,
+      '2025-07-01T00:00:00',
+      '2025-07-15T00:00:00',
+    );
+    expect(emittedActions).toEqual([
+      TransactionActions.loadTransactionsSuccess({ transactions }),
+    ]);
+  });
 
-    expect(service.createTransaction).toHaveBeenCalledWith(mockTransaction);
+  it('dispatches loadTransactionsFailure when loading transactions fails', () => {
+    const error = new Error('Error loading transactions');
+    service.getAllTransactions.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.retrieveTransactions$);
+
+    actions$.next(
+      TransactionActions.initTransactions({
+        pageable: { page: 0, size: 10 },
+      }),
+    );
+
+    expect(emittedActions).toEqual([
+      TransactionActions.loadTransactionsFailure({ error }),
+    ]);
+  });
+
+  it('loads a single transaction when it is not already present in state', () => {
+    const transaction = createTransaction({ transactionId: 'transaction-1' });
+    transactions$.next(
+      createTransactionPage([
+        createTransaction({ transactionId: 'transaction-2' }),
+      ]),
+    );
+    service.getTransaction.mockReturnValue(of(transaction));
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      TransactionActions.loadTransaction({ transactionId: 'transaction-1' }),
+    );
+
+    expect(service.getTransaction).toHaveBeenCalledWith('transaction-1');
+    expect(emittedActions).toEqual([
+      TransactionActions.loadTransactionSuccess({ transaction }),
+    ]);
+  });
+
+  it('does not reload a transaction that is already present in state', () => {
+    transactions$.next(
+      createTransactionPage([
+        createTransaction({ transactionId: 'transaction-1' }),
+      ]),
+    );
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      TransactionActions.loadTransaction({ transactionId: 'transaction-1' }),
+    );
+
+    expect(service.getTransaction).not.toHaveBeenCalled();
+    expect(emittedActions).toEqual([]);
+  });
+
+  it('dispatches loadTransactionFailure when loading a single transaction fails', () => {
+    const error = new Error('Error loading transaction');
+    service.getTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      TransactionActions.loadTransaction({ transactionId: 'transaction-1' }),
+    );
+
+    expect(emittedActions).toEqual([
+      TransactionActions.loadTransactionFailure({ error }),
+    ]);
+  });
+
+  it('creates a transaction and performs the success side effects', () => {
+    const createdTransaction = createTransaction();
+    const transaction = {
+      amount: createMonetaryAmount(100),
+      date: '2025-01-01',
+      description: 'Salary',
+    };
+    service.createTransaction.mockReturnValue(of(createdTransaction));
+    const emittedActions = collect(effects.createTransaction$);
+
+    actions$.next(TransactionActions.createNewTransaction({ transaction }));
+
+    expect(service.createTransaction).toHaveBeenCalledWith(transaction);
     expect(router.navigate).toHaveBeenCalledWith([
-      TRANSACTIONS_PAGE_ROUTE,
+      'transactions-page',
       'transactions',
     ]);
     expect(snackBar.open).toHaveBeenCalledWith('Transaction created', 'Close');
+    expect(emittedActions).toEqual([
+      TransactionActions.createNewTransactionSuccess({
+        transaction: createdTransaction,
+      }),
+    ]);
   });
 
-  it('should open the transaction form', () => {
-    jest.spyOn(router, 'navigate');
+  it('dispatches createNewTransactionFailure when creation fails', () => {
+    const error = new Error('Error creating transaction');
+    service.createTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.createTransaction$);
 
-    actions$ = of(TransactionActions.openTransactionFrom());
+    actions$.next(
+      TransactionActions.createNewTransaction({
+        transaction: {
+          amount: createMonetaryAmount(100),
+          date: '2025-01-01',
+        },
+      }),
+    );
 
-    effects.openTransactionForm$.subscribe();
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(snackBar.open).not.toHaveBeenCalled();
+    expect(emittedActions).toEqual([
+      TransactionActions.createNewTransactionFailure({ error }),
+    ]);
+  });
+
+  it('navigates to the create transaction form', () => {
+    subscriptions.push(effects.openTransactionForm$.subscribe());
+
+    actions$.next(TransactionActions.openTransactionFrom());
 
     expect(router.navigate).toHaveBeenCalledWith([
-      TRANSACTIONS_PAGE_ROUTE,
+      'transactions-page',
       'transactions',
       'new',
     ]);
   });
 
-  it('should open the transaction form to edit', () => {
-    jest.spyOn(router, 'navigate');
+  it('navigates to the edit transaction form', () => {
+    subscriptions.push(effects.openTransactionFormToEdit$.subscribe());
 
-    actions$ = of(TransactionActions.editTransaction({ transactionId: '1' }));
-
-    effects.openTransactionFormToEdit$.subscribe();
-
-    expect(router.navigate).toHaveBeenCalledWith([
-      TRANSACTIONS_PAGE_ROUTE,
-      'transactions',
-      '1',
-    ]);
-  });
-
-  it('should delete a transaction successfully', () => {
-    const transactionId = '1';
-    jest.spyOn(service, 'deleteTransaction').mockReturnValue(of(null));
-    jest.spyOn(router, 'navigate');
-
-    actions$ = of(TransactionActions.deleteTransaction({ transactionId }));
-
-    effects.deleteTransaction$.subscribe();
-
-    expect(service.deleteTransaction).toHaveBeenCalledWith(transactionId);
-    expect(router.navigate).toHaveBeenCalledWith([
-      TRANSACTIONS_PAGE_ROUTE,
-      'transactions',
-    ]);
-  });
-
-  it('should handle errors when deleting a transaction', () => {
-    const error = new Error('Error deleting transaction');
-    jest
-      .spyOn(service, 'deleteTransaction')
-      .mockReturnValue(throwError(() => error));
-    const transactionId = '1';
-    const action = TransactionActions.deleteTransaction({ transactionId });
-    const completion = TransactionActions.deleteTransactionFailure({ error });
-
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
-
-    expect(effects.deleteTransaction$).toBeObservable(expected);
-  });
-
-  it('should handle errors when creating a transaction', () => {
-    const error = new Error('Error creating transaction');
-    jest
-      .spyOn(service, 'createTransaction')
-      .mockReturnValue(throwError(() => error));
-    const mockTransaction = {
-      amount: {
-        currency: 'EUR',
-        amount: 100,
-      },
-      date: new Date().toDateString(),
-    };
-    const action = TransactionActions.createNewTransaction({
-      transaction: mockTransaction,
-    });
-    const completion = TransactionActions.createNewTransactionFailure({
-      error,
-    });
-
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
-
-    expect(effects.createTransaction$).toBeObservable(expected);
-  });
-
-  it('should update a transaction successfully', () => {
-    const mockTransaction: TransactionDto = {
-      transactionId: '1',
-      amount: {
-        currency: 'EUR',
-        amount: 100,
-      },
-      date: new Date().toDateString(),
-      description: 'Updated transaction',
-      tenantId: '1',
-    };
-    jest.spyOn(service, 'updateTransaction').mockReturnValue(of(mockTransaction));
-    jest.spyOn(router, 'navigate');
-    jest.spyOn(snackBar, 'open');
-
-    actions$ = of(
-      TransactionActions.updateTransaction({ transaction: mockTransaction }),
+    actions$.next(
+      TransactionActions.editTransaction({ transactionId: 'transaction-1' }),
     );
 
-    effects.updateTransaction$.subscribe();
-
-    expect(service.updateTransaction).toHaveBeenCalledWith(mockTransaction);
     expect(router.navigate).toHaveBeenCalledWith([
-      TRANSACTIONS_PAGE_ROUTE,
+      'transactions-page',
+      'transactions',
+      'transaction-1',
+    ]);
+  });
+
+  it('deletes a transaction and performs the success side effects', () => {
+    service.deleteTransaction.mockReturnValue(of(undefined));
+    const emittedActions = collect(effects.deleteTransaction$);
+
+    actions$.next(
+      TransactionActions.deleteTransaction({ transactionId: 'transaction-1' }),
+    );
+
+    expect(service.deleteTransaction).toHaveBeenCalledWith('transaction-1');
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'transactions',
+    ]);
+    expect(snackBar.open).toHaveBeenCalledWith('Transaction deleted', 'Close');
+    expect(emittedActions).toEqual([
+      TransactionActions.deleteTransactionSuccess(),
+    ]);
+  });
+
+  it('dispatches deleteTransactionFailure when deletion fails', () => {
+    const error = new Error('Error deleting transaction');
+    service.deleteTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.deleteTransaction$);
+
+    actions$.next(
+      TransactionActions.deleteTransaction({ transactionId: 'transaction-1' }),
+    );
+
+    expect(emittedActions).toEqual([
+      TransactionActions.deleteTransactionFailure({ error }),
+    ]);
+  });
+
+  it('updates a transaction and performs the success side effects', () => {
+    const updatedTransaction = createTransaction();
+    service.updateTransaction.mockReturnValue(of(updatedTransaction));
+    const emittedActions = collect(effects.updateTransaction$);
+
+    actions$.next(
+      TransactionActions.updateTransaction({ transaction: updatedTransaction }),
+    );
+
+    expect(service.updateTransaction).toHaveBeenCalledWith(updatedTransaction);
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
       'transactions',
     ]);
     expect(snackBar.open).toHaveBeenCalledWith('Transaction updated', 'Close');
+    expect(emittedActions).toEqual([
+      TransactionActions.updateTransactionSuccess({
+        transaction: updatedTransaction,
+      }),
+    ]);
   });
 
-  it('should handle errors when updating a transaction', () => {
+  it('dispatches updateTransactionFailure when updating fails', () => {
     const error = new Error('Error updating transaction');
-    jest
-      .spyOn(service, 'updateTransaction')
-      .mockReturnValue(throwError(() => error));
-    const mockTransaction: TransactionDto = {
-      transactionId: '1',
-      amount: {
-        currency: 'EUR',
-        amount: 100,
-      },
-      date: new Date().toDateString(),
-      description: 'Updated transaction',
-      tenantId: '1',
-    };
-    const action = TransactionActions.updateTransaction({
-      transaction: mockTransaction,
-    });
-    const completion = TransactionActions.updateTransactionFailure({ error });
+    service.updateTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.updateTransaction$);
 
-    actions$ = hot('-a', { a: action });
-    const expected = cold('-b', { b: completion });
+    actions$.next(
+      TransactionActions.updateTransaction({
+        transaction: createTransaction(),
+      }),
+    );
 
-    expect(effects.updateTransaction$).toBeObservable(expected);
+    expect(emittedActions).toEqual([
+      TransactionActions.updateTransactionFailure({ error }),
+    ]);
   });
 
-  describe('Import Transactions Effects', () => {
-    it('should open the import transactions form', () => {
-      jest.spyOn(router, 'navigate');
+  it('navigates to the import transactions form', () => {
+    subscriptions.push(effects.openImportTransactionsForm$.subscribe());
 
-      actions$ = of(TransactionActions.openImportTransactionsFrom());
+    actions$.next(TransactionActions.openImportTransactionsFrom());
 
-      effects.openImportTransactionsForm$.subscribe();
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'import-transactions',
+    ]);
+  });
 
-      expect(router.navigate).toHaveBeenCalledWith([
-        TRANSACTIONS_PAGE_ROUTE,
-        'import-transactions',
-      ]);
+  it('imports transactions and performs the success side effects', () => {
+    const file = new File(
+      ['date,amount,description\n2025-01-01,100,Salary'],
+      'transactions.csv',
+      { type: 'text/csv' },
+    );
+    service.importTransactions.mockReturnValue(of('Import completed'));
+    const emittedActions = collect(effects.importTransactions$);
+
+    actions$.next(TransactionActions.importTransactions({ fileContent: file }));
+
+    expect(service.importTransactions).toHaveBeenCalledWith(file);
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'transactions',
+    ]);
+    expect(snackBar.open).toHaveBeenCalledWith('Transactions imported', 'Close');
+    expect(emittedActions).toEqual([
+      TransactionActions.importTransactionsSuccess(),
+    ]);
+  });
+
+  it('dispatches importTransactionsFailure when import fails', () => {
+    const error = new Error('Error importing transactions');
+    const file = new File(['invalid,csv'], 'transactions.csv', {
+      type: 'text/csv',
     });
+    service.importTransactions.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.importTransactions$);
 
-    it('should import transactions successfully', () => {
-      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test'], 'test.csv', {
-        type: 'text/csv'
-      });
-      jest.spyOn(service, 'importTransactions').mockReturnValue(of('Import successful'));
-      jest.spyOn(router, 'navigate');
-      jest.spyOn(snackBar, 'open');
+    actions$.next(TransactionActions.importTransactions({ fileContent: file }));
 
-      const action = TransactionActions.importTransactions({ fileContent: mockFile });
-      const completion = TransactionActions.importTransactionsSuccess();
+    expect(emittedActions).toEqual([
+      TransactionActions.importTransactionsFailure({ error }),
+    ]);
+  });
 
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+  it.each([
+    TransactionActions.createNewTransactionSuccess({
+      transaction: createTransaction(),
+    }),
+    TransactionActions.updateTransactionSuccess({
+      transaction: createTransaction(),
+    }),
+    TransactionActions.deleteTransactionSuccess(),
+  ])('clears backend errors after a successful mutation: %o', (action) => {
+    const emittedActions = collect(effects.clearError$);
 
-      expect(effects.importTransactions$).toBeObservable(expected);
+    actions$.next(action);
 
-      effects.importTransactions$.subscribe(() => {
-        expect(service.importTransactions).toHaveBeenCalledWith(mockFile);
-        expect(router.navigate).toHaveBeenCalledWith([
-          TRANSACTIONS_PAGE_ROUTE,
-          'transactions',
-        ]);
-        expect(snackBar.open).toHaveBeenCalledWith('Transactions imported', 'Close');
-      });
-    });
-
-    it('should handle errors when importing transactions', () => {
-      const error = new Error('Error importing transactions');
-      const mockFile = new File(['invalid,csv,content'], 'invalid.csv', {
-        type: 'text/csv'
-      });
-      jest
-        .spyOn(service, 'importTransactions')
-        .mockReturnValue(throwError(() => error));
-
-      const action = TransactionActions.importTransactions({ fileContent: mockFile });
-      const completion = TransactionActions.importTransactionsFailure({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.importTransactions$).toBeObservable(expected);
-    });
-
-    it('should import transactions with file content and trigger side effects', () => {
-      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test transaction'], 'transactions.csv', {
-        type: 'text/csv'
-      });
-      jest.spyOn(service, 'importTransactions').mockReturnValue(of('Import completed'));
-      jest.spyOn(router, 'navigate');
-      jest.spyOn(snackBar, 'open');
-
-      actions$ = of(TransactionActions.importTransactions({ fileContent: mockFile }));
-
-      effects.importTransactions$.subscribe();
-
-      expect(service.importTransactions).toHaveBeenCalledWith(mockFile);
-      expect(router.navigate).toHaveBeenCalledWith([
-        TRANSACTIONS_PAGE_ROUTE,
-        'transactions',
-      ]);
-      expect(snackBar.open).toHaveBeenCalledWith('Transactions imported', 'Close');
-    });
-
-    it('should handle network errors during import', () => {
-      const networkError = new Error('Network connection failed');
-      const mockFile = new File(['date,amount,description\n2024-01-01,100,Test'], 'test.csv', {
-        type: 'text/csv'
-      });
-      jest
-        .spyOn(service, 'importTransactions')
-        .mockReturnValue(throwError(() => networkError));
-
-      const action = TransactionActions.importTransactions({ fileContent: mockFile });
-      const completion = TransactionActions.importTransactionsFailure({ error: networkError });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.importTransactions$).toBeObservable(expected);
-    });
-
-    it('should handle validation errors during import', () => {
-      const validationError = new Error('Invalid CSV format');
-      const invalidFile = new File(['invalid;format;here'], 'invalid.csv', {
-        type: 'text/csv'
-      });
-      jest
-        .spyOn(service, 'importTransactions')
-        .mockReturnValue(throwError(() => validationError));
-
-      const action = TransactionActions.importTransactions({ fileContent: invalidFile });
-      const completion = TransactionActions.importTransactionsFailure({ error: validationError });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.importTransactions$).toBeObservable(expected);
-    });
+    expect(emittedActions).toEqual([ErrorHandlingActions.clearBackEndError()]);
   });
 });

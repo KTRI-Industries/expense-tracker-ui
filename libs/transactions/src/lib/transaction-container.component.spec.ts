@@ -1,85 +1,48 @@
-import { render, RenderResult } from '@testing-library/angular';
-import { TransactionContainerComponent } from './transaction-container.component';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ActivatedRoute } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { render } from '@testing-library/angular';
+import { of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Category } from '@expense-tracker-ui/shared/api';
+import {
+  createAppFormlyTestingImports,
+  createAppFormlyTestingProviders,
+} from '@expense-tracker-ui/testing/formly';
+import { TransactionContainerComponent } from './transaction-container.component';
+import { TransactionComponent } from './transaction.component';
 import { TransactionActions } from './+state/transactions.actions';
 import { selectCurrentTransaction } from './+state/transactions.selectors';
-import { TestBed } from '@angular/core/testing';
-import { FormlyModule } from '@ngx-formly/core';
-
-import { provideEnvironmentNgxMask } from 'ngx-mask';
-import { FormlyMaterialModule } from '@ngx-formly/material';
-import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import {
-  AmountInputComponent,
-  ChipsComponent,
-} from '@expense-tracker-ui/shared/formly';
-import { take } from 'rxjs';
 
 describe('TransactionContainerComponent', () => {
-  let component: RenderResult<TransactionContainerComponent>;
-  let store: MockStore;
+  const selectedTransaction = {
+    transactionId: '123',
+    amount: { amount: -100, currency: 'USD' },
+    date: '2022-01-01',
+    description: 'Test transaction',
+    categories: [Category.Bill],
+    tenantId: 'tenant-1',
+  };
 
-  const setup = async (routeValue: string | null) => {
-    component = await render(TransactionContainerComponent, {
-      imports: [
-        FormlyMaterialModule,
-        FormlyMatDatepickerModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'chips',
-              component: ChipsComponent,
-              defaultOptions: {
-                defaultValue: [],
-              },
-              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
-            },
-            {
-              name: 'amount-input',
-              component: AmountInputComponent,
-              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
-            },
-          ],
-          validationMessages: [
-            { name: 'required', message: 'This field is required' },
-          ],
-        }),
-      ],
+  async function setup(routeValue: string | null) {
+    const store = {
+      dispatch: jest.fn(),
+      select: jest.fn((selector: unknown) => {
+        if (selector === selectCurrentTransaction) {
+          return of(selectedTransaction);
+        }
+
+        return of(undefined);
+      }),
+    };
+
+    const renderResult = await render(TransactionContainerComponent, {
+      imports: [...createAppFormlyTestingImports()],
       providers: [
-        provideMomentDateAdapter(
-          {
-            parse: {
-              dateInput: 'DD/MM/YYYY',
-            },
-            display: {
-              dateInput: 'DD/MM/YYYY',
-              monthYearLabel: 'MMMM YYYY',
-              dateA11yLabel: 'LL',
-              monthYearA11yLabel: 'MMMM YYYY',
-            },
-          },
-          { useUtc: true },
-        ),
-        provideEnvironmentNgxMask({
-          decimalMarker: ',',
-          thousandSeparator: '.',
-        }),
-        provideMockStore({
-          selectors: [
-            {
-              selector: selectCurrentTransaction,
-              value: {
-                transactionId: '123',
-                amount: { amount: 100, currency: 'USD' },
-                date: '2022-01-01',
-                description: 'Test',
-                tenantId: 'test',
-              },
-            },
-          ],
-        }),
+        ...createAppFormlyTestingProviders(),
+        {
+          provide: Store,
+          useValue: store,
+        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -92,53 +55,91 @@ describe('TransactionContainerComponent', () => {
         },
       ],
     });
-    store = TestBed.inject(MockStore);
-    store.dispatch = jest.fn();
-    return { dispatchSpy: store.dispatch };
-  };
 
-  // TODO: during ngOnInit dispatch method of store has not been mocked yet so we use scannedActions$
-  it('should load transaction if id is present in route', async () => {
-    await setup('123');
-    store.scannedActions$.pipe(take(1)).subscribe((action) => {
-      expect(action).toEqual(
-        TransactionActions.loadTransaction({ transactionId: '123' }),
-      );
-    });
+    const childComponent =
+      renderResult.fixture.debugElement.query(By.directive(TransactionComponent))
+        .componentInstance as TransactionComponent;
+
+    return { childComponent, store };
+  }
+
+  it('dispatches loadTransaction during initial render when the route contains an id', async () => {
+    const { store } = await setup('123');
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      TransactionActions.loadTransaction({ transactionId: '123' }),
+    );
   });
 
-  it('should not load transaction if id is not present in route', async () => {
-    const { dispatchSpy } = await setup(null);
-    expect(dispatchSpy).not.toHaveBeenCalled();
+  it('does not dispatch loadTransaction when the route has no id', async () => {
+    const { store } = await setup(null);
+
+    expect(store.dispatch).not.toHaveBeenCalled();
   });
 
-  it('should dispatch createNewTransaction action on create', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onCreate({
+  it('dispatches the mapped create action when the child emits create', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.create.emit({
       txType: 'EXPENSE',
       amount: { amount: 100, currency: 'USD' },
       categories: ['bills'],
       date: '2022-01-01',
     });
-    expect(dispatchSpy).toHaveBeenCalled();
+
+    const dispatchedAction = store.dispatch.mock.calls[
+      store.dispatch.mock.calls.length - 1
+    ]?.[0] as {
+      type: string;
+      transaction: Record<string, unknown>;
+    };
+
+    expect(dispatchedAction.type).toBe(
+      TransactionActions.createNewTransaction.type,
+    );
+    expect(dispatchedAction.transaction).toMatchObject({
+      txType: 'EXPENSE',
+      amount: { amount: -100, currency: 'USD' },
+      categories: [Category.Bill],
+      date: '2022-01-01',
+    });
   });
 
-  it('should dispatch updateTransaction action on update', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onUpdate({
+  it('dispatches the mapped update action when the child emits update', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.update.emit({
       txType: 'EXPENSE',
       amount: { amount: 100, currency: 'USD' },
       categories: ['bills'],
       date: '2022-01-01',
       txId: '123',
     });
-    expect(dispatchSpy).toHaveBeenCalled();
+
+    const dispatchedAction = store.dispatch.mock.calls[
+      store.dispatch.mock.calls.length - 1
+    ]?.[0] as {
+      type: string;
+      transaction: Record<string, unknown>;
+    };
+
+    expect(dispatchedAction.type).toBe(TransactionActions.updateTransaction.type);
+    expect(dispatchedAction.transaction).toMatchObject({
+      txType: 'EXPENSE',
+      amount: { amount: -100, currency: 'USD' },
+      categories: [Category.Bill],
+      date: '2022-01-01',
+      transactionId: '123',
+      txId: '123',
+    });
   });
 
-  it('should dispatch deleteTransaction action on delete', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onDelete('123');
-    expect(dispatchSpy).toHaveBeenCalledWith(
+  it('dispatches deleteTransaction when the child emits delete', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.delete.emit('123');
+
+    expect(store.dispatch).toHaveBeenCalledWith(
       TransactionActions.deleteTransaction({ transactionId: '123' }),
     );
   });

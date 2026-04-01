@@ -5,11 +5,14 @@ import { KeycloakProfile } from 'keycloak-js';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthService } from '../auth.service';
 import { createMockStore } from '@ngrx/store/testing';
+import { Store } from '@ngrx/store';
 import { TenantDto } from '@expense-tracker-ui/shared/api';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { PasskeyService } from '../passkey.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleAwareKeycloakProfile } from './auth.reducer';
+import { selectUserProfile } from './auth.selectors';
+import { FeatureFlagActions } from '@expense-tracker-ui/shared/feature-flags';
 
 describe('AuthEffects', () => {
   let keycloakService: KeycloakService;
@@ -17,12 +20,15 @@ describe('AuthEffects', () => {
   let passkeyService: PasskeyService;
   let dialog: MatDialog;
 
-  function createEffects(actions$: any) {
+  function createEffects(
+    actions$: any,
+    store: Store = createMockStore({}) as unknown as Store,
+  ) {
     return new AuthEffects(
       actions$,
       keycloakService,
       authService,
-      createMockStore({}),
+      store as unknown as Store,
       passkeyService,
       dialog,
     );
@@ -34,16 +40,11 @@ describe('AuthEffects', () => {
       logout: jest.fn(),
       isLoggedIn: jest.fn(),
       loadUserProfile: jest.fn(),
-      getUserRoles: jest.fn(),
-      updateToken: jest.fn(),
-      // add other methods as needed
+      getUserRoles: jest.fn().mockReturnValue(['users']),
+      updateToken: jest.fn().mockResolvedValue(true),
     } as any;
     authService = {
       generateTenant: jest.fn(),
-      inviteUser: jest.fn(),
-      uninviteUser: jest.fn(),
-      retrieveTenants: jest.fn(),
-      setDefaultTenant: jest.fn(),
     } as any;
     passkeyService = {
       hasPasskey: jest.fn().mockReturnValue(of(false)),
@@ -102,7 +103,10 @@ describe('AuthEffects', () => {
     const authEffects = createEffects(actions$);
 
     const expectedAction = AuthActions.retrieveUserProfileSuccess({
-      keycloakUserProfile: userProfile,
+      keycloakUserProfile: {
+        ...userProfile,
+        userRoles: ['users'],
+      },
     });
 
     let result: any;
@@ -132,6 +136,23 @@ describe('AuthEffects', () => {
     tick();
 
     expect(result).toEqual(expectedAction);
+  }));
+
+  it('should not dispatch loginSuccess when the user is not logged in', fakeAsync(() => {
+    const actions$ = of(AuthActions.checkLogin());
+
+    jest.spyOn(keycloakService, 'isLoggedIn').mockImplementation(() => false);
+
+    const authEffects = createEffects(actions$);
+
+    let result: any;
+    authEffects.checkLogin$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toBeUndefined();
   }));
 
   it('should dispatch retrieveUserProfileFailure action if profile retrieval fails', fakeAsync(() => {
@@ -205,64 +226,69 @@ describe('AuthEffects', () => {
     expect(result).toEqual(expectedAction);
   }));
 
-  /*it('should set default tenant successfully', fakeAsync(() => {
-    const tenantId = 'tenant-123';
-    const actions$ = of(AuthActions.setDefaultTenant({ tenantId }));
+  it('should dispatch generateNewTenant when the retrieved user profile has no tenant', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.retrieveUserProfileSuccess({
+        keycloakUserProfile: {} as RoleAwareKeycloakProfile,
+      }),
+    );
+    const store = createMockStore({
+      selectors: [
+        {
+          selector: selectUserProfile,
+          value: {
+            email: 'john@example.com',
+            tenantId: undefined,
+          },
+        },
+      ],
+    });
 
-    const userInfo = {} as UserInfo;
-
-    jest.spyOn(authService, 'setDefaultTenant').mockReturnValue(of(userInfo));
-
-    const authEffects = createEffects(actions$);
-
-    const expectedAction = AuthActions.setDefaultTenantSuccess();
+    const authEffects = createEffects(actions$, store as unknown as Store);
 
     let result: any;
-    authEffects.setDefaultTenant$.subscribe((action) => {
+    authEffects.checkTenant$.subscribe((action) => {
       result = action;
     });
 
     tick();
 
-    expect(result).toEqual(expectedAction);
+    expect(result).toEqual(
+      AuthActions.generateNewTenant({ email: 'john@example.com' }),
+    );
   }));
 
-  it('should retrieve tenants successfully', fakeAsync(() => {
-    const tenants: TenantWithUserDetails[] = [
-      {
-        id: 'tenant-123',
-        isDefault: true,
-        mainUserEmail: 'main@example.com',
-        isAssociated: true,
-        isCurrentUserOwner: true,
-      },
-      {
-        id: 'tenant-456',
-        isDefault: false,
-        mainUserEmail: 'main@example.com',
-        isAssociated: true,
-        isCurrentUserOwner: true,
-      },
-    ];
-    const actions$ = of(AuthActions.retrieveTenants());
+  it('should not dispatch generateNewTenant when the user already has a tenant', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.retrieveUserProfileSuccess({
+        keycloakUserProfile: {} as RoleAwareKeycloakProfile,
+      }),
+    );
+    const store = createMockStore({
+      selectors: [
+        {
+          selector: selectUserProfile,
+          value: {
+            email: 'john@example.com',
+            tenantId: 'tenant-123',
+          },
+        },
+      ],
+    });
 
-    jest.spyOn(authService, 'retrieveTenants').mockReturnValue(of(tenants));
-
-    const authEffects = createEffects(actions$);
-
-    const expectedAction = AuthActions.retrieveTenantsSuccess({ tenants });
+    const authEffects = createEffects(actions$, store as unknown as Store);
 
     let result: any;
-    authEffects.retrieveUserTenants$.subscribe((action) => {
+    authEffects.checkTenant$.subscribe((action) => {
       result = action;
     });
 
     tick();
 
-    expect(result).toEqual(expectedAction);
+    expect(result).toBeUndefined();
   }));
 
-  it('should retrieve tenants after user profile is retrieved', fakeAsync(() => {
+  it('should load feature flags after retrieving the user profile', fakeAsync(() => {
     const actions$ = of(
       AuthActions.retrieveUserProfileSuccess({
         keycloakUserProfile: {} as RoleAwareKeycloakProfile,
@@ -271,80 +297,33 @@ describe('AuthEffects', () => {
 
     const authEffects = createEffects(actions$);
 
-    const expectedAction = AuthActions.retrieveTenants();
-
     let result: any;
-    authEffects.retrieveTenantsAfterUserProfile$.subscribe((action) => {
+    authEffects.loadFeatureFlagsAfterLogin$.subscribe((action) => {
       result = action;
     });
 
     tick();
 
-    expect(result).toEqual(expectedAction);
-  }));*/
+    expect(result).toEqual(FeatureFlagActions.loadFeatureFlags());
+  }));
 
-  /* it('should retrieve tenant users after tenants are retrieved', fakeAsync(() => {
-    const actions$ = of(
-      AuthActions.retrieveTenantsSuccess({
-        tenants: {} as TenantWithUserDetails[],
-      }),
-    );
-
-    const authEffects = createEffects(actions$);
-
-    const expectedAction = AuthActions.retrieveTenantUsers();
-
-    let result: any;
-    authEffects.retrieveTenantUsersAfterTenants$.subscribe((action) => {
-      result = action;
-    });
-
-    tick();
-
-    expect(result).toEqual(expectedAction);
-  }));*/
-
-  /* it('should retrieve tenant users after change of tenant', fakeAsync(() => {
-    const actions$ = of(AuthActions.setDefaultTenantSuccess());
-
-    const authEffects = createEffects(actions$);
-
-    const expectedAction = AuthActions.retrieveTenantUsers();
-
-    let result: any;
-    authEffects.retrieveTenantUsersAfterChangeOfTenant$.subscribe((action) => {
-      result = action;
-    });
-
-    tick();
-
-    expect(result).toEqual(expectedAction);
-  }));*/
-
-  /* it('should refresh token after tenant is generated', fakeAsync(() => {
+  it('should refresh the token after a new tenant is generated', fakeAsync(() => {
     const actions$ = of(
       AuthActions.generateNewTenantSuccess({ tenantId: 'tenant-123' }),
     );
 
-    jest
-      .spyOn(keycloakService, 'updateToken')
-      .mockImplementation(() => Promise.resolve(true));
-
     const authEffects = createEffects(actions$);
 
-    const expectedAction = AuthActions.retrieveTenantUsers();
-
     let result: any;
-    authEffects.refreshTokenAfterTenantGeneratedOrAssociated$.subscribe(
-      (action) => {
-        result = action;
-      },
-    );
+    authEffects.refreshTokenAfterTenantGenerated$.subscribe((action) => {
+      result = action;
+    });
 
     tick();
 
-    expect(result).toEqual(expectedAction);
-  }));*/
+    expect(keycloakService.updateToken).toHaveBeenCalledWith(-1);
+    expect(result).toEqual(AuthActions.retrieveTenantUsers());
+  }));
 
   it('should refresh roles after tenant is generated', fakeAsync(() => {
     const actions$ = of(
@@ -371,6 +350,30 @@ describe('AuthEffects', () => {
     tick();
 
     expect(result).toEqual(expectedAction);
+  }));
+
+  it('should dispatch refreshUserRolesFailure when refreshing roles fails', fakeAsync(() => {
+    const actions$ = of(
+      AuthActions.generateNewTenantSuccess({
+        tenantId: 'tenant-123',
+      }),
+    );
+    const error = new Error('roles failed');
+
+    const authEffects = createEffects(actions$);
+
+    jest.spyOn(authEffects, 'refreshRoles').mockRejectedValue(error);
+
+    let result: any;
+    authEffects.refreshRolesAfterTenantGenerated$.subscribe((action) => {
+      result = action;
+    });
+
+    tick();
+
+    expect(result).toEqual(
+      AuthActions.refreshUserRolesFailure({ error }),
+    );
   }));
 
   describe('checkPasskeyStatus$', () => {

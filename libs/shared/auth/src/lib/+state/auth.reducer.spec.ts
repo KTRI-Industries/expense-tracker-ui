@@ -150,54 +150,6 @@ describe('AuthReducer', () => {
     });
   });
 
-  /*describe('switchTenant action', () => {
-    it('should set the currentTenant property', () => {
-      const initialState: AuthState = {
-        userProfile: null,
-        tenantUsers: [],
-      };
-
-      const tenantId = 'tenant-123';
-      const expectedState: AuthState = {
-        userProfile: null,
-        tenantUsers: [],
-        tenants: [],
-        currentTenant: tenantId,
-      };
-
-      const actualState = authFeature.reducer(
-        initialState,
-        AuthActions.switchTenant({ tenantId }),
-      );
-
-      expect(actualState).toEqual(expectedState);
-    });
-  });
-
-  describe('setDefaultTenant action', () => {
-    it('should set the currentTenant property', () => {
-      const initialState: AuthState = {
-        userProfile: null,
-        tenantUsers: [],
-      };
-
-      const tenantId = 'tenant-123';
-      const expectedState: AuthState = {
-        userProfile: null,
-        tenantUsers: [],
-        tenants: [],
-        currentTenant: tenantId,
-      };
-
-      const actualState = authFeature.reducer(
-        initialState,
-        AuthActions.setDefaultTenant({ tenantId }),
-      );
-
-      expect(actualState).toEqual(expectedState);
-    });
-  });*/
-
   describe('refreshUserRolesSuccess action', () => {
     it('should set the userRoles property of userProfile', () => {
       const initialState: AuthState = {
@@ -336,66 +288,5 @@ describe('AuthReducer', () => {
       expect(tenantId).toBeUndefined();
     });
 
-    /* it('should return the currentTenantOwnerEmail if the tenants and currentTenant are defined', () => {
-      const tenants: TenantWithUserDetails[] = [
-        {
-          id: 'tenant-123',
-          isDefault: true,
-          mainUserEmail: 'main@example.com',
-          isAssociated: true,
-          isCurrentUserOwner: true,
-        },
-        {
-          id: 'tenant-456',
-          isDefault: false,
-          mainUserEmail: 'main@example.com',
-          isAssociated: true,
-          isCurrentUserOwner: true,
-        },
-      ];
-      const currentTenant = 'tenant-123';
-
-      const currentTenantOwnerEmail = selectCurrentTenantOwnerEmail.projector(
-        tenants,
-        currentTenant,
-      );
-
-      expect(currentTenantOwnerEmail).toEqual('main@example.com');
-    });
-
-    it('should return undefined currentTenantOwnerEmail if no tenants', () => {
-      const currentTenantOwnerEmail = selectCurrentTenantOwnerEmail.projector(
-        [],
-        '',
-      );
-
-      expect(currentTenantOwnerEmail).toBeUndefined();
-    });
-
-    it('should return undefined currentTenantOwnerEmail if the currentTenant is empty', () => {
-      const tenants: TenantWithUserDetails[] = [
-        {
-          id: 'tenant-123',
-          isDefault: true,
-          mainUserEmail: 'main@example.com',
-          isAssociated: true,
-          isCurrentUserOwner: true,
-        },
-        {
-          id: 'tenant-456',
-          isDefault: false,
-          mainUserEmail: 'main@example.com',
-          isAssociated: true,
-          isCurrentUserOwner: true,
-        },
-      ];
-
-      const currentTenantOwnerEmail = selectCurrentTenantOwnerEmail.projector(
-        tenants,
-        '',
-      );
-
-      expect(currentTenantOwnerEmail).toBeUndefined();
-    });*/
   });
 });

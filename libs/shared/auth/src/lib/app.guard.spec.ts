@@ -7,8 +7,14 @@ import { AuthActions } from './+state/auth.actions';
 
 describe('AppGuard', () => {
   let guard: AppGuard;
-  let keycloakService: KeycloakService;
-  let store: Store;
+  let store: jest.Mocked<Store>;
+
+  function setGuardState(authenticated: boolean, roles: string[] = []) {
+    Object.assign(guard as object, {
+      authenticated,
+      roles,
+    });
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,7 +22,7 @@ describe('AppGuard', () => {
         AppGuard,
         {
           provide: KeycloakService,
-          useValue: { isLoggedIn: jest.fn() },
+          useValue: {},
         },
         {
           provide: Store,
@@ -30,49 +36,42 @@ describe('AppGuard', () => {
     });
 
     guard = TestBed.inject(AppGuard);
-    keycloakService = TestBed.inject(KeycloakService);
-    store = TestBed.inject(Store);
+    store = TestBed.inject(Store) as jest.Mocked<Store>;
   });
 
-  it('should force login if unauthenticated', async () => {
-    jest.spyOn(keycloakService, 'isLoggedIn').mockReturnValue(false);
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
+  it('should dispatch login when unauthenticated', async () => {
+    setGuardState(false);
 
-    const result = await guard.isAccessAllowed(new ActivatedRouteSnapshot());
-
-    expect(result).toBe(true);
-    expect(dispatchSpy).toHaveBeenCalledWith(AuthActions.login());
+    await expect(guard.isAccessAllowed(new ActivatedRouteSnapshot())).resolves.toBe(
+      true,
+    );
+    expect(store.dispatch).toHaveBeenCalledWith(AuthActions.login());
   });
 
-  it('should allow access if no additional roles are required', async () => {
-    jest.spyOn(keycloakService, 'isLoggedIn').mockReturnValue(true);
+  it('should allow access without dispatching login when already authenticated and no roles are required', async () => {
+    setGuardState(true);
 
-    const result = await guard.isAccessAllowed(new ActivatedRouteSnapshot());
-
-    expect(result).toBe(true);
+    await expect(guard.isAccessAllowed(new ActivatedRouteSnapshot())).resolves.toBe(
+      true,
+    );
+    expect(store.dispatch).not.toHaveBeenCalled();
   });
 
-  it('should allow access if all required roles are present', async () => {
-    jest.spyOn(keycloakService, 'isLoggedIn').mockReturnValue(true);
-    guard['roles'] = ['role1', 'role2'];
+  it('should allow access when all required roles are present', async () => {
+    setGuardState(true, ['role1', 'role2']);
 
     const route = new ActivatedRouteSnapshot();
     route.data = { roles: ['role1'] };
 
-    const result = await guard.isAccessAllowed(route);
-
-    expect(result).toBe(true);
+    await expect(guard.isAccessAllowed(route)).resolves.toBe(true);
   });
 
-  it('should deny access if any required role is missing', async () => {
-    jest.spyOn(keycloakService, 'isLoggedIn').mockReturnValue(true);
-    guard['roles'] = ['role1'];
+  it('should deny access when a required role is missing', async () => {
+    setGuardState(true, ['role1']);
 
     const route = new ActivatedRouteSnapshot();
     route.data = { roles: ['role1', 'role2'] };
 
-    const result = await guard.isAccessAllowed(route);
-
-    expect(result).toBe(false);
+    await expect(guard.isAccessAllowed(route)).resolves.toBe(false);
   });
 });

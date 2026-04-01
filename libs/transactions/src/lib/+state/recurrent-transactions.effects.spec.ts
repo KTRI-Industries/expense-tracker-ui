@@ -1,373 +1,447 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { Actions } from '@ngrx/effects';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Action, ActionsSubject, Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
+import {
+  Category,
+  CreateRecurrentTransactionCommand,
+  MonetaryAmount,
+  PageRecurrentTransactionDto,
+  Pageable,
+  RecurrentTransactionDto,
+  RecurrenceFrequency,
+  UpdateRecurrentTransactionCommand,
+} from '@expense-tracker-ui/shared/api';
+import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
 import { RecurrentTransactionsEffects } from './recurrent-transactions.effects';
 import { TransactionsService } from '../transactions.service';
 import { RecurrentTransactionActions } from './transactions.actions';
-import { ErrorHandlingActions } from '@expense-tracker-ui/shared/error-handling';
-import { cold, hot } from 'jasmine-marbles';
-import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { 
-  PageRecurrentTransactionDto, 
-  RecurrentTransactionDto, 
-  Pageable,
-  MonetaryAmount,
-  CreateRecurrentTransactionCommand,
-  UpdateRecurrentTransactionCommand,
-  RecurrenceFrequency,
-  Category
-} from '@expense-tracker-ui/shared/api';
+import { selectRecurrentTransactions } from './recurrent-transactions.selectors';
 
 describe('RecurrentTransactionsEffects', () => {
-  let actions$: Observable<Action>;
+  let actions$: ActionsSubject;
+  let recurrentTransactions$: BehaviorSubject<
+    PageRecurrentTransactionDto | undefined
+  >;
   let effects: RecurrentTransactionsEffects;
-  let service: TransactionsService;
-  let router: Router;
-  let snackBar: MatSnackBar;
+  let service: jest.Mocked<
+    Pick<
+      TransactionsService,
+      | 'getAllRecurrentTransactions'
+      | 'getRecurrentTransaction'
+      | 'createRecurrentTransaction'
+      | 'updateRecurrentTransaction'
+      | 'deleteRecurrentTransaction'
+    >
+  >;
+  let router: jest.Mocked<Pick<Router, 'navigate'>>;
+  let snackBar: jest.Mocked<Pick<MatSnackBar, 'open'>>;
+  let store: Pick<Store, 'select'>;
+  let subscriptions: Subscription[];
 
-  const createMonetaryAmount = (amount: number, currency = 'EUR'): MonetaryAmount => ({
+  const createMonetaryAmount = (
+    amount: number,
+    currency = 'EUR',
+  ): MonetaryAmount => ({
     amount,
     currency,
   });
 
-  const createMockCategory = (): Category => Category.Groceries;
-
-  const createMockRecurrentTransaction = (): RecurrentTransactionDto => ({
-    recurrentTransactionId: '1',
+  const createRecurrentTransaction = (
+    overrides: Partial<RecurrentTransactionDto> = {},
+  ): RecurrentTransactionDto => ({
+    recurrentTransactionId: 'recurrent-1',
     tenantId: 'tenant-1',
     description: 'Test recurrent transaction',
-    categories: [createMockCategory()],
+    categories: [Category.Groceries],
     userId: 'user-1',
     amount: createMonetaryAmount(100),
     recurrencePeriod: {
       startDate: '2025-01-01',
-      frequency: RecurrenceFrequency.Monthly
-    }
+      frequency: RecurrenceFrequency.Monthly,
+    },
+    ...overrides,
   });
 
-  const createMockPageRecurrentTransactions = (): PageRecurrentTransactionDto => ({
-    content: [createMockRecurrentTransaction()],
-    totalElements: 1,
+  const createRecurrentTransactionPage = (
+    content: RecurrentTransactionDto[] = [createRecurrentTransaction()],
+  ): PageRecurrentTransactionDto => ({
+    content,
+    totalElements: content.length,
     totalPages: 1,
     size: 10,
     number: 0,
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        RecurrentTransactionsEffects,
-        provideMockActions(() => actions$),
-        provideMockStore({
-          initialState: {
-            recurrentTransactions: {
-              recurrentTransactions: null,
-            },
+    actions$ = new ActionsSubject();
+    recurrentTransactions$ = new BehaviorSubject<
+      PageRecurrentTransactionDto | undefined
+    >(undefined);
+    subscriptions = [];
+    service = {
+      getAllRecurrentTransactions: jest.fn(),
+      getRecurrentTransaction: jest.fn(),
+      createRecurrentTransaction: jest.fn(),
+      updateRecurrentTransaction: jest.fn(),
+      deleteRecurrentTransaction: jest.fn(),
+    };
+    router = {
+      navigate: jest.fn(),
+    };
+    snackBar = {
+      open: jest.fn(),
+    };
+    store = {
+      select: jest.fn((selector) => {
+        if (selector === selectRecurrentTransactions) {
+          return recurrentTransactions$.asObservable();
+        }
+
+        return of(undefined);
+      }),
+    };
+
+    effects = new RecurrentTransactionsEffects(
+      router as unknown as Router,
+      snackBar as unknown as MatSnackBar,
+      store as Store,
+      actions$ as unknown as Actions,
+      service as unknown as TransactionsService,
+    );
+  });
+
+  afterEach(() => {
+    subscriptions.forEach((subscription) => subscription.unsubscribe());
+    actions$.complete();
+    recurrentTransactions$.complete();
+  });
+
+  function collect(effect$: Observable<Action>) {
+    const emittedActions: Action[] = [];
+    subscriptions.push(effect$.subscribe((action) => emittedActions.push(action)));
+
+    return emittedActions;
+  }
+
+  it('loads recurrent transactions successfully', () => {
+    const pageable: Pageable = { page: 0, size: 10 };
+    const recurrentTransactions = createRecurrentTransactionPage();
+    service.getAllRecurrentTransactions.mockReturnValue(
+      of(recurrentTransactions),
+    );
+    const emittedActions = collect(effects.retrieveRecurrentTransactions$);
+
+    actions$.next(
+      RecurrentTransactionActions.initRecurrentTransactions({ pageable }),
+    );
+
+    expect(service.getAllRecurrentTransactions).toHaveBeenCalledWith(pageable);
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.loadRecurrentTransactionsSuccess({
+        recurrentTransactions,
+      }),
+    ]);
+  });
+
+  it('dispatches loadRecurrentTransactionsFailure when loading fails', () => {
+    const error = new Error('Error loading recurrent transactions');
+    service.getAllRecurrentTransactions.mockReturnValue(
+      throwError(() => error),
+    );
+    const emittedActions = collect(effects.retrieveRecurrentTransactions$);
+
+    actions$.next(
+      RecurrentTransactionActions.initRecurrentTransactions({
+        pageable: { page: 0, size: 10 },
+      }),
+    );
+
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.loadRecurrentTransactionsFailure({ error }),
+    ]);
+  });
+
+  it('loads a recurrent transaction when it is not already present in state', () => {
+    const recurrentTransaction = createRecurrentTransaction({
+      recurrentTransactionId: 'recurrent-1',
+    });
+    recurrentTransactions$.next(
+      createRecurrentTransactionPage([
+        createRecurrentTransaction({ recurrentTransactionId: 'recurrent-2' }),
+      ]),
+    );
+    service.getRecurrentTransaction.mockReturnValue(of(recurrentTransaction));
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      RecurrentTransactionActions.loadRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
+
+    expect(service.getRecurrentTransaction).toHaveBeenCalledWith(
+      'recurrent-1',
+    );
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.loadRecurrentTransactionSuccess({
+        recurrentTransaction,
+      }),
+    ]);
+  });
+
+  it('does not reload a recurrent transaction that is already present in state', () => {
+    recurrentTransactions$.next(
+      createRecurrentTransactionPage([
+        createRecurrentTransaction({ recurrentTransactionId: 'recurrent-1' }),
+      ]),
+    );
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      RecurrentTransactionActions.loadRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
+
+    expect(service.getRecurrentTransaction).not.toHaveBeenCalled();
+    expect(emittedActions).toEqual([]);
+  });
+
+  it('dispatches loadRecurrentTransactionFailure when loading a single recurrent transaction fails', () => {
+    const error = new Error('Error loading recurrent transaction');
+    service.getRecurrentTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.loadTransaction$);
+
+    actions$.next(
+      RecurrentTransactionActions.loadRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
+
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.loadRecurrentTransactionFailure({ error }),
+    ]);
+  });
+
+  it('creates a recurrent transaction and performs the success side effects', () => {
+    const recurrentTransaction = createRecurrentTransaction();
+    const recurrentTransactionCommand: CreateRecurrentTransactionCommand = {
+      amount: createMonetaryAmount(100),
+      description: 'Test recurrent transaction',
+      recurrencePeriod: {
+        startDate: '2025-01-01',
+        frequency: RecurrenceFrequency.Monthly,
+      },
+      categories: [Category.Groceries],
+    };
+    service.createRecurrentTransaction.mockReturnValue(of(recurrentTransaction));
+    const emittedActions = collect(effects.createTransaction$);
+
+    actions$.next(
+      RecurrentTransactionActions.createNewRecurrentTransaction({
+        recurrentTransactionCommand,
+      }),
+    );
+
+    expect(service.createRecurrentTransaction).toHaveBeenCalledWith(
+      recurrentTransactionCommand,
+    );
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'recurrent-transactions',
+    ]);
+    expect(snackBar.open).toHaveBeenCalledWith(
+      'Recurrent transaction created',
+      'Close',
+    );
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
+        recurrentTransaction,
+      }),
+    ]);
+  });
+
+  it('dispatches createNewRecurrentTransactionFailure when creation fails', () => {
+    const error = new Error('Error creating recurrent transaction');
+    service.createRecurrentTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.createTransaction$);
+
+    actions$.next(
+      RecurrentTransactionActions.createNewRecurrentTransaction({
+        recurrentTransactionCommand: {
+          amount: createMonetaryAmount(100),
+          description: 'Test recurrent transaction',
+          recurrencePeriod: {
+            startDate: '2025-01-01',
+            frequency: RecurrenceFrequency.Monthly,
           },
-        }),
-        {
-          provide: TransactionsService,
-          useValue: {
-            getAllRecurrentTransactions: jest.fn(),
-            getRecurrentTransaction: jest.fn(),
-            createRecurrentTransaction: jest.fn(),
-            updateRecurrentTransaction: jest.fn(),
-            deleteRecurrentTransaction: jest.fn(),
-          },
+          categories: [Category.Groceries],
         },
-        {
-          provide: Router,
-          useValue: {
-            navigate: jest.fn(),
-          },
-        },
-        {
-          provide: MatSnackBar,
-          useValue: {
-            open: jest.fn(),
-          },
-        },
-      ],
-    });
+      }),
+    );
 
-    effects = TestBed.inject(RecurrentTransactionsEffects);
-    service = TestBed.inject(TransactionsService);
-    router = TestBed.inject(Router);
-    snackBar = TestBed.inject(MatSnackBar);
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.createNewRecurrentTransactionFailure({
+        error,
+      }),
+    ]);
   });
 
-  describe('retrieveRecurrentTransactions$', () => {
-    it('should load recurrent transactions successfully', () => {
-      const mockPageable: Pageable = { page: 0, size: 10 };
-      const mockRecurrentTransactions = createMockPageRecurrentTransactions();
+  it('navigates to the create recurrent transaction form', () => {
+    subscriptions.push(effects.openTransactionForm$.subscribe());
 
-      jest.spyOn(service, 'getAllRecurrentTransactions').mockReturnValue(of(mockRecurrentTransactions));
+    actions$.next(RecurrentTransactionActions.openRecurrentTransactionFrom());
 
-      const action = RecurrentTransactionActions.initRecurrentTransactions({ pageable: mockPageable });
-      const completion = RecurrentTransactionActions.loadRecurrentTransactionsSuccess({
-        recurrentTransactions: mockRecurrentTransactions,
-      });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.retrieveRecurrentTransactions$).toBeObservable(expected);
-      expect(service.getAllRecurrentTransactions).toHaveBeenCalledWith(mockPageable);
-    });
-
-    it('should handle errors when loading recurrent transactions', () => {
-      const mockPageable: Pageable = { page: 0, size: 10 };
-      const error = new Error('Error loading recurrent transactions');
-
-      jest.spyOn(service, 'getAllRecurrentTransactions').mockReturnValue(throwError(() => error));
-
-      const action = RecurrentTransactionActions.initRecurrentTransactions({ pageable: mockPageable });
-      const completion = RecurrentTransactionActions.loadRecurrentTransactionsFailure({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.retrieveRecurrentTransactions$).toBeObservable(expected);
-    });
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'recurrent-transactions',
+      'new',
+    ]);
   });
 
-  describe('loadTransaction$', () => {
-    it('should load a single recurrent transaction if not already loaded', () => {
-      const mockTransaction = createMockRecurrentTransaction();
-      const recurrentTransactionId = '1';
+  it('navigates to the edit recurrent transaction form', () => {
+    subscriptions.push(effects.openTransactionFormToEdit$.subscribe());
 
-      jest.spyOn(service, 'getRecurrentTransaction').mockReturnValue(of(mockTransaction));
+    actions$.next(
+      RecurrentTransactionActions.editRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
 
-      const action = RecurrentTransactionActions.loadRecurrentTransaction({ recurrentTransactionId });
-      const completion = RecurrentTransactionActions.loadRecurrentTransactionSuccess({
-        recurrentTransaction: mockTransaction,
-      });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.loadTransaction$).toBeObservable(expected);
-      expect(service.getRecurrentTransaction).toHaveBeenCalledWith(recurrentTransactionId);
-    });
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'recurrent-transactions',
+      'recurrent-1',
+    ]);
   });
 
-  describe('createTransaction$', () => {
-    it('should create a recurrent transaction successfully', () => {
-      const mockTransaction = createMockRecurrentTransaction();
-      const recurrentTransactionCommand: CreateRecurrentTransactionCommand = {
-        amount: createMonetaryAmount(100),
-        description: 'Test recurrent transaction',
-        recurrencePeriod: {
-          startDate: '2025-01-01',
-          frequency: RecurrenceFrequency.Monthly
-        },
-        categories: [createMockCategory()]
-      };
+  it('deletes a recurrent transaction and performs the success side effects', () => {
+    service.deleteRecurrentTransaction.mockReturnValue(of(undefined));
+    const emittedActions = collect(effects.deleteTransaction$);
 
-      jest.spyOn(service, 'createRecurrentTransaction').mockReturnValue(of(mockTransaction));
-      jest.spyOn(router, 'navigate');
-      jest.spyOn(snackBar, 'open');
+    actions$.next(
+      RecurrentTransactionActions.deleteRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
 
-      const action = RecurrentTransactionActions.createNewRecurrentTransaction({ recurrentTransactionCommand });
-      const completion = RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
-        recurrentTransaction: mockTransaction,
-      });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.createTransaction$).toBeObservable(expected);
-      expect(service.createRecurrentTransaction).toHaveBeenCalledWith(recurrentTransactionCommand);
-    });
-
-    it('should handle errors when creating recurrent transaction', () => {
-      const error = new Error('Error creating recurrent transaction');
-      const recurrentTransactionCommand: CreateRecurrentTransactionCommand = {
-        amount: createMonetaryAmount(100),
-        description: 'Test recurrent transaction',
-        recurrencePeriod: {
-          startDate: '2025-01-01',
-          frequency: RecurrenceFrequency.Monthly
-        },
-        categories: [createMockCategory()]
-      };
-
-      jest.spyOn(service, 'createRecurrentTransaction').mockReturnValue(throwError(() => error));
-
-      const action = RecurrentTransactionActions.createNewRecurrentTransaction({ recurrentTransactionCommand });
-      const completion = RecurrentTransactionActions.createNewRecurrentTransactionFailure({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.createTransaction$).toBeObservable(expected);
-    });
+    expect(service.deleteRecurrentTransaction).toHaveBeenCalledWith(
+      'recurrent-1',
+    );
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'recurrent-transactions',
+    ]);
+    expect(snackBar.open).toHaveBeenCalledWith(
+      'Recurrent transaction deleted',
+      'Close',
+    );
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.deleteRecurrentTransactionSuccess(),
+    ]);
   });
 
-  describe('openTransactionForm$', () => {
-    it('should navigate to new transaction form', () => {
-      jest.spyOn(router, 'navigate');
+  it('dispatches deleteRecurrentTransactionFailure when deletion fails', () => {
+    const error = new Error('Error deleting recurrent transaction');
+    service.deleteRecurrentTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.deleteTransaction$);
 
-      const action = RecurrentTransactionActions.openRecurrentTransactionFrom();
+    actions$.next(
+      RecurrentTransactionActions.deleteRecurrentTransaction({
+        recurrentTransactionId: 'recurrent-1',
+      }),
+    );
 
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-a', { a: action });
-
-      expect(effects.openTransactionForm$).toBeObservable(expected);
-      expect(router.navigate).toHaveBeenCalledWith([
-        'transactions-page',
-        'recurrent-transactions',
-        'new',
-      ]);
-    });
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.deleteRecurrentTransactionFailure({ error }),
+    ]);
   });
 
-  describe('openTransactionFormToEdit$', () => {
-    it('should navigate to edit transaction form', () => {
-      const recurrentTransactionId = '1';
-      jest.spyOn(router, 'navigate');
-
-      const action = RecurrentTransactionActions.editRecurrentTransaction({ recurrentTransactionId });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-a', { a: action });
-
-      expect(effects.openTransactionFormToEdit$).toBeObservable(expected);
-      expect(router.navigate).toHaveBeenCalledWith([
-        'transactions-page',
-        'recurrent-transactions',
-        recurrentTransactionId,
-      ]);
-    });
-  });
-
-  describe('deleteTransaction$', () => {
-    it('should delete a recurrent transaction successfully', () => {
-      const recurrentTransactionId = '1';
-
-      jest.spyOn(service, 'deleteRecurrentTransaction').mockReturnValue(of(null));
-      jest.spyOn(router, 'navigate');
-      jest.spyOn(snackBar, 'open');
-
-      const action = RecurrentTransactionActions.deleteRecurrentTransaction({ recurrentTransactionId });
-      const completion = RecurrentTransactionActions.deleteRecurrentTransactionSuccess();
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.deleteTransaction$).toBeObservable(expected);
-      expect(service.deleteRecurrentTransaction).toHaveBeenCalledWith(recurrentTransactionId);
-    });
-
-    it('should handle errors when deleting recurrent transaction', () => {
-      const recurrentTransactionId = '1';
-      const error = new Error('Error deleting recurrent transaction');
-
-      jest.spyOn(service, 'deleteRecurrentTransaction').mockReturnValue(throwError(() => error));
-
-      const action = RecurrentTransactionActions.deleteRecurrentTransaction({ recurrentTransactionId });
-      const completion = RecurrentTransactionActions.deleteRecurrentTransactionFailure({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.deleteTransaction$).toBeObservable(expected);
-    });
-  });
-
-  describe('updateTransaction$', () => {
-    it('should update a recurrent transaction successfully', () => {
-      const mockTransaction = createMockRecurrentTransaction();
-      const updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand = {
-        recurrentTransactionId: '1',
+  it('updates a recurrent transaction and performs the success side effects', () => {
+    const recurrentTransaction = createRecurrentTransaction();
+    const updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand =
+      {
+        recurrentTransactionId: 'recurrent-1',
         amount: createMonetaryAmount(150),
         description: 'Updated recurrent transaction',
         recurrencePeriod: {
           startDate: '2025-01-01',
-          frequency: RecurrenceFrequency.Daily
+          frequency: RecurrenceFrequency.Daily,
         },
-        categories: [createMockCategory()]
+        categories: [Category.Groceries],
       };
+    service.updateRecurrentTransaction.mockReturnValue(of(recurrentTransaction));
+    const emittedActions = collect(effects.updateTransaction$);
 
-      jest.spyOn(service, 'updateRecurrentTransaction').mockReturnValue(of(mockTransaction));
-      jest.spyOn(router, 'navigate');
-      jest.spyOn(snackBar, 'open');
+    actions$.next(
+      RecurrentTransactionActions.updateRecurrentTransaction({
+        updateRecurrentTransactionCommand,
+      }),
+    );
 
-      const action = RecurrentTransactionActions.updateRecurrentTransaction({ updateRecurrentTransactionCommand });
-      const completion = RecurrentTransactionActions.updateRecurrentTransactionSuccess({
-        recurrentTransaction: mockTransaction,
-      });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.updateTransaction$).toBeObservable(expected);
-      expect(service.updateRecurrentTransaction).toHaveBeenCalledWith(updateRecurrentTransactionCommand);
-    });
-
-    it('should handle errors when updating recurrent transaction', () => {
-      const error = new Error('Error updating recurrent transaction');
-      const updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand = {
-        recurrentTransactionId: '1',
-        amount: createMonetaryAmount(150),
-        description: 'Updated recurrent transaction',
-        recurrencePeriod: {
-          startDate: '2025-01-01',
-          frequency: RecurrenceFrequency.Daily
-        },
-        categories: [createMockCategory()]
-      };
-
-      jest.spyOn(service, 'updateRecurrentTransaction').mockReturnValue(throwError(() => error));
-
-      const action = RecurrentTransactionActions.updateRecurrentTransaction({ updateRecurrentTransactionCommand });
-      const completion = RecurrentTransactionActions.updateRecurrentTransactionFailure({ error });
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.updateTransaction$).toBeObservable(expected);
-    });
+    expect(service.updateRecurrentTransaction).toHaveBeenCalledWith(
+      updateRecurrentTransactionCommand,
+    );
+    expect(router.navigate).toHaveBeenCalledWith([
+      'transactions-page',
+      'recurrent-transactions',
+    ]);
+    expect(snackBar.open).toHaveBeenCalledWith(
+      'Recurrent transaction updated',
+      'Close',
+    );
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.updateRecurrentTransactionSuccess({
+        recurrentTransaction,
+      }),
+    ]);
   });
 
-  describe('clearError$', () => {
-    it('should clear error on create success', () => {
-      const mockTransaction = createMockRecurrentTransaction();
-      const action = RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
-        recurrentTransaction: mockTransaction,
-      });
-      const completion = ErrorHandlingActions.clearBackEndError();
+  it('dispatches updateRecurrentTransactionFailure when updating fails', () => {
+    const error = new Error('Error updating recurrent transaction');
+    service.updateRecurrentTransaction.mockReturnValue(throwError(() => error));
+    const emittedActions = collect(effects.updateTransaction$);
 
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+    actions$.next(
+      RecurrentTransactionActions.updateRecurrentTransaction({
+        updateRecurrentTransactionCommand: {
+          recurrentTransactionId: 'recurrent-1',
+          amount: createMonetaryAmount(150),
+          description: 'Updated recurrent transaction',
+          recurrencePeriod: {
+            startDate: '2025-01-01',
+            frequency: RecurrenceFrequency.Daily,
+          },
+          categories: [Category.Groceries],
+        },
+      }),
+    );
 
-      expect(effects.clearError$).toBeObservable(expected);
-    });
-
-    it('should clear error on update success', () => {
-      const mockTransaction = createMockRecurrentTransaction();
-      const action = RecurrentTransactionActions.updateRecurrentTransactionSuccess({
-        recurrentTransaction: mockTransaction,
-      });
-      const completion = ErrorHandlingActions.clearBackEndError();
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.clearError$).toBeObservable(expected);
-    });
-
-    it('should clear error on delete success', () => {
-      const action = RecurrentTransactionActions.deleteRecurrentTransactionSuccess();
-      const completion = ErrorHandlingActions.clearBackEndError();
-
-      actions$ = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
-
-      expect(effects.clearError$).toBeObservable(expected);
-    });
+    expect(emittedActions).toEqual([
+      RecurrentTransactionActions.updateRecurrentTransactionFailure({ error }),
+    ]);
   });
+
+  it.each([
+    RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
+      recurrentTransaction: createRecurrentTransaction(),
+    }),
+    RecurrentTransactionActions.updateRecurrentTransactionSuccess({
+      recurrentTransaction: createRecurrentTransaction(),
+    }),
+    RecurrentTransactionActions.deleteRecurrentTransactionSuccess(),
+  ])(
+    'clears backend errors after a successful recurrent mutation: %o',
+    (action) => {
+      const emittedActions = collect(effects.clearError$);
+
+      actions$.next(action);
+
+      expect(emittedActions).toEqual([
+        ErrorHandlingActions.clearBackEndError(),
+      ]);
+    },
+  );
 });

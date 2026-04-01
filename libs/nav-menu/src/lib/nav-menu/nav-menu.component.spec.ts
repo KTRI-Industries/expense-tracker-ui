@@ -1,79 +1,68 @@
-import { NavMenuComponent } from './nav-menu.component';
-import { render, RenderResult, screen } from '@testing-library/angular';
-import { fireEvent } from '@testing-library/dom';
 import '@testing-library/jest-dom';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+import { NavMenuComponent } from './nav-menu.component';
 
 describe('NavMenuComponent', () => {
-  let component: RenderResult<NavMenuComponent>;
+  async function setup(
+    componentProperties: Partial<NavMenuComponent> = {},
+  ) {
+    const user = userEvent.setup();
 
-  it('should create NavMenuComponent', async () => {
-    component = await render(NavMenuComponent, {
-      imports: [], // Import necessary modules here
-      providers: [], // Provide any necessary dependencies here
+    const renderResult = await render(NavMenuComponent, {
+      imports: [NoopAnimationsModule],
+      providers: [provideRouter([])],
+      componentProperties,
     });
 
-    expect(component.fixture.componentInstance).toBeTruthy();
+    return { user, ...renderResult };
+  }
+
+  it('renders the username as a link to the user page for authenticated users', async () => {
+    await setup({
+      isAuthenticated: true,
+      username: 'atrifyllis',
+      tenantId: 'tenant-1',
+    });
+
+    const usernameLinks = screen.getAllByRole('link', { name: 'atrifyllis' });
+
+    expect(usernameLinks[0]).toHaveAttribute('href', '/user-page');
   });
 
-  it('should display username link if authenticated', async () => {
-    component = await setupComponent(true, 'JohnDoe', '1234');
+  it('renders login buttons when the user is not authenticated', async () => {
+    await setup({
+      isAuthenticated: false,
+      username: null,
+    });
 
-    expect(screen.getAllByText('JohnDoe').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByRole('button', { name: /login/i })).toHaveLength(1);
   });
 
-  it('should display "Login" button if not authenticated', async () => {
-    component = await setupComponent(false, null);
+  it('emits login when a login button is clicked', async () => {
+    const { fixture, user } = await setup({
+      isAuthenticated: false,
+      username: null,
+    });
+    const loginSpy = jest.spyOn(fixture.componentInstance.login, 'emit');
 
-    expect(screen.getAllByText('login')[0]).toBeInTheDocument();
+    await user.click(screen.getAllByRole('button', { name: /login/i })[0]);
+
+    expect(loginSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should emit login event when "Login" button is clicked', async () => {
-    component = await setupComponent(false, null);
-    const loginSpy = jest.spyOn(component.fixture.componentInstance, 'onLogin');
+  it('emits logout when a logout button is clicked', async () => {
+    const { fixture, user } = await setup({
+      isAuthenticated: true,
+      username: 'JohnDoe',
+      tenantId: 'tenant-1',
+    });
+    const logoutSpy = jest.spyOn(fixture.componentInstance.logout, 'emit');
 
-    fireEvent.click(screen.getAllByText('login')[0]); // two buttons with same text because of sidenav
+    await user.click(screen.getAllByRole('button', { name: /logout/i })[0]);
 
-    expect(loginSpy).toHaveBeenCalled();
-  });
-
-  it('should emit logout event when logout button is clicked', async () => {
-    component = await setupComponent(true, null, '1234');
-    const logoutSpy = jest.spyOn(
-      component.fixture.componentInstance,
-      'onLogout',
-    );
-
-    const logoutButtons = screen.getAllByRole('button', { name: '' });
-    // Find the logout button by data-cy attribute
-    const logoutButton = logoutButtons.find(
-      (el) => el.getAttribute('data-cy') === 'logout-button',
-    );
-    fireEvent.click(logoutButton!);
-
-    expect(logoutSpy).toHaveBeenCalled();
-  });
-
-  it('should display username as link to user page when authenticated', async () => {
-    component = await setupComponent(true, 'atrifyllis', '1234');
-
-    const links = screen.getAllByRole('link', { name: 'atrifyllis' });
-    expect(links.length).toBeGreaterThanOrEqual(1);
-    expect(links[0]).toHaveAttribute('href', '/user-page');
+    expect(logoutSpy).toHaveBeenCalledTimes(1);
   });
 });
-
-async function setupComponent(
-  isAuthenticated: boolean,
-  username: string | null,
-  tenantId?: string,
-) {
-  return await render(NavMenuComponent, {
-    imports: [], // Import necessary modules here
-    providers: [], // Provide any necessary dependencies here
-    componentProperties: {
-      isAuthenticated,
-      username,
-      tenantId,
-    },
-  });
-}

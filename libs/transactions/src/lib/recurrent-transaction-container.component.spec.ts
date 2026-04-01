@@ -1,91 +1,51 @@
-import { render, RenderResult } from '@testing-library/angular';
-import { RecurrentTransactionContainerComponent } from './recurrent-transaction-container.component';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ActivatedRoute } from '@angular/router';
-
-import { selectCurrentRecurrentTransaction } from './+state/recurrent-transactions.selectors';
-import { TestBed } from '@angular/core/testing';
-import { FormlyModule } from '@ngx-formly/core';
-
-import { provideEnvironmentNgxMask } from 'ngx-mask';
-import { FormlyMaterialModule } from '@ngx-formly/material';
-import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { By } from '@angular/platform-browser';
+import { render } from '@testing-library/angular';
+import { of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Category, RecurrenceFrequency } from '@expense-tracker-ui/shared/api';
 import {
-  AmountInputComponent,
-  ChipsComponent,
-} from '@expense-tracker-ui/shared/formly';
-import { RecurrenceFrequency } from '@expense-tracker-ui/shared/api';
+  createAppFormlyTestingImports,
+  createAppFormlyTestingProviders,
+} from '@expense-tracker-ui/testing/formly';
+import { RecurrentTransactionContainerComponent } from './recurrent-transaction-container.component';
+import { RecurrentTransactionComponent } from './recurrent-transaction.component';
 import { RecurrentTransactionActions } from './+state/transactions.actions';
-import { take } from 'rxjs';
+import { selectCurrentRecurrentTransaction } from './+state/recurrent-transactions.selectors';
 
 describe('RecurrentTransactionContainerComponent', () => {
-  let component: RenderResult<RecurrentTransactionContainerComponent>;
-  let store: MockStore;
+  const selectedTransaction = {
+    recurrentTransactionId: '123',
+    amount: { amount: -100, currency: 'USD' },
+    description: 'Test recurrent transaction',
+    categories: [Category.Bill],
+    recurrencePeriod: {
+      startDate: '2022-01-01',
+      endDate: '2022-12-31',
+      frequency: 'MONTHLY',
+    },
+  };
 
-  const setup = async (routeValue: string | null) => {
-    component = await render(RecurrentTransactionContainerComponent, {
-      imports: [
-        FormlyMaterialModule,
-        FormlyMatDatepickerModule,
-        FormlyModule.forRoot({
-          types: [
-            {
-              name: 'chips',
-              component: ChipsComponent,
-              defaultOptions: {
-                defaultValue: [],
-              },
-              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
-            },
-            {
-              name: 'amount-input',
-              component: AmountInputComponent,
-              wrappers: ['form-field'], // wraps custom field with material form field to show validation errors
-            },
-          ],
-          validationMessages: [
-            { name: 'required', message: 'This field is required' },
-          ],
-        }),
-      ],
+  async function setup(routeValue: string | null) {
+    const store = {
+      dispatch: jest.fn(),
+      select: jest.fn((selector: unknown) => {
+        if (selector === selectCurrentRecurrentTransaction) {
+          return of(selectedTransaction);
+        }
+
+        return of(undefined);
+      }),
+    };
+
+    const renderResult = await render(RecurrentTransactionContainerComponent, {
+      imports: [...createAppFormlyTestingImports()],
       providers: [
-        provideMomentDateAdapter(
-          {
-            parse: {
-              dateInput: 'DD/MM/YYYY',
-            },
-            display: {
-              dateInput: 'DD/MM/YYYY',
-              monthYearLabel: 'MMMM YYYY',
-              dateA11yLabel: 'LL',
-              monthYearA11yLabel: 'MMMM YYYY',
-            },
-          },
-          { useUtc: true },
-        ),
-        provideEnvironmentNgxMask({
-          decimalMarker: ',',
-          thousandSeparator: '.',
-        }),
-        provideMockStore({
-          selectors: [
-            {
-              selector: selectCurrentRecurrentTransaction,
-              value: {
-                recurrentTransactionId: '123',
-                amount: { amount: 100, currency: 'USD' },
-                description: 'Test',
-                categories: ['bills'],
-                recurrencePeriod: {
-                  startDate: '2022-01-01',
-                  endDate: '2022-12-31',
-                  frequency: 'MONTHLY',
-                },
-              },
-            },
-          ],
-        }),
+        ...createAppFormlyTestingProviders(),
+        {
+          provide: Store,
+          useValue: store,
+        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -98,31 +58,35 @@ describe('RecurrentTransactionContainerComponent', () => {
         },
       ],
     });
-    store = TestBed.inject(MockStore);
-    store.dispatch = jest.fn();
-    return { dispatchSpy: store.dispatch };
-  };
 
-  // TODO: during ngOnInit dispatch method of store has not been mocked yet so we use scannedActions$
-  it('should load recurrent transaction if id is present in route', async () => {
-    await setup('123');
-    store.scannedActions$.pipe(take(1)).subscribe((action) => {
-      expect(action).toEqual(
-        RecurrentTransactionActions.loadRecurrentTransaction({
-          recurrentTransactionId: '123',
-        }),
-      );
-    });
+    const childComponent =
+      renderResult.fixture.debugElement.query(
+        By.directive(RecurrentTransactionComponent),
+      ).componentInstance as RecurrentTransactionComponent;
+
+    return { childComponent, store };
+  }
+
+  it('dispatches loadRecurrentTransaction during initial render when the route contains an id', async () => {
+    const { store } = await setup('123');
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      RecurrentTransactionActions.loadRecurrentTransaction({
+        recurrentTransactionId: '123',
+      }),
+    );
   });
 
-  it('should not load recurrent transaction if id is not present in route', async () => {
-    const { dispatchSpy } = await setup(null);
-    expect(dispatchSpy).not.toHaveBeenCalled();
+  it('does not dispatch loadRecurrentTransaction when the route has no id', async () => {
+    const { store } = await setup(null);
+
+    expect(store.dispatch).not.toHaveBeenCalled();
   });
 
-  it('should dispatch createNewRecurrentTransaction action on create', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onCreate({
+  it('dispatches the mapped create action when the child emits create', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.create.emit({
       txType: 'EXPENSE',
       amount: { amount: 100, currency: 'USD' },
       categories: ['bills'],
@@ -133,12 +97,34 @@ describe('RecurrentTransactionContainerComponent', () => {
         frequency: RecurrenceFrequency.Monthly,
       },
     });
-    expect(dispatchSpy).toHaveBeenCalled();
+
+    const dispatchedAction = store.dispatch.mock.calls[
+      store.dispatch.mock.calls.length - 1
+    ]?.[0] as {
+      type: string;
+      recurrentTransactionCommand: Record<string, unknown>;
+    };
+
+    expect(dispatchedAction.type).toBe(
+      RecurrentTransactionActions.createNewRecurrentTransaction.type,
+    );
+    expect(dispatchedAction.recurrentTransactionCommand).toMatchObject({
+      txType: 'EXPENSE',
+      amount: { amount: -100, currency: 'USD' },
+      categories: [Category.Bill],
+      description: 'Test',
+      recurrencePeriod: {
+        startDate: '2022-01-01',
+        endDate: '2022-12-31',
+        frequency: RecurrenceFrequency.Monthly,
+      },
+    });
   });
 
-  it('should dispatch updateRecurrentTransaction action on update', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onUpdate({
+  it('dispatches the mapped update action when the child emits update', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.update.emit({
       txType: 'EXPENSE',
       amount: { amount: 100, currency: 'USD' },
       categories: ['bills'],
@@ -150,13 +136,38 @@ describe('RecurrentTransactionContainerComponent', () => {
       },
       recurrentTxId: '123',
     });
-    expect(dispatchSpy).toHaveBeenCalled();
+
+    const dispatchedAction = store.dispatch.mock.calls[
+      store.dispatch.mock.calls.length - 1
+    ]?.[0] as {
+      type: string;
+      updateRecurrentTransactionCommand: Record<string, unknown>;
+    };
+
+    expect(dispatchedAction.type).toBe(
+      RecurrentTransactionActions.updateRecurrentTransaction.type,
+    );
+    expect(dispatchedAction.updateRecurrentTransactionCommand).toMatchObject({
+      txType: 'EXPENSE',
+      amount: { amount: -100, currency: 'USD' },
+      categories: [Category.Bill],
+      description: 'Test',
+      recurrencePeriod: {
+        startDate: '2022-01-01',
+        endDate: '2022-12-31',
+        frequency: RecurrenceFrequency.Monthly,
+      },
+      recurrentTransactionId: '123',
+      recurrentTxId: '123',
+    });
   });
 
-  it('should dispatch deleteRecurrentTransaction action on delete', async () => {
-    const { dispatchSpy } = await setup('123');
-    component.fixture.componentInstance.onDelete('123');
-    expect(dispatchSpy).toHaveBeenCalledWith(
+  it('dispatches deleteRecurrentTransaction when the child emits delete', async () => {
+    const { childComponent, store } = await setup(null);
+
+    childComponent.delete.emit('123');
+
+    expect(store.dispatch).toHaveBeenCalledWith(
       RecurrentTransactionActions.deleteRecurrentTransaction({
         recurrentTransactionId: '123',
       }),
