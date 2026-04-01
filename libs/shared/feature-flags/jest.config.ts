@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-feature-flags',
   preset: '../../../jest.preset.js',

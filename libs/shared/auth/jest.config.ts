@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-auth',
   preset: '../../../jest.preset.js',

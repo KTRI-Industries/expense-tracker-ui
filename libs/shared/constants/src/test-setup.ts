@@ -1,3 +1,1 @@
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
-
-setupZoneTestEnv();
+import '@expense-tracker-ui/testing/setup-zone-test-env';

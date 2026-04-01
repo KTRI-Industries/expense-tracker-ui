@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'nav-menu',
   preset: '../../jest.preset.js',

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'formly',
   preset: '../../../jest.preset.js',

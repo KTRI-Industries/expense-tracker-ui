@@ -1,0 +1,7 @@
+{
+  "name": "testing-formly",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/testing/formly/src",
+  "projectType": "library",
+  "tags": []
+}

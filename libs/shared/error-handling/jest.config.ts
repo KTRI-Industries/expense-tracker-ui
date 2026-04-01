@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-error-handling',
   preset: '../../../jest.preset.js',
