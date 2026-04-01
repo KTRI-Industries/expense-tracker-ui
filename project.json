@@ -80,6 +80,9 @@
         "tsConfig": "tsconfig.spec.json"
       }
     },
+    "typecheck-specs": {
+      "command": "tsc -p tsconfig.spec.json --noEmit"
+    },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {

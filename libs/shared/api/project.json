@@ -10,9 +10,13 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
+        "passWithNoTests": true,
         "jestConfig": "libs/shared/api/jest.config.ts",
         "tsConfig": "libs/shared/api/tsconfig.spec.json"
       }
+    },
+    "typecheck-specs": {
+      "command": "tsc -p libs/shared/api/tsconfig.spec.json --noEmit"
     },
     "lint": {
       "executor": "@nx/eslint:lint",

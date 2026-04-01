@@ -14,6 +14,9 @@
         "tsConfig": "libs/user/tsconfig.spec.json"
       }
     },
+    "typecheck-specs": {
+      "command": "tsc -p libs/user/tsconfig.spec.json --noEmit"
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     }
