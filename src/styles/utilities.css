@@ -1,0 +1,51 @@
+/* App-wide reusable Tailwind utilities.
+   Imported by styles.css — @utility directives here are processed by Tailwind
+   exactly as if they were declared in the entry file. */
+
+@utility form-container {
+  /* Form container - used across multiple form components (4 times) */
+  @apply md:w-6/12;
+}
+@utility data-table-container {
+  /* Data table container - used in transactions and recurrent transactions (2 times) */
+  @apply lg:w-10/12 xl:w-4/5;
+}
+@utility table-cell-text {
+  /* Text wrapping for table cells - used in multiple table components */
+  @apply max-w-[250px] whitespace-normal wrap-break-word break-all;
+}
+@utility error-alert-header {
+  /* Error alert header - combines multiple styling utilities */
+  @apply bg-red-500 text-white font-bold rounded-t px-4 py-2;
+}
+@utility error-alert-body {
+  /* Error alert body - combines multiple styling utilities */
+  @apply border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700;
+}
+@utility nav-flex-container {
+  /* Navigation flex container - combines multiple layout utilities */
+  @apply hidden md:flex grow items-center px-3;
+}
+@utility link {
+  /* Link styling - combines hover and color utilities */
+  @apply hover:underline text-blue-600;
+}
+@utility nav-badge {
+  /* Inline count badge used next to nav buttons (e.g. pending invitations).
+     Replaces Angular Material's matBadge which uses absolute positioning and
+     escapes the toolbar bounds. This approach stays in normal flow so it
+     works correctly at any screen size without margin hacks. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem; /* Minimum width so single-digit numbers are circular */
+  height: 1.25rem;
+  padding-inline: 0.375rem; /* Extra horizontal padding for double-digit numbers */
+  margin-left: 0.375rem; /* Small gap between label text and badge */
+  border-radius: 9999px; /* Pill shape regardless of content width */
+  background-color: #7c3aed;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1; /* Prevents the badge height from growing with line-height inheritance */
+}
