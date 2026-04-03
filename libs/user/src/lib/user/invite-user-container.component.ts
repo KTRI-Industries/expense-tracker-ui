@@ -10,7 +10,6 @@ import { UserActions } from '../+state/user.actions';
     <expense-tracker-ui-invite-user-form
       (invite)="onInvite($event)"></expense-tracker-ui-invite-user-form>
   `,
-  styles: ``,
 })
 export class InviteUserContainerComponent {
   private store = inject(Store);

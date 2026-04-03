@@ -76,7 +76,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
     DashboardFilterComponent,
   ],
   templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent {
   private _transactions: PageTransactionDto | undefined;

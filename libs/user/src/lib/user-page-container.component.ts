@@ -36,6 +36,5 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
     <router-outlet></router-outlet>
   `,
-  styles: ``,
 })
 export class UserPageContainerComponent {}

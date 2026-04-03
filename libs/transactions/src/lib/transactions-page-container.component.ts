@@ -50,7 +50,6 @@ import { FeatureFlagSelectors } from '@expense-tracker-ui/shared/feature-flags';
 
     <router-outlet></router-outlet>
   `,
-  styles: ``,
 })
 export class TransactionsPageContainerComponent {
   private store = inject(Store);

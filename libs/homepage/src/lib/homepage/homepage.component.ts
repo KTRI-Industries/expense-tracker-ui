@@ -16,7 +16,6 @@ import { DashboardContainerComponent } from '@expense-tracker-ui/dashboard';
     MatCardTitle,
   ],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css',
 })
 export class HomepageComponent {
   private store = inject(Store);

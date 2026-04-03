@@ -35,7 +35,6 @@ import { MatIcon } from '@angular/material/icon';
     MatIcon,
   ],
   templateUrl: './user-page.component.html',
-  styles: ``,
 })
 export class UserPageComponent {
   @Input() tenantUsers: UserInfo[] | null = [];

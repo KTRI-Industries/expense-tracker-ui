@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TransactionActions } from './+state/transactions.actions';
 import { TransactionComponent } from './transaction.component';
@@ -28,7 +28,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
         (update)="onUpdate($event)"></expense-tracker-ui-transaction>
     }
   `,
-  styles: ``,
 })
 export class TransactionContainerComponent implements OnInit {
   private store = inject(Store);

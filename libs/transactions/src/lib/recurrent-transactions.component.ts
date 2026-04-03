@@ -72,7 +72,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
     RouterLink,
   ],
   templateUrl: './recurrent-transactions.component.html',
-  styleUrl: './transactions.component.css',
 })
 export class RecurrentTransactionsComponent {
   private _transactions: PageRecurrentTransactionDto | undefined;

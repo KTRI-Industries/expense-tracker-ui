@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserPageComponent } from './user-page.component';
 import {
@@ -23,7 +23,6 @@ import { AccountSelectors } from '@expense-tracker-ui/account';
       (delete)="onDelete($event)"
       (manageSecurity)="onManageSecurity()"></expense-tracker-ui-user-page>
   `,
-  styles: ``,
 })
 export class UsersContainerComponent implements OnInit {
   private store = inject(Store);

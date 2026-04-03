@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
@@ -20,7 +20,6 @@ import { AccountSelectors } from '../index';
       (setDefaultAccount)="onSetDefaultAccount($event)"
       (rejectInvite)="onRejectInvite($event)"></expense-tracker-ui-account-list>
   `,
-  styles: ``,
 })
 export class AccountListContainerComponent implements OnInit {
   private store = inject(Store);

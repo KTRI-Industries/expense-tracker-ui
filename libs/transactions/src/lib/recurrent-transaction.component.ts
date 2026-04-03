@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   Category,
@@ -37,7 +44,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
     ReactiveFormsModule,
   ],
   templateUrl: './recurrent-transaction.component.html',
-  styles: ``,
 })
 export class RecurrentTransactionComponent implements OnInit {
   private fb = inject(FormBuilder);

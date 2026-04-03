@@ -10,100 +10,103 @@
 
   <mat-card-content>
     @if (!!accounts && accounts.length > 0) {
-      <mat-table
-        [dataSource]="accountssDatasource || []"
-        data-cy="account-list">
-        <ng-container matColumnDef="mainUserEmail">
-          <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
-          <mat-cell
-            *matCellDef="let element"
-            data-label="Owner"
-            data-cy="account-owner-cell">
-            <!-- flex-col: elements are on a column and items-end: elements are aligned on the right
+      <!-- responsive-card-table: transforms mat-table into stacked cards on screens < 940px -->
+      <div class="responsive-card-table">
+        <mat-table
+          [dataSource]="accountssDatasource || []"
+          data-cy="account-list">
+          <ng-container matColumnDef="mainUserEmail">
+            <mat-header-cell *matHeaderCellDef>Owner</mat-header-cell>
+            <mat-cell
+              *matCellDef="let element"
+              data-label="Owner"
+              data-cy="account-owner-cell">
+              <!-- flex-col: elements are on a column and items-end: elements are aligned on the right
               unless it is a big screen then lg:flex-row: elements are on a row and elements are vertically aligned middle -->
-            <div class="flex flex-col lg:flex-row items-end lg:items-center">
-              <div>{{ element.mainUserEmail }}</div>
-              @if (element.isCurrentUserOwner) {
-                <mat-chip-set aria-label="main account" class="pl-1">
-                  <mat-chip>main account</mat-chip>
-                </mat-chip-set>
-              }
-            </div>
-          </mat-cell>
-        </ng-container>
+              <div class="flex flex-col lg:flex-row items-end lg:items-center">
+                <div>{{ element.mainUserEmail }}</div>
+                @if (element.isCurrentUserOwner) {
+                  <mat-chip-set aria-label="main account" class="pl-1">
+                    <mat-chip>main account</mat-chip>
+                  </mat-chip-set>
+                }
+              </div>
+            </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="isAssociated">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-          <mat-cell
-            *matCellDef="let element"
-            data-label="Actions"
-            data-cy="account-actions-cell">
-            <div
-              class="flex flex-col lg:flex-row lg:space-x-1 lg:space-y-0 space-y-1 items-end">
-              @if (!element.isCurrentUserOwner) {
-                @if (element.isAssociated) {
+          <ng-container matColumnDef="isAssociated">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell
+              *matCellDef="let element"
+              data-label="Actions"
+              data-cy="account-actions-cell">
+              <div
+                class="flex flex-col lg:flex-row lg:space-x-1 lg:space-y-0 space-y-1 items-end">
+                @if (!element.isCurrentUserOwner) {
+                  @if (element.isAssociated) {
+                    <button
+                      class="w-fit"
+                      mat-raised-button
+                      color="warn"
+                      (click)="onLeave(element)"
+                      data-cy="leave-tenant-button">
+                      Leave tenant
+                    </button>
+                  } @else {
+                    <button
+                      class="w-fit"
+                      mat-raised-button
+                      color="primary"
+                      (click)="onAccept(element)"
+                      data-cy="associate-tenant-button">
+                      Accept invitation
+                    </button>
+                    <button
+                      class="w-fit"
+                      mat-raised-button
+                      color="warn"
+                      (click)="onReject(element)"
+                      data-cy="reject-tenant-button">
+                      Reject invitation
+                    </button>
+                  }
+                }
+                @if (
+                  currentTenantId !== element.id &&
+                  (element.isAssociated || element.isCurrentUserOwner)
+                ) {
                   <button
                     class="w-fit"
                     mat-raised-button
-                    color="warn"
-                    (click)="onLeave(element)"
-                    data-cy="leave-tenant-button">
-                    Leave tenant
-                  </button>
-                } @else {
-                  <button
-                    class="w-fit"
-                    mat-raised-button
-                    color="primary"
-                    (click)="onAccept(element)"
-                    data-cy="associate-tenant-button">
-                    Accept invitation
-                  </button>
-                  <button
-                    class="w-fit"
-                    mat-raised-button
-                    color="warn"
-                    (click)="onReject(element)"
-                    data-cy="reject-tenant-button">
-                    Reject invitation
+                    color="accent"
+                    (click)="onSwitch(element)"
+                    data-cy="switch-tenant-button">
+                    Switch to this account
                   </button>
                 }
-              }
-              @if (
-                currentTenantId !== element.id &&
-                (element.isAssociated || element.isCurrentUserOwner)
-              ) {
-                <button
-                  class="w-fit"
-                  mat-raised-button
-                  color="accent"
-                  (click)="onSwitch(element)"
-                  data-cy="switch-tenant-button">
-                  Switch to this account
-                </button>
-              }
-              @if (
-                !element.isDefault &&
-                (element.isAssociated || element.isCurrentUserOwner)
-              ) {
-                <button
-                  class="w-fit"
-                  color="primary"
-                  mat-raised-button
-                  (click)="onSetDefault(element)"
-                  data-cy="set-default-tenant-button">
-                  Set this account as default
-                </button>
-              }
-            </div>
-          </mat-cell>
-        </ng-container>
+                @if (
+                  !element.isDefault &&
+                  (element.isAssociated || element.isCurrentUserOwner)
+                ) {
+                  <button
+                    class="w-fit"
+                    color="primary"
+                    mat-raised-button
+                    (click)="onSetDefault(element)"
+                    data-cy="set-default-tenant-button">
+                    Set this account as default
+                  </button>
+                }
+              </div>
+            </mat-cell>
+          </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          data-cy="account-row"></mat-row>
-      </mat-table>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            data-cy="account-row"></mat-row>
+        </mat-table>
+      </div>
     }
   </mat-card-content>
 </mat-card>

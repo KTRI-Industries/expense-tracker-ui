@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RecurrentTransactionActions } from './+state/transactions.actions';
 import {
@@ -28,7 +28,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
         (update)="onUpdate($event)"></expense-tracker-ui-recurrent-transaction>
     }
   `,
-  styles: ``,
 })
 export class RecurrentTransactionContainerComponent implements OnInit {
   private store = inject(Store);

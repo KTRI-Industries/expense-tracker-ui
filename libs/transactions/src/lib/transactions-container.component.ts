@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TransactionActions, TransactionsSelectors } from '../index';
 import { AsyncPipe } from '@angular/common';
@@ -29,7 +29,6 @@ import { AuthActions } from '@expense-tracker-ui/shared/auth';
         "></expense-tracker-ui-transactions>
     }
   `,
-  styles: ``,
 })
 export class TransactionsContainerComponent implements OnInit {
   private store = inject(Store);

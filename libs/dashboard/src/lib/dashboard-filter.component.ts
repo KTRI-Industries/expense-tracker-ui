@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import moment from 'moment';
@@ -10,7 +10,6 @@ import { FilterRange } from './+state/dashboard.reducer';
   selector: 'expense-tracker-ui-dashboard-filter',
   imports: [ReactiveFormsModule, FormlyModule, MatAnchor],
   templateUrl: './dashboard-filter.component.html',
-  styleUrls: ['./dashboard-filter.component.css'],
 })
 export class DashboardFilterComponent {
   private fb = inject(FormBuilder);

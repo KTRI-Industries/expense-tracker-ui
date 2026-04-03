@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthActions, AuthSelectors } from '@expense-tracker-ui/shared/auth';
@@ -19,7 +19,6 @@ import { NgHttpLoaderComponent } from 'ng-http-loader';
   ],
   selector: 'expense-tracker-ui-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   private store = inject(Store);
