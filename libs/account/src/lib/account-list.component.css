@@ -1,9 +1,0 @@
-/* Reduce button size on small screens for the action buttons column.
-   This applies only to account-list action buttons, which can overflow
-   the card layout at very small viewports. */
-@media screen and (max-width: 600px) {
-  button {
-    font-size: 0.8em; /* Reduce label font size */
-    padding: 5px 10px; /* Reduce horizontal and vertical padding */
-  }
-}

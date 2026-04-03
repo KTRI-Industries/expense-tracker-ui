@@ -48,7 +48,7 @@
                 @if (!element.isCurrentUserOwner) {
                   @if (element.isAssociated) {
                     <button
-                      class="w-fit"
+                      class="w-fit text-xs sm:text-sm"
                       mat-raised-button
                       color="warn"
                       (click)="onLeave(element)"
@@ -57,7 +57,7 @@
                     </button>
                   } @else {
                     <button
-                      class="w-fit"
+                      class="w-fit text-xs sm:text-sm"
                       mat-raised-button
                       color="primary"
                       (click)="onAccept(element)"
@@ -65,7 +65,7 @@
                       Accept invitation
                     </button>
                     <button
-                      class="w-fit"
+                      class="w-fit text-xs sm:text-sm"
                       mat-raised-button
                       color="warn"
                       (click)="onReject(element)"
@@ -79,7 +79,7 @@
                   (element.isAssociated || element.isCurrentUserOwner)
                 ) {
                   <button
-                    class="w-fit"
+                    class="w-fit text-xs sm:text-sm"
                     mat-raised-button
                     color="accent"
                     (click)="onSwitch(element)"
@@ -92,7 +92,7 @@
                   (element.isAssociated || element.isCurrentUserOwner)
                 ) {
                   <button
-                    class="w-fit"
+                    class="w-fit text-xs sm:text-sm"
                     color="primary"
                     mat-raised-button
                     (click)="onSetDefault(element)"
