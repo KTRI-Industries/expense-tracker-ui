@@ -69,6 +69,12 @@
   line-height: 1; /* Prevents the badge height from growing with line-height inheritance */
 }
 
+/* Overrides Material's default toolbar height token to a more compact size.
+   Kept here (unlayered) so it isn't overridden by Material's own component styles. */
+.mat-toolbar {
+  --mat-toolbar-standard-height: 56px;
+}
+
 /*
   Responsive card-style table — on screens below the md breakpoint (768px), transforms mat-table rows
   into stacked card blocks. Each mat-cell uses its data-label attribute to show
@@ -156,10 +162,7 @@
   .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell {
     border-bottom: 1px solid #ddd;
   }
-  .responsive-card-table,
-  .mat-mdc-table,
-  .mat-mdc-row:last-child,
-  .mat-mdc-cell:last-child {
+  .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell:last-child {
     border-bottom: 0;
   }
 

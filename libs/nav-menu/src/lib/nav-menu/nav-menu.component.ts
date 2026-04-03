@@ -30,7 +30,6 @@ import { MatChip, MatChipListbox } from '@angular/material/chips';
     MatChipListbox,
   ],
   templateUrl: './nav-menu.component.html',
-  styleUrl: './nav-menu.component.css',
 })
 export class NavMenuComponent {
   @Input() username: string | null | undefined = '';
