@@ -1,13 +1,17 @@
 @for (item of items; track item.label) {
+  <!-- 3-column grid: [colour dot + label] | [amount] | [percentage] -->
   <div class="grid grid-cols-3 gap-4 items-center">
-    <!-- trick to have little circles aligned with the labels -->
+    <!-- flex items-center vertically aligns the colour dot with the label text -->
     <div class="flex items-center">
+      <!-- w-3 h-3 rounded-full renders a small coloured circle -->
       <div
         class="w-3 h-3 rounded-full"
         [style.background-color]="item.color"></div>
+      <!-- ml-3 adds a small gap between the dot and the label -->
       <div class="ml-3">{{ item.label }}</div>
     </div>
 
+    <!-- text-right font-semibold right-aligns and bolds the numeric columns -->
     <div class="text-right font-semibold">
       {{
         item.value

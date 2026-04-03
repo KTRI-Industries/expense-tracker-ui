@@ -10,7 +10,7 @@
 
   <mat-card-content>
     @if (!!accounts && accounts.length > 0) {
-      <!-- responsive-card-table: transforms mat-table into stacked cards on screens < 940px -->
+      <!-- responsive-card-table: transforms mat-table into stacked cards on screens below md (see styles.css) -->
       <div class="responsive-card-table">
         <mat-table
           [dataSource]="accountssDatasource || []"
@@ -40,6 +40,9 @@
               *matCellDef="let element"
               data-label="Actions"
               data-cy="account-actions-cell">
+              <!-- flex-col stacks buttons vertically by default; lg:flex-row puts them in a row on large screens
+                   space-y-1 adds vertical gap between stacked buttons; lg:space-y-0 removes it when in a row
+                   lg:space-x-1 adds horizontal gap between buttons when in a row; items-end right-aligns the stack -->
               <div
                 class="flex flex-col lg:flex-row lg:space-x-1 lg:space-y-0 space-y-1 items-end">
                 @if (!element.isCurrentUserOwner) {

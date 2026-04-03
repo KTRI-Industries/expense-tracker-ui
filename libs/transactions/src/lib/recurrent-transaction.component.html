@@ -6,7 +6,7 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <!--in big screens, full width form is too much so w-6/12 sets width to 50%-->
+    <!-- form-container: limits form width to 50% on medium+ screens (see styles.css) -->
     <form class="form-container" [formGroup]="transactionForm">
       <formly-form
         [form]="transactionForm"
