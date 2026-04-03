@@ -60,12 +60,11 @@
       }
       @if (!!pendingAccountInvitations && pendingAccountInvitations > 0) {
         <button
-          class="badge-low"
           mat-button
-          [matBadge]="pendingAccountInvitations"
           routerLink="/user-page/tenants"
           (click)="sidenav.close()">
           Invitations
+          <span class="nav-badge">{{ pendingAccountInvitations }}</span>
         </button>
       }
       <!-- flex-auto works together with parent class 'grow' and pushes the rest of the elements to the right (like a spacer)-->

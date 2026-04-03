@@ -12,14 +12,11 @@ import {
 import { MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { MatChip, MatChipListbox } from '@angular/material/chips';
-import { MatBadgeModule } from '@angular/material/badge';
-
 @Component({
   selector: 'expense-tracker-ui-nav-menu',
   imports: [
     CommonModule,
     MatToolbar,
-    MatBadgeModule,
     MatIcon,
     MatIconButton,
     MatTooltip,
