@@ -6,12 +6,16 @@
 @config '../tailwind.config.js';
 
 @layer utilities {
-  html {
+  html,
+  body {
+    /* height: 100% on both html and body makes mat-sidenav-container fill the full viewport.
+       mat-sidenav-content then becomes the scroll container, which allows the toolbar
+       inside it to use position: sticky correctly. */
     height: 100%;
+    margin: 0;
   }
 
   body {
-    margin: 0;
     font-family: Inter, Roboto, 'Helvetica Neue', sans-serif;
   }
 }

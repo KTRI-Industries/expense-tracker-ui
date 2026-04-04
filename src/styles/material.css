@@ -5,9 +5,23 @@
    no need for !important anywhere. */
 
 /* Overrides Material's default toolbar height token to a more compact size.
-   Kept unlayered so it isn't overridden by Material's own component styles. */
+   Background and text color override applied here (unlayered) so they win over
+   Material's component styles without needing !important. */
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+/* Angular component host elements default to display:inline with no height.
+   Setting display:block and height:100% propagates the 100vh from html/body
+   down through the Angular component tree to mat-sidenav-container, allowing
+   it to fill the viewport. mat-sidenav-content (overflow:auto) then becomes
+   the scroll container — which makes position:sticky on the toolbar work. */
+expense-tracker-ui-root,
+expense-tracker-ui-nav-menu {
+  display: block;
+  height: 100%;
 }
 
 /*
