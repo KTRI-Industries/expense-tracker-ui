@@ -10,7 +10,19 @@ module.exports = {
     '!**/e2e/**',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: 'var(--mat-sys-primary)',
+        'on-primary': 'var(--mat-sys-on-primary)',
+        secondary: 'var(--mat-sys-secondary)',
+        tertiary: 'var(--mat-sys-tertiary)',
+        error: 'var(--mat-sys-error)',
+        'on-error': 'var(--mat-sys-on-error)',
+        surface: 'var(--mat-sys-surface)',
+        'surface-variant': 'var(--mat-sys-surface-variant)',
+        'on-surface': 'var(--mat-sys-on-surface)',
+      },
+    },
   },
   plugins: [],
 };

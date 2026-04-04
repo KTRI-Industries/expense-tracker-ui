@@ -1,0 +1,59 @@
+// Angular Material custom theme (SCSS only)
+//
+// This file MUST remain .scss — it uses Angular Material's Sass mixins which
+// cannot be expressed in plain CSS. It is compiled by the Angular build pipeline
+// (via the bundled Sass compiler in @angular-devkit/build-angular) before PostCSS
+// runs. Do NOT add Tailwind directives (@utility, @layer, @import 'tailwindcss')
+// here; those belong in styles.css / styles/utilities.css.
+//
+// Why a custom theme instead of a prebuilt one?
+// Prebuilt themes (e.g. azure-blue.css) are fully compiled CSS — they cannot be
+// customised at build time. A custom define-theme() lets us set our own
+// typography tokens so Angular Material components inherit the Inter font.
+// It also emits --mat-sys-* CSS custom properties (primary, error, surface, etc.)
+// which Tailwind utilities can reference for colour consistency (see tailwind.config.js).
+
+@use '@angular/material' as mat;
+
+// Theme configuration map — passed to both define-theme() and the newer theme()
+// mixin so that both the legacy component API and the MD3 CSS-property API are
+// covered by the same settings.
+$config: (
+  color: (
+    // light / dark — "light" gives the standard white-surface appearance.
+    theme-type: light,
+    // primary palette drives buttons, links, focused inputs, tabs, etc.
+    // mat.$azure-palette = the same palette used by the azure-blue prebuilt theme.
+    primary: mat.$azure-palette,
+    // tertiary is used for complementary accent surfaces (chips, some FABs).
+    // mat.$blue-palette gives a slightly cooler complementary blue.
+    tertiary: mat.$blue-palette,
+  ),
+  typography: (
+    // brand-family applies to display/headline/title roles (large prominent text).
+    brand-family: 'Inter, Roboto, sans-serif',
+    // plain-family applies to body/label roles (body text, form labels, captions).
+    plain-family: 'Inter, Roboto, sans-serif',
+  ),
+  density: (
+    // 0 = default MD3 density. Negative values (-1, -2, -3) reduce component
+    // height for denser UIs (e.g. data-heavy admin screens).
+    scale: 0,
+  ),
+);
+
+$theme: mat.define-theme($config);
+
+html {
+  // Emits component-level CSS for every Material component using $theme.
+  @include mat.all-component-themes($theme);
+  // Emits the colour-variant override rules that power the backwards-compatible
+  // color="primary" / color="warn" / color="accent" attributes on components
+  // (e.g. mat-raised-button color="warn" → error-red background).
+  // Prebuilt themes include this automatically; custom themes must opt in.
+  @include mat.color-variants-backwards-compatibility($theme);
+  // Emits the --mat-sys-* CSS custom properties (primary, error, surface, etc.)
+  // on the html element so they cascade to the whole document. Required for
+  // Tailwind's semantic color tokens (see tailwind.config.js).
+  @include mat.theme($config);
+}
