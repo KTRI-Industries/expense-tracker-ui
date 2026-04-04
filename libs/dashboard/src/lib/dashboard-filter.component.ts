@@ -31,7 +31,7 @@ export class DashboardFilterComponent {
 
   fields: FormlyFieldConfig[] = [
     {
-      fieldGroupClassName: 'lg:flex lg:flex-row lg:space-x-4',
+      fieldGroupClassName: 'flex flex-col gap-4 lg:flex-row',
       fieldGroup: [
         {
           key: 'dateRange',
