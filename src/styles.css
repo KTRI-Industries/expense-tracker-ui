@@ -16,6 +16,14 @@
   }
 
   body {
-    font-family: Inter, Roboto, 'Helvetica Neue', sans-serif;
+    /* DM Sans: humanist sans-serif — chosen over generic Inter/Roboto for a more
+       distinctive, characterful feel that still reads cleanly at all UI sizes. */
+    font-family: 'DM Sans', system-ui, sans-serif;
+    /* Warm cream base (#F8F6F0) — intentionally off-white to feel premium, not clinical.
+       Subtle radial dot grid in forest green (5% opacity) adds editorial depth without
+       competing with content. 24px grid pitch keeps dots sparse and elegant. */
+    background-color: #f8f6f0;
+    background-image: radial-gradient(circle, rgba(27, 67, 50, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }

@@ -23,17 +23,19 @@ $config: (
     // light / dark — "light" gives the standard white-surface appearance.
     theme-type: light,
     // primary palette drives buttons, links, focused inputs, tabs, etc.
-    // mat.$azure-palette = the same palette used by the azure-blue prebuilt theme.
-    primary: mat.$azure-palette,
+    // mat.$green-palette = forest green — authoritative, trustworthy fintech feel.
+    primary: mat.$green-palette,
     // tertiary is used for complementary accent surfaces (chips, some FABs).
-    // mat.$blue-palette gives a slightly cooler complementary blue.
-    tertiary: mat.$blue-palette,
+    // mat.$orange-palette gives a warm amber contrast to the green primary.
+    tertiary: mat.$orange-palette,
   ),
   typography: (
     // brand-family applies to display/headline/title roles (large prominent text).
-    brand-family: 'Inter, Roboto, sans-serif',
+    // Fraunces: variable-weight editorial serif — distinctive, warm, memorable.
+    brand-family: 'Fraunces, Georgia, serif',
     // plain-family applies to body/label roles (body text, form labels, captions).
-    plain-family: 'Inter, Roboto, sans-serif',
+    // DM Sans: humanist sans-serif — clean, modern, highly legible at small sizes.
+    plain-family: 'DM Sans, system-ui, sans-serif',
   ),
   density: (
     // 0 = default MD3 density. Negative values (-1, -2, -3) reduce component

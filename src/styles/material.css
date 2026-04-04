@@ -4,13 +4,104 @@
    our overrides unlayered too means specificity alone decides the winner, with
    no need for !important anywhere. */
 
-/* Overrides Material's toolbar tokens.
-   Material MDC sets background via --mat-toolbar-container-background-color internally,
-   so we must override that token (not background-color directly) to change the colour. */
+/* ─── Toolbar ──────────────────────────────────────────────────────────────── */
+
+/* Toolbar base tokens — height and text colour from MD3 system. */
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px;
   --mat-toolbar-container-background-color: var(--mat-sys-primary);
   --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
+}
+
+/* Deep forest green gradient on the single-row toolbar (higher specificity than .mat-toolbar).
+   The gradient runs from dark (#1B4332) to medium (#2D6A4F) — gives the surface
+   dimensionality without being garish. background shorthand overrides the background-color
+   token set above, so no !important is needed. */
+.mat-toolbar.mat-toolbar-single-row {
+  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+  /* Hairline amber bottom border echoes the orange tertiary palette — ties brand colours together */
+  border-bottom: 2px solid rgba(234, 142, 44, 0.55);
+  /* Slightly deeper shadow to reinforce toolbar elevation over the cream page */
+  box-shadow: 0 2px 12px rgba(27, 67, 50, 0.28);
+}
+
+/* Brand title — Fraunces editorial serif, larger than nav links.
+   Uses data-cy attribute so we don't need to add a class to the template. */
+.mat-toolbar [data-cy='main-title'] {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+  /* Entrance animation: drops in from slightly above with fade */
+  animation: brand-entrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Removes default link underline from the brand anchor — styling is entirely typographic */
+.mat-toolbar [data-cy='main-title'] a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ─── Toolbar nav button hover animation ──────────────────────────────────── */
+
+/* Underline slide-in from center on hover — more refined than a background flash.
+   Requires position:relative on the button host (already set by MDC) and overflow:hidden
+   to clip the ::after element before it expands. */
+.mat-toolbar .mat-mdc-button {
+  /* Ensures the ::after pseudo-element is clipped to the button bounds */
+  overflow: hidden;
+}
+
+.mat-toolbar .mat-mdc-button::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; /* sits just above the button bottom edge, not flush */
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: rgba(234, 142, 44, 0.8); /* amber accent line */
+  border-radius: 1px;
+  transition:
+    width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mat-toolbar .mat-mdc-button:hover::after {
+  width: calc(100% - 24px); /* stops short of full width — feels more editorial */
+  left: 12px;
+}
+
+/* ─── Content area entrance ───────────────────────────────────────────────── */
+
+/* Gentle fade + rise for the sidenav content pane on initial load.
+   animation-fill-mode: both ensures opacity:0 holds before the animation fires. */
+mat-sidenav-content {
+  animation: content-entrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes brand-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes content-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Fixes the MDC outline notch rendering a right-side border through the floating label.
