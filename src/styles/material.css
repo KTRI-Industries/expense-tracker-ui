@@ -13,6 +13,13 @@
   --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
 }
 
+/* Fixes the MDC outline notch rendering a right-side border through the floating label.
+   The notch piece has border-right set which cuts across the label text — removing it
+   leaves only the gap, which is the correct outlined-field appearance. */
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+
 /* Angular component host elements default to display:inline with no height.
    Setting display:block and height:100% propagates the 100vh from html/body
    down through the Angular component tree to mat-sidenav-container, allowing
