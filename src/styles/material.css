@@ -4,13 +4,13 @@
    our overrides unlayered too means specificity alone decides the winner, with
    no need for !important anywhere. */
 
-/* Overrides Material's default toolbar height token to a more compact size.
-   Background and text color override applied here (unlayered) so they win over
-   Material's component styles without needing !important. */
+/* Overrides Material's toolbar tokens.
+   Material MDC sets background via --mat-toolbar-container-background-color internally,
+   so we must override that token (not background-color directly) to change the colour. */
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px;
-  background-color: var(--mat-sys-primary);
-  color: var(--mat-sys-on-primary);
+  --mat-toolbar-container-background-color: var(--mat-sys-primary);
+  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
 }
 
 /* Angular component host elements default to display:inline with no height.
