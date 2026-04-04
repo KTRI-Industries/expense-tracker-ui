@@ -30,6 +30,15 @@
   /* Link styling - uses Material primary color for consistency */
   @apply hover:underline text-primary;
 }
+@utility page-heading {
+  /* Reusable page-level heading — Fraunces editorial serif for visual hierarchy.
+     Applied to <h1> at the top of each feature page for consistent brand voice. */
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
 @utility nav-badge {
   /* Inline count badge used next to nav buttons (e.g. pending invitations).
      Replaces Angular Material's matBadge which uses absolute positioning and
