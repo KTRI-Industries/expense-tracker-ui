@@ -122,6 +122,28 @@ expense-tracker-ui-nav-menu {
   height: 100%;
 }
 
+/* ─── Global mat-card typography ─────────────────────────────────────────── */
+
+/* mat-card-title: override Angular Material's title-large token (which uses plain-family /
+   DM Sans) with Fraunces. Both the Angular directive selector and the MDC class are listed
+   to cover whichever the runtime uses. Source-order wins over Material's same-specificity
+   rules because our stylesheet loads after the injected component styles. */
+mat-card-title,
+.mat-mdc-card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/* mat-card-subtitle: soften with reduced opacity so it reads as supporting copy
+   without competing with the Fraunces title above it. */
+mat-card-subtitle,
+.mat-mdc-card-subtitle {
+  opacity: 0.65;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
 /* ─── Dashboard KPI cards ─────────────────────────────────────────────────── */
 
 /* Base KPI card: left accent border + lift-on-hover with a forest-green shadow */
@@ -215,7 +237,8 @@ expense-tracker-ui-nav-menu {
 }
 .responsive-card-table .mat-mdc-row:hover {
   cursor: pointer;
-  background-color: #f5f5f5;
+  /* Forest-green tint at 4% opacity — warmer than the generic #f5f5f5, ties to the palette */
+  background-color: rgba(27, 67, 50, 0.04);
 }
 
 @media (max-width: theme(--breakpoint-md)) {
