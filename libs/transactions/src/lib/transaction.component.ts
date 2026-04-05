@@ -37,7 +37,7 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
     MatFormFieldModule,
     MatInputModule,
     MatButton,
-    JsonPipe,
+
   ],
 })
 export class TransactionComponent implements OnInit {

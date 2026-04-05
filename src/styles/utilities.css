@@ -1,66 +1,52 @@
 /* App-wide reusable Tailwind utilities.
-   Imported by styles.css — @utility directives here are processed by Tailwind
-   exactly as if they were declared in the entry file. */
+   Imported by styles.css - @utility directives here are processed by Tailwind. */
 
 @utility form-container {
-  /* Form container — limits form width to 50% on medium+ screens.
-     Used across all Formly-based form pages (transactions, invite, etc.). */
   @apply md:w-6/12;
 }
 
 @utility data-table-container {
-  /* Data table container — prevents tables stretching full-width on large screens.
-     Applied to the wrapper div around mat-table + mat-paginator. */
   @apply lg:w-10/12 xl:w-4/5;
 }
 
 @utility table-cell-text {
-  /* Text wrapping for table cells — prevents long descriptions from blowing out column widths. */
   @apply max-w-[250px] whitespace-normal wrap-break-word break-all;
 }
 
 @utility table-card {
-  /* Soft brand-aware table card — replaces heavy Material mat-elevation-z8.
-     Uses a forest-green tinted shadow and thin border for visual containment
-     against the cream dot-grid background, with rounded corners for a premium feel. */
-  @apply rounded-lg overflow-hidden border border-[rgba(27,67,50,0.08)];
-  box-shadow: 0 1px 8px rgba(27, 67, 50, 0.07);
+  @apply rounded-lg overflow-hidden border;
+  border-color: var(--theme-card-border);
+  background-color: var(--theme-surface-shell);
+  box-shadow: 0 10px 24px var(--theme-card-shadow);
 }
 
 @utility empty-state {
-  /* Empty state placeholder — used when a list or table has no data.
-     Centered italic text with heavy transparency signals "intentionally empty"
-     rather than a broken state. */
-  @apply text-center py-8 px-4 text-on-surface/45 italic text-sm;
+  @apply text-center py-8 px-4 italic text-sm;
+  color: color-mix(in srgb, var(--app-ink-soft) 70%, transparent);
 }
 
 @utility error-alert-header {
-  /* Error alert header — uses Material error color for visual consistency
-     with form validation and global error handling. */
-  @apply bg-error text-on-error font-bold rounded-t px-4 py-2;
+  @apply text-on-error font-bold rounded-t px-4 py-2;
+  background-color: var(--mat-sys-error);
 }
 
 @utility error-alert-body {
-  /* Error alert body — border-top removed to connect with the header above. */
-  @apply border border-t-0 border-error rounded-b bg-red-100 px-4 py-3 text-error;
+  @apply border border-t-0 rounded-b px-4 py-3;
+  border-color: color-mix(in srgb, var(--mat-sys-error) 60%, white);
+  background-color: var(--app-negative-soft);
+  color: var(--mat-sys-error);
 }
 
 @utility nav-flex-container {
-  /* Navigation flex container — hidden on mobile (uses sidenav instead),
-     shown as a flex row on md+ screens alongside the toolbar brand title. */
   @apply hidden md:flex grow items-center px-3;
 }
 
 @utility link {
-  /* Inline link — Material primary green with underline on hover.
-     Used for in-text navigation (e.g. "click here", "Login"). */
-  @apply hover:underline text-primary;
+  @apply hover:underline;
+  color: var(--app-primary-strong);
 }
 
 @utility page-heading {
-  /* Page-level heading — Fraunces editorial serif for visual hierarchy.
-     Applied to the <h1> at the top of each feature page for a consistent brand voice.
-     font-optical-sizing improves rendering at display sizes. */
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
   font-weight: 600;
@@ -69,41 +55,32 @@
 }
 
 @utility nav-badge {
-  /* Inline count badge — used next to nav buttons (e.g. pending invitations).
-     Uses normal document flow instead of Angular Material's absolute-positioned
-     matBadge, so it works correctly inside the toolbar at any screen size. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.25rem;     /* circular for single digits */
+  min-width: 1.25rem;
   height: 1.25rem;
-  padding-inline: 0.375rem; /* extra padding for double digits */
-  margin-left: 0.375rem;    /* gap between button label and badge */
-  border-radius: 9999px;    /* pill at any content width */
-  background-color: var(--mat-sys-on-primary);
-  color: var(--mat-sys-primary);
+  padding-inline: 0.375rem;
+  margin-left: 0.375rem;
+  border-radius: 9999px;
+  background-color: var(--theme-badge-bg);
+  color: var(--theme-badge-text);
   font-size: 0.75rem;
   font-weight: 600;
-  line-height: 1; /* prevent height growth from inherited line-height */
+  line-height: 1;
 }
 
 @utility kpi-label {
-  /* KPI card label — all-caps small label above the big amount.
-     Muted opacity so it sets context without competing with the Fraunces number below.
-     Used on dashboard income / expense / balance / transactions cards. */
   font-size: 0.675rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--mat-sys-on-surface);
-  opacity: 0.55;
+  color: var(--app-ink-soft);
+  opacity: 0.8;
   margin-bottom: 0.375rem;
 }
 
 @utility kpi-amount {
-  /* KPI card amount — large editorial numeric display.
-     Fraunces serif gives financial figures gravitas; tight tracking (-0.02em)
-     improves optical spacing at display size. Used for all four dashboard KPI values. */
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 1.625rem;
@@ -113,32 +90,28 @@
 }
 
 @utility file-upload-zone {
-  /* Styled file upload drop zone — replaces the bare browser <input type="file">.
-     Dashed forest-green border creates the "drop here" affordance.
-     The amber hover state ties interactivity to the toolbar accent language.
-     Generous padding and centered layout make it feel purposeful, not afterthought. */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 2rem 1.5rem;
-  border: 2px dashed rgba(27, 67, 50, 0.2);
+  border: 2px dashed var(--theme-upload-border);
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
-  color: var(--mat-sys-on-surface);
-  opacity: 0.65;
+  color: var(--app-ink-soft);
+  opacity: 0.78;
   font-size: 0.85rem;
+  background-color: var(--theme-upload-bg);
   transition:
     border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Amber hover — signals interactivity without screaming */
   &:hover {
-    border-color: rgba(234, 142, 44, 0.55);
-    background-color: rgba(234, 142, 44, 0.04);
-    opacity: 0.85;
+    border-color: var(--theme-upload-hover-border);
+    background-color: var(--theme-upload-hover-bg);
+    opacity: 0.92;
   }
 }

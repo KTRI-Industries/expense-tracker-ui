@@ -1,30 +1,26 @@
-/* Tailwind v4 entry point — bootstraps the framework and imports app style partials */
+/* Tailwind v4 entry point - bootstraps the framework and imports app style partials */
 @import 'tailwindcss';
-@import './styles/utilities.css'; /* Tailwind @utility blocks — reusable app patterns  */
-@import './styles/material.css';  /* Angular Material / MDC component overrides only   */
-@import './styles/landing.css';   /* Landing page — clamp fonts, animation-delays, keyframes */
+@import './styles/themes.css';
+@import './styles/utilities.css';
+@import './styles/material.css';
+@import './styles/landing.css';
 
 @config '../tailwind.config.js';
 
 @layer utilities {
   html,
   body {
-    /* height: 100% on both html and body makes mat-sidenav-container fill the full viewport.
-       mat-sidenav-content then becomes the scroll container, which allows the toolbar
-       inside it to use position: sticky correctly. */
     height: 100%;
     margin: 0;
   }
 
   body {
-    /* DM Sans: humanist sans-serif — chosen over generic Inter/Roboto for a more
-       distinctive, characterful feel that still reads cleanly at all UI sizes. */
     font-family: 'DM Sans', system-ui, sans-serif;
-    /* Warm cream base (#F8F6F0) — intentionally off-white to feel premium, not clinical.
-       Subtle radial dot grid in forest green (5% opacity) adds editorial depth without
-       competing with content. 24px grid pitch keeps dots sparse and elegant. */
-    background-color: #f8f6f0;
-    background-image: radial-gradient(circle, rgba(27, 67, 50, 0.05) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-color: var(--theme-body-bg);
+    background-image:
+      radial-gradient(circle at top left, var(--theme-body-radial) 0, transparent 30%),
+      radial-gradient(circle, var(--theme-body-grid) 1px, transparent 1px);
+    background-size: auto, 24px 24px;
+    color: var(--app-ink);
   }
 }

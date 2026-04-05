@@ -1,42 +1,25 @@
-<!-- ─── Hero ───────────────────────────────────────────────────────────────── -->
-<!-- relative + bg-[#0d2118] + overflow-hidden replace .landing-hero CSS class -->
-<section class="relative bg-[#0d2118] overflow-hidden">
-
-  <!-- Ghosted € watermark — stays as a CSS class because clamp() font-size
-       cannot be expressed as a single Tailwind utility -->
+<section class="landing-hero relative overflow-hidden">
   <div class="landing-hero__bg-symbol" aria-hidden="true">€</div>
 
-  <!-- Thin amber gradient bar at the bottom — replaces .landing-hero__amber-bar -->
-  <!-- bg-gradient-to-r from-transparent via-[rgba(234,142,44,0.6)] to-transparent -->
   <div
     aria-hidden="true"
-    class="absolute bottom-0 left-0 right-0 h-[2px]
-           bg-gradient-to-r from-transparent via-[rgba(234,142,44,0.6)] to-transparent">
+    class="landing-hero-divider absolute bottom-0 left-0 right-0 h-[2px]">
   </div>
 
   <div class="container mx-auto px-6 md:px-12 relative z-10">
     <div class="flex items-center min-h-[92vh] py-24 gap-12">
-
-      <!-- Left: headline block — w-7/12 on desktop, full-width on mobile -->
       <div class="w-full lg:w-7/12">
-
-        <!-- .landing-eyebrow: kept as CSS class — has animation-delay + unusual
-             font-size (0.68rem) that Tailwind can't express cleanly -->
         <p class="landing-eyebrow">Personal Finance · Made Simple</p>
 
-        <!-- .landing-headline: kept as CSS class — clamp() font-size + animation-delay -->
         <h1 class="landing-headline">
           Know where<br>every euro<br>goes.
         </h1>
 
-        <!-- .landing-subhead: kept as CSS class — animation-delay + max-width: 38rem -->
         <p class="landing-subhead">
-          Track spending, understand patterns, and stay in control —
+          Track spending, understand patterns, and stay in control -
           without the spreadsheet chaos.
         </p>
 
-        <!-- CTA row: flex layout in template, button uses .landing-cta-btn for
-             its animation-delay + hover transform + box-shadow transition -->
         <div class="mt-10 flex flex-wrap items-center gap-5">
           <a
             class="landing-cta-btn"
@@ -44,115 +27,80 @@
             (click)="login.emit()">
             Sign in to your account
           </a>
-          <!-- .landing-cta-hint: kept — animation-delay -->
           <span class="landing-cta-hint">Free · No setup required</span>
         </div>
-
       </div>
 
-      <!-- Right: floating KPI preview card — hidden on mobile -->
       <div class="hidden lg:flex w-5/12 justify-end items-center">
-
-        <!-- .landing-preview-card: kept — backdrop-filter vendor prefix + animation-delay -->
         <div class="landing-preview-card">
-
-          <!-- "BALANCE THIS MONTH" micro-label — pure Tailwind, no animation -->
-          <p class="text-[0.65rem] font-bold tracking-[0.14em] uppercase
-                     text-[rgba(234,142,44,0.7)] mb-1">
+          <p class="landing-preview-label text-[0.65rem] font-bold tracking-[0.14em] uppercase mb-1">
             Balance this month
           </p>
 
-          <!-- Big amount — Fraunces at 2.4rem, Tailwind arbitrary values -->
-          <div class="font-['Fraunces',Georgia,serif] text-[2.4rem] font-bold
-                      tracking-[-0.03em] text-white mb-5">
+          <div class="landing-preview-amount font-['Fraunces',Georgia,serif] text-[2.4rem] font-bold tracking-[-0.03em] mb-5">
             € 2,841.50
           </div>
 
-          <!-- Separator — h-px + white/10 opacity -->
           <div class="h-px bg-white/10 mb-3"></div>
 
-          <!-- Income row -->
-          <div class="flex justify-between items-center text-[0.82rem] text-white/45 py-1">
+          <div class="landing-preview-muted flex justify-between items-center text-[0.82rem] py-1">
             <span>Income</span>
-            <span class="text-emerald-400">+ € 4,200.00</span>
+            <span class="landing-preview-income">+ € 4,200.00</span>
           </div>
 
-          <!-- Expenses row -->
-          <div class="flex justify-between items-center text-[0.82rem] text-white/45 py-1">
+          <div class="landing-preview-muted flex justify-between items-center text-[0.82rem] py-1">
             <span>Expenses</span>
-            <span class="text-red-400">− € 1,358.50</span>
+            <span class="landing-preview-expense">- € 1,358.50</span>
           </div>
 
-          <!-- Balance row — higher contrast, border-top separator -->
-          <div class="flex justify-between items-center text-sm font-semibold
-                      text-white/85 border-t border-white/10 mt-1 pt-3">
+          <div class="flex justify-between items-center text-sm font-semibold text-white/88 border-t border-white/10 mt-1 pt-3">
             <span>Net balance</span>
             <span>€ 2,841.50</span>
           </div>
 
-          <!-- Mini progress bar track + fill — pure Tailwind -->
           <div
             aria-hidden="true"
             class="mt-5 h-1 bg-white/10 rounded-full overflow-hidden">
-            <!-- Fill width represents expense/income ratio (~32%) -->
             <div
-              class="h-full bg-[rgba(234,142,44,0.75)] rounded-full"
+              class="landing-progress-bar h-full rounded-full"
               style="width: 32%">
             </div>
           </div>
 
-          <!-- Bar labels — tiny uppercase Tailwind -->
           <div
             aria-hidden="true"
-            class="flex justify-between mt-1 text-[0.62rem] tracking-[0.06em]
-                   uppercase text-white/25">
+            class="flex justify-between mt-1 text-[0.62rem] tracking-[0.06em] uppercase text-white/28">
             <span>Spent</span>
             <span>32%</span>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─── Features ─────────────────────────────────────────────────────────────── -->
-<!-- bg-[#f8f6f0] matches the app body cream — page feels seamless, not bolted -->
-<section class="bg-[#f8f6f0] py-20">
+<section class="landing-features py-20">
   <div class="container mx-auto px-6 md:px-12">
-
-    <!-- Section eyebrow — pure Tailwind, no animation -->
-    <p class="text-[0.68rem] font-bold tracking-[0.2em] uppercase
-               text-[rgba(27,67,50,0.45)] mb-12">
+    <p class="landing-features-eyebrow text-[0.68rem] font-bold tracking-[0.2em] uppercase mb-12">
       What you get
     </p>
 
-    <!-- Feature rows: .landing-feature-row kept in CSS for :last-child border-bottom -->
-
     <div class="landing-feature-row">
-      <!-- Ordinal — large muted number, pure Tailwind -->
       <span
         aria-hidden="true"
-        class="font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold
-               tracking-[-0.04em] leading-none text-[rgba(27,67,50,0.12)]
-               shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         01
       </span>
-      <!-- Body: flex-1 is the only class needed -->
-      <div class="flex-1">
-        <h3 class="font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold
-                   tracking-[-0.02em] text-[#0d2118] mb-2">
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Total visibility
         </h3>
-        <p class="text-[0.975rem] leading-[1.75] text-[rgba(13,33,24,0.55)] max-w-[46rem]">
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
           Every transaction, categorised and searchable. Income, expenses,
-          recurrent costs — all in one place, always current.
+          recurrent costs - all in one place, always current.
         </p>
       </div>
-      <!-- Accent icon — muted green, right-aligned -->
-      <div aria-hidden="true"
-           class="shrink-0 flex items-start pt-1 text-[rgba(27,67,50,0.3)]">
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
         <mat-icon>receipt_long</mat-icon>
       </div>
     </div>
@@ -160,23 +108,19 @@
     <div class="landing-feature-row">
       <span
         aria-hidden="true"
-        class="font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold
-               tracking-[-0.04em] leading-none text-[rgba(27,67,50,0.12)]
-               shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         02
       </span>
-      <div class="flex-1">
-        <h3 class="font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold
-                   tracking-[-0.02em] text-[#0d2118] mb-2">
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Visual analytics
         </h3>
-        <p class="text-[0.975rem] leading-[1.75] text-[rgba(13,33,24,0.55)] max-w-[46rem]">
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
           Charts that tell you something. Understand patterns by category,
-          by month, by household member — at a glance.
+          by month, by household member - at a glance.
         </p>
       </div>
-      <div aria-hidden="true"
-           class="shrink-0 flex items-start pt-1 text-[rgba(27,67,50,0.3)]">
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
         <mat-icon>insert_chart_outlined</mat-icon>
       </div>
     </div>
@@ -184,54 +128,41 @@
     <div class="landing-feature-row">
       <span
         aria-hidden="true"
-        class="font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold
-               tracking-[-0.04em] leading-none text-[rgba(27,67,50,0.12)]
-               shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         03
       </span>
-      <div class="flex-1">
-        <h3 class="font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold
-                   tracking-[-0.02em] text-[#0d2118] mb-2">
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Built for households
         </h3>
-        <p class="text-[0.975rem] leading-[1.75] text-[rgba(13,33,24,0.55)] max-w-[46rem]">
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
           Invite family members, share accounts, split costs. Personal
           finance that grows with your life, not just your solo income.
         </p>
       </div>
-      <div aria-hidden="true"
-           class="shrink-0 flex items-start pt-1 text-[rgba(27,67,50,0.3)]">
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
         <mat-icon>group</mat-icon>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ─── CTA strip ─────────────────────────────────────────────────────────────── -->
-<!-- Forest-green strip — confident close to the hero → cream → dark arc -->
-<section class="bg-[#1b4332] py-20 lg:py-24">
+<section class="landing-cta-strip py-20 lg:py-24">
   <div class="container mx-auto px-6 md:px-12">
     <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-
-      <!-- Left: headline + subtitle — headline uses .landing-cta-headline for clamp() -->
       <div>
         <h2 class="landing-cta-headline">Ready to take control?</h2>
-        <!-- Subtitle — pure Tailwind -->
-        <p class="text-base text-white/45">
+        <p class="landing-cta-strip-subtitle text-base">
           Get started in under a minute. No spreadsheets, no guesswork.
         </p>
       </div>
 
-      <!-- Right: CTA button — .landing-cta-btn for transitions,
-           --standalone modifier removes the entrance animation -->
       <a
         class="landing-cta-btn landing-cta-btn--standalone"
         routerLink=""
         (click)="login.emit()">
         Get started →
       </a>
-
     </div>
   </div>
 </section>

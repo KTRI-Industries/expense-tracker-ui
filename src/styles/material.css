@@ -1,50 +1,39 @@
 /* Angular Material component overrides.
-   Imported by styles.css — all rules here are intentionally unlayered.
-   Angular Material injects its own component styles as unlayered CSS, so keeping
-   our overrides unlayered too means specificity alone decides the winner,
-   with no !important needed anywhere.
+   Imported by styles.css - all rules here are intentionally unlayered. */
 
-   RULE: only Angular Material / MDC class selectors, Angular host element
-   selectors, pseudo-elements on Material components, and keyframes tied to
-   Material component animations belong here.
-
-   Reusable app patterns  → src/styles/utilities.css  (@utility blocks)
-   Landing page styles    → src/styles/landing.css
-   Layout / colour        → Tailwind utility classes in component templates */
-
-/* ─── Angular host elements ───────────────────────────────────────────────── */
-
-/* Component host elements default to display:inline with no height.
-   display:block + height:100% propagates the 100vh from html/body
-   down to mat-sidenav-container so it can fill the viewport.
-   mat-sidenav-content (overflow:auto) becomes the scroll container,
-   making position:sticky on the toolbar work correctly. */
 expense-tracker-ui-root,
 expense-tracker-ui-nav-menu {
   display: block;
   height: 100%;
 }
 
-/* ─── Toolbar ─────────────────────────────────────────────────────────────── */
+.mat-drawer-container,
+.mat-sidenav-container,
+mat-sidenav-content {
+  /* Material shell containers do not automatically inherit the themed page
+     background, so we pin them to the same canvas token here. */
+  background-color: var(--theme-body-bg);
+}
 
-/* MD3 height and colour tokens — set once here, consumed by all toolbar variants */
+.mat-drawer-content,
+.mat-sidenav-content {
+  color: var(--app-ink);
+}
+
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px;
-  --mat-toolbar-container-background-color: var(--mat-sys-primary);
-  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
+  --mat-toolbar-container-background-color: var(--app-ink);
+  --mat-toolbar-container-text-color: var(--theme-toolbar-text);
 }
 
-/* Deep forest-green gradient — gives the surface dimensionality.
-   background shorthand overrides the token above without !important. */
 .mat-toolbar.mat-toolbar-single-row {
-  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
-  /* Hairline amber bottom border — ties toolbar to the brand's amber accent */
-  border-bottom: 2px solid rgba(234, 142, 44, 0.55);
-  box-shadow: 0 2px 12px rgba(27, 67, 50, 0.28);
+  background:
+    linear-gradient(135deg, var(--theme-toolbar-glow) 0%, transparent 44%),
+    linear-gradient(180deg, var(--theme-toolbar-top) 0%, var(--theme-toolbar-bottom) 100%);
+  border-bottom: 2px solid var(--theme-toolbar-border);
+  box-shadow: 0 8px 20px var(--theme-toolbar-shadow);
 }
 
-/* Brand title — Fraunces editorial serif with entrance animation.
-   Targets data-cy so the template needs no extra class. */
 .mat-toolbar [data-cy='main-title'] {
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
@@ -53,13 +42,12 @@ expense-tracker-ui-nav-menu {
   letter-spacing: -0.01em;
   animation: brand-entrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .mat-toolbar [data-cy='main-title'] a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Username link — Fraunces to distinguish identity from DM Sans nav buttons.
-   Amber border-bottom on hover mirrors the nav underline, but simpler. */
 .mat-toolbar [data-cy='username-link'] {
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
@@ -72,17 +60,17 @@ expense-tracker-ui-nav-menu {
   padding-bottom: 1px;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.mat-toolbar [data-cy='username-link']:hover {
-  border-bottom-color: rgba(234, 142, 44, 0.6);
+
+.mat-toolbar [data-cy='username-link']:hover,
+.mat-toolbar [data-cy='username-link']:focus-visible {
+  border-bottom-color: var(--theme-interactive-accent);
+  outline: none;
 }
 
-/* ─── Toolbar nav button — amber underline slide-in ──────────────────────── */
-
-/* Pseudo-element approach: the underline grows from center on hover.
-   Requires overflow:hidden on the host (MDC already sets position:relative). */
 .mat-toolbar .mat-mdc-button {
   overflow: hidden;
 }
+
 .mat-toolbar .mat-mdc-button::after {
   content: '';
   position: absolute;
@@ -90,109 +78,107 @@ expense-tracker-ui-nav-menu {
   left: 50%;
   width: 0;
   height: 2px;
-  background-color: rgba(234, 142, 44, 0.8);
+  background-color: var(--theme-interactive-accent);
   border-radius: 1px;
   transition:
     width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-    left  0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.mat-toolbar .mat-mdc-button:hover::after {
-  width: calc(100% - 24px); /* stops short of full width — feels more editorial */
+
+.mat-toolbar .mat-mdc-button:hover::after,
+.mat-toolbar .mat-mdc-button:focus-visible::after {
+  width: calc(100% - 24px);
   left: 12px;
 }
 
-/* Account chip — smaller pill that reads as informational, not interactive */
+.mat-toolbar .mat-mdc-button:focus-visible {
+  outline: 2px solid var(--theme-focus-ring);
+  outline-offset: -2px;
+}
+
 .mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip {
   --mdc-chip-label-text-size: 0.75rem;
   --mdc-chip-label-text-weight: 600;
   --mdc-chip-label-text-tracking: 0.02em;
   --mdc-chip-container-height: 28px;
+  --mdc-chip-elevated-container-color: var(--theme-toolbar-chip-bg);
+  --mdc-chip-label-text-color: var(--theme-toolbar-chip-text);
 }
 
-/* ─── Sidenav & list hover ────────────────────────────────────────────────── */
+/* The account pill exposes several nested MDC elements, so the toolbar chip
+   needs explicit inner overrides to stay theme-correct across all variants. */
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip .mdc-evolution-chip__cell--primary,
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip .mdc-evolution-chip__action--primary,
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip .mdc-evolution-chip__text-label {
+  color: var(--theme-toolbar-chip-text);
+}
 
-/* Content pane entrance — gentle fade+rise on initial load */
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip .mdc-evolution-chip__action {
+  background-color: var(--theme-toolbar-chip-bg);
+}
+
 mat-sidenav-content {
   animation: content-entrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
-/* Forest-green tint on sidenav nav items — same 5% tint as table row hover */
-mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover {
-  background-color: rgba(27, 67, 50, 0.05);
-}
-
-/* Same tint for the user-page selection list */
+mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover,
 .mat-mdc-selection-list .mat-mdc-list-item:hover {
-  background-color: rgba(27, 67, 50, 0.04);
+  background-color: var(--theme-hover-soft);
 }
 
-/* ─── Global card typography ──────────────────────────────────────────────── */
-
-/* mat-card-title: both the Angular directive selector and the MDC class are
-   listed to cover whichever the runtime resolves to.
-   Source-order beats Material's same-specificity rules because our stylesheet
-   loads after the injected component styles. */
 mat-card-title,
 .mat-mdc-card-title {
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
   letter-spacing: -0.01em;
+  color: var(--app-ink);
 }
 
-/* mat-card-subtitle: soften so it reads as supporting copy, not a second title */
 mat-card-subtitle,
 .mat-mdc-card-subtitle {
-  opacity: 0.65;
+  color: var(--app-ink-soft);
+  opacity: 0.92;
   font-size: 0.875rem;
   line-height: 1.55;
 }
 
-/* ─── Card surface ────────────────────────────────────────────────────────── */
-
-/* Thin forest-green tinted border + soft shadow — more premium than Material's
-   default stark elevation. 10px radius is slightly tighter than Material's 12px. */
 .mat-mdc-card {
-  border: 1px solid rgba(27, 67, 50, 0.06);
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(27, 67, 50, 0.05);
+  background-color: var(--theme-card-bg);
+  border: 1px solid var(--theme-card-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px var(--theme-card-shadow);
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* Gentle shadow lift on hover — scoped away from KPI cards which have stronger effect */
+
 .mat-mdc-card:not(.kpi-card):hover {
-  box-shadow: 0 3px 16px rgba(27, 67, 50, 0.09);
+  box-shadow: 0 14px 30px var(--theme-card-shadow-hover);
 }
 
-/* ─── Dashboard KPI cards ─────────────────────────────────────────────────── */
-
-/* Left accent border + lift-on-hover — the border colour is set per-card below */
 .kpi-card {
   border-left: 3px solid transparent;
+  background:
+    linear-gradient(180deg, var(--theme-kpi-start) 0%, var(--theme-kpi-end) 100%);
   transition:
-    transform   0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow  0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   animation: kpi-entrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .kpi-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.13);
+  box-shadow: 0 16px 28px var(--theme-kpi-shadow);
 }
 
-/* Semantic left-border colour per card — each signals its data category */
-.kpi-card--income       { border-left-color: #15803d; }          /* green-700  */
-.kpi-card--expense      { border-left-color: #dc2626; }          /* red-600    */
-.kpi-card--balance      { border-left-color: var(--mat-sys-primary); }
-.kpi-card--transactions { border-left-color: #f59e0b; }          /* amber-500  */
+.kpi-card--income { border-left-color: var(--app-positive); }
+.kpi-card--expense { border-left-color: var(--app-negative); }
+.kpi-card--balance { border-left-color: var(--mat-sys-primary); }
+.kpi-card--transactions { border-left-color: var(--app-accent); }
 
-/* Staggered cascade: cards enter left→right with 60ms between each */
 .kpi-card:nth-child(1) { animation-delay: 0.08s; }
 .kpi-card:nth-child(2) { animation-delay: 0.14s; }
-.kpi-card:nth-child(3) { animation-delay: 0.20s; }
+.kpi-card:nth-child(3) { animation-delay: 0.2s; }
 .kpi-card:nth-child(4) { animation-delay: 0.26s; }
 
-/* ─── Dashboard chart card titles ────────────────────────────────────────── */
-
-/* Fraunces on chart card titles — editorial consistency with KPI and page headings.
-   Two selectors cover both the Angular directive and the MDC rendered class. */
 .dashboard-chart mat-card-title,
 .dashboard-chart .mat-mdc-card-title {
   font-family: 'Fraunces', Georgia, serif;
@@ -202,111 +188,107 @@ mat-card-subtitle,
   letter-spacing: -0.01em;
 }
 
-/* ─── Raised buttons ──────────────────────────────────────────────────────── */
-
-/* Primary: subtle lift on hover — same motion language as KPI cards, smaller scale */
 .mat-mdc-raised-button.mat-primary {
   letter-spacing: 0.03em;
   font-weight: 600;
   transition:
-    transform   0.18s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow  0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.mat-mdc-raised-button.mat-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(27, 67, 50, 0.22);
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Warn/destructive: red glow instead of lift — destructive actions shouldn't feel fun */
+.mat-mdc-raised-button.mat-primary:hover,
+.mat-mdc-raised-button.mat-primary:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--app-primary-strong) 22%, transparent);
+}
+
 .mat-mdc-raised-button.mat-warn {
   transition: box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.mat-mdc-raised-button.mat-warn:hover {
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2), 0 2px 8px rgba(220, 38, 38, 0.12);
+
+.mat-mdc-raised-button.mat-warn:hover,
+.mat-mdc-raised-button.mat-warn:focus-visible {
+  box-shadow: 0 0 0 2px rgba(194, 65, 45, 0.18), 0 2px 10px rgba(194, 65, 45, 0.1);
 }
 
-/* Accent ("Switch to this account"): amber warmth on hover */
-.mat-mdc-raised-button.mat-accent:hover {
-  box-shadow: 0 4px 12px rgba(234, 142, 44, 0.2);
+.mat-mdc-raised-button.mat-accent:hover,
+.mat-mdc-raised-button.mat-accent:focus-visible {
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--app-accent) 18%, transparent);
 }
 
-/* ─── Form fields ─────────────────────────────────────────────────────────── */
-
-/* MDC notch fix: border-right on the floating-label notch cuts across label text;
-   removing it leaves only the gap, which is the correct outlined-field appearance. */
 .mdc-notched-outline__notch {
   border-right: none;
 }
 
-/* Smaller body text — more refined, prevents forms from feeling chunky */
 .mat-mdc-form-field {
   font-size: 0.9rem;
 }
 
-/* Amber line ripple on focus — warm "active" signal that echoes the toolbar border.
-   Targets the MDC pseudo-element that renders the animated bottom border. */
-.mat-mdc-form-field.mat-focused .mdc-line-ripple::after {
-  border-bottom-color: rgba(234, 142, 44, 0.75);
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background-color: var(--theme-form-bg);
 }
 
-/* ─── File upload — Material icon child of the drop zone ─────────────────── */
+.mat-mdc-form-field .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-color: var(--theme-form-border);
+}
 
-/* These child selectors must live here (not in the @utility) because
-   @utility can't target children of the utility class with descendant selectors. */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--theme-form-focus) !important;
+}
+
+.mat-mdc-form-field .mdc-floating-label {
+  color: var(--theme-form-label);
+}
+
+.mat-mdc-input-element,
+.mat-mdc-select-value,
+.mat-mdc-select-arrow,
+.mat-datepicker-toggle-default-icon {
+  color: var(--theme-form-text);
+}
+
 .file-upload-zone .mat-icon {
-  /* Large cloud_upload icon anchors the drop zone visually */
   font-size: 2rem;
   width: 2rem;
   height: 2rem;
   color: var(--mat-sys-primary);
-  opacity: 0.5;
+  opacity: 0.6;
 }
+
 .file-upload-zone .file-name {
-  /* Selected filename displayed in brand green */
   font-weight: 600;
-  color: var(--mat-sys-primary);
+  color: var(--app-primary-strong);
   opacity: 1;
 }
 
-/* ─── Data table ──────────────────────────────────────────────────────────── */
-
-/*
-  Responsive card-style table — below the md breakpoint (768px), mat-table rows
-  transform into stacked card blocks. Each mat-cell reads its column name from
-  the data-label attribute (set in the template) and shows it as a bold label.
-
-  INTENTIONALLY UNLAYERED: Angular Material injects component styles as unlayered
-  CSS. Our 3-class selectors (.responsive-card-table .mat-mdc-table .mat-mdc-row)
-  beat Material's 1–2-class selectors by specificity, with no !important needed.
-*/
-
-/* Always-on: center header and data cells, green tint on row hover */
 .responsive-card-table .mat-mdc-header-cell,
 .responsive-card-table .mat-mdc-cell {
   justify-content: center;
 }
+
 .responsive-card-table .mat-mdc-row:hover {
   cursor: pointer;
-  /* 4% forest-green tint — warmer than #f5f5f5, ties hover to the palette */
-  background-color: rgba(27, 67, 50, 0.04);
+  background-color: var(--theme-table-row-hover);
 }
 
-/* Header row: forest-green tint + amber bottom accent.
-   Mirrors the toolbar gradient-to-amber-border at much subtler intensity. */
 .responsive-card-table .mat-mdc-header-row {
-  background-color: rgba(27, 67, 50, 0.05);
-  border-bottom: 2px solid rgba(234, 142, 44, 0.3);
+  background-color: var(--theme-table-header-bg);
+  border-bottom: 2px solid var(--theme-table-header-border);
 }
+
 .responsive-card-table .mat-mdc-header-cell {
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--mat-sys-primary);
-  opacity: 0.7;
+  color: var(--app-primary-strong);
+  opacity: 0.85;
 }
 
-/* Amount cells — Fraunces for financial figures; tight tracking adds gravitas */
 .responsive-card-table .mat-mdc-cell[data-label="Amount"] {
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
@@ -314,36 +296,31 @@ mat-card-subtitle,
   letter-spacing: -0.01em;
 }
 
-/* Category chips — override MDC tokens to apply forest-green brand tint */
 .responsive-card-table .mat-mdc-chip.mat-mdc-standard-chip {
-  --mdc-chip-elevated-container-color: rgba(27, 67, 50, 0.08);
-  --mdc-chip-label-text-color: var(--mat-sys-primary);
+  --mdc-chip-elevated-container-color: var(--theme-chip-bg);
+  --mdc-chip-label-text-color: var(--theme-chip-text);
   --mdc-chip-label-text-size: 0.75rem;
   --mdc-chip-label-text-weight: 500;
   --mdc-chip-label-text-tracking: 0.02em;
 }
 
-/* Paginator — refined footer caption feel: smaller text, thin top separator */
 .mat-mdc-paginator {
   font-size: 0.8rem;
-  border-top: 1px solid rgba(27, 67, 50, 0.08);
-  --mat-paginator-container-text-color: var(--mat-sys-on-surface);
-  opacity: 0.75;
+  border-top: 1px solid var(--theme-card-border);
+  --mat-paginator-container-text-color: var(--app-ink);
+  opacity: 0.78;
 }
 
-/* ─── Responsive card-table (below md) ────────────────────────────────────── */
-
 @media (max-width: theme(--breakpoint-md)) {
-  /* Remove outer table border — individual row cards provide their own boundary */
   .responsive-card-table .mat-mdc-table {
     border: 0;
     vertical-align: middle;
   }
+
   .responsive-card-table .mat-mdc-table caption {
     font-size: 1em;
   }
 
-  /* Visually hide the header row — screen readers still see it (clip technique) */
   .responsive-card-table .mat-mdc-table .mat-mdc-header-cell {
     border: 10px solid;
     clip: rect(0 0 0 0);
@@ -353,19 +330,18 @@ mat-card-subtitle,
     position: absolute;
     width: 1px;
   }
+
   .responsive-card-table .mat-mdc-table .mat-mdc-header-row {
     min-height: 0;
   }
 
-  /* Each data row becomes a card block — forest-green tint replaces generic #ddd */
   .responsive-card-table .mat-mdc-table .mat-mdc-row {
-    border-bottom: 5px solid rgba(27, 67, 50, 0.1);
+    border-bottom: 5px solid var(--theme-card-border);
     display: block;
   }
 
-  /* Each cell stacks vertically, value right-aligned */
   .responsive-card-table .mat-mdc-table .mat-mdc-cell {
-    border-bottom: 1px solid rgba(27, 67, 50, 0.1);
+    border-bottom: 1px solid var(--theme-card-border);
     display: block;
     font-size: 1em;
     text-align: right;
@@ -373,29 +349,26 @@ mat-card-subtitle,
     padding-top: 3px;
   }
 
-  /* data-label pseudo-element injects the column name as a bold left-side label */
   .responsive-card-table .mat-mdc-table .mat-mdc-cell:before {
     content: attr(data-label);
     float: left;
     font-weight: bold;
     font-size: 0.85em;
+    color: var(--app-ink-soft);
   }
 
-  /* Last cell in each card: remove bottom border — the row separator closes the card */
   .responsive-card-table .mat-mdc-table .mat-mdc-cell:last-child {
     border-bottom: 0;
   }
 
-  /* Material removes borders from last-row cells in normal layout to avoid doubling;
-     restore them in card layout where each cell is a visible sub-row separator */
   .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell {
-    border-bottom: 1px solid rgba(27, 67, 50, 0.1);
+    border-bottom: 1px solid var(--theme-card-border);
   }
+
   .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell:last-child {
     border-bottom: 0;
   }
 
-  /* First cell of each card: restore top margin and left padding */
   .responsive-card-table .mat-mdc-table .mat-mdc-cell:first-child {
     margin-top: 4%;
     padding-left: 16px;
@@ -403,19 +376,17 @@ mat-card-subtitle,
   }
 }
 
-/* ─── Keyframes ───────────────────────────────────────────────────────────── */
-
 @keyframes brand-entrance {
   from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes content-entrance {
   from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes kpi-entrance {
   from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
