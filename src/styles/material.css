@@ -328,6 +328,364 @@ mat-card-subtitle,
   letter-spacing: -0.01em;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   LANDING PAGE
+   All landing-* classes live here. Pure CSS — no JS scroll triggers.
+   Fonts: Fraunces (display) + DM Sans (body), both loaded via Google Fonts.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Hero section ────────────────────────────────────────────────────────── */
+
+/* Deep forest green — darker than the toolbar so the brand feels richly layered.
+   No stock photo. The brand colour IS the hero. */
+.landing-hero {
+  position: relative;
+  background-color: #0d2118;
+  overflow: hidden;
+}
+
+/* Massive ghosted € watermark — creates depth and signals "finance" at a glance.
+   clamp() sizes it between 20rem and 50rem so it fills the right edge on any screen.
+   Opacity is intentionally very low (2.5%) — decoration, never distraction. */
+.landing-hero__bg-symbol {
+  position: absolute;
+  right: -0.05em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(20rem, 40vw, 52rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.06em;
+}
+
+/* Thin amber gradient line at the bottom of the hero — same amber accent as the
+   toolbar border, creating vertical continuity between toolbar and hero. */
+.landing-hero__amber-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(234, 142, 44, 0.6) 30%,
+    rgba(234, 142, 44, 0.6) 70%,
+    transparent 100%
+  );
+}
+
+/* ─── Hero typography ─────────────────────────────────────────────────────── */
+
+/* Eyebrow: tiny uppercase amber label that primes the headline.
+   The amber colour (brand tertiary) ties it to the toolbar accents. */
+.landing-eyebrow {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(234, 142, 44, 0.8);
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+/* Main headline: the most important element on the page. clamp() means it
+   scales gracefully from mobile to widescreen without media queries.
+   Left-aligned (not centred) gives it editorial authority — it owns the space. */
+.landing-headline {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: clamp(3.25rem, 7.5vw, 7rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+/* Subtitle: muted white, gives the headline room to breathe above it.
+   max-width caps line length at a comfortable reading measure. */
+.landing-subhead {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.48);
+  max-width: 38rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* ─── Hero CTA ────────────────────────────────────────────────────────────── */
+
+/* Amber button — the only "warm" element in the cold hero, immediately draws
+   the eye. Dark green text on amber creates strong contrast without a border. */
+.landing-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.85rem;
+  background-color: rgba(234, 142, 44, 0.92);
+  color: #0d2118;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+.landing-cta-btn:hover {
+  background-color: rgba(234, 142, 44, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(234, 142, 44, 0.25);
+}
+
+/* Secondary hint beside the button — disappears into the background,
+   reinforces zero-friction entry point */
+.landing-cta-hint {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.3);
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* ─── Hero preview card ───────────────────────────────────────────────────── */
+
+/* Frosted glass card that previews the app's core KPI view.
+   Positioned on the right side of the hero so it doesn't compete with the text.
+   The glassmorphism effect (backdrop-filter) gives it depth against the dark hero. */
+.landing-preview-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 285px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: landing-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+/* "Balance this month" micro-label — amber, very small, sets context */
+.landing-preview-label {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(234, 142, 44, 0.7);
+  margin-bottom: 0.4rem;
+}
+
+/* The hero number — Fraunces at 2.4rem, centre-of-gravity for the card */
+.landing-preview-amount {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: 1.25rem;
+}
+
+/* Separator between the big number and the breakdown rows */
+.landing-preview-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.09);
+  margin-bottom: 0.85rem;
+}
+
+/* Each income/expense row: space-between layout, subdued text */
+.landing-preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 0.3rem 0;
+}
+
+/* Balance row has higher contrast — it's the conclusion of the breakdown */
+.landing-preview-row--balance {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  margin-top: 0.35rem;
+  padding-top: 0.7rem;
+}
+
+/* Mini progress bar: shows expense/income ratio at a glance.
+   Track is dark; fill is amber — ties to the amber accent system. */
+.landing-preview-bar-track {
+  margin-top: 1.25rem;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.landing-preview-bar-fill {
+  height: 100%;
+  background: rgba(234, 142, 44, 0.75);
+  border-radius: 999px;
+}
+
+/* Labels under the progress bar */
+.landing-preview-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Features section ────────────────────────────────────────────────────── */
+
+/* Cream background matches the app body — the page feels seamless,
+   not like sections bolted together. */
+.landing-features {
+  background-color: #f8f6f0;
+  padding: 5rem 0 4rem;
+}
+
+/* "What you get" section eyebrow — same pattern as the hero eyebrow
+   but in forest-green on cream, links the sections visually */
+.landing-section-eyebrow {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(27, 67, 50, 0.45);
+  margin-bottom: 3rem;
+}
+
+/* Feature row: number | body | icon — editorial horizontal layout.
+   Border-top on each row gives a clean magazine "rule" between items. */
+.landing-feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(27, 67, 50, 0.1);
+}
+.landing-feature-row:last-child {
+  border-bottom: 1px solid rgba(27, 67, 50, 0.1);
+}
+
+/* Large muted ordinal — purely decorative, anchors the row visually.
+   Colour at 12% opacity so it whispers, doesn't shout. */
+.landing-feature-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: rgba(27, 67, 50, 0.12);
+  flex-shrink: 0;
+  width: 5rem;
+  text-align: right;
+  padding-top: 0.2rem;
+}
+
+/* Feature body takes remaining width */
+.landing-feature-body {
+  flex: 1;
+}
+
+/* Feature title: Fraunces, editorial — large enough to anchor the row
+   without competing with the giant ordinal */
+.landing-feature-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #0d2118;
+  margin-bottom: 0.6rem;
+}
+
+/* Feature description: DM Sans body text, calm line height, muted colour */
+.landing-feature-desc {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.975rem;
+  line-height: 1.75;
+  color: rgba(13, 33, 24, 0.55);
+  max-width: 46rem;
+}
+
+/* Icon: right-aligned, small, muted — reinforces feature identity without
+   overshadowing the editorial title */
+.landing-feature-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.25rem;
+  color: rgba(27, 67, 50, 0.3);
+}
+
+/* ─── CTA strip ───────────────────────────────────────────────────────────── */
+
+/* Forest green strip — returns to brand colour for the close.
+   The page arc: dark hero → cream features → dark CTA. */
+.landing-cta-section {
+  background-color: #1b4332;
+  padding: 5.5rem 0;
+}
+
+/* CTA headline: Fraunces large, white — direct and confident */
+.landing-cta-headline {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: 0.65rem;
+}
+
+/* CTA subtitle: muted white, brief */
+.landing-cta-sub {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Standalone CTA button variant — no entrance animation, full size */
+.landing-cta-btn--standalone {
+  animation: none;
+  flex-shrink: 0;
+  padding: 0.9rem 2.25rem;
+  font-size: 0.925rem;
+}
+
+/* ─── Landing page keyframes ──────────────────────────────────────────────── */
+
+/* Shared fade-up entrance — subtle vertical movement + opacity fade.
+   Used with animation-delay on each hero child for a staggered reveal. */
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ─── Primary raised buttons — editorial lift ─────────────────────────────── */
 
 /* Primary action buttons get a subtle upward lift on hover with a forest-green

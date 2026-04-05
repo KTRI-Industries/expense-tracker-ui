@@ -1,196 +1,87 @@
-<!-- Hero: background image with dark forest-green tinted overlay -->
-<div
-  class="relative pt-16 pb-32 flex content-center items-center justify-center"
-  style="min-height: 65vh">
-  <div
-    class="absolute top-0 w-full h-full bg-center bg-cover"
-    style="background-image: url('assets/landing_page_bg_new.jpg')">
-    <!-- Forest-green tinted overlay — more branded than generic black -->
-    <span class="w-full h-full absolute opacity-80 bg-[#0d2118]"></span>
-  </div>
-  <div class="container relative mx-auto">
-    <div class="items-center flex flex-wrap">
-      <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
-        <div>
-          <!-- Fraunces at display size: editorial serif gives financial headlines gravitas -->
-          <h1
-            class="text-white font-semibold text-5xl"
-            style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.03em; line-height: 1.1;">
-            Manage Your Expenses with Ease.
-          </h1>
-          <!-- text-gray-200: was text-gray-300 which had poor contrast on the dark overlay -->
-          <p class="mt-4 text-lg text-gray-200">
-            Keep track of your spending, budget efficiently, and stay in control
-            of your finances.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Wave divider — fill matches bg-amber-50 section below so the transition is seamless -->
-  <div
-    class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
-    style="height: 70px">
-    <svg
-      class="absolute bottom-0 overflow-hidden"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="none"
-      version="1.1"
-      viewBox="0 0 2560 100"
-      x="0"
-      y="0">
-      <polygon
-        class="text-amber-50 fill-current"
-        points="2560 0 2560 100 0 100"></polygon>
-    </svg>
-  </div>
-</div>
+<!-- ─── Hero ───────────────────────────────────────────────────────────────── -->
+<!-- Dark forest-green background — pure brand colour, no stock photo.
+     The brand speaks for itself; no stock photo needed. -->
+<section class="landing-hero">
 
-<!-- Features section: warm amber-50 background, overlaps hero via -mt-24 -->
-<!-- Was bg-gray-300 — changed to bg-amber-50 to harmonise with the warm cream palette -->
-<section class="pb-20 bg-amber-50 -mt-24">
-  <div class="container mx-auto px-4">
+  <!-- Massive ghosted € watermark — decorative background depth, aria-hidden -->
+  <div class="landing-hero__bg-symbol" aria-hidden="true">€</div>
 
-    <!-- 3-up feature cards -->
-    <div class="flex flex-wrap">
+  <!-- Thin amber gradient line at the bottom — echoes the toolbar's amber border -->
+  <div class="landing-hero__amber-bar"></div>
 
-      <!-- Feature 1: Excellence — forest green icon circle (replaces off-brand red) -->
-      <div class="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-5 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-[#1b4332]">
-              <!-- emoji_events replaces fas fa-award (FontAwesome not loaded) -->
-              <mat-icon aria-hidden="true">emoji_events</mat-icon>
-            </div>
-            <h6
-              class="text-xl font-semibold"
-              style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto;">
-              Recognized for Excellence
-            </h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              Highlighting our dedication to providing top-notch expense
-              tracking solutions built around your real financial needs.
-            </p>
-          </div>
-        </div>
-      </div>
+  <div class="container mx-auto px-6 md:px-12 relative z-10">
+    <div class="flex items-center min-h-[92vh] py-24 gap-12">
 
-      <!-- Feature 2: Updates — amber icon circle (tertiary accent, contrasts the green) -->
-      <!-- Was bg-blue-400 (off-brand blue) -->
-      <div class="w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-5 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-amber-500">
-              <!-- autorenew replaces fas fa-retweet (FontAwesome not loaded) -->
-              <mat-icon aria-hidden="true">autorenew</mat-icon>
-            </div>
-            <h6
-              class="text-xl font-semibold"
-              style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto;">
-              Regular Updates
-            </h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              We update our app regularly. Visit often and discover new ways to
-              manage your expenses more effectively.
-            </p>
-          </div>
-        </div>
-      </div>
+      <!-- Left: headline block — takes 60% on desktop -->
+      <div class="w-full lg:w-7/12">
 
-      <!-- Feature 3: Security — green-700 icon circle (was bg-green-400, deepened for brand) -->
-      <div class="pt-6 w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-7 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-green-700">
-              <mat-icon aria-hidden="true">fingerprint</mat-icon>
-            </div>
-            <h6
-              class="text-xl font-semibold"
-              style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto;">
-              Verified Security
-            </h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              We ensure the security of your financial data with industry-standard
-              authentication and encryption.
-            </p>
-          </div>
-        </div>
-      </div>
+        <!-- Eyebrow: tiny amber uppercase label sets the tone before the headline -->
+        <p class="landing-eyebrow">Personal Finance · Made Simple</p>
 
-    </div>
+        <!-- Main headline: Fraunces at display size, left-aligned, huge -->
+        <h1 class="landing-headline">
+          Know where<br>every euro<br>goes.
+        </h1>
 
-    <!-- Content block: text + login left, testimonial card right -->
-    <div class="flex flex-wrap items-center mt-32">
-
-      <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
-        <!-- Icon circle: forest green tint replaces generic gray -->
-        <div
-          class="text-primary p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-[rgba(27,67,50,0.1)]">
-          <mat-icon aria-hidden="false" aria-label="User" class="material-icons text-xl">
-            person
-          </mat-icon>
-        </div>
-        <!-- Fraunces h3 — consistent with other section headings -->
-        <h3
-          class="text-3xl mb-2 font-semibold leading-normal"
-          style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em;">
-          Simplify Expense Tracking
-        </h3>
-        <p class="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
-          We make expense tracking a pleasure. No more guesswork — our guidance
-          helps you manage your finances effortlessly.
+        <!-- Subtitle: muted, gives the headline room to breathe -->
+        <p class="landing-subhead">
+          Track spending, understand patterns, and stay in control —
+          without the spreadsheet chaos.
         </p>
-        <p class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700">
-          Explore our pre-built features and customise them to suit your
-          preferences. Enable them easily with just a few clicks.
-        </p>
-        <!-- Login CTA: text-primary replaces text-blue-500 (off-brand blue) -->
-        <p class="text-xs md:text-sm text-gray-500 mt-8">
-          Already have an account?
+
+        <!-- CTA row: amber button + secondary hint text -->
+        <div class="mt-10 flex flex-wrap items-center gap-5">
           <a
-            class="link font-medium cursor-pointer"
+            class="landing-cta-btn"
             routerLink=""
             (click)="login.emit()">
-            Login
+            Sign in to your account
           </a>
-        </p>
+          <!-- Muted hint text beside the button -->
+          <span class="landing-cta-hint">Free · No setup required</span>
+        </div>
+
       </div>
 
-      <!-- Testimonial card: forest green (#1b4332) replaces off-brand bg-pink-600 -->
-      <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word w-full mb-6 shadow-lg rounded-lg bg-[#1b4332]">
-          <blockquote class="relative p-8 mb-4">
-            <!-- Wave fill must match the card background (#1b4332) -->
-            <svg
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 583 95"
-              class="absolute left-0 w-full block"
-              style="height: 95px; top: -94px">
-              <polygon
-                points="-30,95 583,95 583,65"
-                class="text-[#1b4332] fill-current"></polygon>
-            </svg>
-            <!-- Fraunces quote heading — warm white on deep green -->
-            <h4
-              class="text-xl font-bold text-white"
-              style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto;">
-              Effortless Expense Management
-            </h4>
-            <!-- text-green-100: soft light green on dark card — legible and on-palette -->
-            <p class="text-md font-light mt-2 text-green-100">
-              Stay on top of your expenses effortlessly. Our app ensures a
-              smooth financial journey, taking the complexity out of personal
-              finance.
-            </p>
-          </blockquote>
+      <!-- Right: floating KPI preview card — teases the app's core value,
+           hidden on mobile to keep the hero clean -->
+      <div class="hidden lg:flex w-5/12 justify-end items-center">
+        <div class="landing-preview-card">
+
+          <!-- Preview card header -->
+          <p class="landing-preview-label">Balance this month</p>
+          <div class="landing-preview-amount">€ 2,841.50</div>
+
+          <!-- Thin separator between amount and breakdown rows -->
+          <div class="landing-preview-divider"></div>
+
+          <!-- Breakdown rows: income / expenses / net -->
+          <div class="landing-preview-row">
+            <span>Income</span>
+            <!-- Semantic green for positive values -->
+            <span class="text-emerald-400">+ € 4,200.00</span>
+          </div>
+          <div class="landing-preview-row">
+            <span>Expenses</span>
+            <!-- Semantic red for negative values -->
+            <span class="text-red-400">− € 1,358.50</span>
+          </div>
+          <!-- Balance row — slightly brighter, bolder — the key figure -->
+          <div class="landing-preview-row landing-preview-row--balance">
+            <span>Net balance</span>
+            <span>€ 2,841.50</span>
+          </div>
+
+          <!-- Inline stat bar — purely decorative, gives a "chart" feeling -->
+          <div class="landing-preview-bar-track" aria-hidden="true">
+            <!-- Width represents expense/income ratio (~32%) -->
+            <div class="landing-preview-bar-fill" style="width: 32%"></div>
+          </div>
+          <div class="landing-preview-bar-labels" aria-hidden="true">
+            <span>Spent</span>
+            <span>32%</span>
+          </div>
+
         </div>
       </div>
 
@@ -198,95 +89,86 @@
   </div>
 </section>
 
-<!-- Feature detail section: white background, image left, feature list right -->
-<section class="relative py-20">
-  <!-- Wave divider: white fill — connects to the white section background -->
-  <div
-    class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
-    style="height: 80px">
-    <svg
-      class="absolute bottom-0 overflow-hidden"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="none"
-      version="1.1"
-      viewBox="0 0 2560 100"
-      x="0"
-      y="0">
-      <polygon
-        class="text-white fill-current"
-        points="2560 0 2560 100 0 100"></polygon>
-    </svg>
+<!-- ─── Features ─────────────────────────────────────────────────────────────── -->
+<!-- Cream background — matches app body. Numbered editorial rows feel like a
+     magazine feature spread rather than generic icon cards. -->
+<section class="landing-features">
+  <div class="container mx-auto px-6 md:px-12">
+
+    <!-- Section eyebrow -->
+    <p class="landing-section-eyebrow">What you get</p>
+
+    <!-- Feature row 01 -->
+    <div class="landing-feature-row">
+      <!-- Large muted ordinal — purely visual, decorative -->
+      <span class="landing-feature-num" aria-hidden="true">01</span>
+      <div class="landing-feature-body">
+        <h3 class="landing-feature-title">Total visibility</h3>
+        <p class="landing-feature-desc">
+          Every transaction, categorised and searchable. Income, expenses,
+          recurrent costs — all in one place, always current.
+        </p>
+      </div>
+      <!-- Accent icon — small, tertiary, reinforces feature -->
+      <div class="landing-feature-icon" aria-hidden="true">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+    </div>
+
+    <!-- Feature row 02 -->
+    <div class="landing-feature-row">
+      <span class="landing-feature-num" aria-hidden="true">02</span>
+      <div class="landing-feature-body">
+        <h3 class="landing-feature-title">Visual analytics</h3>
+        <p class="landing-feature-desc">
+          Charts that tell you something. Understand patterns by category,
+          by month, by household member — at a glance.
+        </p>
+      </div>
+      <div class="landing-feature-icon" aria-hidden="true">
+        <mat-icon>insert_chart_outlined</mat-icon>
+      </div>
+    </div>
+
+    <!-- Feature row 03 -->
+    <div class="landing-feature-row">
+      <span class="landing-feature-num" aria-hidden="true">03</span>
+      <div class="landing-feature-body">
+        <h3 class="landing-feature-title">Built for households</h3>
+        <p class="landing-feature-desc">
+          Invite family members, share accounts, split costs. Personal
+          finance that grows with your life, not just your solo income.
+        </p>
+      </div>
+      <div class="landing-feature-icon" aria-hidden="true">
+        <mat-icon>group</mat-icon>
+      </div>
+    </div>
+
   </div>
-  <div class="container mx-auto px-4">
-    <div class="items-center flex flex-wrap">
+</section>
 
-      <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
-        <img
-          alt="Financial management"
-          class="max-w-full rounded-lg shadow-lg"
-          src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80" />
+<!-- ─── CTA strip ─────────────────────────────────────────────────────────────── -->
+<!-- Forest-green strip — confident, final call to action -->
+<section class="landing-cta-section">
+  <div class="container mx-auto px-6 md:px-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+      <!-- Left: headline copy -->
+      <div>
+        <h2 class="landing-cta-headline">Ready to take control?</h2>
+        <p class="landing-cta-sub">
+          Get started in under a minute. No spreadsheets, no guesswork.
+        </p>
       </div>
 
-      <div class="w-full md:w-5/12 ml-auto mr-auto px-4">
-        <div class="md:pr-12">
-          <!-- Icon circle: green replaces off-brand pink-300/pink-600 -->
-          <div
-            class="text-primary p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-[rgba(27,67,50,0.1)]">
-            <mat-icon aria-hidden="false" aria-label="Rocket" class="material-icons text-xl">
-              rocket
-            </mat-icon>
-          </div>
-          <!-- Fraunces h3 -->
-          <h3
-            class="text-3xl font-semibold"
-            style="font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.02em;">
-            Streamlined Financial Management
-          </h3>
-          <p class="mt-4 text-lg leading-relaxed text-gray-600">
-            Our expense tracking app provides a hassle-free solution for
-            efficient financial management. Easily customise categories and
-            transactions to suit your needs.
-          </p>
-
-          <!-- Feature list: green badges replace off-brand pink badges -->
-          <ul class="list-none mt-6">
-            <li class="py-2">
-              <div class="flex items-center">
-                <span
-                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary bg-[rgba(27,67,50,0.1)] mr-3">
-                  <mat-icon aria-hidden="false" aria-label="Security" class="material-icons text-xl">
-                    fingerprint
-                  </mat-icon>
-                </span>
-                <h4 class="text-gray-600">Secure and Reliable</h4>
-              </div>
-            </li>
-            <li class="py-2">
-              <div class="flex items-center">
-                <span
-                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary bg-[rgba(27,67,50,0.1)] mr-3">
-                  <mat-icon aria-hidden="false" aria-label="Analytics" class="material-icons text-xl">
-                    insert_chart_outlined
-                  </mat-icon>
-                </span>
-                <h4 class="text-gray-600">Visual Analytics</h4>
-              </div>
-            </li>
-            <li class="py-2">
-              <div class="flex items-center">
-                <span
-                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary bg-[rgba(27,67,50,0.1)] mr-3">
-                  <mat-icon aria-hidden="false" aria-label="Reports" class="material-icons text-xl">
-                    description
-                  </mat-icon>
-                </span>
-                <h4 class="text-gray-600">Detailed Expense Reports</h4>
-              </div>
-            </li>
-          </ul>
-
-        </div>
-      </div>
+      <!-- Right: CTA button — amber on dark green -->
+      <a
+        class="landing-cta-btn landing-cta-btn--standalone"
+        routerLink=""
+        (click)="login.emit()">
+        Get started →
+      </a>
 
     </div>
   </div>
