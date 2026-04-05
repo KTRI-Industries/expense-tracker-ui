@@ -15,7 +15,8 @@
     @if (transactions?.content?.length !== 0) {
       <!-- data-table-container: limits table width on large screens (see styles.css)
            responsive-card-table: stacks rows as cards on screens below md (see styles.css) -->
-      <div class="data-table-container responsive-card-table mat-elevation-z8">
+      <!-- table-card: softer brand-aware elevation replaces Material z8 (see utilities.css) -->
+      <div class="data-table-container responsive-card-table table-card">
         <mat-table
           [dataSource]="transactionDatasource || []"
           matSort
@@ -114,7 +115,8 @@
           (page)="onPageChange($event)"></mat-paginator>
       </div>
     } @else {
-      <p>No transactions found.</p>
+      <!-- empty-state: centered italic placeholder (see utilities.css) -->
+      <p class="empty-state">No transactions found.</p>
     }
   </mat-card-content>
 

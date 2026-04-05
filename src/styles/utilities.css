@@ -39,6 +39,21 @@
   font-size: 1.5rem;
   letter-spacing: -0.02em;
 }
+/* Table card container — replaces heavy Material z8 elevation with a softer,
+   brand-aware surface: slight forest-green tinted shadow, warm border, and
+   generous radius for that editorial card feel. */
+@utility table-card {
+  @apply rounded-lg overflow-hidden border border-[rgba(27,67,50,0.08)];
+  box-shadow: 0 1px 8px rgba(27, 67, 50, 0.07);
+}
+
+/* Empty state — used when a list or table has no data. Centered italic text
+   with heavy transparency signals "intentionally empty" rather than "broken".
+   The font-style:italic gives it an editorial aside quality. */
+@utility empty-state {
+  @apply text-center py-8 px-4 text-on-surface/45 italic text-sm;
+}
+
 @utility nav-badge {
   /* Inline count badge used next to nav buttons (e.g. pending invitations).
      Replaces Angular Material's matBadge which uses absolute positioning and

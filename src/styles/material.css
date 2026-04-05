@@ -72,6 +72,56 @@
   left: 12px;
 }
 
+/* ─── Toolbar account chip — refined pill ─────────────────────────────────── */
+
+/* The "Account in use" chip in the toolbar gets smaller, tighter text to avoid
+   competing with the nav buttons. DM Sans at 0.75rem with slight tracking
+   gives it a badge-like quality — informational, not interactive. */
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip {
+  --mdc-chip-label-text-size: 0.75rem;
+  --mdc-chip-label-text-weight: 600;
+  --mdc-chip-label-text-tracking: 0.02em;
+  --mdc-chip-container-height: 28px;
+}
+
+/* ─── Username link — editorial serif treatment ───────────────────────────── */
+
+/* The username in the toolbar uses Fraunces to stand out from the DM Sans nav
+   buttons — it's the user's identity, so it deserves editorial distinction.
+   The amber bottom-border on hover mirrors the nav button underline animation
+   but in a simpler, static form (suits a non-navigational element). */
+.mat-toolbar [data-cy='username-link'] {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 1px;
+}
+.mat-toolbar [data-cy='username-link']:hover {
+  border-bottom-color: rgba(234, 142, 44, 0.6);
+}
+
+/* ─── Sidenav list items — warm hover ─────────────────────────────────────── */
+
+/* Sidenav hover uses the same forest-green tint as table rows (4-6% opacity)
+   for consistency. The brand colour seeps through every interactive surface. */
+mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover {
+  background-color: rgba(27, 67, 50, 0.05);
+}
+
+/* ─── User page selection list — green hover ──────────────────────────────── */
+
+/* Selection list items on the user page get the same forest-green hover tint.
+   Keeps the interactive surfaces consistent across the entire app. */
+.mat-mdc-selection-list .mat-mdc-list-item:hover {
+  background-color: rgba(27, 67, 50, 0.04);
+}
+
 /* ─── Content area entrance ───────────────────────────────────────────────── */
 
 /* Gentle fade + rise for the sidenav content pane on initial load.
@@ -102,6 +152,68 @@ mat-sidenav-content {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ─── Form field focus accent — amber underline ───────────────────────────── */
+
+/* When a text field is focused, the MDC line ripple (bottom border) changes to
+   amber instead of the default primary green. This creates a warm "active input"
+   signal that matches the toolbar's amber accents — a subtle but distinctive
+   touch that ties form interactions to the brand language. */
+.mat-mdc-form-field.mat-focused .mdc-line-ripple::after {
+  border-bottom-color: rgba(234, 142, 44, 0.75);
+}
+
+/* ─── Form field label sizing ─────────────────────────────────────────────── */
+
+/* Slightly smaller form field text for a more refined, editorial feel.
+   DM Sans at 0.9rem reads well and prevents forms from feeling chunky. */
+.mat-mdc-form-field {
+  font-size: 0.9rem;
+}
+
+/* ─── File upload drop zone ───────────────────────────────────────────────── */
+
+/* Styled drop zone replaces the bare <input type="file">. Dashed border in
+   brand green creates a clear "drop here" affordance. The amber hover state
+   signals interactivity and ties to the amber accent language. The generous
+   padding and centered layout make the zone feel intentional, not afterthought. */
+.file-upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 1.5rem;
+  border: 2px dashed rgba(27, 67, 50, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  color: var(--mat-sys-on-surface);
+  opacity: 0.65;
+  font-size: 0.85rem;
+}
+.file-upload-zone:hover {
+  border-color: rgba(234, 142, 44, 0.55);
+  background-color: rgba(234, 142, 44, 0.04);
+  opacity: 0.85;
+}
+/* Icon inside the drop zone — large enough to be the visual anchor */
+.file-upload-zone .mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--mat-sys-primary);
+  opacity: 0.5;
+}
+/* Filename display after file is selected */
+.file-upload-zone .file-name {
+  font-weight: 600;
+  color: var(--mat-sys-primary);
+  opacity: 1;
 }
 
 /* Fixes the MDC outline notch rendering a right-side border through the floating label.
@@ -216,6 +328,64 @@ mat-card-subtitle,
   letter-spacing: -0.01em;
 }
 
+/* ─── Primary raised buttons — editorial lift ─────────────────────────────── */
+
+/* Primary action buttons get a subtle upward lift on hover with a forest-green
+   shadow — same motion language as the KPI cards but at a smaller scale.
+   The letter-spacing and weight give the label a confident, uppercase-adjacent
+   feel without actually uppercasing (which would be too aggressive for form CTAs). */
+.mat-mdc-raised-button.mat-primary {
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  transition:
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mat-mdc-raised-button.mat-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(27, 67, 50, 0.22);
+}
+
+/* ─── Destructive buttons — danger glow ───────────────────────────────────── */
+
+/* Warn buttons don't lift (destructive actions shouldn't feel "fun"). Instead,
+   a red outline glow appears on hover — subtle alarm bell that says "careful".
+   Uses box-shadow as a fake border to avoid layout shift. */
+.mat-mdc-raised-button.mat-warn {
+  transition: box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mat-mdc-raised-button.mat-warn:hover {
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2), 0 2px 8px rgba(220, 38, 38, 0.12);
+}
+
+/* ─── Accent buttons — amber warmth ───────────────────────────────────────── */
+
+/* Accent buttons (e.g. "Switch to this account") pick up the amber tertiary
+   palette. A warm amber shadow on hover ties them to the toolbar's amber
+   accents without competing with primary green CTAs. */
+.mat-mdc-raised-button.mat-accent:hover {
+  box-shadow: 0 4px 12px rgba(234, 142, 44, 0.2);
+}
+
+/* ─── Card surfaces — warm border + soft shadow ───────────────────────────── */
+
+/* All mat-cards get a thin forest-green tinted border and softer shadow than
+   Material's default. The 10px radius feels more premium than Material's 12px
+   (slightly tighter = more refined). The border creates visual containment
+   against the cream dot-grid background. */
+.mat-mdc-card {
+  border: 1px solid rgba(27, 67, 50, 0.06);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(27, 67, 50, 0.05);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gentle shadow increase on hover for non-KPI cards — KPI cards already have
+   their own stronger hover effect, so we scope this to avoid doubling up. */
+.mat-mdc-card:not(.kpi-card):hover {
+  box-shadow: 0 3px 16px rgba(27, 67, 50, 0.09);
+}
+
 /*
   Responsive card-style table — on screens below the md breakpoint (768px), transforms mat-table rows
   into stacked card blocks. Each mat-cell uses its data-label attribute to show
@@ -229,6 +399,63 @@ mat-card-subtitle,
   and our 3-class selectors (.responsive-card-table .mat-mdc-table .mat-mdc-row)
   outrank Material's 1–2-class selectors, so no !important is needed anywhere.
 */
+
+/* ─── Table header row ────────────────────────────────────────────────────── */
+
+/* Forest-green tinted header background with amber bottom accent — mirrors the
+   toolbar's gradient-to-amber-border pattern at a much subtler intensity.
+   Uppercase micro-labels in DM Sans give column headers a "data dashboard" feel
+   without competing with the Fraunces content below. */
+.responsive-card-table .mat-mdc-header-row {
+  background-color: rgba(27, 67, 50, 0.05);
+  border-bottom: 2px solid rgba(234, 142, 44, 0.3);
+}
+
+.responsive-card-table .mat-mdc-header-cell {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mat-sys-primary);
+  opacity: 0.7;
+}
+
+/* ─── Amount cells — financial figures in Fraunces ────────────────────────── */
+
+/* Financial amounts deserve editorial gravitas — Fraunces serif with tight
+   tracking makes currency values feel authoritative, like a Bloomberg terminal
+   crossed with a luxury magazine. data-label selector targets only Amount cells. */
+.responsive-card-table .mat-mdc-cell[data-label="Amount"] {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Category chips — brand green tint ───────────────────────────────────── */
+
+/* Override Material's default purple/grey chip surface with a soft forest-green
+   tint. The chip acts as a categorical tag — green ties it to the brand while
+   staying quiet enough not to compete with the Amount column. */
+.responsive-card-table .mat-mdc-chip.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: rgba(27, 67, 50, 0.08);
+  --mdc-chip-label-text-color: var(--mat-sys-primary);
+  --mdc-chip-label-text-size: 0.75rem;
+  --mdc-chip-label-text-weight: 500;
+  --mdc-chip-label-text-tracking: 0.02em;
+}
+
+/* ─── Paginator ───────────────────────────────────────────────────────────── */
+
+/* Refine the paginator to match the editorial feel: smaller text, a thin top
+   separator in the brand colour, and reduced opacity so it reads as a quiet
+   footer caption rather than a chunky control bar. */
+.mat-mdc-paginator {
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(27, 67, 50, 0.08);
+  --mat-paginator-container-text-color: var(--mat-sys-on-surface);
+  opacity: 0.75;
+}
 
 /* Always-on: center cell content and highlight rows on hover */
 .responsive-card-table .mat-mdc-header-cell,
@@ -268,15 +495,17 @@ mat-card-subtitle,
     min-height: 0;
   }
 
-  /* Each data row becomes its own card block, separated by a visible border */
+  /* Each data row becomes its own card block, separated by a visible border.
+     Uses forest-green tint instead of generic #ddd to match the brand palette. */
   .responsive-card-table .mat-mdc-table .mat-mdc-row {
-    border-bottom: 5px solid #ddd;
+    border-bottom: 5px solid rgba(27, 67, 50, 0.1);
     display: block;
   }
 
-  /* Each cell stacks vertically and aligns its value to the right */
+  /* Each cell stacks vertically and aligns its value to the right.
+     Border uses the same forest-green tint for consistency with the row separator. */
   .responsive-card-table .mat-mdc-table .mat-mdc-cell {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgba(27, 67, 50, 0.1);
     display: block;
     font-size: 1em;
     text-align: right;
@@ -301,8 +530,9 @@ mat-card-subtitle,
      doubling the table bottom edge in normal layout. In card layout every cell is a
      visible sub-row separator, so restore the border — except on the very last cell
      where the row's own border-bottom already closes the card. */
+  /* Restore border on last-row cells — forest-green tint, matching the rest */
   .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgba(27, 67, 50, 0.1);
   }
   .responsive-card-table .mat-mdc-table .mat-mdc-row:last-child .mat-mdc-cell:last-child {
     border-bottom: 0;
