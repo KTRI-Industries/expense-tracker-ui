@@ -1,0 +1,174 @@
+/* Landing page styles.
+   Imported by styles.css after material.css and utilities.css.
+
+   RULE: only put things here that Tailwind cannot express:
+     - clamp() responsive font sizes
+     - animation-delay (staggered reveals)
+     - backdrop-filter with vendor prefix
+     - :last-child / :first-child pseudo-class borders
+     - @keyframes definitions
+
+   Everything else (layout, colour, spacing) lives in the template
+   as Tailwind utility classes. */
+
+/* ─── Ghosted € watermark ────────────────────────────────────────────────── */
+
+/* Stays in CSS because clamp() font-size can't be expressed as a single
+   Tailwind class, and the positioning + user-select combo is verbose.
+   Opacity is intentionally very low — decoration, never distraction. */
+.landing-hero__bg-symbol {
+  position: absolute;
+  right: -0.05em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(20rem, 40vw, 52rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.06em;
+}
+
+/* ─── Staggered entrance animations ──────────────────────────────────────── */
+
+/* Each hero child animates in with a different delay, creating a cascade.
+   animation-delay can't be set per-element in Tailwind without JS-style
+   arbitrary values on every element — cleaner to define named classes here. */
+
+.landing-eyebrow {
+  /* Amber micro-label — enters first, primes the headline */
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(234, 142, 44, 0.8);
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.landing-headline {
+  /* clamp() font-size + animation-delay — both require CSS */
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: clamp(3.25rem, 7.5vw, 7rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.landing-subhead {
+  /* max-width prose measure + animation-delay */
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.48);
+  max-width: 38rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* CTA button: hover transform + shadow + animation-delay.
+   All three properties together require CSS — Tailwind hover: can't combine
+   transform + box-shadow + background in a single transition declaration. */
+.landing-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.85rem;
+  background-color: rgba(234, 142, 44, 0.92);
+  color: #0d2118;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  transition:
+    background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.landing-cta-btn:hover {
+  background-color: rgba(234, 142, 44, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(234, 142, 44, 0.25);
+}
+/* Standalone variant — used in the CTA strip, no entrance animation */
+.landing-cta-btn--standalone {
+  animation: none;
+  flex-shrink: 0;
+  padding: 0.9rem 2.25rem;
+  font-size: 0.925rem;
+}
+
+.landing-cta-hint {
+  /* Muted hint beside the CTA button — animation-delay keeps it last in the cascade */
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.3);
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* ─── Hero preview card ───────────────────────────────────────────────────── */
+
+/* backdrop-filter needs a -webkit- vendor prefix that can't be expressed
+   in Tailwind's backdrop-blur utility, and the animation-delay is required
+   for the staggered cascade. */
+.landing-preview-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 285px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari / older Chrome */
+  animation: landing-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+/* ─── Feature rows ────────────────────────────────────────────────────────── */
+
+/* :last-child border requires CSS — Tailwind's last: variant adds a class
+   but would require adding it to the template which breaks the component
+   abstraction. Keeping the rule here is cleaner. */
+.landing-feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(27, 67, 50, 0.1);
+}
+.landing-feature-row:last-child {
+  border-bottom: 1px solid rgba(27, 67, 50, 0.1);
+}
+
+/* ─── CTA section headline ────────────────────────────────────────────────── */
+
+/* clamp() font-size requires CSS */
+.landing-cta-headline {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: white;
+  margin-bottom: 0.65rem;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

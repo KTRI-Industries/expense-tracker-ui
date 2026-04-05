@@ -1,7 +1,8 @@
 /* Tailwind v4 entry point — bootstraps the framework and imports app style partials */
 @import 'tailwindcss';
-@import './styles/utilities.css';
-@import './styles/material.css';
+@import './styles/utilities.css'; /* Tailwind @utility blocks — reusable app patterns  */
+@import './styles/material.css';  /* Angular Material / MDC component overrides only   */
+@import './styles/landing.css';   /* Landing page — clamp fonts, animation-delays, keyframes */
 
 @config '../tailwind.config.js';
 
