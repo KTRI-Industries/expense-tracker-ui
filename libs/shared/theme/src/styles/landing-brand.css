@@ -108,8 +108,9 @@
 .landing-feature-row {
   display: flex;
   align-items: flex-start;
-  gap: 2.5rem;
-  padding: 3rem 0;
+  gap: 1rem;
+  padding: 2rem 0;
+  flex-wrap: wrap;
   border-top: 1px solid var(--landing-feature-border);
 }
 
@@ -198,13 +199,13 @@
   color: var(--landing-cta-strip-subtitle);
 }
 
-/* Mobile feature rows intentionally wrap instead of shrinking the editorial
-   number/copy/icon trio into unreadable narrow columns. */
-@media (max-width: 767px) {
+/* Mobile-first default keeps the feature rows readable on narrow screens, then
+   the shared md breakpoint restores the wider editorial composition. */
+@media (min-width: theme(--breakpoint-md)) {
   .landing-feature-row {
-    gap: 1rem;
-    padding: 2rem 0;
-    flex-wrap: wrap;
+    gap: 2.5rem;
+    padding: 3rem 0;
+    flex-wrap: nowrap;
   }
 }
 
