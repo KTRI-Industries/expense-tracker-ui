@@ -1,0 +1,173 @@
+/* Keycloak theme styles intentionally split responsibilities:
+   shared imports keep buttons, fields, and tokens aligned with the main app,
+   while the auth-shell composition below stays local to this frontend. */
+@import 'tailwindcss';
+@import '../../../src/styles/theme.scss';
+@import '../../../libs/shared/theme/src/styles/themes.css';
+@import '../../../libs/shared/theme/src/styles/base.css';
+@import '../../../libs/shared/theme/src/styles/landing-brand.css';
+@import '../../../src/styles/material.css';
+
+@config '../../../tailwind.config.js';
+
+@layer components {
+  /* This glass shell is auth-specific and spans multiple nested surfaces, so it
+     stays in CSS rather than being rebuilt from long utility chains in the template. */
+  .et-kc-layout {
+    display: grid;
+    min-height: calc(100vh - 3rem);
+    max-width: 88rem;
+    margin: 0 auto;
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
+    border: 1px solid var(--app-border);
+    border-radius: 2rem;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, var(--theme-glass-strong), var(--theme-glass-soft)),
+      var(--app-surface);
+    box-shadow: 0 32px 80px var(--theme-elevated-shadow);
+    backdrop-filter: blur(18px);
+  }
+
+  .et-kc-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem clamp(1.5rem, 4vw, 3rem);
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, var(--theme-glass-faint), transparent 42%),
+      var(--landing-hero-bg);
+    color: var(--landing-headline);
+  }
+
+  .et-kc-hero::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      var(--landing-hero-divider),
+      transparent
+    );
+  }
+
+  .et-kc-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem clamp(1.25rem, 3vw, 2.5rem);
+    background:
+      linear-gradient(180deg, var(--theme-glass-panel-start), var(--theme-glass-panel-end)),
+      var(--app-surface);
+  }
+
+  .et-kc-theme-switcher {
+    display: inline-flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.35rem;
+    border: 1px solid var(--app-border);
+    border-radius: 999px;
+    background: var(--theme-glass-control);
+  }
+
+  .et-kc-theme-switcher button {
+    padding: 0.45rem 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--app-ink-soft);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .et-kc-theme-switcher button[aria-pressed='true'] {
+    background: var(--app-primary-strong);
+    color: var(--mat-sys-on-primary);
+    box-shadow: 0 10px 20px var(--theme-elevated-shadow);
+  }
+
+  .et-kc-card {
+    /* The card body is still a real mat-card; these rules only control auth-page
+       sizing and spacing while the shared Material theme handles the skin. */
+    width: min(100%, 34rem);
+    margin: auto 0;
+    padding: 1.75rem;
+  }
+
+
+  .et-kc-error {
+    color: var(--app-negative);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .et-kc-link {
+    color: var(--app-primary-strong);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .et-kc-link:hover,
+  .et-kc-link:focus-visible {
+    text-decoration: underline;
+  }
+
+
+  .et-kc-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.25rem 0;
+    color: var(--app-ink-soft);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .et-kc-divider::before,
+  .et-kc-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--app-border);
+  }
+
+
+  .et-kc-footer a {
+    color: var(--app-primary-strong);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .et-kc-footer a:hover,
+  .et-kc-footer a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .et-kc-locale button,
+  .et-kc-locale a {
+    color: var(--app-ink-soft);
+  }
+
+  @media (max-width: 960px) {
+    .et-kc-layout {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .et-kc-hero,
+    .et-kc-panel {
+      padding: 1.5rem;
+    }
+  }
+}
