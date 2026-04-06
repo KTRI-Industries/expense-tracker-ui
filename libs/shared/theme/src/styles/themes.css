@@ -6,6 +6,9 @@
 
 :root,
 html[data-theme='terracotta'] {
+  /* Terracotta doubles as the default/fallback theme so the app still looks
+     intentional when no runtime theme attribute has been applied yet. */
+  /* Core semantic tokens */
   --app-ink: #231914;
   --app-ink-soft: #7d6658;
   --app-ivory: #faf4ee;
@@ -19,6 +22,8 @@ html[data-theme='terracotta'] {
   --app-positive-soft: #ebf5ef;
   --app-negative: #c24a34;
   --app-negative-soft: #fcece7;
+  /* These feed runtime CSS consumers and lightweight Material overrides. The
+     full component themes are still emitted from theme.scss. */
   --mat-sys-primary: #b85b3c;
   --mat-sys-on-primary: #fff8f2;
   --mat-sys-secondary: #8c6a43;
@@ -31,6 +36,7 @@ html[data-theme='terracotta'] {
   --mat-sys-on-surface: #231914;
   --mat-sys-outline: #e4d1bf;
 
+  /* Body + chrome */
   --theme-body-radial: rgba(184, 91, 60, 0.08);
   --theme-body-grid: rgba(140, 106, 67, 0.06);
 
@@ -46,6 +52,7 @@ html[data-theme='terracotta'] {
   --theme-toolbar-chip-text: #3d2a22;
   --theme-hover-soft: rgba(184, 91, 60, 0.07);
 
+  /* Shared component surfaces */
   --theme-card-bg: #fff4ec;
   --theme-card-border: rgba(228, 209, 191, 0.95);
   --theme-card-shadow: rgba(79, 48, 34, 0.08);
@@ -81,6 +88,7 @@ html[data-theme='terracotta'] {
   --theme-glass-control: rgba(255, 255, 255, 0.78);
   --theme-elevated-shadow: rgba(79, 48, 34, 0.12);
 
+  /* Marketing/auth brand accents */
   --landing-hero-bg: #261b16;
   --landing-hero-divider: rgba(184, 91, 60, 0.74);
   --landing-hero-symbol: rgba(255, 244, 236, 0.06);
@@ -111,6 +119,7 @@ html[data-theme='terracotta'] {
 }
 
 html[data-theme='slate'] {
+  /* Core semantic tokens */
   --app-ink: #1f2937;
   --app-ink-soft: #64748b;
   --app-ivory: #f4f8fc;
@@ -124,6 +133,8 @@ html[data-theme='slate'] {
   --app-positive-soft: #ecf7ef;
   --app-negative: #dc2626;
   --app-negative-soft: #fceaea;
+  /* These feed runtime CSS consumers and lightweight Material overrides. The
+     full component themes are still emitted from theme.scss. */
   --mat-sys-primary: #2563eb;
   --mat-sys-on-primary: #f8fafc;
   --mat-sys-secondary: #3f5f86;
@@ -136,6 +147,7 @@ html[data-theme='slate'] {
   --mat-sys-on-surface: #1f2937;
   --mat-sys-outline: #d4dfec;
 
+  /* Body + chrome */
   --theme-body-radial: rgba(37, 99, 235, 0.07);
   --theme-body-grid: rgba(100, 116, 139, 0.05);
 
@@ -151,6 +163,7 @@ html[data-theme='slate'] {
   --theme-toolbar-chip-text: #1f2937;
   --theme-hover-soft: rgba(37, 99, 235, 0.06);
 
+  /* Shared component surfaces */
   --theme-card-bg: #ffffff;
   --theme-card-border: rgba(212, 223, 236, 0.96);
   --theme-card-shadow: rgba(31, 41, 55, 0.07);
@@ -186,6 +199,7 @@ html[data-theme='slate'] {
   --theme-glass-control: rgba(255, 255, 255, 0.78);
   --theme-elevated-shadow: rgba(31, 41, 55, 0.12);
 
+  /* Marketing/auth brand accents */
   --landing-hero-bg: #162132;
   --landing-hero-divider: rgba(37, 99, 235, 0.76);
   --landing-hero-symbol: rgba(255, 255, 255, 0.045);
@@ -216,6 +230,7 @@ html[data-theme='slate'] {
 }
 
 html[data-theme='navy'] {
+  /* Core semantic tokens */
   --app-ink: #18324d;
   --app-ink-soft: #627791;
   --app-ivory: #f2f7fc;
@@ -229,6 +244,8 @@ html[data-theme='navy'] {
   --app-positive-soft: #edf6ef;
   --app-negative: #c2412d;
   --app-negative-soft: #fceeea;
+  /* These feed runtime CSS consumers and lightweight Material overrides. The
+     full component themes are still emitted from theme.scss. */
   --mat-sys-primary: #315e8a;
   --mat-sys-on-primary: #f8fafc;
   --mat-sys-secondary: #4f759d;
@@ -241,6 +258,7 @@ html[data-theme='navy'] {
   --mat-sys-on-surface: #18324d;
   --mat-sys-outline: #cedbeb;
 
+  /* Body + chrome */
   --theme-body-radial: rgba(49, 94, 138, 0.08);
   --theme-body-grid: rgba(98, 119, 145, 0.05);
 
@@ -256,6 +274,7 @@ html[data-theme='navy'] {
   --theme-toolbar-chip-text: #18324d;
   --theme-hover-soft: rgba(49, 94, 138, 0.06);
 
+  /* Shared component surfaces */
   --theme-card-bg: #eef5fc;
   --theme-card-border: rgba(206, 219, 235, 0.96);
   --theme-card-shadow: rgba(24, 50, 77, 0.07);
@@ -291,6 +310,7 @@ html[data-theme='navy'] {
   --theme-glass-control: rgba(255, 255, 255, 0.78);
   --theme-elevated-shadow: rgba(24, 50, 77, 0.12);
 
+  /* Marketing/auth brand accents */
   --landing-hero-bg: #18293f;
   --landing-hero-divider: rgba(231, 111, 81, 0.76);
   --landing-hero-symbol: rgba(255, 255, 255, 0.05);

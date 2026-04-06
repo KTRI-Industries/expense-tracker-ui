@@ -8,6 +8,8 @@
 @import '../../../libs/shared/theme/src/styles/landing-brand.css';
 @import '../../../src/styles/material.css';
 
+/* Keycloak reuses the same generated Material theme + override layer as the main
+   app so mat-card/mat-form-field stay visually aligned without duplicating skinning. */
 @config '../../../tailwind.config.js';
 
 @layer components {
@@ -29,6 +31,8 @@
     backdrop-filter: blur(18px);
   }
 
+  /* Left column = branded editorial shell, right column = the actual login form.
+     Keeping this split in CSS makes the responsive two-pane layout easier to scan. */
   .et-kc-hero {
     position: relative;
     display: flex;
@@ -65,6 +69,8 @@
       var(--app-surface);
   }
 
+  /* We use plain buttons here rather than Material segmented controls because
+     this is effectively a tiny preview switcher, not a reusable form control. */
   .et-kc-theme-switcher {
     display: inline-flex;
     gap: 0.5rem;
@@ -121,7 +127,8 @@
     text-decoration: underline;
   }
 
-
+  /* Social login rows stay custom because Keycloak providers can inject icons,
+     HTML labels, and varying content lengths that need simple flexible layout. */
   .et-kc-divider {
     display: flex;
     align-items: center;
@@ -160,6 +167,8 @@
   }
 
   @media (max-width: 960px) {
+    /* Collapse the split-screen shell into a single column before the two panes
+       become cramped, while preserving the shared padding rhythm. */
     .et-kc-layout {
       grid-template-columns: 1fr;
       min-height: auto;

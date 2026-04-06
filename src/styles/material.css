@@ -7,6 +7,7 @@ expense-tracker-ui-nav-menu {
   height: 100%;
 }
 
+/* Shell / app chrome */
 .mat-drawer-container,
 .mat-sidenav-container,
 mat-sidenav-content {
@@ -20,6 +21,7 @@ mat-sidenav-content {
   color: var(--app-ink);
 }
 
+/* Toolbar */
 .mat-toolbar {
   --mat-toolbar-standard-height: 56px;
   --mat-toolbar-container-background-color: var(--app-ink);
@@ -71,6 +73,8 @@ mat-sidenav-content {
   overflow: hidden;
 }
 
+/* The pseudo-element underline gives toolbar buttons a custom focus/hover cue
+   without replacing the underlying Material button component. */
 .mat-toolbar .mat-mdc-button::after {
   content: '';
   position: absolute;
@@ -126,6 +130,7 @@ mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover,
   background-color: var(--theme-hover-soft);
 }
 
+/* Cards / dashboard surfaces */
 mat-card-title,
 .mat-mdc-card-title {
   font-family: var(--font-brand);
@@ -155,6 +160,8 @@ mat-card-subtitle,
 }
 
 .kpi-card {
+  /* KPI cards are the one place where a little more surface drama helps;
+     the gradient separates summary metrics from the flatter CRUD screens. */
   border-left: 3px solid transparent;
   background:
     linear-gradient(180deg, var(--theme-kpi-start) 0%, var(--theme-kpi-end) 100%);
@@ -188,6 +195,7 @@ mat-card-subtitle,
   letter-spacing: -0.01em;
 }
 
+/* Buttons */
 .mat-mdc-raised-button.mat-primary {
   letter-spacing: 0.03em;
   font-weight: 600;
@@ -220,11 +228,14 @@ mat-card-subtitle,
   border-right: none;
 }
 
+/* Form fields */
 .mat-mdc-form-field {
   font-size: 0.9rem;
 }
 
 .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  /* Material fills several nested wrappers, so the actual field "surface" needs
+     to be assigned here rather than on the outer form-field host. */
   background-color: var(--theme-form-bg);
 }
 
@@ -265,6 +276,7 @@ mat-card-subtitle,
   opacity: 1;
 }
 
+/* Dense data tables */
 .responsive-card-table .mat-mdc-header-cell,
 .responsive-card-table .mat-mdc-cell {
   justify-content: center;
@@ -311,6 +323,8 @@ mat-card-subtitle,
   opacity: 0.78;
 }
 
+/* On smaller screens we progressively turn the Material table into stacked
+   cards rather than introducing a separate mobile-only component. */
 @media (max-width: theme(--breakpoint-md)) {
   .responsive-card-table .mat-mdc-table {
     border: 0;
@@ -376,6 +390,7 @@ mat-card-subtitle,
   }
 }
 
+/* Motion */
 @keyframes brand-entrance {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }

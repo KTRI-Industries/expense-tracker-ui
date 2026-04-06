@@ -16,6 +16,7 @@
   letter-spacing: -0.06em;
 }
 
+/* Hero typography + CTA */
 .landing-eyebrow {
   font-family: var(--font-body);
   font-size: 0.68rem;
@@ -90,6 +91,7 @@
   animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
+/* Shared glass preview card used on the homepage hero and Keycloak auth shell. */
 .landing-preview-card {
   background: var(--landing-preview-bg);
   border: 1px solid var(--landing-preview-border);
@@ -102,6 +104,7 @@
   box-shadow: 0 20px 36px var(--landing-preview-shadow);
 }
 
+/* Feature list rhythm */
 .landing-feature-row {
   display: flex;
   align-items: flex-start;
@@ -114,6 +117,8 @@
   border-bottom: 1px solid var(--landing-feature-border);
 }
 
+/* The classes below intentionally stay "thin": they mostly map semantic tokens
+   onto shared marketing/auth structures without owning page-specific layout. */
 .landing-cta-headline {
   font-family: var(--font-brand);
   font-optical-sizing: auto;
@@ -193,6 +198,8 @@
   color: var(--landing-cta-strip-subtitle);
 }
 
+/* Mobile feature rows intentionally wrap instead of shrinking the editorial
+   number/copy/icon trio into unreadable narrow columns. */
 @media (max-width: 767px) {
   .landing-feature-row {
     gap: 1rem;
@@ -201,6 +208,7 @@
   }
 }
 
+/* Shared entrance motion for marketing/auth hero elements. */
 @keyframes landing-fade-up {
   from {
     opacity: 0;

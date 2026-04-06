@@ -1,6 +1,8 @@
 /* App-wide reusable Tailwind utilities.
    Imported by styles.css - @utility directives here are processed by Tailwind. */
 
+/* Shared layout widths used by form-heavy screens that should not stretch all the
+   way across large desktop cards. */
 @utility form-container {
   @apply md:w-6/12;
 }
@@ -13,6 +15,7 @@
   @apply max-w-[250px] whitespace-normal wrap-break-word break-all;
 }
 
+/* Surface primitives */
 @utility table-card {
   @apply rounded-lg overflow-hidden border;
   border-color: var(--theme-card-border);
@@ -46,6 +49,7 @@
   color: var(--app-primary-strong);
 }
 
+/* Typography helpers */
 @utility page-heading {
   font-family: var(--font-brand);
   font-optical-sizing: auto;
@@ -70,6 +74,7 @@
   line-height: 1;
 }
 
+/* KPI cards reuse these to keep the data hierarchy consistent across dashboards. */
 @utility kpi-label {
   font-size: 0.675rem;
   font-weight: 600;
@@ -89,6 +94,8 @@
   letter-spacing: -0.02em;
 }
 
+/* This remains a utility rather than a component stylesheet because several
+   upload fields share the same "pick a file" affordance. */
 @utility file-upload-zone {
   display: flex;
   flex-direction: column;
