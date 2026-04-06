@@ -1,12 +1,12 @@
-/* Landing page styles.
-   Imported by styles.css after material.css and utilities.css. */
+/* Shared brand classes used by both the homepage and the Keycloak screens.
+   Keep app-specific layout outside this file so the shared layer stays portable. */
 
 .landing-hero__bg-symbol {
   position: absolute;
   right: -0.05em;
   top: 50%;
   transform: translateY(-50%);
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-size: clamp(20rem, 40vw, 52rem);
   font-weight: 700;
   color: var(--landing-hero-symbol);
@@ -17,7 +17,7 @@
 }
 
 .landing-eyebrow {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -28,7 +28,7 @@
 }
 
 .landing-headline {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-size: clamp(3.25rem, 7.5vw, 7rem);
   font-weight: 700;
@@ -40,7 +40,7 @@
 }
 
 .landing-subhead {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 1.1rem;
   line-height: 1.7;
   color: var(--landing-subhead);
@@ -54,7 +54,7 @@
   padding: 0.8rem 1.85rem;
   background-color: var(--landing-cta-bg);
   color: var(--landing-cta-text);
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -84,7 +84,7 @@
 }
 
 .landing-cta-hint {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 0.78rem;
   color: var(--landing-cta-hint);
   animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
@@ -115,7 +115,7 @@
 }
 
 .landing-cta-headline {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 700;

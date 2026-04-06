@@ -1,26 +1,11 @@
-/* Tailwind v4 entry point - bootstraps the framework and imports app style partials */
+/* Tailwind v4 entry point - bootstraps the framework and imports app style partials.
+   Order matters: shared tokens/base first, then shared landing-brand classes,
+   then app-level utilities and Material overrides that consume those tokens. */
 @import 'tailwindcss';
-@import './styles/themes.css';
+@import '../libs/shared/theme/src/styles/themes.css';
+@import '../libs/shared/theme/src/styles/base.css';
+@import '../libs/shared/theme/src/styles/landing-brand.css';
 @import './styles/utilities.css';
 @import './styles/material.css';
-@import './styles/landing.css';
 
 @config '../tailwind.config.js';
-
-@layer utilities {
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-  }
-
-  body {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    background-color: var(--theme-body-bg);
-    background-image:
-      radial-gradient(circle at top left, var(--theme-body-radial) 0, transparent 30%),
-      radial-gradient(circle, var(--theme-body-grid) 1px, transparent 1px);
-    background-size: auto, 24px 24px;
-    color: var(--app-ink);
-  }
-}

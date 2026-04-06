@@ -1,0 +1,23 @@
+/* Shared base styles consumed by both the Angular app and the Keycloak theme.
+   Defines font-stack custom properties and the common body treatment. */
+
+:root {
+  --font-brand: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--app-ink);
+  background-color: var(--theme-body-bg);
+  background-image:
+    radial-gradient(circle at top left, var(--theme-body-radial) 0, transparent 30%),
+    radial-gradient(circle, var(--theme-body-grid) 1px, transparent 1px);
+  background-size: auto, 24px 24px;
+}

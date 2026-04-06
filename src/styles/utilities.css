@@ -47,7 +47,7 @@
 }
 
 @utility page-heading {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-weight: 600;
   font-size: 1.5rem;
@@ -81,7 +81,7 @@
 }
 
 @utility kpi-amount {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-size: 1.625rem;
   font-weight: 600;

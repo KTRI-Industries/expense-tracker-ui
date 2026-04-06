@@ -35,7 +35,7 @@ mat-sidenav-content {
 }
 
 .mat-toolbar [data-cy='main-title'] {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-size: 1.3rem;
   font-weight: 600;
@@ -49,7 +49,7 @@ mat-sidenav-content {
 }
 
 .mat-toolbar [data-cy='username-link'] {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-weight: 500;
   font-size: 0.9rem;
@@ -128,7 +128,7 @@ mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover,
 
 mat-card-title,
 .mat-mdc-card-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   letter-spacing: -0.01em;
   color: var(--app-ink);
@@ -181,7 +181,7 @@ mat-card-subtitle,
 
 .dashboard-chart mat-card-title,
 .dashboard-chart .mat-mdc-card-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-size: 1rem;
   font-weight: 600;
@@ -290,7 +290,7 @@ mat-card-subtitle,
 }
 
 .responsive-card-table .mat-mdc-cell[data-label="Amount"] {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-brand);
   font-optical-sizing: auto;
   font-weight: 600;
   letter-spacing: -0.01em;

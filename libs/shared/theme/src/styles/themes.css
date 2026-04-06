@@ -71,6 +71,16 @@ html[data-theme='terracotta'] {
   --theme-upload-hover-bg: rgba(184, 91, 60, 0.06);
   --theme-upload-hover-border: rgba(184, 91, 60, 0.56);
 
+  /* Frosted/glass tokens are mostly consumed by the marketing + auth shells.
+     Keeping them here lets both apps share the same depth treatment. */
+  --theme-glass-strong: rgba(255, 255, 255, 0.66);
+  --theme-glass-soft: rgba(255, 255, 255, 0.36);
+  --theme-glass-faint: rgba(255, 255, 255, 0.03);
+  --theme-glass-panel-start: rgba(255, 255, 255, 0.7);
+  --theme-glass-panel-end: rgba(255, 255, 255, 0.94);
+  --theme-glass-control: rgba(255, 255, 255, 0.78);
+  --theme-elevated-shadow: rgba(79, 48, 34, 0.12);
+
   --landing-hero-bg: #261b16;
   --landing-hero-divider: rgba(184, 91, 60, 0.74);
   --landing-hero-symbol: rgba(255, 244, 236, 0.06);
@@ -166,6 +176,16 @@ html[data-theme='slate'] {
   --theme-upload-hover-bg: rgba(37, 99, 235, 0.05);
   --theme-upload-hover-border: rgba(37, 99, 235, 0.5);
 
+  /* Frosted/glass tokens are mostly consumed by the marketing + auth shells.
+     Keeping them here lets both apps share the same depth treatment. */
+  --theme-glass-strong: rgba(255, 255, 255, 0.66);
+  --theme-glass-soft: rgba(255, 255, 255, 0.36);
+  --theme-glass-faint: rgba(255, 255, 255, 0.03);
+  --theme-glass-panel-start: rgba(255, 255, 255, 0.7);
+  --theme-glass-panel-end: rgba(255, 255, 255, 0.94);
+  --theme-glass-control: rgba(255, 255, 255, 0.78);
+  --theme-elevated-shadow: rgba(31, 41, 55, 0.12);
+
   --landing-hero-bg: #162132;
   --landing-hero-divider: rgba(37, 99, 235, 0.76);
   --landing-hero-symbol: rgba(255, 255, 255, 0.045);
@@ -260,6 +280,16 @@ html[data-theme='navy'] {
   --theme-upload-border: rgba(96, 125, 158, 0.24);
   --theme-upload-hover-bg: rgba(49, 94, 138, 0.05);
   --theme-upload-hover-border: rgba(49, 94, 138, 0.48);
+
+  /* Frosted/glass tokens are mostly consumed by the marketing + auth shells.
+     Keeping them here lets both apps share the same depth treatment. */
+  --theme-glass-strong: rgba(255, 255, 255, 0.66);
+  --theme-glass-soft: rgba(255, 255, 255, 0.36);
+  --theme-glass-faint: rgba(255, 255, 255, 0.03);
+  --theme-glass-panel-start: rgba(255, 255, 255, 0.7);
+  --theme-glass-panel-end: rgba(255, 255, 255, 0.94);
+  --theme-glass-control: rgba(255, 255, 255, 0.78);
+  --theme-elevated-shadow: rgba(24, 50, 77, 0.12);
 
   --landing-hero-bg: #18293f;
   --landing-hero-divider: rgba(231, 111, 81, 0.76);

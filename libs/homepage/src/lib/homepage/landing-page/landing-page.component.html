@@ -6,6 +6,8 @@
     class="landing-hero-divider absolute bottom-0 left-0 right-0 h-[2px]">
   </div>
 
+  <!-- These utilities are homepage-specific composition, layered on top of the
+       shared landing brand classes rather than baked into the shared stylesheet. -->
   <div class="container mx-auto px-6 md:px-12 relative z-10">
     <div class="flex items-center min-h-[92vh] py-24 gap-12">
       <div class="w-full lg:w-7/12">
@@ -31,13 +33,15 @@
         </div>
       </div>
 
+      <!-- The preview card only appears from lg upwards so mobile keeps its focus on
+           the editorial headline and CTA instead of compressing both columns. -->
       <div class="hidden lg:flex w-5/12 justify-end items-center">
         <div class="landing-preview-card">
           <p class="landing-preview-label text-[0.65rem] font-bold tracking-[0.14em] uppercase mb-1">
             Balance this month
           </p>
 
-          <div class="landing-preview-amount font-['Fraunces',Georgia,serif] text-[2.4rem] font-bold tracking-[-0.03em] mb-5">
+          <div class="landing-preview-amount font-brand text-[2.4rem] font-bold tracking-[-0.03em] mb-5">
             € 2,841.50
           </div>
 
@@ -88,11 +92,11 @@
     <div class="landing-feature-row">
       <span
         aria-hidden="true"
-        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         01
       </span>
       <div class="flex-1 min-w-[14rem]">
-        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Total visibility
         </h3>
         <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
@@ -108,11 +112,11 @@
     <div class="landing-feature-row">
       <span
         aria-hidden="true"
-        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         02
       </span>
       <div class="flex-1 min-w-[14rem]">
-        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Visual analytics
         </h3>
         <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
@@ -128,11 +132,11 @@
     <div class="landing-feature-row">
       <span
         aria-hidden="true"
-        class="landing-feature-ordinal font-['Fraunces',Georgia,serif] text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
         03
       </span>
       <div class="flex-1 min-w-[14rem]">
-        <h3 class="landing-feature-title font-['Fraunces',Georgia,serif] text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
           Built for households
         </h3>
         <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
