@@ -1,0 +1,50 @@
+{
+  "name": "keycloak-theme",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "projects/keycloak-theme/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx vite build --config projects/keycloak-theme/vite.config.mts"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx vite --config projects/keycloak-theme/vite.config.mts"
+      },
+      "continuous": true
+    },
+    "storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx storybook dev --config-dir projects/keycloak-theme/.storybook --port 6006"
+      },
+      "continuous": true
+    },
+    "build-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx storybook build --config-dir projects/keycloak-theme/.storybook --output-dir dist/storybook/keycloak-theme"
+      }
+    },
+    "package-theme": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "commands": [
+          "npx vite build --config projects/keycloak-theme/vite.config.mts",
+          "npx keycloakify build --project projects/keycloak-theme"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

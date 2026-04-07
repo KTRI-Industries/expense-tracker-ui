@@ -31,7 +31,7 @@ export class DashboardFilterComponent {
 
   fields: FormlyFieldConfig[] = [
     {
-      fieldGroupClassName: 'lg:flex lg:flex-row lg:space-x-4',
+      fieldGroupClassName: 'flex flex-col gap-4 lg:flex-row',
       fieldGroup: [
         {
           key: 'dateRange',
@@ -104,7 +104,9 @@ export class DashboardFilterComponent {
         dateRange = this.getLastYearStartDateEndDates();
         break;
       case 'custom':
-        // Do nothing for custom, as dates are manually selected
+        // Update the model's dateRange so isCustomFilter() sees the new value
+        // and renders the Apply button. Dates are left as-is for manual selection.
+        this._model = { ...this._model, dateRange: 'custom' };
         return;
     }
     if (dateRange) {

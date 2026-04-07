@@ -1,0 +1,222 @@
+/* Shared brand classes used by both the homepage and the Keycloak screens.
+   Keep app-specific layout outside this file so the shared layer stays portable. */
+
+.landing-hero__bg-symbol {
+  position: absolute;
+  right: -0.05em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-brand);
+  font-size: clamp(20rem, 40vw, 52rem);
+  font-weight: 700;
+  color: var(--landing-hero-symbol);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.06em;
+}
+
+/* Hero typography + CTA */
+.landing-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--landing-eyebrow);
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.landing-headline {
+  font-family: var(--font-brand);
+  font-optical-sizing: auto;
+  font-size: clamp(3.25rem, 7.5vw, 7rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--landing-headline);
+  margin-bottom: 1.75rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.landing-subhead {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--landing-subhead);
+  max-width: 38rem;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+.landing-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.85rem;
+  background-color: var(--landing-cta-bg);
+  color: var(--landing-cta-text);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  transition:
+    background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.landing-cta-btn:hover,
+.landing-cta-btn:focus-visible {
+  background-color: var(--landing-cta-bg-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px var(--landing-cta-shadow);
+  outline: none;
+}
+
+.landing-cta-btn--standalone {
+  animation: none;
+  flex-shrink: 0;
+  padding: 0.9rem 2.25rem;
+  font-size: 0.925rem;
+}
+
+.landing-cta-hint {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--landing-cta-hint);
+  animation: landing-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* Shared glass preview card used on the homepage hero and Keycloak auth shell. */
+.landing-preview-card {
+  background: var(--landing-preview-bg);
+  border: 1px solid var(--landing-preview-border);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 285px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: landing-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+  box-shadow: 0 20px 36px var(--landing-preview-shadow);
+}
+
+/* Feature list rhythm */
+.landing-feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--landing-feature-border);
+}
+
+.landing-feature-row:last-child {
+  border-bottom: 1px solid var(--landing-feature-border);
+}
+
+/* The classes below intentionally stay "thin": they mostly map semantic tokens
+   onto shared marketing/auth structures without owning page-specific layout. */
+.landing-cta-headline {
+  font-family: var(--font-brand);
+  font-optical-sizing: auto;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--landing-headline);
+  margin-bottom: 0.65rem;
+}
+
+.landing-hero {
+  background: var(--landing-hero-bg);
+}
+
+.landing-hero-divider {
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--landing-hero-divider),
+    transparent
+  );
+}
+
+.landing-features {
+  background: var(--app-ivory);
+}
+
+.landing-features-eyebrow {
+  color: var(--landing-feature-eyebrow);
+}
+
+.landing-feature-ordinal {
+  color: var(--landing-feature-ordinal);
+}
+
+.landing-feature-title {
+  color: var(--app-ink);
+}
+
+.landing-feature-copy {
+  color: var(--landing-feature-copy);
+}
+
+.landing-feature-icon {
+  color: var(--landing-feature-icon);
+}
+
+.landing-preview-label {
+  color: var(--landing-preview-label);
+}
+
+.landing-preview-amount {
+  color: var(--landing-preview-text);
+}
+
+.landing-preview-muted {
+  color: var(--landing-preview-muted);
+}
+
+.landing-preview-income {
+  color: var(--landing-preview-income);
+}
+
+.landing-preview-expense {
+  color: var(--landing-preview-expense);
+}
+
+.landing-progress-bar {
+  background: var(--landing-progress);
+}
+
+.landing-cta-strip {
+  background: var(--landing-cta-strip-bg);
+}
+
+.landing-cta-strip-subtitle {
+  color: var(--landing-cta-strip-subtitle);
+}
+
+/* Mobile-first default keeps the feature rows readable on narrow screens, then
+   the shared md breakpoint restores the wider editorial composition. */
+@media (min-width: theme(--breakpoint-md)) {
+  .landing-feature-row {
+    gap: 2.5rem;
+    padding: 3rem 0;
+    flex-wrap: nowrap;
+  }
+}
+
+/* Shared entrance motion for marketing/auth hero elements. */
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

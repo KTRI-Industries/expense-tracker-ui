@@ -40,7 +40,8 @@
       }
     </mat-selection-list>
     @if (tenantUsers?.length === 0) {
-      <p>No users found.</p>
+      <!-- empty-state: centered italic placeholder (see utilities.css) -->
+      <p class="empty-state">No users found.</p>
     }
   </mat-card-content>
   @if (isAccountOwner) {
@@ -57,7 +58,8 @@
   }
 </mat-card>
 
-<div class="my-2"></div>
+<!-- my-4: increased from my-2 for better breathing room between cards -->
+<div class="my-4"></div>
 
 <mat-card>
   <mat-card-header>
@@ -77,4 +79,4 @@
   </mat-card-actions>
 </mat-card>
 
-<div class="my-2"></div>
+<div class="my-4"></div>

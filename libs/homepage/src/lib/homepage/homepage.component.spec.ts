@@ -93,15 +93,18 @@ describe('HomepageComponent', () => {
 
   it('should render the landing page when not authenticated', async () => {
     await setup(false);
+    // "Free · No setup required" is a unique, unbroken text node in the
+    // new editorial landing page — safe to use as the presence sentinel
     expect(
-      screen.getByText('Manage Your Expenses with Ease.'),
+      screen.getByText('Free · No setup required'),
     ).toBeInTheDocument();
   });
 
   it('should render the dashboard when authenticated', async () => {
     await setup(true);
+    // The dashboard h1 reads "Dashboard" — confirmed in dashboard.component.html
     expect(
-      screen.getByText('Welcome to the Expense Tracker'),
+      screen.getByText('Dashboard'),
     ).toBeInTheDocument();
     expect(screen.getByText('Income')).toBeInTheDocument();
     expect(screen.getByText('Expenses')).toBeInTheDocument();
@@ -118,7 +121,8 @@ describe('HomepageComponent', () => {
 
   it('should dispatch login action on login', async () => {
     const { dispatchSpy } = await setup(false);
-    await userEvent.click(screen.getByText(/Login/i));
+    // CTA button text changed from "Login" to "Sign in to your account" in the redesigned landing page
+    await userEvent.click(screen.getByText('Sign in to your account'));
     expect(dispatchSpy).toHaveBeenCalledWith(AuthActions.login());
   });
 });

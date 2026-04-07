@@ -26,7 +26,7 @@ export function registerTransactionCommands(): void {
     getAddTransactionButton().click();
 
     getAmountInput().type(`${transaction.amount}`, { force: true });
-    getDatePicker().type(transaction.date);
+    getDatePicker().type(transaction.date, { force: true });
 
     if (transaction.description !== undefined) {
       getDescriptionInput().type(transaction.description, { force: true });
@@ -37,7 +37,7 @@ export function registerTransactionCommands(): void {
 
   Cypress.Commands.add('editTransaction', (transaction: TransactionDraft) => {
     getAmountInput().clear().type(`${transaction.amount}`, { force: true });
-    getDatePicker().clear().type(transaction.date);
+    getDatePicker().clear().type(transaction.date, { force: true });
     if (transaction.description !== undefined) {
       getDescriptionInput()
         .clear({ force: true })
@@ -75,7 +75,7 @@ export function registerTransactionCommands(): void {
       getRecurrentAmountInput().clear().type(`${transaction.amount}`, {
         force: true,
       });
-      getRecurrentStartDatePicker().clear().type(transaction.date);
+      getRecurrentStartDatePicker().clear().type(transaction.date, { force: true });
       if (transaction.description !== undefined) {
         getRecurrentDescriptionInput()
           .clear({ force: true })

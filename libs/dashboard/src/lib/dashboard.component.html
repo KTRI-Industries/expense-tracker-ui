@@ -1,70 +1,94 @@
-<!-- inline block used to make the card width match the content width -->
+<!-- page-heading: Fraunces editorial serif for consistent page-level hierarchy -->
+<h1 class="page-heading text-on-surface mb-5">Dashboard</h1>
+
+<!-- Filter card — inline-block keeps it auto-sized to content on large screens -->
 <mat-card
-  class="lg:inline-block mb-2"
+  class="lg:inline-block mb-5"
   data-cy="dashboard-filter-card">
-  <!-- py-2 and px-2 decrease the default padding around the card content -->
+  <!-- py-2 px-2 reduce the default mat-card-content padding around the filter fields -->
   <mat-card-content class="py-2 px-2">
     <expense-tracker-ui-dashboard-filter
       [model]="filterRange"
-      (dateRangeChange)="
-        onDateRangeChange($event)
-      "></expense-tracker-ui-dashboard-filter>
+      (dateRangeChange)="onDateRangeChange($event)"></expense-tracker-ui-dashboard-filter>
   </mat-card-content>
 </mat-card>
-<!-- single column in small screens, 2 in medium 4 in large -->
+
+<!-- KPI grid: 1 col on mobile, 2 on medium, 4 on large -->
 <div
-  class="grid grid-cols-1 gap-2 lg:gap-20 md:grid-cols-2 lg:grid-cols-4 mb-2">
+  class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+
+  <!-- Income: green left border accent, green Fraunces value -->
   <mat-card
-    class="p-4 text-center"
+    class="kpi-card kpi-card--income"
     data-cy="dashboard-income-card">
-    <mat-card-title class="text-center text-green-500">
-      {{
-        dashboard?.mainTransactionData?.totalIncome?.amount ?? 0
-          | currency: dashboard?.mainTransactionData?.totalIncome?.currency
-      }}
-    </mat-card-title>
-    <mat-card-content class="text-center">Income</mat-card-content>
+    <mat-card-content class="p-5">
+      <p class="kpi-label">Income</p>
+      <p class="kpi-amount text-green-700">
+        {{
+          dashboard?.mainTransactionData?.totalIncome?.amount ?? 0
+            | currency: dashboard?.mainTransactionData?.totalIncome?.currency
+        }}
+      </p>
+    </mat-card-content>
   </mat-card>
+
+  <!-- Expenses: red left border accent, red Fraunces value -->
   <mat-card
-    class="p-4 text-center"
+    class="kpi-card kpi-card--expense"
     data-cy="dashboard-expenses-card">
-    <mat-card-title class="text-center text-red-500">
-      {{
-        dashboard?.mainTransactionData?.totalExpense?.amount ?? 0
-          | currency: dashboard?.mainTransactionData?.totalExpense?.currency
-      }}
-    </mat-card-title>
-    <mat-card-content class="text-center">Expenses</mat-card-content>
+    <mat-card-content class="p-5">
+      <p class="kpi-label">Expenses</p>
+      <p class="kpi-amount text-red-600">
+        {{
+          dashboard?.mainTransactionData?.totalExpense?.amount ?? 0
+            | currency: dashboard?.mainTransactionData?.totalExpense?.currency
+        }}
+      </p>
+    </mat-card-content>
   </mat-card>
+
+  <!-- Balance: primary (green) left border accent -->
   <mat-card
-    class="p-4 text-center"
+    class="kpi-card kpi-card--balance"
     data-cy="dashboard-balance-card">
-    <mat-card-title class="text-center text-blue-500">
-      {{
-        dashboard?.mainTransactionData?.totalBalance?.amount ?? 0
-          | currency: dashboard?.mainTransactionData?.totalBalance?.currency
-      }}
-    </mat-card-title>
-    <mat-card-content class="text-center">Balance</mat-card-content>
+    <mat-card-content class="p-5">
+      <p class="kpi-label">Balance</p>
+      <p class="kpi-amount text-primary">
+        {{
+          dashboard?.mainTransactionData?.totalBalance?.amount ?? 0
+            | currency: dashboard?.mainTransactionData?.totalBalance?.currency
+        }}
+      </p>
+    </mat-card-content>
   </mat-card>
+
+  <!-- Transactions count: amber left border accent -->
   <mat-card
-    class="p-4 text-center"
+    class="kpi-card kpi-card--transactions"
     data-cy="dashboard-transactions-card">
-    <mat-card-title class="text-center text-purple-500">
-      {{ dashboard?.mainTransactionData?.totalTransactions }}
-    </mat-card-title>
-    <mat-card-content class="text-center">Transactions</mat-card-content>
+    <mat-card-content class="p-5">
+      <p class="kpi-label">Transactions</p>
+      <!-- text-amber-500 matches the amber left border accent of this card -->
+      <p class="kpi-amount text-amber-500">
+        {{ dashboard?.mainTransactionData?.totalTransactions }}
+      </p>
+    </mat-card-content>
   </mat-card>
+
 </div>
 
-<div class="flex flex-wrap gap-2 mb-2">
-  <!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
+<!-- Chart row: two cards side-by-side, wrapping on smaller screens -->
+<div class="flex flex-wrap gap-4 mb-4">
+
+  <!-- dashboard-chart applies Fraunces to mat-card-title inside these cards -->
+  <!--  lg:p-4 because in certain small screens the mat-card is overflowing -->
   <mat-card
-    class="lg:p-4 flex-1"
+    class="dashboard-chart lg:p-4 flex-1"
     data-cy="dashboard-category-chart">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
+    <!-- md:flex md:items-center + lg:columns-2: side-by-side chart+legend on wider screens -->
     <mat-card-content class="lg:columns-2 md:flex md:items-center">
-      <!-- max width to something small and margins left and right to auto -->
+      <!-- max-w-xs + mx-auto: constrains the doughnut so it doesn't stretch on wide cards -->
       <div class="max-w-xs mx-auto">
         @if (groupedExpensesChartData !== null) {
           <canvas
@@ -74,8 +98,7 @@
             type="doughnut"></canvas>
         }
       </div>
-      <!-- Custom Legend -->
-      <!-- max-w-xs mx-auto used for the div to take less width -->
+      <!-- Legend placed beside the chart on md+ screens -->
       <div class="max-w-xs mx-auto">
         <expense-tracker-ui-chart-legend
           [items]="generateLegend()"
@@ -85,7 +108,7 @@
   </mat-card>
 
   <mat-card
-    class="lg:p-4 flex-1"
+    class="dashboard-chart lg:p-4 flex-1"
     data-cy="dashboard-monthly-chart">
     <mat-card-title class="text-center">
       Income/Expenses per Month
@@ -102,26 +125,24 @@
       </div>
     </mat-card-content>
   </mat-card>
+
 </div>
 
-<div class="mb-2">
-  <!--  lg:p-4 because in certain small screens the mat-card is overflowing-->
+<!-- Per-user chart: full row, constrained to half width on large screens -->
+<div class="mb-4">
   <mat-card
-    class="lg:p-4 flex-1 lg:w-1/2"
+    class="dashboard-chart lg:p-4 lg:w-1/2"
     data-cy="dashboard-per-user-chart">
     <mat-card-title class="text-center">Expenses per User</mat-card-title>
-    <!-- max width to something small and margins left and right to auto -->
-    <div class="">
-      <mat-card-content>
-        <div>
-          @if (expensesPerUserChartData !== null) {
-            <canvas
-              baseChart
-              [data]="expensesPerUserChartData"
-              type="line"></canvas>
-          }
-        </div>
-      </mat-card-content>
-    </div>
+    <mat-card-content>
+      <div>
+        @if (expensesPerUserChartData !== null) {
+          <canvas
+            baseChart
+            [data]="expensesPerUserChartData"
+            type="line"></canvas>
+        }
+      </div>
+    </mat-card-content>
   </mat-card>
 </div>

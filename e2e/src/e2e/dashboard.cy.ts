@@ -71,9 +71,12 @@ describe('dashboard', () => {
     readNumericValue(getDashboardBalanceCard()).should('eq', 70);
     getDashboardTransactionsCard().should('contain.text', '3');
 
-    getDashboardCategoryChartSection().should('be.visible');
-    getDashboardMonthlyChartSection().should('be.visible');
-    getDashboardPerUserChartSection().should('be.visible');
+    // scrollIntoView is required because mat-sidenav-content is the scroll container
+    // (overflow:auto) — elements below the fold are clipped and Cypress considers
+    // them not visible until explicitly scrolled into the viewport.
+    getDashboardCategoryChartSection().scrollIntoView().should('be.visible');
+    getDashboardMonthlyChartSection().scrollIntoView().should('be.visible');
+    getDashboardPerUserChartSection().scrollIntoView().should('be.visible');
   });
 
   it('should apply a custom dashboard date range and refresh totals', () => {

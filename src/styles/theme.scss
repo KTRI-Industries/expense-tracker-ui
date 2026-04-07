@@ -1,0 +1,75 @@
+// Angular Material custom theme (SCSS only)
+//
+// This file MUST remain .scss because it uses Angular Material's Sass mixins.
+// It is compiled by the Angular build pipeline before PostCSS runs.
+// Do NOT add Tailwind directives here; those belong in styles.css / utilities.css.
+//
+// Important: these are real scoped Angular Material themes. Each selector below
+// gets its own generated component colors/tokens so switching `data-theme`
+// changes Material components too, not just our custom CSS.
+
+@use '@angular/material' as mat;
+
+// Keep typography and density shared so all themes feel like one product family
+// even though the palettes shift quite a bit.
+$typography-config: (
+  brand-family: 'Fraunces, Georgia, serif',
+  plain-family: 'DM Sans, system-ui, sans-serif',
+);
+
+$density-config: (
+  scale: 0,
+);
+
+// Warm editorial/default palette used for the main app and as the fallback when
+// no explicit `data-theme` is present on the root html element.
+$terracotta-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$orange-palette,
+    tertiary: mat.$red-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+// Cooler product palette for users who want a sharper, more neutral dashboard look.
+$slate-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$orange-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+// Calm analytic palette used by the Keycloak preview default and the most
+// "financial dashboard" leaning variant.
+$navy-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$red-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+@mixin app-theme-scope($selector, $config) {
+  #{$selector} {
+    // Material component colors are generated at build time, so each theme needs
+    // its own scoped output instead of relying on runtime CSS variables alone.
+    // Emitting the full theme inside a selector keeps runtime theme switching
+    // possible without rebuilding the app.
+    $theme: mat.define-theme($config);
+
+    @include mat.all-component-themes($theme);
+    @include mat.color-variants-backwards-compatibility($theme);
+    @include mat.theme($config);
+  }
+}
+
+@include app-theme-scope('html:not([data-theme]), html[data-theme="terracotta"]', $terracotta-config);
+@include app-theme-scope('html[data-theme="slate"]', $slate-config);
+@include app-theme-scope('html[data-theme="navy"]', $navy-config);

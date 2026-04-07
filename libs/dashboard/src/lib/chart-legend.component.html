@@ -11,15 +11,19 @@
       <div class="ml-3">{{ item.label }}</div>
     </div>
 
-    <!-- text-right font-semibold right-aligns and bolds the numeric columns -->
-    <div class="text-right font-semibold">
+    <!-- Amount column: Fraunces serif for financial figures — same editorial
+         treatment as KPI amounts and table Amount cells. tracking-tight tightens
+         the spacing for that premium numeric feel. -->
+    <div class="text-right font-semibold font-brand tracking-tight text-sm">
       {{
         item.value
           | currency: dashboard?.mainTransactionData?.totalExpense?.currency
       }}
     </div>
 
-    <div class="text-right font-semibold">
+    <!-- Percentage column: muted secondary info — lower opacity keeps focus on
+         the absolute amounts while still providing context -->
+    <div class="text-right font-semibold text-on-surface/50 text-xs">
       {{ item.percentage.toFixed(2) }}%
     </div>
   </div>

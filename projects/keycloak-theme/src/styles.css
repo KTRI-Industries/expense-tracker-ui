@@ -1,0 +1,94 @@
+/* Keycloak theme styles intentionally split responsibilities:
+   shared imports keep buttons, fields, and tokens aligned with the main app,
+   while the auth-shell composition below stays local to this frontend. */
+@import 'tailwindcss';
+@import '../../../src/styles/theme.scss';
+@import '../../../libs/shared/theme/src/styles/themes.css';
+@import '../../../libs/shared/theme/src/styles/base.css';
+@import '../../../src/styles/material.css';
+
+/* Keycloak reuses the same generated Material theme + override layer as the main
+   app so mat-card/mat-form-field stay visually aligned without duplicating skinning. */
+@config '../../../tailwind.config.js';
+
+@layer components {
+  /* Full-screen centred shell — the body background from base.css provides the
+     navy texture so no additional background is needed here. */
+  .et-kc-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+
+  .et-kc-card {
+    width: min(100%, 30rem);
+    padding: 2rem;
+  }
+
+  /* The login password field uses a Material suffix button so it matches the
+     Angular app field chrome. */
+  .et-kc-password-toggle {
+    color: var(--theme-form-text);
+  }
+
+  .et-kc-password-toggle:hover {
+    background: color-mix(in srgb, var(--theme-form-bg) 42%, var(--theme-hover-soft));
+  }
+
+  .et-kc-error {
+    color: var(--app-negative);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .et-kc-link {
+    color: var(--app-primary-strong);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .et-kc-link:hover,
+  .et-kc-link:focus-visible {
+    text-decoration: underline;
+  }
+
+  /* Social login rows stay custom because Keycloak providers can inject icons,
+     HTML labels, and varying content lengths that need simple flexible layout. */
+  .et-kc-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.25rem 0;
+    color: var(--app-ink-soft);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .et-kc-divider::before,
+  .et-kc-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--app-border);
+  }
+
+  .et-kc-footer a {
+    color: var(--app-primary-strong);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .et-kc-footer a:hover,
+  .et-kc-footer a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .et-kc-locale button,
+  .et-kc-locale a {
+    color: var(--app-ink-soft);
+  }
+}
