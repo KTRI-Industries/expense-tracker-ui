@@ -19,6 +19,21 @@
       },
       "continuous": true
     },
+    "storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx.cmd storybook dev --config-dir projects/keycloak-theme/.storybook --port 6006"
+      },
+      "continuous": true
+    },
+    "build-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "npx.cmd storybook build --config-dir projects/keycloak-theme/.storybook --output-dir dist/storybook/keycloak-theme"
+      }
+    },
     "package-theme": {
       "executor": "nx:run-commands",
       "options": {
