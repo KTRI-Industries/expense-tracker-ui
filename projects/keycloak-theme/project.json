@@ -8,14 +8,14 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "npx.cmd vite build --config projects/keycloak-theme/vite.config.mts"
+        "command": "npx vite build --config projects/keycloak-theme/vite.config.mts"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "npx.cmd vite --config projects/keycloak-theme/vite.config.mts"
+        "command": "npx vite --config projects/keycloak-theme/vite.config.mts"
       },
       "continuous": true
     },
@@ -23,7 +23,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "npx.cmd storybook dev --config-dir projects/keycloak-theme/.storybook --port 6006"
+        "command": "npx storybook dev --config-dir projects/keycloak-theme/.storybook --port 6006"
       },
       "continuous": true
     },
@@ -31,7 +31,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "npx.cmd storybook build --config-dir projects/keycloak-theme/.storybook --output-dir dist/storybook/keycloak-theme"
+        "command": "npx storybook build --config-dir projects/keycloak-theme/.storybook --output-dir dist/storybook/keycloak-theme"
       }
     },
     "package-theme": {
@@ -39,8 +39,8 @@
       "options": {
         "cwd": "{workspaceRoot}",
         "commands": [
-          "npx.cmd vite build --config projects/keycloak-theme/vite.config.mts",
-          "npx.cmd keycloakify build --project projects/keycloak-theme"
+          "npx vite build --config projects/keycloak-theme/vite.config.mts",
+          "npx keycloakify build --project projects/keycloak-theme"
         ],
         "parallel": false
       }
