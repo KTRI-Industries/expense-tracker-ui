@@ -5,7 +5,6 @@
 @import '../../../src/styles/theme.scss';
 @import '../../../libs/shared/theme/src/styles/themes.css';
 @import '../../../libs/shared/theme/src/styles/base.css';
-@import '../../../libs/shared/theme/src/styles/landing-brand.css';
 @import '../../../src/styles/material.css';
 
 /* Keycloak reuses the same generated Material theme + override layer as the main
@@ -13,72 +12,23 @@
 @config '../../../tailwind.config.js';
 
 @layer components {
-  /* This glass shell is auth-specific and spans multiple nested surfaces, so it
-     stays in CSS rather than being rebuilt from long utility chains in the template. */
+  /* Full-screen centred shell — the body background from base.css provides the
+     navy texture so no additional background is needed here. */
   .et-kc-layout {
-    display: grid;
-    min-height: auto;
-    max-width: 88rem;
-    margin: 0 auto;
-    grid-template-columns: 1fr;
-    border: 1px solid var(--app-border);
-    border-radius: 2rem;
-    overflow: hidden;
-    background:
-      linear-gradient(180deg, var(--theme-glass-strong), var(--theme-glass-soft)),
-      var(--app-surface);
-    box-shadow: 0 32px 80px var(--theme-elevated-shadow);
-    backdrop-filter: blur(18px);
-  }
-
-  /* Left column = branded editorial shell, right column = the actual login form.
-     Keeping this split in CSS makes the responsive two-pane layout easier to scan. */
-  .et-kc-hero {
-    position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     padding: 1.5rem;
-    overflow: hidden;
-    background:
-      linear-gradient(180deg, var(--theme-glass-faint), transparent 42%),
-      var(--landing-hero-bg);
-    color: var(--landing-headline);
-  }
-
-  .et-kc-hero::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 2px;
-    background-image: linear-gradient(
-      to right,
-      transparent,
-      var(--landing-hero-divider),
-      transparent
-    );
-  }
-
-  .et-kc-panel {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    background:
-      linear-gradient(180deg, var(--theme-glass-panel-start), var(--theme-glass-panel-end)),
-      var(--app-surface);
   }
 
   .et-kc-card {
-    /* The card body is still a real mat-card; these rules only control auth-page
-       sizing and spacing while the shared Material theme handles the skin. */
-    width: min(100%, 34rem);
-    margin: auto 0;
-    padding: 1.75rem;
+    width: min(100%, 30rem);
+    padding: 2rem;
   }
 
-  /* The login password field now uses a Material suffix button instead of the
-     default PatternFly input-group so it matches the Angular app field chrome. */
+  /* The login password field uses a Material suffix button so it matches the
+     Angular app field chrome. */
   .et-kc-password-toggle {
     color: var(--theme-form-text);
   }
@@ -86,7 +36,6 @@
   .et-kc-password-toggle:hover {
     background: color-mix(in srgb, var(--theme-form-bg) 42%, var(--theme-hover-soft));
   }
-
 
   .et-kc-error {
     color: var(--app-negative);
@@ -127,7 +76,6 @@
     background: var(--app-border);
   }
 
-
   .et-kc-footer a {
     color: var(--app-primary-strong);
     text-decoration: none;
@@ -142,23 +90,5 @@
   .et-kc-locale button,
   .et-kc-locale a {
     color: var(--app-ink-soft);
-  }
-
-  /* Mobile-first default keeps auth screens single-column. The shared lg
-     breakpoint reintroduces the split layout once there is room for both panes. */
-  @media (min-width: theme(--breakpoint-lg)) {
-    .et-kc-layout {
-      min-height: calc(100vh - 3rem);
-      grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
-    }
-
-    .et-kc-hero,
-    .et-kc-panel {
-      padding: 2rem clamp(1.5rem, 4vw, 3rem);
-    }
-
-    .et-kc-panel {
-      padding: 2rem clamp(1.25rem, 3vw, 2.5rem);
-    }
   }
 }

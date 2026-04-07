@@ -69,7 +69,6 @@ export class TemplateComponent extends ComponentReference {
 
   readonly userProfileFormFields = input<Type<unknown>>();
 
-  headerNode: Signal<TemplateRef<HTMLElement> | undefined> | undefined;
   infoNode: Signal<TemplateRef<HTMLElement> | undefined> | undefined;
   socialProvidersNode: Signal<TemplateRef<HTMLElement> | undefined> | undefined;
 
@@ -122,11 +121,6 @@ export class TemplateComponent extends ComponentReference {
     }
     if ('bodyClassName' in compRef && compRef.bodyClassName) {
       this.bodyClassName = `et-login-page ${compRef.bodyClassName as string}`.trim();
-    }
-    if ('headerNode' in compRef && compRef.headerNode) {
-      this.headerNode = computed(
-        () => (compRef.headerNode as Signal<TemplateRef<HTMLElement>>)(),
-      );
     }
     if ('infoNode' in compRef && compRef.infoNode) {
       this.infoNode = computed(

@@ -38,7 +38,6 @@ export class LoginComponent extends ComponentReference {
   );
   readonly i18n = inject<I18n>(LOGIN_I18N);
 
-  readonly headerNode = viewChild<TemplateRef<HTMLElement>>('headerNode');
   readonly infoNode = viewChild<TemplateRef<HTMLElement>>('infoNode');
   readonly socialProvidersNode =
     viewChild<TemplateRef<HTMLElement>>('socialProvidersNode');

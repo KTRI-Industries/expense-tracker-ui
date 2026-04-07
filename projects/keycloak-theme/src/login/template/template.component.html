@@ -6,131 +6,84 @@
 @let isReadyToRender = isReadyToRender$ | async;
 
 @if (isReadyToRender) {
-  <!-- Layout-only spacing stays inline as Tailwind utilities because it is unique
-       to the auth shell, while the reusable visual language comes from shared CSS. -->
-  <main class="min-h-screen p-6 max-[960px]:p-3">
-    <div class="et-kc-layout">
-      <section class="et-kc-hero">
-        <div class="landing-hero__bg-symbol" aria-hidden="true">€</div>
-
-        <div class="et-kc-header-content relative z-10">
-          @let header = headerNode && headerNode();
-          @if (header) {
-            <ng-container [ngTemplateOutlet]="header" />
-          } @else {
-            <p class="landing-eyebrow">Expense Tracker</p>
-            <h1 class="landing-headline">{{ realm.displayName }}</h1>
-            <p class="landing-subhead">
-              Secure access to your expenses, dashboards, and household accounts.
-            </p>
-          }
-        </div>
-
-        <div class="relative z-10 max-w-80">
-          <div class="landing-preview-card">
-            <p class="landing-preview-label mb-3 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
-              Your finances, at a glance
-            </p>
-            <div class="mb-3 flex flex-col gap-2">
-              <div class="flex items-center justify-between text-sm">
-                <span class="landing-preview-muted">Income</span>
-                <span class="font-bold" style="color: var(--landing-preview-income)">+ €3,240.00</span>
-              </div>
-              <div class="flex items-center justify-between text-sm">
-                <span class="landing-preview-muted">Expenses</span>
-                <span class="font-bold" style="color: var(--landing-preview-expense)">− €1,870.50</span>
-              </div>
-              <div class="mt-1 border-t pt-2" style="border-color: rgba(255,255,255,0.12)">
-                <div class="flex items-center justify-between">
-                  <span class="landing-preview-muted text-sm">Balance</span>
-                  <span class="landing-preview-amount font-brand text-[1.4rem] font-bold tracking-[-0.04em]">€1,369.50</span>
-                </div>
-              </div>
-            </div>
+  <main class="et-kc-layout">
+    <mat-card class="et-kc-card">
+      @if (i18n.enabledLanguages.length > 1) {
+        <div class="et-kc-locale mb-5">
+          <div id="kc-locale" class="menu-button-links">
+            <button
+              tabindex="1"
+              id="kc-current-locale-link"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="language-switch1"
+              [attr.aria-label]="i18n.msgStr('languages')">
+              {{ i18n.currentLanguage.label }}
+            </button>
+            <ul
+              role="menu"
+              tabindex="-1"
+              aria-labelledby="kc-current-locale-link"
+              id="language-switch1">
+              @for (entry of i18n.enabledLanguages; track entry; let idx = $index) {
+                <li role="none">
+                  <a
+                    role="menuitem"
+                    tabindex="-1"
+                    [href]="entry.href"
+                    [id]="'language-' + idx">
+                    {{ entry.label }}
+                  </a>
+                </li>
+              }
+            </ul>
           </div>
         </div>
-      </section>
+      }
 
-      <section class="et-kc-panel">
-        <mat-card class="et-kc-card">
-          @if (i18n.enabledLanguages.length > 1) {
-            <div class="et-kc-locale mb-5">
-              <div id="kc-locale" class="menu-button-links">
-                <button
-                  tabindex="1"
-                  id="kc-current-locale-link"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  aria-controls="language-switch1"
-                  [attr.aria-label]="i18n.msgStr('languages')">
-                  {{ i18n.currentLanguage.label }}
-                </button>
-                <ul
-                  role="menu"
-                  tabindex="-1"
-                  aria-labelledby="kc-current-locale-link"
-                  id="language-switch1">
-                  @for (entry of i18n.enabledLanguages; track entry; let idx = $index) {
-                    <li role="none">
-                      <a
-                        role="menuitem"
-                        tabindex="-1"
-                        [href]="entry.href"
-                        [id]="'language-' + idx">
-                        {{ entry.label }}
-                      </a>
-                    </li>
-                  }
-                </ul>
-              </div>
-            </div>
-          }
+      @if (displayMessage && message && (message.type !== 'warning' || !isAppInitiatedAction)) {
+        <div class="mb-4 rounded-2xl px-4 py-3" [ngClass]="'alert-' + message.type">
+          <span [innerHTML]="message.summary | kcSanitize: 'html'"></span>
+        </div>
+      }
 
-          @if (displayMessage && message && (message.type !== 'warning' || !isAppInitiatedAction)) {
-            <div class="mb-4 rounded-2xl px-4 py-3" [ngClass]="'alert-' + message.type">
-              <span [innerHTML]="message.summary | kcSanitize: 'html'"></span>
-            </div>
-          }
+      @if (auth && auth.showUsername && auth.showResetCredentials) {
+        <div class="mb-4 flex items-center justify-between gap-4 rounded-full bg-[var(--theme-hover-soft)] px-4 py-3 text-sm text-[var(--app-ink-soft)]">
+          <span class="font-semibold text-[var(--app-ink)]">{{ auth.attemptedUsername }}</span>
+          <a class="et-kc-link" [href]="url.loginRestartFlowUrl">
+            {{ i18n.msgStr('restartLoginTooltip') }}
+          </a>
+        </div>
+      }
 
-          @if (auth && auth.showUsername && auth.showResetCredentials) {
-            <div class="mb-4 flex items-center justify-between gap-4 rounded-full bg-[var(--theme-hover-soft)] px-4 py-3 text-sm text-[var(--app-ink-soft)]">
-              <span class="font-semibold text-[var(--app-ink)]">{{ auth.attemptedUsername }}</span>
-              <a class="et-kc-link" [href]="url.loginRestartFlowUrl">
-                {{ i18n.msgStr('restartLoginTooltip') }}
-              </a>
-            </div>
-          }
+      <ng-template #pageRef></ng-template>
 
-          <ng-template #pageRef></ng-template>
+      @if (!!auth && auth.showTryAnotherWayLink) {
+        <form
+          id="kc-select-try-another-way-form"
+          class="mt-4"
+          method="post"
+          [action]="url.loginAction">
+          <input type="hidden" name="tryAnotherWay" value="on" />
+          <a id="try-another-way" class="et-kc-link text-sm" (click)="tryAnotherWay()">
+            {{ i18n.msgStr('doTryAnotherWay') }}
+          </a>
+        </form>
+      }
 
-          @if (!!auth && auth.showTryAnotherWayLink) {
-            <form
-              id="kc-select-try-another-way-form"
-              class="mt-4"
-              method="post"
-              [action]="url.loginAction">
-              <input type="hidden" name="tryAnotherWay" value="on" />
-              <a id="try-another-way" class="et-kc-link text-sm" (click)="tryAnotherWay()">
-                {{ i18n.msgStr('doTryAnotherWay') }}
-              </a>
-            </form>
-          }
+      @let socialProviders = socialProvidersNode && socialProvidersNode();
+      @if (socialProviders) {
+        <ng-container [ngTemplateOutlet]="socialProviders" />
+      }
 
-          @let socialProviders = socialProvidersNode && socialProvidersNode();
-          @if (socialProviders) {
-            <ng-container [ngTemplateOutlet]="socialProviders" />
-          }
-
-          @if (displayInfo) {
-            @let info = infoNode && infoNode();
-            @if (info) {
-              <div class="et-kc-footer mt-6 text-center text-[0.92rem] text-[var(--app-ink-soft)]">
-                <ng-container [ngTemplateOutlet]="info" />
-              </div>
-            }
-          }
-        </mat-card>
-      </section>
-    </div>
+      @if (displayInfo) {
+        @let info = infoNode && infoNode();
+        @if (info) {
+          <div class="et-kc-footer mt-6 text-center text-[0.92rem] text-[var(--app-ink-soft)]">
+            <ng-container [ngTemplateOutlet]="info" />
+          </div>
+        }
+      }
+    </mat-card>
   </main>
 }
