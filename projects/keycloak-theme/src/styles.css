@@ -69,44 +69,22 @@
       var(--app-surface);
   }
 
-  /* We use plain buttons here rather than Material segmented controls because
-     this is effectively a tiny preview switcher, not a reusable form control. */
-  .et-kc-theme-switcher {
-    display: inline-flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding: 0.35rem;
-    border: 1px solid var(--app-border);
-    border-radius: 999px;
-    background: var(--theme-glass-control);
-  }
-
-  .et-kc-theme-switcher button {
-    padding: 0.45rem 0.9rem;
-    border: 0;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--app-ink-soft);
-    font: inherit;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-
-  .et-kc-theme-switcher button[aria-pressed='true'] {
-    background: var(--app-primary-strong);
-    color: var(--mat-sys-on-primary);
-    box-shadow: 0 10px 20px var(--theme-elevated-shadow);
-  }
-
   .et-kc-card {
     /* The card body is still a real mat-card; these rules only control auth-page
        sizing and spacing while the shared Material theme handles the skin. */
     width: min(100%, 34rem);
     margin: auto 0;
     padding: 1.75rem;
+  }
+
+  /* The login password field now uses a Material suffix button instead of the
+     default PatternFly input-group so it matches the Angular app field chrome. */
+  .et-kc-password-toggle {
+    color: var(--theme-form-text);
+  }
+
+  .et-kc-password-toggle:hover {
+    background: color-mix(in srgb, var(--theme-form-bg) 42%, var(--theme-hover-soft));
   }
 
 

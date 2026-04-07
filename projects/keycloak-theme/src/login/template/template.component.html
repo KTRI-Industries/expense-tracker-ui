@@ -28,43 +28,30 @@
 
         <div class="relative z-10 max-w-80">
           <div class="landing-preview-card">
-            <p class="landing-preview-label mb-1 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
-              Shared design tokens
+            <p class="landing-preview-label mb-3 text-[0.7rem] font-bold uppercase tracking-[0.18em]">
+              Your finances, at a glance
             </p>
-            <div class="landing-preview-amount mb-4 font-brand text-[2.2rem] font-bold tracking-[-0.04em]">
-              {{ activeTheme() | titlecase }}
+            <div class="mb-3 flex flex-col gap-2">
+              <div class="flex items-center justify-between text-sm">
+                <span class="landing-preview-muted">Income</span>
+                <span class="font-bold" style="color: var(--landing-preview-income)">+ €3,240.00</span>
+              </div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="landing-preview-muted">Expenses</span>
+                <span class="font-bold" style="color: var(--landing-preview-expense)">− €1,870.50</span>
+              </div>
+              <div class="mt-1 border-t pt-2" style="border-color: rgba(255,255,255,0.12)">
+                <div class="flex items-center justify-between">
+                  <span class="landing-preview-muted text-sm">Balance</span>
+                  <span class="landing-preview-amount font-brand text-[1.4rem] font-bold tracking-[-0.04em]">€1,369.50</span>
+                </div>
+              </div>
             </div>
-            <p class="landing-preview-muted text-sm leading-6">
-              This Keycloak theme reads the same UI variables as the Angular app, so updates to
-              the app’s theme palette propagate here instead of drifting apart.
-            </p>
           </div>
         </div>
       </section>
 
       <section class="et-kc-panel">
-        <!-- This utilities group is the responsive control bar: horizontal by default,
-             stacked on narrow screens so the theme switcher and helper copy stay paired. -->
-        <div class="mb-6 flex items-start justify-between gap-4 max-[960px]:flex-col">
-          <div class="et-kc-theme-switcher" aria-label="Theme variants">
-            @for (theme of themeOptions; track theme) {
-              <button
-                type="button"
-                [attr.aria-pressed]="activeTheme() === theme"
-                (click)="setActiveTheme(theme)">
-                {{ theme }}
-              </button>
-            }
-          </div>
-
-          <div class="ml-auto max-w-72 text-right max-[960px]:ml-0 max-[960px]:max-w-none max-[960px]:text-left">
-            <p class="m-0 text-[0.9rem] leading-[1.6] text-[var(--app-ink-soft)]">
-              Theme defaults come from Keycloak config, and the last selected variant is kept in
-              local storage for previews and repeated sign-ins.
-            </p>
-          </div>
-        </div>
-
         <mat-card class="et-kc-card">
           @if (i18n.enabledLanguages.length > 1) {
             <div class="et-kc-locale mb-5">

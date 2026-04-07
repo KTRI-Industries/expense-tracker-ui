@@ -7,12 +7,10 @@
 @let social = kcContext.social;
 
 <ng-template #headerNode>
-  <p class="landing-eyebrow">Expense Tracker · Auth</p>
-  <h1 class="landing-headline">Sign in with the same themes your app already knows.</h1>
+  <p class="landing-eyebrow">Expense Tracker</p>
+  <h1 class="landing-headline">Your expenses, organised.</h1>
   <p class="landing-subhead">
-    This Keycloakify login uses the UI workspace tokens from <code>themes.css</code>, so the
-    navy, slate, and terracotta variants stay in sync with the Angular app instead of becoming a
-    separate design fork.
+    Track spending, manage budgets, and stay on top of your household finances — all in one place.
   </p>
 </ng-template>
 
@@ -57,7 +55,7 @@
       Welcome back
     </h2>
     <p class="mt-2 text-sm leading-6 text-[var(--app-ink-soft)]">
-      Use your account credentials or continue with one of your connected identity providers.
+      Sign in to continue to your account.
     </p>
   </div>
 
@@ -103,20 +101,31 @@
       }
 
       <div class="flex flex-col gap-[0.45rem]">
-        <kc-password-wrapper passwordInputId="password">
-          <mat-form-field appearance="outline">
-            <mat-label>{{ i18n.msgStr('password') }}</mat-label>
-            <input
-              matInput
-              tabindex="3"
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              [attr.aria-invalid]="messagesPerField.existsError('username', 'password')"
-              placeholder="Enter your password" />
-          </mat-form-field>
-        </kc-password-wrapper>
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>{{ i18n.msgStr('password') }}</mat-label>
+          <input
+            matInput
+            tabindex="3"
+            id="password"
+            name="password"
+            [type]="isPasswordRevealed() ? 'text' : 'password'"
+            autocomplete="current-password"
+            [attr.aria-invalid]="messagesPerField.existsError('username', 'password')"
+            placeholder="Enter your password" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="et-kc-password-toggle"
+            [attr.aria-label]="i18n.msgStr(isPasswordRevealed() ? 'hidePassword' : 'showPassword')"
+            [attr.aria-controls]="'password'"
+            (click)="togglePasswordVisibility()">
+            <i
+              aria-hidden="true"
+              class="fa"
+              [ngClass]="isPasswordRevealed() ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </mat-form-field>
 
         @if (usernameHidden && messagesPerField.existsError('username', 'password')) {
           <span

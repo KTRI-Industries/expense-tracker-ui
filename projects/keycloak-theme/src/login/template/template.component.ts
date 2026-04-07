@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import {
   ChangeDetectionStrategy,
@@ -20,10 +20,7 @@ import {
 import { Meta, Title } from '@angular/platform-browser';
 import {
   DEFAULT_UI_THEME,
-  isUiTheme,
   UI_THEME_ATTRIBUTE,
-  UI_THEMES,
-  UI_THEME_STORAGE_KEY,
   type UiTheme,
 } from '@expense-tracker-ui/shared/theme';
 import { KcSanitizePipe } from '@keycloakify/angular/lib/pipes/kc-sanitize';
@@ -42,7 +39,7 @@ import type { Observable } from 'rxjs';
   selector: 'kc-root',
   standalone: true,
   templateUrl: './template.component.html',
-  imports: [AsyncPipe, KcSanitizePipe, MatCardModule, NgClass, NgTemplateOutlet, TitleCasePipe],
+  imports: [AsyncPipe, KcSanitizePipe, MatCardModule, NgClass, NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -62,8 +59,7 @@ export class TemplateComponent extends ComponentReference {
   readonly loginResourceInjectorService = inject(LoginResourceInjectorService);
   readonly #cdr = inject(ChangeDetectorRef);
 
-  readonly themeOptions: UiTheme[] = [...UI_THEMES];
-  readonly activeTheme = signal<UiTheme>(this.resolveInitialTheme());
+  readonly activeTheme = signal<UiTheme>(DEFAULT_UI_THEME);
 
   readonly isReadyToRender$: Observable<boolean> =
     this.loginResourceInjectorService.injectResource(this.doUseDefaultCss);
@@ -106,17 +102,6 @@ export class TemplateComponent extends ComponentReference {
     },
     { manualCleanup: true },
   );
-
-  setActiveTheme(theme: UiTheme) {
-    this.activeTheme.set(theme);
-    this.applyUiTheme(theme);
-
-    try {
-      window.localStorage.setItem(UI_THEME_STORAGE_KEY, theme);
-    } catch {
-      // Local storage is only used to keep the preview/login selection sticky.
-    }
-  }
 
   tryAnotherWay() {
     document.forms['kc-select-try-another-way-form' as never]?.requestSubmit();
@@ -163,24 +148,6 @@ export class TemplateComponent extends ComponentReference {
     this.applyUiTheme(this.activeTheme());
     this.#cdr.markForCheck();
     this.componentCreationEffect.destroy();
-  }
-
-  private resolveInitialTheme(): UiTheme {
-    const defaultTheme =
-      this.asUiTheme(this.kcContext.properties.UI_THEME) ?? DEFAULT_UI_THEME;
-
-    try {
-      const persistedTheme = this.asUiTheme(
-        window.localStorage.getItem(UI_THEME_STORAGE_KEY),
-      );
-      return persistedTheme ?? defaultTheme;
-    } catch {
-      return defaultTheme;
-    }
-  }
-
-  private asUiTheme(value: string | null | undefined): UiTheme | undefined {
-    return isUiTheme(value) ? value : undefined;
   }
 
   private applyUiTheme(theme: UiTheme) {

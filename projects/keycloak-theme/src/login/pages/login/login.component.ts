@@ -14,7 +14,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { KcSanitizePipe } from '@keycloakify/angular/lib/pipes/kc-sanitize';
 import { ComponentReference } from '@keycloakify/angular/login/classes/component-reference';
-import { PasswordWrapperComponent } from '@keycloakify/angular/login/components/password-wrapper';
 import type { I18n } from '@keycloakify/angular/login/i18n';
 import type { KcContext } from '@keycloakify/angular/login/KcContext';
 import { LOGIN_I18N } from '@keycloakify/angular/login/tokens/i18n';
@@ -24,7 +23,7 @@ import { KC_LOGIN_CONTEXT } from '@keycloakify/angular/login/tokens/kc-context';
   selector: 'kc-login',
   standalone: true,
   templateUrl: './login.component.html',
-  imports: [NgClass, KcSanitizePipe, PasswordWrapperComponent, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [NgClass, KcSanitizePipe, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -45,6 +44,7 @@ export class LoginComponent extends ComponentReference {
     viewChild<TemplateRef<HTMLElement>>('socialProvidersNode');
 
   readonly isLoginButtonDisabled = signal(false);
+  readonly isPasswordRevealed = signal(false);
 
   displayRequiredFields = false;
   displayInfo =
@@ -55,4 +55,8 @@ export class LoginComponent extends ComponentReference {
     'username',
     'password',
   );
+
+  togglePasswordVisibility() {
+    this.isPasswordRevealed.update((revealed) => !revealed);
+  }
 }
