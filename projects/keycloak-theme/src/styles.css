@@ -17,50 +17,50 @@ body {
   height: 100%;
 }
 
+/* Layout rules live outside @layer so they are non-layered and win over
+   Keycloak's own login.css (which also targets <main> without a layer). */
+.et-kc-layout {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh !important;
+  padding: 2rem 1.5rem;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, var(--theme-glass-faint), transparent 42%),
+    var(--landing-hero-bg);
+}
+
+/* Large ghosted currency symbol — purely decorative backdrop texture. */
+.et-kc-bg-symbol {
+  position: absolute;
+  right: -0.05em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-brand);
+  font-size: clamp(20rem, 40vw, 52rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--landing-hero-symbol);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Glass card floats above the dark background. */
+.et-kc-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 30rem);
+  padding: 2rem;
+  background: var(--theme-glass-panel-end) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28) !important;
+}
+
 @layer components {
-  /* Full-screen shell with the dark navy hero background.
-     The € symbol is decorative and positioned absolutely behind the card. */
-  .et-kc-layout {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 2rem 1.5rem;
-    overflow: hidden;
-    background:
-      linear-gradient(180deg, var(--theme-glass-faint), transparent 42%),
-      var(--landing-hero-bg);
-  }
-
-  /* Large ghosted currency symbol — purely decorative backdrop texture. */
-  .et-kc-bg-symbol {
-    position: absolute;
-    right: -0.05em;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-brand);
-    font-size: clamp(20rem, 40vw, 52rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.06em;
-    color: var(--landing-hero-symbol);
-    user-select: none;
-    pointer-events: none;
-  }
-
-  /* Glass card floats above the dark background. */
-  .et-kc-card {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 30rem);
-    padding: 2rem;
-    background: var(--theme-glass-panel-end) !important;
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28) !important;
-  }
-
   /* The login password field uses a Material suffix button so it matches the
      Angular app field chrome. */
   .et-kc-password-toggle {
