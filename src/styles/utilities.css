@@ -39,7 +39,11 @@
   background-color: var(--app-negative-soft);
   color: var(--mat-sys-error);
 }
-
+/*
+       hidden md:flex hides top menu on smaller screens
+       grow fills any available space
+      items-center aligns menu items vertically
+*/
 @utility nav-flex-container {
   @apply hidden md:flex grow items-center px-3;
 }
