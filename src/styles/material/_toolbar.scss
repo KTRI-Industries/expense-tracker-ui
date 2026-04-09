@@ -1,0 +1,96 @@
+// Toolbar — gradient background, title/link styling, button pseudo-elements,
+// chip overrides, and focus indicators.
+// Token-based toolbar overrides (background, text, height) live in theme.scss.
+
+.mat-toolbar.mat-toolbar-single-row {
+  background:
+    linear-gradient(135deg, var(--theme-toolbar-glow) 0%, transparent 44%),
+    linear-gradient(180deg, var(--theme-toolbar-top) 0%, var(--theme-toolbar-bottom) 100%);
+  border-bottom: 2px solid var(--theme-toolbar-border);
+  box-shadow: 0 8px 20px var(--theme-toolbar-shadow);
+}
+
+.mat-toolbar [data-cy='main-title'] {
+  font-family: var(--font-brand);
+  font-optical-sizing: auto;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  animation: brand-entrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mat-toolbar [data-cy='main-title'] a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.mat-toolbar [data-cy='username-link'] {
+  font-family: var(--font-brand);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover,
+  &:focus-visible {
+    border-bottom-color: var(--theme-interactive-accent);
+    outline: none;
+  }
+}
+
+.mat-toolbar .mat-mdc-button {
+  overflow: hidden;
+
+  // The pseudo-element underline gives toolbar buttons a custom focus/hover cue
+  // without replacing the underlying Material button component.
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--theme-interactive-accent);
+    border-radius: 1px;
+    transition:
+      width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+      left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    width: calc(100% - 24px);
+    left: 12px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-focus-ring);
+    outline-offset: -2px;
+  }
+}
+
+// The account pill exposes several nested MDC elements, so the toolbar chip
+// needs explicit inner overrides to stay theme-correct across all variants.
+.mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip {
+  --mdc-chip-label-text-size: 0.75rem;
+  --mdc-chip-label-text-weight: 600;
+  --mdc-chip-label-text-tracking: 0.02em;
+  --mdc-chip-container-height: 28px;
+  --mdc-chip-elevated-container-color: var(--theme-toolbar-chip-bg);
+  --mdc-chip-label-text-color: var(--theme-toolbar-chip-text);
+
+  .mdc-evolution-chip__cell--primary,
+  .mdc-evolution-chip__action--primary,
+  .mdc-evolution-chip__text-label {
+    color: var(--theme-toolbar-chip-text);
+  }
+
+  .mdc-evolution-chip__action {
+    background-color: var(--theme-toolbar-chip-bg);
+  }
+}

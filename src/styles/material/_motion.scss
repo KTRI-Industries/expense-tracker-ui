@@ -1,0 +1,20 @@
+// Motion — shared entrance animations for toolbar, content, and KPI cards.
+
+@keyframes brand-entrance {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes content-entrance {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kpi-entrance {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+mat-sidenav-content {
+  animation: content-entrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}

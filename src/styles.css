@@ -6,6 +6,5 @@
 @import '../libs/shared/theme/src/styles/base.css';
 @import '../libs/shared/theme/src/styles/landing-brand.css';
 @import './styles/utilities.css';
-@import './styles/material.css';
 
 @config '../tailwind.config.js';

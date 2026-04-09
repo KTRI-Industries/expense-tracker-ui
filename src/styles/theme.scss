@@ -56,6 +56,53 @@ $navy-config: (
   density: $density-config,
 );
 
+@mixin app-token-overrides() {
+  // Toolbar
+  @include mat.toolbar-overrides((
+    container-background-color: var(--app-ink),
+    container-text-color: var(--theme-toolbar-text),
+    standard-height: 56px,
+  ));
+
+  // Sidenav
+  @include mat.sidenav-overrides((
+    content-background-color: var(--theme-body-bg),
+    content-text-color: var(--app-ink),
+    container-background-color: var(--theme-body-bg),
+  ));
+
+  // Cards
+  @include mat.card-overrides((
+    elevated-container-color: var(--theme-card-bg),
+    outlined-container-color: var(--theme-card-bg),
+    elevated-container-shape: 12px,
+    outlined-container-shape: 12px,
+    title-text-font: var(--font-brand),
+    title-text-tracking: -0.01em,
+    subtitle-text-color: var(--app-ink-soft),
+    subtitle-text-size: 0.875rem,
+    subtitle-text-line-height: 1.55,
+  ));
+
+  // Form fields (outlined only — app uses outline appearance globally)
+  @include mat.form-field-overrides((
+    container-text-size: 0.9rem,
+    outlined-outline-color: var(--theme-form-border),
+    outlined-focus-outline-color: var(--theme-form-focus),
+    outlined-label-text-color: var(--theme-form-label),
+    outlined-input-text-color: var(--theme-form-text),
+    outlined-hover-outline-color: var(--theme-form-border),
+    outlined-focus-label-text-color: var(--theme-form-focus),
+    enabled-select-arrow-color: var(--theme-form-text),
+    focus-select-arrow-color: var(--theme-form-focus),
+  ));
+
+  // Paginator
+  @include mat.paginator-overrides((
+    container-text-color: var(--app-ink),
+  ));
+}
+
 @mixin app-theme-scope($selector, $config) {
   #{$selector} {
     // Material component colors are generated at build time, so each theme needs
@@ -67,9 +114,21 @@ $navy-config: (
     @include mat.all-component-themes($theme);
     @include mat.color-variants-backwards-compatibility($theme);
     @include mat.theme($config);
+    @include app-token-overrides();
   }
 }
 
 @include app-theme-scope('html:not([data-theme]), html[data-theme="terracotta"]', $terracotta-config);
 @include app-theme-scope('html[data-theme="slate"]', $slate-config);
 @include app-theme-scope('html[data-theme="navy"]', $navy-config);
+
+// Non-token Material component overrides — gradients, animations, pseudo-elements,
+// responsive layout transforms, and other customizations that the M3 token API
+// cannot express. Imported here so Sass compiles them alongside the theme output.
+@import './material/shell';
+@import './material/toolbar';
+@import './material/cards';
+@import './material/buttons';
+@import './material/forms';
+@import './material/tables';
+@import './material/motion';

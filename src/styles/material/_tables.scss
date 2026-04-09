@@ -1,0 +1,118 @@
+// Dense data tables — header/cell styling, row hover, chip overrides,
+// paginator, and responsive stacked-card transformation.
+
+$_breakpoint-md: 768px;
+
+.responsive-card-table {
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    justify-content: center;
+  }
+
+  .mat-mdc-row:hover {
+    cursor: pointer;
+    background-color: var(--theme-table-row-hover);
+  }
+
+  .mat-mdc-header-row {
+    background-color: var(--theme-table-header-bg);
+    border-bottom: 2px solid var(--theme-table-header-border);
+  }
+
+  .mat-mdc-header-cell {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--app-primary-strong);
+    opacity: 0.85;
+  }
+
+  .mat-mdc-cell[data-label='Amount'] {
+    font-family: var(--font-brand);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .mat-mdc-chip.mat-mdc-standard-chip {
+    --mdc-chip-elevated-container-color: var(--theme-chip-bg);
+    --mdc-chip-label-text-color: var(--theme-chip-text);
+    --mdc-chip-label-text-size: 0.75rem;
+    --mdc-chip-label-text-weight: 500;
+    --mdc-chip-label-text-tracking: 0.02em;
+  }
+}
+
+.mat-mdc-paginator {
+  font-size: 0.8rem;
+  border-top: 1px solid var(--theme-card-border);
+  opacity: 0.78;
+}
+
+// On smaller screens we progressively turn the Material table into stacked
+// cards rather than introducing a separate mobile-only component.
+@media (max-width: $_breakpoint-md) {
+  .responsive-card-table .mat-mdc-table {
+    border: 0;
+    vertical-align: middle;
+
+    caption {
+      font-size: 1em;
+    }
+
+    .mat-mdc-header-cell {
+      border: 10px solid;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    .mat-mdc-header-row {
+      min-height: 0;
+    }
+
+    .mat-mdc-row {
+      border-bottom: 5px solid var(--theme-card-border);
+      display: block;
+
+      &:last-child .mat-mdc-cell {
+        border-bottom: 1px solid var(--theme-card-border);
+
+        &:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    .mat-mdc-cell {
+      border-bottom: 1px solid var(--theme-card-border);
+      display: block;
+      font-size: 1em;
+      text-align: right;
+      margin-bottom: 4%;
+      padding-top: 3px;
+
+      &::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        font-size: 0.85em;
+        color: var(--app-ink-soft);
+      }
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &:first-child {
+        margin-top: 4%;
+        padding-left: 16px;
+        padding-top: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+// Shell — custom element display rules and sidenav animation/hover.
+// Token-based sidenav overrides (background, text color) live in theme.scss.
+
+expense-tracker-ui-root,
+expense-tracker-ui-nav-menu {
+  display: block;
+  height: 100%;
+}
+
+mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover,
+.mat-mdc-selection-list .mat-mdc-list-item:hover {
+  background-color: var(--theme-hover-soft);
+}

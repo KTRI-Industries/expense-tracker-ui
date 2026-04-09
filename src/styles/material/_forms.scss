@@ -1,0 +1,34 @@
+// Forms — wrapper background, notched-outline fix, input text color,
+// and file upload zone styling.
+// Token-based form-field overrides (outline, label, focus, select arrow,
+// text size) live in theme.scss.
+
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  // Material fills several nested wrappers, so the actual field "surface" needs
+  // to be assigned here rather than on the outer form-field host.
+  // No outlined-container-color token exists in M3 form-field.
+  background-color: var(--theme-form-bg);
+}
+
+.mat-mdc-input-element,
+.mat-mdc-select-value {
+  color: var(--theme-form-text);
+}
+
+.file-upload-zone .mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--mat-sys-primary);
+  opacity: 0.6;
+}
+
+.file-upload-zone .file-name {
+  font-weight: 600;
+  color: var(--app-primary-strong);
+  opacity: 1;
+}
