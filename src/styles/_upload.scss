@@ -1,0 +1,29 @@
+// File upload zone — shared across all file-picker form fields.
+// No Material dependency — pure CSS custom properties.
+
+.file-upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 1.5rem;
+  border: 2px dashed var(--theme-upload-border);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  color: var(--app-ink-soft);
+  opacity: 0.78;
+  font-size: 0.85rem;
+  background-color: var(--theme-upload-bg);
+  transition:
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: var(--theme-upload-hover-border);
+    background-color: var(--theme-upload-hover-bg);
+    opacity: 0.92;
+  }
+}

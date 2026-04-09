@@ -122,6 +122,11 @@ $navy-config: (
 @include app-theme-scope('html[data-theme="slate"]', $slate-config);
 @include app-theme-scope('html[data-theme="navy"]', $navy-config);
 
+// Application component classes — no Material dependency, no Tailwind @apply.
+@import './typography';
+@import './nav';
+@import './upload';
+
 // Non-token Material component overrides — gradients, animations, pseudo-elements,
 // responsive layout transforms, and other customizations that the M3 token API
 // cannot express. Imported here so Sass compiles them alongside the theme output.
