@@ -2,6 +2,13 @@
 // chip overrides, and focus indicators.
 // Token-based toolbar overrides (background color, text color, height) live in theme.scss.
 
+// mat-icon-button uses --mat-icon-button-icon-color for its colour rather than
+// inheriting --mat-toolbar-container-text-color. Override it here so login,
+// logout and menu icons are visible against the dark toolbar background.
+.mat-toolbar .mat-mdc-icon-button {
+  --mat-icon-button-icon-color: var(--theme-toolbar-text);
+}
+
 .mat-toolbar.mat-toolbar-single-row {
   // Two-layer gradient: a subtle radial glow from the primary accent at the top-left
   // sits above a vertical dark-to-darker fade that gives depth without a flat colour.
