@@ -1,5 +1,11 @@
 /* App-wide reusable Tailwind utilities.
-   Imported by styles.css - @utility directives here are processed by Tailwind. */
+   Imported by styles.css — @utility directives here are processed by Tailwind/PostCSS.
+
+   WHY THIS MUST STAY A .css FILE (not .scss):
+   The @apply and @utility directives are Tailwind/PostCSS constructs. Sass has no
+   knowledge of them — converting this file to .scss would silently break every
+   @apply line at build time. Classes that do NOT use @apply live in dedicated .scss
+   files (_typography.scss, _nav.scss, _upload.scss) and are imported from theme.scss. */
 
 /* Shared layout widths used by form-heavy screens that should not stretch all the
    way across large desktop cards. */
