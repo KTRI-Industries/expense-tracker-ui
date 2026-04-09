@@ -10,6 +10,7 @@
    the same themed background treatment before component styles kick in. */
 html,
 body {
+  height: 100%;
   min-height: 100%;
   margin: 0;
 }
