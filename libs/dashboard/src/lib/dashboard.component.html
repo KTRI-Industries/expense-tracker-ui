@@ -90,10 +90,10 @@
     <mat-card-content class="lg:columns-2 md:flex md:items-center">
       <!-- max-w-xs + mx-auto: constrains the doughnut so it doesn't stretch on wide cards -->
       <div class="max-w-xs mx-auto">
-        @if (groupedExpensesChartData !== null) {
+        @if (themedDoughnutData !== null) {
           <canvas
             baseChart
-            [data]="groupedExpensesChartData"
+            [data]="themedDoughnutData"
             [options]="doughnutChartOptions"
             type="doughnut"></canvas>
         }
@@ -115,10 +115,10 @@
     </mat-card-title>
     <mat-card-content>
       <div>
-        @if (incomeExpensePerMonthChartData !== null) {
+        @if (themedBarData !== null) {
           <canvas
             baseChart
-            [data]="incomeExpensePerMonthChartData"
+            [data]="themedBarData"
             [options]="barChartOptions"
             type="bar"></canvas>
         }
@@ -136,10 +136,10 @@
     <mat-card-title class="text-center">Expenses per User</mat-card-title>
     <mat-card-content>
       <div>
-        @if (expensesPerUserChartData !== null) {
+        @if (themedLineData !== null) {
           <canvas
             baseChart
-            [data]="expensesPerUserChartData"
+            [data]="themedLineData"
             type="line"></canvas>
         }
       </div>
