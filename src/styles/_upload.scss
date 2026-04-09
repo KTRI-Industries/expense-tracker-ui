@@ -8,14 +8,20 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 2rem 1.5rem;
+  // Dashed border signals "drop target" to users familiar with drag-and-drop.
   border: 2px dashed var(--theme-upload-border);
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
   color: var(--app-ink-soft);
+  // Resting state is visually subdued — the zone is secondary to the form fields
+  // around it and should not compete for attention before interaction.
   opacity: 0.78;
   font-size: 0.85rem;
   background-color: var(--theme-upload-bg);
+  // Animate border, background and opacity together so the hover state feels
+  // like a single cohesive response rather than disconnected flickers.
+  // cubic-bezier(0.4, 0, 0.2, 1) is Material's standard easing curve.
   transition:
     border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -24,6 +30,8 @@
   &:hover {
     border-color: var(--theme-upload-hover-border);
     background-color: var(--theme-upload-hover-bg);
+    // Increase opacity on hover to signal the zone is active and ready to accept
+    // a file, without fully removing the subdued quality.
     opacity: 0.92;
   }
 }

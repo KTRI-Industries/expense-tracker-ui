@@ -1,11 +1,16 @@
 // Toolbar — gradient background, title/link styling, button pseudo-elements,
 // chip overrides, and focus indicators.
-// Token-based toolbar overrides (background, text, height) live in theme.scss.
+// Token-based toolbar overrides (background color, text color, height) live in theme.scss.
 
 .mat-toolbar.mat-toolbar-single-row {
+  // Two-layer gradient: a subtle radial glow from the primary accent at the top-left
+  // sits above a vertical dark-to-darker fade that gives depth without a flat colour.
+  // Gradients cannot be expressed as M3 tokens so this must be raw CSS.
   background:
     linear-gradient(135deg, var(--theme-toolbar-glow) 0%, transparent 44%),
     linear-gradient(180deg, var(--theme-toolbar-top) 0%, var(--theme-toolbar-bottom) 100%);
+  // Thin accent border separates the toolbar from page content and echoes the
+  // primary colour without adding visual weight.
   border-bottom: 2px solid var(--theme-toolbar-border);
   box-shadow: 0 8px 20px var(--theme-toolbar-shadow);
 }
@@ -16,11 +21,16 @@
   font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+  // `both` fill-mode holds the from-state before the animation starts and the
+  // to-state after it ends, preventing a flash of the final position before
+  // the delay fires on subsequent navigations.
   animation: brand-entrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .mat-toolbar [data-cy='main-title'] a {
   text-decoration: none;
+  // Inherit the toolbar text colour set by the token rather than the browser's
+  // default link blue.
   color: inherit;
 }
 
@@ -32,6 +42,8 @@
   letter-spacing: -0.01em;
   text-decoration: none;
   color: inherit;
+  // Start with a transparent border so the underline appears on hover without
+  // causing a layout shift — the space is already reserved.
   border-bottom: 1px solid transparent;
   padding-bottom: 1px;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -39,24 +51,31 @@
   &:hover,
   &:focus-visible {
     border-bottom-color: var(--theme-interactive-accent);
+    // Suppress the default focus outline — the border-bottom underline already
+    // provides a visible focus indicator that fits the toolbar design.
     outline: none;
   }
 }
 
 .mat-toolbar .mat-mdc-button {
+  // overflow: hidden is required so the ::after pseudo-element is clipped to the
+  // button boundary as it animates in from width: 0 at the centre.
   overflow: hidden;
 
-  // The pseudo-element underline gives toolbar buttons a custom focus/hover cue
-  // without replacing the underlying Material button component.
+  // Sliding underline indicator replaces Material's default ripple-based focus
+  // cue with a custom one that matches the toolbar's design language.
   &::after {
     content: '';
     position: absolute;
     bottom: 4px;
+    // Start at the horizontal centre so the line expands symmetrically outward.
     left: 50%;
+    // width: 0 hides the line in the resting state.
     width: 0;
     height: 2px;
     background-color: var(--theme-interactive-accent);
     border-radius: 1px;
+    // Animate width and left together so the bar grows from centre to edges.
     transition:
       width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
       left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,26 +83,37 @@
 
   &:hover::after,
   &:focus-visible::after {
+    // 24px total horizontal inset (12px each side) keeps the bar within the
+    // button's visible label area rather than touching its full padding edges.
     width: calc(100% - 24px);
     left: 12px;
   }
 
   &:focus-visible {
+    // Inset outline so it stays within the button boundary and aligns with
+    // Material's own focus ring treatment on interactive surfaces.
     outline: 2px solid var(--theme-focus-ring);
     outline-offset: -2px;
   }
 }
 
-// The account pill exposes several nested MDC elements, so the toolbar chip
-// needs explicit inner overrides to stay theme-correct across all variants.
+// The account pill uses --mdc-chip-* CSS variables directly because the chip
+// is scoped inside .mat-toolbar, making global mat.chips-overrides() unsuitable —
+// those would affect every chip in the app. Local MDC custom properties are the
+// only way to scope chip tokens to a specific parent context.
 .mat-toolbar .mat-mdc-chip.mat-mdc-standard-chip {
   --mdc-chip-label-text-size: 0.75rem;
   --mdc-chip-label-text-weight: 600;
   --mdc-chip-label-text-tracking: 0.02em;
+  // 28px is more compact than the M3 default 32px, which suits the toolbar's
+  // reduced height without looking cramped.
   --mdc-chip-container-height: 28px;
   --mdc-chip-elevated-container-color: var(--theme-toolbar-chip-bg);
   --mdc-chip-label-text-color: var(--theme-toolbar-chip-text);
 
+  // MDC renders colour on several nested internal elements independently.
+  // These must all be overridden to prevent the default on-surface colour
+  // bleeding through on any of the internal wrappers.
   .mdc-evolution-chip__cell--primary,
   .mdc-evolution-chip__action--primary,
   .mdc-evolution-chip__text-label {

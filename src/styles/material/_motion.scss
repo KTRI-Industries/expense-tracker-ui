@@ -1,20 +1,31 @@
-// Motion — shared entrance animations for toolbar, content, and KPI cards.
+// Motion — shared entrance animations for toolbar title, page content, and KPI cards.
+// cubic-bezier(0.16, 1, 0.3, 1) is a spring-like easing: fast initial movement
+// that decelerates sharply, giving UI elements a snappy, physical feel.
 
+// Toolbar brand title slides down from above — direction matches the toolbar's
+// position at the top of the viewport, reinforcing spatial orientation.
 @keyframes brand-entrance {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+// Main content area slides up from below — the opposite direction to the toolbar,
+// creating a sense of content rising into view from the page body.
 @keyframes content-entrance {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+// KPI cards use a shorter travel distance (8px vs 10px) than the content entrance
+// because they are smaller elements — the same distance would feel excessive.
 @keyframes kpi-entrance {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 mat-sidenav-content {
+  // 0.1s delay lets the sidenav drawer finish its own opening transition before
+  // the content animates in, preventing both from competing for attention.
+  // `both` fill-mode keeps the element at opacity: 0 during the delay period.
   animation: content-entrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }

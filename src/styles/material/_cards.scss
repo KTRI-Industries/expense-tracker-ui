@@ -4,20 +4,30 @@
 
 mat-card-title,
 .mat-mdc-card-title {
+  // font-optical-sizing is a typography property not exposed as an M3 token,
+  // so it must be set here even though font-family and tracking live in theme.scss.
   font-optical-sizing: auto;
+  // Pin title colour to the full ink token — the M3 default on-surface can appear
+  // slightly desaturated on warm-toned card backgrounds.
   color: var(--app-ink);
 }
 
 mat-card-subtitle,
 .mat-mdc-card-subtitle {
+  // Partial opacity softens the subtitle relative to the title without requiring
+  // a separate muted-colour token. Works on top of the subtitle-text-color token.
   opacity: 0.92;
 }
 
 .mat-mdc-card {
   border: 1px solid var(--theme-card-border);
   box-shadow: 0 10px 24px var(--theme-card-shadow);
+  // Transition only box-shadow — animating background-color or border on every
+  // card hover would be expensive at dashboard scale with many cards on screen.
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
+  // Exclude KPI cards from the generic hover lift — they have their own
+  // transform-based hover defined below.
   &:not(.kpi-card):hover {
     box-shadow: 0 14px 30px var(--theme-card-shadow-hover);
   }
@@ -26,30 +36,43 @@ mat-card-subtitle,
 // KPI cards — the one place where a little more surface drama helps;
 // the gradient separates summary metrics from the flatter CRUD screens.
 .kpi-card {
+  // transparent default reserves the 3px space so content doesn't shift when
+  // the modifier class adds a colour.
   border-left: 3px solid transparent;
+  // Gradient cannot be expressed as an M3 token — raw CSS is the only option.
   background:
     linear-gradient(180deg, var(--theme-kpi-start) 0%, var(--theme-kpi-end) 100%);
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  // `both` fill-mode holds the initial from-state until the staggered delay fires,
+  // preventing cards from appearing at full opacity before the animation begins.
   animation: kpi-entrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   &:hover {
+    // Subtle upward lift draws attention to the hovered card in a grid of four.
     transform: translateY(-3px);
     box-shadow: 0 16px 28px var(--theme-kpi-shadow);
   }
 
+  // BEM modifier classes set the left-border accent colour per metric type,
+  // providing an at-a-glance semantic colour code across all dashboard layouts.
   &--income { border-left-color: var(--app-positive); }
   &--expense { border-left-color: var(--app-negative); }
   &--balance { border-left-color: var(--mat-sys-primary); }
   &--transactions { border-left-color: var(--app-accent); }
 
+  // Staggered entrance delays create a sequential reveal left-to-right across
+  // the four-card dashboard row, reducing the visual noise of all cards
+  // animating simultaneously.
   &:nth-child(1) { animation-delay: 0.08s; }
   &:nth-child(2) { animation-delay: 0.14s; }
   &:nth-child(3) { animation-delay: 0.2s; }
   &:nth-child(4) { animation-delay: 0.26s; }
 }
 
+// Chart card titles are intentionally smaller than the default card title token
+// (title-large) — they label a visualisation rather than a content section.
 .dashboard-chart mat-card-title,
 .dashboard-chart .mat-mdc-card-title {
   font-family: var(--font-brand);

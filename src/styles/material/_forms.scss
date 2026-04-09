@@ -3,32 +3,44 @@
 // Token-based form-field overrides (outline, label, focus, select arrow,
 // text size) live in theme.scss.
 
+// MDC renders the notch (the gap cut into the outline for the floating label)
+// with a right border by default, which creates a double-border artifact on the
+// right side of the notch. Removing it fixes the visual without affecting layout.
 .mdc-notched-outline__notch {
   border-right: none;
 }
 
 .mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  // Material fills several nested wrappers, so the actual field "surface" needs
-  // to be assigned here rather than on the outer form-field host.
-  // No outlined-container-color token exists in M3 form-field.
+  // M3 does not expose an outlined-container-color token for form fields — only
+  // filled-* has a container-color token. The background must therefore be set
+  // directly on the internal wrapper element rather than the host.
   background-color: var(--theme-form-bg);
 }
 
+// .mat-mdc-input-element targets native <input> and <textarea> elements inside
+// the field. .mat-mdc-select-value targets the displayed value text in a
+// <mat-select>. Both need explicit colour because they render outside the outline
+// wrapper where the token-driven colour applies.
 .mat-mdc-input-element,
 .mat-mdc-select-value {
   color: var(--theme-form-text);
 }
 
+// Material icon inside the upload zone — oversized relative to the default
+// mat-icon size (24px) to give the drop target a clear visual anchor.
 .file-upload-zone .mat-icon {
   font-size: 2rem;
   width: 2rem;
   height: 2rem;
   color: var(--mat-sys-primary);
+  // Partial opacity keeps the icon secondary to the instructional text above it.
   opacity: 0.6;
 }
 
 .file-upload-zone .file-name {
   font-weight: 600;
   color: var(--app-primary-strong);
+  // Explicit opacity: 1 overrides any inherited opacity from the parent
+  // .file-upload-zone's resting state (0.78) once a file has been selected.
   opacity: 1;
 }

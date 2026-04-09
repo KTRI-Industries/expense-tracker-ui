@@ -5,14 +5,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  // min-width instead of width so the badge stays circular for single digits
+  // but stretches gracefully for two-digit counts (e.g. "12").
   min-width: 1.25rem;
   height: 1.25rem;
+  // Horizontal padding only — height is fixed, vertical centering is via flex.
   padding-inline: 0.375rem;
   margin-left: 0.375rem;
+  // Large enough radius to guarantee a pill/circle regardless of content width.
   border-radius: 9999px;
   background-color: var(--theme-badge-bg);
   color: var(--theme-badge-text);
   font-size: 0.75rem;
   font-weight: 600;
+  // Reset line-height to 1 so the fixed height drives vertical centering
+  // without extra space from the inherited line-height.
   line-height: 1;
 }

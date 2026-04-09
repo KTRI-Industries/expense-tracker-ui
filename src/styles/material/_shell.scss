@@ -1,12 +1,18 @@
 // Shell — custom element display rules and sidenav animation/hover.
 // Token-based sidenav overrides (background, text color) live in theme.scss.
 
+// Angular custom elements default to `display: inline`, which breaks full-height
+// layouts. Setting block + height 100% propagates the viewport height down to
+// the router outlet so the sidenav fills the screen.
 expense-tracker-ui-root,
 expense-tracker-ui-nav-menu {
   display: block;
   height: 100%;
 }
 
+// Material's list item hover state uses a state-layer overlay that can appear
+// washed out against the themed sidenav background. A direct background-color
+// override gives a crisper, theme-aware hover that matches the rest of the UI.
 mat-sidenav .mat-mdc-nav-list .mat-mdc-list-item:hover,
 .mat-mdc-selection-list .mat-mdc-list-item:hover {
   background-color: var(--theme-hover-soft);
