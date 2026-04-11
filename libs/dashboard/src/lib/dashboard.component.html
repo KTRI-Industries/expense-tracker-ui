@@ -86,9 +86,8 @@
     class="dashboard-chart lg:p-4 flex-1"
     data-cy="dashboard-category-chart">
     <mat-card-title class="text-center">Expenses by Category</mat-card-title>
-    <!-- md:flex md:items-center + lg:columns-2: side-by-side chart+legend on wider screens -->
-    <mat-card-content class="lg:columns-2 md:flex md:items-center">
-      <!-- max-w-xs + mx-auto: constrains the doughnut so it doesn't stretch on wide cards -->
+    <!-- chart stacked above legend; max-w-xs + mx-auto centres both in the card -->
+    <mat-card-content>
       <div class="max-w-xs mx-auto">
         @if (themedDoughnutData !== null) {
           <canvas
@@ -98,8 +97,7 @@
             type="doughnut"></canvas>
         }
       </div>
-      <!-- Legend placed beside the chart on md+ screens -->
-      <div class="max-w-xs mx-auto">
+      <div class="max-w-xs mx-auto mt-4">
         <expense-tracker-ui-chart-legend
           [items]="generateLegend()"
           [dashboard]="dashboard"></expense-tracker-ui-chart-legend>
