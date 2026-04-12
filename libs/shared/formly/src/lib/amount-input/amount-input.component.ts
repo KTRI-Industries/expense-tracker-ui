@@ -1,10 +1,15 @@
-import { Component, Input } from '@angular/core';
-
-import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { MatInput } from '@angular/material/input';
+import { getCurrencySymbol } from '@angular/common';
+import { Component, inject, LOCALE_ID } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
 import { FieldType } from '@ngx-formly/material'; // THIS IS REQUIRED!! DO NOT IMPORT FROM @ngx-formly/core
+import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { NgxMaskDirective } from 'ngx-mask';
+
+type AmountInputProps = FieldTypeConfig['props'] & {
+  currencyCode?: string;
+  placeholder?: string;
+};
 
 @Component({
   selector: 'expense-tracker-ui-amount-input',
@@ -31,9 +36,27 @@ import { NgxMaskDirective } from 'ngx-mask';
   `,
 })
 export class AmountInputComponent extends FieldType<FieldTypeConfig> {
-  @Input() currencySymbol = '€';
+  private locale = inject(LOCALE_ID);
+  private readonly fallbackCurrencyCode = 'EUR';
 
   prefix() {
-    return this.currencySymbol + ' ';
+    return `${this.resolveCurrencySymbol()} `;
+  }
+
+  private resolveCurrencyCode(): string {
+    return (
+      (this.field.props as AmountInputProps).currencyCode ??
+      this.fallbackCurrencyCode
+    );
+  }
+
+  private resolveCurrencySymbol(): string {
+    const currencyCode = this.resolveCurrencyCode();
+
+    try {
+      return getCurrencySymbol(currencyCode, 'narrow', this.locale);
+    } catch {
+      return currencyCode;
+    }
   }
 }

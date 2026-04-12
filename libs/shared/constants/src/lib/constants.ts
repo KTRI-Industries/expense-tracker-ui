@@ -1,5 +1,7 @@
 import { Category } from '@expense-tracker-ui/shared/api';
 
+export const DEFAULT_CURRENCY_CODE = 'EUR';
+
 export const categoryLabels: Record<Category, string> = {
   BILL: 'bills',
   ENTERTAINMENT: 'entertainment',

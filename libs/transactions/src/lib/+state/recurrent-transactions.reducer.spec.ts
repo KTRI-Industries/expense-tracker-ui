@@ -6,9 +6,10 @@ import {
 import { RecurrentTransactionActions } from './transactions.actions';
 import {
   PageRecurrentTransactionDto,
-  RecurrentTransactionDto,
   RecurrenceFrequency,
+  RecurrentTransactionDto,
 } from '@expense-tracker-ui/shared/api';
+import { selectCurrentRecurrentTransaction } from './recurrent-transactions.selectors';
 
 describe('RecurrentTransactions Reducer', () => {
   let state: RecurrentTransactionsState;
@@ -29,9 +30,11 @@ describe('RecurrentTransactions Reducer', () => {
       content: [],
       totalElements: 0,
     };
-    const action = RecurrentTransactionActions.loadRecurrentTransactionsSuccess({
-      recurrentTransactions
-    });
+    const action = RecurrentTransactionActions.loadRecurrentTransactionsSuccess(
+      {
+        recurrentTransactions,
+      },
+    );
     const result = recurrentTransactionsFeature.reducer(state, action);
 
     expect(result.recurrentTransactions).toEqual(recurrentTransactions);
@@ -43,7 +46,10 @@ describe('RecurrentTransactions Reducer', () => {
       selectedTransactionId: 'some-id',
     };
     const action = RecurrentTransactionActions.openRecurrentTransactionFrom();
-    const result = recurrentTransactionsFeature.reducer(initialStateWithSelectedId, action);
+    const result = recurrentTransactionsFeature.reducer(
+      initialStateWithSelectedId,
+      action,
+    );
 
     expect(result.selectedTransactionId).toBeNull();
   });
@@ -72,10 +78,14 @@ describe('RecurrentTransactions Reducer', () => {
       },
     };
 
-    const action = RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
-      recurrentTransaction: mockRecurrentTransaction,
-    });
-    const result = recurrentTransactionsFeature.reducer(initialStateWithTransactions, action);
+    const action =
+      RecurrentTransactionActions.createNewRecurrentTransactionSuccess({
+        recurrentTransaction: mockRecurrentTransaction,
+      });
+    const result = recurrentTransactionsFeature.reducer(
+      initialStateWithTransactions,
+      action,
+    );
 
     expect(result.recurrentTransactions).toBeUndefined();
   });
@@ -83,7 +93,7 @@ describe('RecurrentTransactions Reducer', () => {
   it('should handle editRecurrentTransaction action', () => {
     const recurrentTransactionId = 'recurrent-tx-1';
     const action = RecurrentTransactionActions.editRecurrentTransaction({
-      recurrentTransactionId
+      recurrentTransactionId,
     });
     const result = recurrentTransactionsFeature.reducer(state, action);
 
@@ -93,7 +103,7 @@ describe('RecurrentTransactions Reducer', () => {
   it('should handle loadRecurrentTransaction action', () => {
     const recurrentTransactionId = 'recurrent-tx-1';
     const action = RecurrentTransactionActions.loadRecurrentTransaction({
-      recurrentTransactionId
+      recurrentTransactionId,
     });
     const result = recurrentTransactionsFeature.reducer(state, action);
 
@@ -200,5 +210,16 @@ describe('RecurrentTransactions Reducer', () => {
     expect(result.recurrentTransactions).toEqual({
       content: [mockRecurrentTransaction],
     });
+  });
+
+  it('should expose a new recurrent transaction with the current account currency', () => {
+    const currentTransaction = selectCurrentRecurrentTransaction.projector(
+      undefined,
+      null,
+      'USD',
+    )!;
+
+    expect(currentTransaction.amount.currency).toBe('USD');
+    expect(currentTransaction.recurrentTransactionId).toBe('');
   });
 });

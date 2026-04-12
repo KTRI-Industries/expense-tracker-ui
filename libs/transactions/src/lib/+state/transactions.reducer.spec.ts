@@ -8,7 +8,10 @@ import {
   PageTransactionDto,
   TransactionDto,
 } from '@expense-tracker-ui/shared/api';
-import { selectAugmentedTransactions } from './transactions.selectors';
+import {
+  selectAugmentedTransactions,
+  selectCurrentTransaction,
+} from './transactions.selectors';
 
 describe('Transactions Reducer', () => {
   let state: TransactionsState;
@@ -132,6 +135,17 @@ describe('Transactions Reducer', () => {
     const result = transactionsFeature.reducer(state, action);
 
     expect(result.selectedTransactionId).toBeNull();
+  });
+
+  it('should expose a new transaction with the current account currency', () => {
+    const currentTransaction = selectCurrentTransaction.projector(
+      undefined,
+      null,
+      'USD',
+    )!;
+
+    expect(currentTransaction.amount.currency).toBe('USD');
+    expect(currentTransaction.transactionId).toBe('');
   });
 
   it('should return transactions with user email', () => {

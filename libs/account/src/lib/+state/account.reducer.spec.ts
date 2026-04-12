@@ -13,6 +13,7 @@ describe('AccountReducer', () => {
       const accounts: TenantWithUserDetails[] = [
         {
           id: 'tenant-123',
+          currency: 'USD',
           isDefault: true,
           mainUserEmail: 'main@example.com',
           isAssociated: true,
@@ -20,6 +21,7 @@ describe('AccountReducer', () => {
         },
         {
           id: 'tenant-456',
+          currency: 'RON',
           isDefault: false,
           mainUserEmail: 'main@example.com',
           isAssociated: true,

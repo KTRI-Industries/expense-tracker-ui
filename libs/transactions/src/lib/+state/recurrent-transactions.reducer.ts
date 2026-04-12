@@ -6,6 +6,8 @@ import {
 } from '@expense-tracker-ui/shared/api';
 import { RecurrentTransactionActions } from './transactions.actions';
 import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AccountSelectors } from '@expense-tracker-ui/account';
+import { DEFAULT_CURRENCY_CODE } from '@expense-tracker-ui/constants';
 
 export const TRANSACTIONS_FEATURE_KEY = 'recurrentTransactions';
 
@@ -19,20 +21,24 @@ export const initialRecurrentTransactionsState: RecurrentTransactionsState = {
   selectedTransactionId: null,
 };
 
-const initialTransaction: RecurrentTransactionDto = {
-  amount: {
-    currency: 'EUR',
-    amount: undefined,
-  },
-  recurrencePeriod: {
-    startDate: '',
-    frequency: RecurrenceFrequency.Daily,
-  },
-  description: '',
-  recurrentTransactionId: '',
-  tenantId: '',
-  userId: '',
-};
+function createInitialTransaction(
+  currency = DEFAULT_CURRENCY_CODE,
+): RecurrentTransactionDto {
+  return {
+    amount: {
+      currency,
+      amount: undefined,
+    },
+    recurrencePeriod: {
+      startDate: '',
+      frequency: RecurrenceFrequency.Daily,
+    },
+    description: '',
+    recurrentTransactionId: '',
+    tenantId: '',
+    userId: '',
+  };
+}
 
 export const recurrentTransactionsFeature = createFeature({
   name: TRANSACTIONS_FEATURE_KEY,
@@ -91,11 +97,16 @@ export const recurrentTransactionsFeature = createFeature({
     selectCurrentRecurrentTransaction: createSelector(
       selectRecurrentTransactions,
       selectSelectedTransactionId,
-      (recurrentTransactions, selectedTransactionId) => {
+      AccountSelectors.selectCurrentAccountCurrency,
+      (
+        recurrentTransactions,
+        selectedTransactionId,
+        currentAccountCurrency,
+      ) => {
         // this is only needed for the case of new transaction where we do not have a selected tx id, but we still want to render the component.
         // so we return an initial transaction instead of undefined...
         if (selectedTransactionId === null) {
-          return initialTransaction;
+          return createInitialTransaction(currentAccountCurrency);
         }
         return recurrentTransactions?.content?.find(
           (t) => t.recurrentTransactionId === selectedTransactionId,

@@ -28,7 +28,10 @@ import {
   MatCardSubtitle,
   MatCardTitle,
 } from '@angular/material/card';
-import { categoryLabels } from '@expense-tracker-ui/constants';
+import {
+  categoryLabels,
+  DEFAULT_CURRENCY_CODE,
+} from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-recurrent-transaction',
@@ -89,7 +92,8 @@ export class RecurrentTransactionComponent implements OnInit {
     // ic case where we are editing  an existing transaction, pre-populate the model with the transaction data.
     this.model = {
       amount: {
-        currency: this.selectedTransaction?.amount.currency,
+        currency:
+          this.selectedTransaction?.amount.currency ?? DEFAULT_CURRENCY_CODE,
         amount: this.selectedTransaction?.amount.amount,
       },
       description: this.selectedTransaction?.description ?? '',
@@ -179,6 +183,7 @@ export class RecurrentTransactionComponent implements OnInit {
         props: {
           label: 'Transaction Amount',
           placeholder: 'Set transaction amount (positive or negative)',
+          currencyCode: this.model?.amount.currency ?? DEFAULT_CURRENCY_CODE,
           required: true,
           attributes: {
             autocomplete: 'off',
