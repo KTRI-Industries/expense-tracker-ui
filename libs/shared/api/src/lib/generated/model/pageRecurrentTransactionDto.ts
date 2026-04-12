@@ -14,15 +14,15 @@ import { SortObject } from './sortObject';
 import { RecurrentTransactionDto } from './recurrentTransactionDto';
 
 export interface PageRecurrentTransactionDto {
-  totalPages?: number;
   totalElements?: number;
+  totalPages?: number;
   size?: number;
   content?: Array<RecurrentTransactionDto>;
   number?: number;
+  numberOfElements?: number;
   sort?: SortObject;
+  pageable?: PageableObject;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
-  pageable?: PageableObject;
   empty?: boolean;
 }

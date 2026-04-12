@@ -11,15 +11,15 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpContext,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-  HttpContext,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
@@ -45,17 +45,16 @@ import { Configuration } from '../configuration';
   providedIn: 'root',
 })
 export class RecurrentTransactionControllerService {
-  protected httpClient = inject(HttpClient);
-
   protected basePath = 'http://localhost:8080';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
   public encoder: HttpParameterCodec;
 
-  constructor() {
-    let basePath = inject(BASE_PATH, { optional: true });
-    const configuration = inject(Configuration, { optional: true });
-
+  constructor(
+    protected httpClient: HttpClient,
+    @Optional() @Inject(BASE_PATH) basePath: string | string[],
+    @Optional() configuration: Configuration,
+  ) {
     if (configuration) {
       this.configuration = configuration;
     }
@@ -137,25 +136,37 @@ export class RecurrentTransactionControllerService {
     createRecurrentTransactionCommand: CreateRecurrentTransactionCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<RecurrentTransactionDto>;
   public create1(
     createRecurrentTransactionCommand: CreateRecurrentTransactionCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<RecurrentTransactionDto>>;
   public create1(
     createRecurrentTransactionCommand: CreateRecurrentTransactionCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<RecurrentTransactionDto>>;
   public create1(
     createRecurrentTransactionCommand: CreateRecurrentTransactionCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (
       createRecurrentTransactionCommand === null ||
@@ -182,7 +193,10 @@ export class RecurrentTransactionControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -248,25 +262,37 @@ export class RecurrentTransactionControllerService {
     id: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json';
+      context?: HttpContext;
+    },
   ): Observable<any>;
   public delete1(
     id: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<any>>;
   public delete1(
     id: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<any>>;
   public delete1(
     id: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -290,7 +316,7 @@ export class RecurrentTransactionControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = ['application/problem+json'];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -344,25 +370,37 @@ export class RecurrentTransactionControllerService {
     id: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<RecurrentTransactionDto>;
   public retrieve1(
     id: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<RecurrentTransactionDto>>;
   public retrieve1(
     id: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<RecurrentTransactionDto>>;
   public retrieve1(
     id: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -386,7 +424,10 @@ export class RecurrentTransactionControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -440,25 +481,37 @@ export class RecurrentTransactionControllerService {
     pageable: Pageable,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<PageRecurrentTransactionDto>;
   public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<PageRecurrentTransactionDto>>;
   public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<PageRecurrentTransactionDto>>;
   public retrieveRecurrentTransactions(
     pageable: Pageable,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (pageable === null || pageable === undefined) {
       throw new Error(
@@ -491,7 +544,10 @@ export class RecurrentTransactionControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -548,28 +604,40 @@ export class RecurrentTransactionControllerService {
     updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<RecurrentTransactionDto>;
   public update1(
     id: string,
     updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<RecurrentTransactionDto>>;
   public update1(
     id: string,
     updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<RecurrentTransactionDto>>;
   public update1(
     id: string,
     updateRecurrentTransactionCommand: UpdateRecurrentTransactionCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     if (id === null || id === undefined) {
       throw new Error(
@@ -601,7 +669,10 @@ export class RecurrentTransactionControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }

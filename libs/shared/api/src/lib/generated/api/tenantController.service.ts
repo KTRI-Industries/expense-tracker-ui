@@ -11,15 +11,15 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpContext,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-  HttpContext,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
@@ -30,6 +30,8 @@ import { ProblemDetail } from '../model/problemDetail';
 import { TenantDto } from '../model/tenantDto';
 // @ts-ignore
 import { TenantWithUserDetails } from '../model/tenantWithUserDetails';
+// @ts-ignore
+import { UpdateCurrencyCommand } from '../model/updateCurrencyCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -39,17 +41,16 @@ import { Configuration } from '../configuration';
   providedIn: 'root',
 })
 export class TenantControllerService {
-  protected httpClient = inject(HttpClient);
-
   protected basePath = 'http://localhost:8080';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
   public encoder: HttpParameterCodec;
 
-  constructor() {
-    let basePath = inject(BASE_PATH, { optional: true });
-    const configuration = inject(Configuration, { optional: true });
-
+  constructor(
+    protected httpClient: HttpClient,
+    @Optional() @Inject(BASE_PATH) basePath: string | string[],
+    @Optional() configuration: Configuration,
+  ) {
     if (configuration) {
       this.configuration = configuration;
     }
@@ -129,22 +130,34 @@ export class TenantControllerService {
   public generateTenant(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<TenantDto>;
   public generateTenant(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<TenantDto>>;
   public generateTenant(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<TenantDto>>;
   public generateTenant(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
@@ -162,7 +175,10 @@ export class TenantControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -214,22 +230,34 @@ export class TenantControllerService {
   public getUserTenants(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<Array<TenantWithUserDetails>>;
   public getUserTenants(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<Array<TenantWithUserDetails>>>;
   public getUserTenants(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<Array<TenantWithUserDetails>>>;
   public getUserTenants(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
@@ -247,7 +275,10 @@ export class TenantControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -283,6 +314,139 @@ export class TenantControllerService {
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: localVarHeaders,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * @param tenantId
+   * @param updateCurrencyCommand
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateTenantCurrency(
+    tenantId: string,
+    updateCurrencyCommand: UpdateCurrencyCommand,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
+  ): Observable<TenantDto>;
+  public updateTenantCurrency(
+    tenantId: string,
+    updateCurrencyCommand: UpdateCurrencyCommand,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
+  ): Observable<HttpResponse<TenantDto>>;
+  public updateTenantCurrency(
+    tenantId: string,
+    updateCurrencyCommand: UpdateCurrencyCommand,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
+  ): Observable<HttpEvent<TenantDto>>;
+  public updateTenantCurrency(
+    tenantId: string,
+    updateCurrencyCommand: UpdateCurrencyCommand,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
+  ): Observable<any> {
+    if (tenantId === null || tenantId === undefined) {
+      throw new Error(
+        'Required parameter tenantId was null or undefined when calling updateTenantCurrency.',
+      );
+    }
+    if (updateCurrencyCommand === null || updateCurrencyCommand === undefined) {
+      throw new Error(
+        'Required parameter updateCurrencyCommand was null or undefined when calling updateTenantCurrency.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    let localVarCredential: string | undefined;
+    // authentication (security_auth) required
+    localVarCredential = this.configuration.lookupCredential('security_auth');
+    if (localVarCredential) {
+      localVarHeaders = localVarHeaders.set(
+        'Authorization',
+        'Bearer ' + localVarCredential,
+      );
+    }
+
+    let localVarHttpHeaderAcceptSelected: string | undefined =
+      options && options.httpHeaderAccept;
+    if (localVarHttpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
+      localVarHttpHeaderAcceptSelected =
+        this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Accept',
+        localVarHttpHeaderAcceptSelected,
+      );
+    }
+
+    let localVarHttpContext: HttpContext | undefined =
+      options && options.context;
+    if (localVarHttpContext === undefined) {
+      localVarHttpContext = new HttpContext();
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Content-Type',
+        httpContentTypeSelected,
+      );
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (
+        this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+      ) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/tenants/${this.configuration.encodeParam({ name: 'tenantId', value: tenantId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/currency`;
+    return this.httpClient.request<TenantDto>(
+      'put',
+      `${this.configuration.basePath}${localVarPath}`,
+      {
+        context: localVarHttpContext,
+        body: updateCurrencyCommand,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,

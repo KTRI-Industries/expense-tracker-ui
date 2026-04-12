@@ -12,6 +12,7 @@
 
 export interface TenantWithUserDetails {
   id: string;
+  currency: string;
   mainUserEmail?: string;
   isAssociated: boolean;
   isCurrentUserOwner: boolean;
