@@ -5,7 +5,8 @@
 @import '../../../src/styles/theme.scss';
 @import '../../../libs/shared/theme/src/styles/themes.css';
 @import '../../../libs/shared/theme/src/styles/base.css';
-@import '../../../src/styles/material.css';
+
+
 
 /* Keycloak reuses the same generated Material theme + override layer as the main
    app so mat-card/mat-form-field stay visually aligned without duplicating skinning. */
