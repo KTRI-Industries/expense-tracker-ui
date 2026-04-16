@@ -1,6 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
+import { DEFAULT_CURRENCY_CODE } from '@expense-tracker-ui/constants';
 import { AccountActions } from './account.actions';
 import {
   AuthSelectors,
@@ -47,6 +48,13 @@ export const accountFeature = createFeature({
       (accounts: TenantWithUserDetails[], currentAccount) =>
         accounts.find((account) => account.id === currentAccount)
           ?.mainUserEmail,
+    ),
+    selectCurrentAccountCurrency: createSelector(
+      selectAccounts,
+      selectCurrentAccount,
+      (accounts: TenantWithUserDetails[], currentAccount) =>
+        accounts.find((account) => account.id === currentAccount)?.currency ??
+        DEFAULT_CURRENCY_CODE,
     ),
     selectPendingAccountInvitations: createSelector(
       selectAccounts,

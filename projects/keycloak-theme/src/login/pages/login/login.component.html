@@ -1,0 +1,173 @@
+@let realm = kcContext.realm;
+@let usernameHidden = kcContext.usernameHidden;
+@let auth = kcContext.auth;
+@let messagesPerField = kcContext.messagesPerField;
+@let url = kcContext.url;
+@let login = kcContext.login;
+@let social = kcContext.social;
+
+<ng-template #infoNode>
+  <span>
+    {{ i18n.msgStr('noAccount') }}
+    <a tabindex="8" [href]="url.registrationUrl">{{ i18n.msgStr('doRegister') }}</a>
+  </span>
+</ng-template>
+
+<ng-template #socialProvidersNode>
+  @if (!!realm.password && !!social?.providers?.length) {
+    <div class="et-kc-divider">
+      <span>{{ i18n.msgStr('identity-provider-login-label') }}</span>
+    </div>
+
+    <!-- Utility classes here only reset list spacing and create the vertical rhythm;
+         the provider controls themselves are styled through Angular Material. -->
+    <ul class="m-0 grid list-none gap-3 p-0">
+      @for (provider of social.providers; track provider.alias) {
+        <li>
+          <a mat-stroked-button class="w-full" [href]="provider.loginUrl">
+            @if (provider.iconClasses) {
+              <i aria-hidden="true" [ngClass]="provider.iconClasses"></i>
+            }
+            <span [innerHTML]="provider.displayName | kcSanitize: 'html'"></span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</ng-template>
+
+<!-- Tailwind owns local spacing/rhythm here, while Material owns the actual field
+     and button appearance so the login form tracks the main app more closely. -->
+<div class="flex flex-col gap-4">
+  <div class="mb-2">
+    <p class="mb-1 text-xs font-bold uppercase tracking-[0.22em] text-[var(--theme-form-label)]">
+      Secure sign in
+    </p>
+    <h2 class="font-brand text-[2.15rem] font-bold tracking-[-0.04em] text-[var(--app-ink)]">
+      Welcome back
+    </h2>
+    <p class="mt-2 text-sm leading-6 text-[var(--app-ink-soft)]">
+      Sign in to continue to your account.
+    </p>
+  </div>
+
+  @if (realm.password) {
+    <form
+      id="kc-form-login"
+      class="flex flex-col gap-4"
+      method="post"
+      [action]="url.loginAction"
+      (submit)="isLoginButtonDisabled.set(true)">
+      @if (!usernameHidden) {
+        <mat-form-field appearance="outline">
+          <mat-label>
+            @if (!realm.loginWithEmailAllowed) {
+              {{ i18n.msgStr('username') }}
+            } @else if (!realm.registrationEmailAsUsername) {
+              {{ i18n.msgStr('usernameOrEmail') }}
+            } @else {
+              {{ i18n.msgStr('email') }}
+            }
+          </mat-label>
+          <input
+            matInput
+            tabindex="2"
+            id="username"
+            name="username"
+            type="text"
+            autofocus
+            autocomplete="username"
+            [value]="login.username || ''"
+            [attr.aria-invalid]="messagesPerField.existsError('username', 'password')"
+            placeholder="name@example.com" />
+        </mat-form-field>
+
+        @if (messagesPerField.existsError('username', 'password')) {
+          <span
+            id="input-error"
+            class="et-kc-error"
+            aria-live="polite"
+            [innerHTML]="messagesPerField.getFirstError('username', 'password') | kcSanitize: 'html'">
+          </span>
+        }
+      }
+
+      <div class="flex flex-col gap-[0.45rem]">
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>{{ i18n.msgStr('password') }}</mat-label>
+          <input
+            matInput
+            tabindex="3"
+            id="password"
+            name="password"
+            [type]="isPasswordRevealed() ? 'text' : 'password'"
+            autocomplete="current-password"
+            [attr.aria-invalid]="messagesPerField.existsError('username', 'password')"
+            placeholder="Enter your password" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="et-kc-password-toggle"
+            [attr.aria-label]="i18n.msgStr(isPasswordRevealed() ? 'hidePassword' : 'showPassword')"
+            [attr.aria-controls]="'password'"
+            (click)="togglePasswordVisibility()">
+            <i
+              aria-hidden="true"
+              class="fa"
+              [ngClass]="isPasswordRevealed() ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </mat-form-field>
+
+        @if (usernameHidden && messagesPerField.existsError('username', 'password')) {
+          <span
+            id="input-error"
+            class="et-kc-error"
+            aria-live="polite"
+            [innerHTML]="messagesPerField.getFirstError('username', 'password') | kcSanitize: 'html'">
+          </span>
+        }
+      </div>
+
+      <!-- Wrapping prevents the remember-me toggle and reset link from becoming a
+           cramped single line on smaller viewports. -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        @if (realm.rememberMe && !usernameHidden) {
+          <label class="inline-flex items-center gap-[0.55rem] text-[0.92rem] text-[var(--app-ink-soft)]">
+            <input
+              tabindex="5"
+              id="rememberMe"
+              name="rememberMe"
+              type="checkbox"
+              [defaultChecked]="!!login.rememberMe" />
+            <span>{{ i18n.msgStr('rememberMe') }}</span>
+          </label>
+        }
+
+        @if (realm.resetPasswordAllowed) {
+          <a class="et-kc-link text-sm" tabindex="6" [href]="url.loginResetCredentialsUrl">
+            {{ i18n.msgStr('doForgotPassword') }}
+          </a>
+        }
+      </div>
+
+      <input
+        type="hidden"
+        id="id-hidden-input"
+        name="credentialId"
+        [value]="auth?.selectedCredential" />
+
+      <button
+        mat-raised-button
+        color="primary"
+        tabindex="7"
+        class="w-full"
+        name="login"
+        id="kc-login"
+        type="submit"
+        [disabled]="isLoginButtonDisabled()">
+        {{ i18n.msgStr('doLogIn') }}
+      </button>
+    </form>
+  }
+</div>

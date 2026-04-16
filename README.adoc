@@ -48,6 +48,21 @@ Run the suite with:
 [source,shell]
 npx nx e2e e2e --skip-nx-cache
 
+=== Keycloak theme
+
+The custom Keycloak login theme lives in link:projects/keycloak-theme/[projects/keycloak-theme].
+
+For the most common local workflows:
+
+- preview the lightweight no-`kcContext` shell in Vite: `npm run serve:keycloak-theme`
+- preview mocked Keycloak pages in Storybook: `npm run storybook:keycloak-theme`
+- build the frontend bundle only: `npm run build:keycloak-theme`
+- build the Storybook preview: `npm run build-storybook:keycloak-theme`
+- generate another mocked page story: `npm run add-story:keycloak-theme`
+- build and package the deployable Keycloak theme: `npm run package:keycloak-theme`
+
+See link:projects/keycloak-theme/README.md[projects/keycloak-theme/README.md] for the local dev notes, generated-file boundaries, and the files that matter most when editing the theme.
+
 == Prod environment setup and deployment
 
 TODO

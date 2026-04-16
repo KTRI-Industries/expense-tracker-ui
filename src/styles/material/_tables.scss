@@ -1,0 +1,157 @@
+// Dense data tables — header/cell styling, row hover, chip overrides,
+// paginator, and responsive stacked-card transformation.
+
+// IMPORTANT: $_breakpoint-md is a local Sass variable because this file is
+// compiled by Sass (imported from theme.scss), where Tailwind's theme() function
+// is not available. Keep this value in sync with the Tailwind md breakpoint (768px).
+// If Tailwind's breakpoints are ever changed in tailwind.config.js, update here too.
+$_breakpoint-md: 768px;
+
+.responsive-card-table {
+  // Material table cells default to flex-start alignment; centring keeps
+  // content aligned with the header labels in a mixed-content table.
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    justify-content: center;
+  }
+
+  .mat-mdc-row:hover {
+    // pointer cursor signals that the whole row is clickable, not just a cell.
+    cursor: pointer;
+    background-color: var(--theme-table-row-hover);
+  }
+
+  .mat-mdc-header-row {
+    background-color: var(--theme-table-header-bg);
+    // Stronger bottom border visually separates the sticky header from scrolling
+    // data rows, especially when the header background is semi-transparent.
+    border-bottom: 2px solid var(--theme-table-header-border);
+  }
+
+  .mat-mdc-header-cell {
+    // Very small uppercase text with wide tracking is a common data-table
+    // convention for column labels — it recedes behind the data values while
+    // remaining readable.
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--app-primary-strong);
+    // Slight opacity softens the header labels further so data rows are the
+    // visual foreground.
+    opacity: 0.85;
+  }
+
+  // Amount column gets the brand font to visually distinguish monetary values
+  // from plain text cells — the tabular numerals in Fraunces also align better
+  // in financial columns.
+  .mat-mdc-cell[data-label='Amount'] {
+    font-family: var(--font-brand);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  // Chip overrides are scoped to .responsive-card-table so they do not affect
+  // chips in the toolbar or elsewhere. Direct --mdc-chip-* variables are used
+  // because mat.chips-overrides() would apply globally with no scope.
+  .mat-mdc-chip.mat-mdc-standard-chip {
+    --mdc-chip-elevated-container-color: var(--theme-chip-bg);
+    --mdc-chip-label-text-color: var(--theme-chip-text);
+    --mdc-chip-label-text-size: 0.75rem;
+    --mdc-chip-label-text-weight: 500;
+    --mdc-chip-label-text-tracking: 0.02em;
+  }
+}
+
+.mat-mdc-paginator {
+  font-size: 0.8rem;
+  // A top border anchors the paginator visually below the table card,
+  // reusing the card border token for consistency.
+  border-top: 1px solid var(--theme-card-border);
+  // Slight opacity de-emphasises the paginator relative to the data — it is
+  // a navigation aid, not primary content.
+  opacity: 0.78;
+}
+
+// On smaller screens we progressively turn the Material table into stacked
+// cards rather than introducing a separate mobile-only component.
+@media (max-width: $_breakpoint-md) {
+  .responsive-card-table .mat-mdc-table {
+    // Remove the outer table border — individual row cards provide their own
+    // visual boundary via border-bottom.
+    border: 0;
+    vertical-align: middle;
+
+    caption {
+      font-size: 1em;
+    }
+
+    // Visually hide the header row on mobile while keeping it in the DOM for
+    // accessibility (screen readers still read the headers). The clip + absolute
+    // + height/margin trick is the standard accessible visually-hidden pattern.
+    .mat-mdc-header-cell {
+      border: 10px solid;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    .mat-mdc-header-row {
+      // Collapse the header row's min-height so it takes up no vertical space
+      // once the cells are visually hidden.
+      min-height: 0;
+    }
+
+    .mat-mdc-row {
+      // Switching to block display converts the row from a flex container into
+      // a stacked card — each cell becomes its own full-width block.
+      display: block;
+      border-bottom: 5px solid var(--theme-card-border);
+
+      &:last-child .mat-mdc-cell {
+        border-bottom: 1px solid var(--theme-card-border);
+
+        &:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    .mat-mdc-cell {
+      display: block;
+      // Right-align the value; the label floats left, creating a
+      // label: value layout for each row on mobile.
+      text-align: right;
+      border-bottom: 1px solid var(--theme-card-border);
+      font-size: 1em;
+      margin-bottom: 4%;
+      padding-top: 3px;
+
+      // Inject the column label from the data-label HTML attribute as a
+      // floated left pseudo-element, turning each cell into a key/value pair.
+      &::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        font-size: 0.85em;
+        color: var(--app-ink-soft);
+      }
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      &:first-child {
+        // Extra top margin and left padding on the first cell open up the card
+        // and align the label text with subsequent cells.
+        margin-top: 4%;
+        padding-left: 16px;
+        padding-top: 0;
+      }
+    }
+  }
+}

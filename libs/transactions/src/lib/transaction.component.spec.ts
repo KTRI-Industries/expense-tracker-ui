@@ -13,7 +13,7 @@ import {
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -93,6 +93,15 @@ describe('TransactionComponent', () => {
   });
 
   it('should emit create event when onCreate is called with valid form', () => {
+    component.selectedTransaction = {
+      amount: { amount: undefined, currency: 'USD' },
+      date: '2022-01-01',
+      description: '',
+      transactionId: '',
+      tenantId: 'tenant-1',
+    };
+    component.ngOnInit();
+
     const command: CreateTransactionCommand = {
       amount: { amount: 100, currency: 'EUR' },
       date: '2022-01-01',
@@ -100,15 +109,17 @@ describe('TransactionComponent', () => {
       categories: [Category.Bill],
     };
 
-    component.transactionForm.setValue({
-      txType: 'EXPENSE',
-      amount: { amount: command.amount.amount },
+    component.model = {
+      amount: { amount: command.amount.amount, currency: 'USD' },
       date: command.date,
       description: command.description,
       categories: command.categories?.map(
         (category) => categoryLabels[category],
       ),
-    });
+      txId: undefined,
+      txType: 'EXPENSE',
+    };
+    component.transactionForm = new FormGroup({});
 
     // Spy on event emitter
     jest.spyOn(component.create, 'emit');
@@ -118,7 +129,7 @@ describe('TransactionComponent', () => {
     // Assert that event was emitted with correct value
     expect(component.create.emit).toHaveBeenCalledWith({
       ...command,
-      amount: { amount: command.amount.amount ?? 0, currency: undefined }, // currency is taken from the model which is not set here
+      amount: { amount: command.amount.amount ?? 0, currency: 'USD' },
       date: '2022-01-01',
       categories: ['bills'],
       txId: undefined,

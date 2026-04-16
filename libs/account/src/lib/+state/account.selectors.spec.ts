@@ -1,5 +1,6 @@
 import { TenantWithUserDetails } from '@expense-tracker-ui/shared/api';
 import {
+  selectCurrentAccountCurrency,
   selectCurrentAccountOwnerEmail,
   selectIsUserCurrentAccountOwner,
   selectPendingAccountInvitations,
@@ -9,6 +10,7 @@ describe('AccountSelectors', () => {
   const accounts: TenantWithUserDetails[] = [
     {
       id: 'tenant-123',
+      currency: 'USD',
       isDefault: true,
       mainUserEmail: 'main@example.com',
       isAssociated: true,
@@ -16,6 +18,7 @@ describe('AccountSelectors', () => {
     },
     {
       id: 'tenant-456',
+      currency: 'RON',
       isDefault: false,
       mainUserEmail: 'main@example.com',
       isAssociated: false,
@@ -39,6 +42,15 @@ describe('AccountSelectors', () => {
   it('selectPendingAccountInvitations should return the count of pending invitations', () => {
     const result = selectPendingAccountInvitations.projector(state.accounts);
     expect(result).toBe(1);
+  });
+
+  it('selectCurrentAccountCurrency should return the currency of the current account', () => {
+    const result = selectCurrentAccountCurrency.projector(
+      state.accounts,
+      state.currentAccount,
+    );
+
+    expect(result).toBe('USD');
   });
 
   it('selectIsUserCurrentAccountOwner should return true if the user is the owner of the current account', () => {
@@ -72,6 +84,7 @@ describe('AccountSelectors', () => {
     const accounts: TenantWithUserDetails[] = [
       {
         id: 'tenant-123',
+        currency: 'USD',
         isDefault: true,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -79,6 +92,7 @@ describe('AccountSelectors', () => {
       },
       {
         id: 'tenant-456',
+        currency: 'RON',
         isDefault: false,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -108,6 +122,7 @@ describe('AccountSelectors', () => {
     const accounts: TenantWithUserDetails[] = [
       {
         id: 'tenant-123',
+        currency: 'USD',
         isDefault: true,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -115,6 +130,7 @@ describe('AccountSelectors', () => {
       },
       {
         id: 'tenant-456',
+        currency: 'RON',
         isDefault: false,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -128,5 +144,11 @@ describe('AccountSelectors', () => {
     );
 
     expect(currentAccountOwnerEmail).toBeUndefined();
+  });
+
+  it('should fall back to EUR when the current account currency cannot be resolved', () => {
+    const currency = selectCurrentAccountCurrency.projector([], '');
+
+    expect(currency).toBe('EUR');
   });
 });

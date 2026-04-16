@@ -9,6 +9,7 @@
     "target": "es2022",
     "module": "esnext",
     "lib": ["es2020", "dom"],
+    "experimentalDecorators": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -27,6 +28,7 @@
         "libs/shared/feature-flags/src/index.ts"
       ],
       "@expense-tracker-ui/shared/formly": ["libs/shared/formly/src/index.ts"],
+      "@expense-tracker-ui/shared/theme": ["libs/shared/theme/src/index.ts"],
       "@expense-tracker-ui/testing": ["libs/testing/src/index.ts"],
       "@expense-tracker-ui/testing/setup-zone-test-env": [
         "libs/testing/src/setup-zone-test-env.ts"

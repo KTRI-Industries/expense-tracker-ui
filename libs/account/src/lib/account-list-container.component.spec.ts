@@ -48,13 +48,13 @@ describe('TenantListContainerComponent', () => {
 
   it('should dispatch leaveAccount action on leave tenant', async () => {
     const { dispatchSpy } = await setup();
-    const tenant: TenantWithUserDetails = {
+    const tenant = {
       id: 'tenant-123',
       isDefault: true,
       mainUserEmail: 'main@example.com',
       isAssociated: true,
       isCurrentUserOwner: true,
-    };
+    } as TenantWithUserDetails;
     component.fixture.componentInstance.onLeaveAccount(tenant);
     expect(dispatchSpy).toHaveBeenCalledWith(
       AccountActions.leaveAccount({ tenantId: tenant.id }),
@@ -63,13 +63,13 @@ describe('TenantListContainerComponent', () => {
 
   it('should dispatch associateUserWithAccount action on associate user with account', async () => {
     const { dispatchSpy } = await setup();
-    const tenant: TenantWithUserDetails = {
+    const tenant = {
       id: 'tenant-123',
       isDefault: true,
       mainUserEmail: 'main@example.com',
       isAssociated: true,
       isCurrentUserOwner: true,
-    };
+    } as TenantWithUserDetails;
     component.fixture.componentInstance.onAssociateUserWithAccount(tenant);
     expect(dispatchSpy).toHaveBeenCalledWith(
       AccountActions.associateUserWithAccount({ tenantId: tenant.id }),
@@ -78,13 +78,13 @@ describe('TenantListContainerComponent', () => {
 
   it('should dispatch switchAccount action on switch account', async () => {
     const { dispatchSpy } = await setup();
-    const tenant: TenantWithUserDetails = {
+    const tenant = {
       id: 'tenant-123',
       isDefault: true,
       mainUserEmail: 'main@example.com',
       isAssociated: true,
       isCurrentUserOwner: true,
-    };
+    } as TenantWithUserDetails;
     component.fixture.componentInstance.onSwitchAccount(tenant);
     expect(dispatchSpy).toHaveBeenCalledWith(
       AccountActions.switchAccount({ tenantId: tenant.id }),
@@ -93,13 +93,13 @@ describe('TenantListContainerComponent', () => {
 
   it('should dispatch setDefaultAccount action on set default account', async () => {
     const { dispatchSpy } = await setup();
-    const tenant: TenantWithUserDetails = {
+    const tenant = {
       id: 'tenant-123',
       isDefault: true,
       mainUserEmail: 'main@example.com',
       isAssociated: true,
       isCurrentUserOwner: true,
-    };
+    } as TenantWithUserDetails;
     component.fixture.componentInstance.onSetDefaultAccount(tenant);
     expect(dispatchSpy).toHaveBeenCalledWith(
       AccountActions.setDefaultAccount({ tenantId: tenant.id }),

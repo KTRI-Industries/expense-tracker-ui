@@ -5,7 +5,9 @@ import {
 } from '@expense-tracker-ui/shared/api';
 import { TransactionActions } from './transactions.actions';
 import { AuthSelectors } from '@expense-tracker-ui/shared/auth';
+import { AccountSelectors } from '@expense-tracker-ui/account';
 import { FilterRange } from '@expense-tracker-ui/dashboard';
+import { DEFAULT_CURRENCY_CODE } from '@expense-tracker-ui/constants';
 
 export const TRANSACTIONS_FEATURE_KEY = 'transactions';
 
@@ -21,16 +23,20 @@ export const initialTransactionsState: TransactionsState = {
   filterRange: undefined,
 };
 
-const initialTransaction: TransactionDto = {
-  amount: {
-    currency: 'EUR',
-    amount: undefined,
-  },
-  date: '',
-  description: '',
-  transactionId: '',
-  tenantId: '',
-};
+function createInitialTransaction(
+  currency = DEFAULT_CURRENCY_CODE,
+): TransactionDto {
+  return {
+    amount: {
+      currency,
+      amount: undefined,
+    },
+    date: '',
+    description: '',
+    transactionId: '',
+    tenantId: '',
+  };
+}
 
 export const transactionsFeature = createFeature({
   name: TRANSACTIONS_FEATURE_KEY,
@@ -75,11 +81,12 @@ export const transactionsFeature = createFeature({
     selectCurrentTransaction: createSelector(
       selectTransactions,
       selectSelectedTransactionId,
-      (transactions, selectedTransactionId) => {
+      AccountSelectors.selectCurrentAccountCurrency,
+      (transactions, selectedTransactionId, currentAccountCurrency) => {
         // this is only needed for the case of new transaction where we do not have a selected tx id, but we still want to render the component.
         // so we return an initial transaction instead of undefined...
         if (selectedTransactionId === null) {
-          return initialTransaction;
+          return createInitialTransaction(currentAccountCurrency);
         }
         return transactions?.content?.find(
           (t) => t.transactionId === selectedTransactionId,

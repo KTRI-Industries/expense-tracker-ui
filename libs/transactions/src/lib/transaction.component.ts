@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import {
   MatCard,
   MatCardContent,
@@ -20,7 +27,10 @@ import { MatButton } from '@angular/material/button';
 import { JsonPipe } from '@angular/common';
 import { EnumToLabelConverter } from '@expense-tracker-ui/shared/formly';
 import { CreateTransactionCommandUi } from './transaction.model';
-import { categoryLabels } from '@expense-tracker-ui/constants';
+import {
+  categoryLabels,
+  DEFAULT_CURRENCY_CODE,
+} from '@expense-tracker-ui/constants';
 
 @Component({
   selector: 'expense-tracker-ui-transaction',
@@ -37,7 +47,6 @@ import { categoryLabels } from '@expense-tracker-ui/constants';
     MatFormFieldModule,
     MatInputModule,
     MatButton,
-    JsonPipe,
   ],
 })
 export class TransactionComponent implements OnInit {
@@ -84,7 +93,8 @@ export class TransactionComponent implements OnInit {
     // ic case where we are editing  an existing transaction, pre-populate the model with the transaction data.
     this.model = {
       amount: {
-        currency: this.selectedTransaction?.amount.currency,
+        currency:
+          this.selectedTransaction?.amount.currency ?? DEFAULT_CURRENCY_CODE,
         amount: this.selectedTransaction?.amount.amount,
       },
       date: this.selectedTransaction?.date ?? '',
@@ -128,6 +138,7 @@ export class TransactionComponent implements OnInit {
         props: {
           label: 'Transaction Amount',
           placeholder: 'Set transaction amount (positive or negative)',
+          currencyCode: this.model?.amount.currency ?? DEFAULT_CURRENCY_CODE,
           required: true,
           attributes: {
             autocomplete: 'off',

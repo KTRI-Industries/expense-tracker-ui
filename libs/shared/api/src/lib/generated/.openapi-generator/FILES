@@ -42,6 +42,7 @@ model/tenantDto.ts
 model/tenantWithUserDetails.ts
 model/transactionDto.ts
 model/uninviteUserCommand.ts
+model/updateCurrencyCommand.ts
 model/updateRecurrentTransactionCommand.ts
 model/updateTransactionCommand.ts
 model/userInfo.ts

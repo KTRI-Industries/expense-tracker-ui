@@ -12,12 +12,12 @@ describe('TenantListComponent', () => {
   let component: RenderResult<AccountListComponent>;
 
   async function setupComponent(
-    tenants: TenantWithUserDetails[],
+    tenants: Partial<TenantWithUserDetails>[],
     currentTenantId: string,
   ) {
     return await render(AccountListComponent, {
       componentProperties: {
-        accounts: tenants,
+        accounts: tenants as TenantWithUserDetails[],
         currentTenantId,
       },
     });

@@ -16,5 +16,5 @@ export interface ProblemDetail {
   status?: number;
   detail?: string;
   instance?: string;
-  properties?: { [key: string]: object } | null;
+  properties?: { [key: string]: any } | null;
 }

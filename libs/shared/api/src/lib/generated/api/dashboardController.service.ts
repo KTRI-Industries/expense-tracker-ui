@@ -11,15 +11,15 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpContext,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-  HttpContext,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
@@ -37,17 +37,16 @@ import { Configuration } from '../configuration';
   providedIn: 'root',
 })
 export class DashboardControllerService {
-  protected httpClient = inject(HttpClient);
-
   protected basePath = 'http://localhost:8080';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
   public encoder: HttpParameterCodec;
 
-  constructor() {
-    let basePath = inject(BASE_PATH, { optional: true });
-    const configuration = inject(Configuration, { optional: true });
-
+  constructor(
+    protected httpClient: HttpClient,
+    @Optional() @Inject(BASE_PATH) basePath: string | string[],
+    @Optional() configuration: Configuration,
+  ) {
     if (configuration) {
       this.configuration = configuration;
     }
@@ -131,28 +130,40 @@ export class DashboardControllerService {
     endDate?: string,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<DashboardDto>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpResponse<DashboardDto>>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<HttpEvent<DashboardDto>>;
   public getDashboard(
     startDate?: string,
     endDate?: string,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: 'application/json'; context?: HttpContext },
+    options?: {
+      httpHeaderAccept?: 'application/problem+json' | 'application/json';
+      context?: HttpContext;
+    },
   ): Observable<any> {
     let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
     if (startDate !== undefined && startDate !== null) {
@@ -186,7 +197,10 @@ export class DashboardControllerService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
+      const httpHeaderAccepts: string[] = [
+        'application/problem+json',
+        'application/json',
+      ];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }

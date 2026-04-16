@@ -1,0 +1,41 @@
+// Application typography primitives.
+// No Material dependency — pure CSS custom properties.
+
+.page-heading {
+  font-family: var(--font-brand);
+  // Allows the browser to adjust stroke contrast and spacing based on font size,
+  // improving legibility for the Fraunces display face at larger sizes.
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.5rem;
+  // Slight negative tracking tightens the brand font at heading sizes where
+  // default tracking looks too loose.
+  letter-spacing: -0.02em;
+}
+
+// KPI data hierarchy — shared across all dashboard cards.
+.kpi-label {
+  font-size: 0.675rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  // Wide tracking on uppercase labels improves readability at very small sizes.
+  letter-spacing: 0.09em;
+  color: var(--app-ink-soft);
+  // Partial opacity so labels visually recede behind the amount value,
+  // reinforcing the hierarchy without changing the colour token.
+  opacity: 0.8;
+  margin-bottom: 0.375rem;
+}
+
+.kpi-amount {
+  font-family: var(--font-brand);
+  font-optical-sizing: auto;
+  font-size: 1.625rem;
+  font-weight: 600;
+  // Tight line-height prevents extra vertical space between stacked amounts
+  // in multi-currency or multi-row KPI layouts.
+  line-height: 1.1;
+  // Negative tracking on the brand font at display sizes prevents the numerals
+  // from looking spaced out.
+  letter-spacing: -0.02em;
+}

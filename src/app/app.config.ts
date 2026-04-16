@@ -43,6 +43,7 @@ import {
   MatSnackBar,
 } from '@angular/material/snack-bar';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import '@angular/common/locales/global/el'; // LOCALE_ID is not enough
 import { CurrencyPipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
@@ -161,6 +162,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: 2500, verticalPosition: 'top' },
     },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: MAT_DATE_LOCALE, useValue: 'el-GR' },
     { provide: LOCALE_ID, useValue: 'el-GR' },
     {

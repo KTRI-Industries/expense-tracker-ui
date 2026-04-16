@@ -1,19 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="navy">
   <head>
     <meta charset="utf-8" />
     <title>expense-tracker-ui</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fraunces: editorial variable serif for brand/display text -->
+    <!-- DM Sans: humanist sans-serif for body/UI text -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap"
       rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet" />
   </head>
-  <body class=" bg-blue-50">
+  <!-- bg removed — warm cream background is set in styles.css for full design control -->
+  <body>
     <expense-tracker-ui-root></expense-tracker-ui-root>
   </body>
 </html>

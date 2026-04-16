@@ -54,7 +54,7 @@ describe('DashboardFilterComponent', () => {
   ])(
     'emits the calculated %s range when selected from the UI',
     async (optionLabel, expectedStartDate, expectedEndDate, dateRange) => {
-      jest.useFakeTimers().setSystemTime(new Date('2026-03-15T12:00:00Z'));
+      jest.useFakeTimers().setSystemTime(new Date('2026-03-15T12:00:00Z').getTime());
       const { container, fixture } = await setup({
         dateRange: 'custom',
         startDate: moment('2026-03-01'),

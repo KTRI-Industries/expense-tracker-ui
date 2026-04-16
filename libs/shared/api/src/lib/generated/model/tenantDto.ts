@@ -12,4 +12,5 @@
 
 export interface TenantDto {
   id: string;
+  currency: string;
 }

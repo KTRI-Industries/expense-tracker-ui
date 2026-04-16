@@ -117,15 +117,14 @@ describe('AccountEffects', () => {
 
     tick();
 
-    expect(result).toEqual(
-      AccountActions.setDefaultAccountFailure({ error }),
-    );
+    expect(result).toEqual(AccountActions.setDefaultAccountFailure({ error }));
   }));
 
   it('should retrieve accounts successfully', fakeAsync(() => {
     const accounts: TenantWithUserDetails[] = [
       {
         id: 'account-123',
+        currency: 'USD',
         isDefault: true,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -133,6 +132,7 @@ describe('AccountEffects', () => {
       },
       {
         id: 'account-456',
+        currency: 'RON',
         isDefault: false,
         mainUserEmail: 'main@example.com',
         isAssociated: true,
@@ -186,16 +186,16 @@ describe('AccountEffects', () => {
 
     tick();
 
-    expect(result).toEqual(
-      AccountActions.retrieveAccountsFailure({ error }),
-    );
+    expect(result).toEqual(AccountActions.retrieveAccountsFailure({ error }));
   }));
 
   it('should reject an invite successfully', fakeAsync(() => {
     const tenantId = 'account-123';
     const actions$ = of(AccountActions.rejectInvite({ tenantId }));
 
-    jest.spyOn(accountService, 'rejectInvite').mockReturnValue(of({} as UserInfo));
+    jest
+      .spyOn(accountService, 'rejectInvite')
+      .mockReturnValue(of({} as UserInfo));
 
     const accountEffects = new AccountEffects(
       actions$,

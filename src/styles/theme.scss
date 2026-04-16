@@ -1,0 +1,160 @@
+// Angular Material custom theme (SCSS only)
+//
+// This file MUST remain .scss because it uses Angular Material's Sass mixins.
+// It is compiled by the Angular build pipeline before PostCSS runs.
+// Do NOT add Tailwind directives here; those belong in styles.css / utilities.css.
+//
+// Important: these are real scoped Angular Material themes. Each selector below
+// gets its own generated component colors/tokens so switching `data-theme`
+// changes Material components too, not just our custom CSS.
+
+@use '@angular/material' as mat;
+
+// Keep typography and density shared so all themes feel like one product family
+// even though the palettes shift quite a bit.
+$typography-config: (
+  brand-family: 'Fraunces, Georgia, serif',
+  plain-family: 'DM Sans, system-ui, sans-serif',
+);
+
+$density-config: (
+  // scale: 0 is the default M3 spacing. Go negative (-1 to -5) to progressively
+  // tighten padding and reduce component heights for denser data-entry views.
+  scale: 0,
+);
+
+// Warm editorial/default palette used for the main app and as the fallback when
+// no explicit `data-theme` is present on the root html element.
+$terracotta-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$orange-palette,
+    tertiary: mat.$red-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+// Cooler product palette for users who want a sharper, more neutral dashboard look.
+$slate-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$orange-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+// Calm analytic palette used by the Keycloak preview default and the most
+// "financial dashboard" leaning variant.
+$navy-config: (
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$red-palette,
+  ),
+  typography: $typography-config,
+  density: $density-config,
+);
+
+@mixin app-token-overrides() {
+  // Toolbar
+  @include mat.toolbar-overrides((
+    container-background-color: var(--app-ink),
+    container-text-color: var(--theme-toolbar-text),
+    // 56px instead of the M3 default 64px — slightly more compact for a dashboard
+    // app where the toolbar is always visible and screen real estate matters.
+    standard-height: 56px,
+  ));
+
+  // Sidenav — pin both the drawer panel and its scrollable content area to the
+  // themed page background; Material does not inherit this automatically.
+  @include mat.sidenav-overrides((
+    content-background-color: var(--theme-body-bg),
+    content-text-color: var(--app-ink),
+    container-background-color: var(--theme-body-bg),
+  ));
+
+  // Cards — 12px radius gives a modern, slightly soft look without being
+  // as rounded as the M3 default corner-medium (~12dp). Shape and background
+  // are set here so they switch with the theme token at runtime.
+  @include mat.card-overrides((
+    elevated-container-color: var(--theme-card-bg),
+    outlined-container-color: var(--theme-card-bg),
+    elevated-container-shape: 12px,
+    outlined-container-shape: 12px,
+    // Brand font on titles — set via token so all three themes inherit it without
+    // an extra CSS rule targeting .mat-mdc-card-title.
+    title-text-font: var(--font-brand),
+    title-text-tracking: -0.01em,
+    subtitle-text-color: var(--app-ink-soft),
+    // Slightly smaller subtitle than the M3 default title-medium (1rem) to
+    // preserve visual hierarchy between title and subtitle.
+    subtitle-text-size: 0.875rem,
+    subtitle-text-line-height: 1.55,
+  ));
+
+  // Form fields — app uses appearance="outline" globally (set via
+  // MAT_FORM_FIELD_DEFAULT_OPTIONS in app.config.ts), so only outlined-* tokens
+  // are relevant. filled-* tokens are intentionally omitted.
+  @include mat.form-field-overrides((
+    // Slightly smaller than the M3 body-large default so dense forms feel
+    // proportionate next to compact table rows.
+    container-text-size: 0.9rem,
+    outlined-outline-color: var(--theme-form-border),
+    outlined-focus-outline-color: var(--theme-form-focus),
+    outlined-label-text-color: var(--theme-form-label),
+    outlined-input-text-color: var(--theme-form-text),
+    // Keep hover the same as the resting border — the focus state provides
+    // enough feedback without a separate hover colour shift.
+    outlined-hover-outline-color: var(--theme-form-border),
+    outlined-focus-label-text-color: var(--theme-form-focus),
+    enabled-select-arrow-color: var(--theme-form-text),
+    focus-select-arrow-color: var(--theme-form-focus),
+  ));
+
+  // Paginator — inherit the page ink colour; Material defaults to on-surface
+  // which can be slightly off against the card surface the paginator sits on.
+  @include mat.paginator-overrides((
+    container-text-color: var(--app-ink),
+  ));
+}
+
+@mixin app-theme-scope($selector, $config) {
+  #{$selector} {
+    // Material component colors are generated at build time, so each theme needs
+    // its own scoped output instead of relying on runtime CSS variables alone.
+    // Emitting the full theme inside a selector keeps runtime theme switching
+    // possible without rebuilding the app.
+    $theme: mat.define-theme($config);
+
+    @include mat.all-component-themes($theme);
+    // Keeps legacy .mat-primary / .mat-warn / .mat-accent CSS class selectors
+    // working on buttons and other components. Remove once all usages are
+    // migrated to the color="..." input binding.
+    @include mat.color-variants-backwards-compatibility($theme);
+    @include mat.theme($config);
+    @include app-token-overrides();
+  }
+}
+
+@include app-theme-scope('html:not([data-theme]), html[data-theme="terracotta"]', $terracotta-config);
+@include app-theme-scope('html[data-theme="slate"]', $slate-config);
+@include app-theme-scope('html[data-theme="navy"]', $navy-config);
+
+// Application component classes — no Material dependency, no Tailwind @apply.
+@import './typography';
+@import './nav';
+@import './upload';
+
+// Non-token Material component overrides — gradients, animations, pseudo-elements,
+// responsive layout transforms, and other customizations that the M3 token API
+// cannot express. Imported here so Sass compiles them alongside the theme output.
+@import './material/shell';
+@import './material/toolbar';
+@import './material/cards';
+@import './material/buttons';
+@import './material/forms';
+@import './material/tables';
+@import './material/motion';

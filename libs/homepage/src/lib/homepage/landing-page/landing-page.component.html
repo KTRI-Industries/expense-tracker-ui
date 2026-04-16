@@ -1,269 +1,172 @@
-<div
-  class="relative pt-16 pb-32 flex content-center items-center justify-center"
-  style="min-height: 65vh">
+<section class="landing-hero relative overflow-hidden">
+  <div class="landing-hero__bg-symbol" aria-hidden="true">€</div>
+
   <div
-    class="absolute top-0 w-full h-full bg-center bg-cover"
-    style="background-image: url('assets/landing_page_bg_new.jpg')">
-    <span
-      id="blackOverlay"
-      class="w-full h-full absolute opacity-75 bg-black"></span>
+    aria-hidden="true"
+    class="landing-hero-divider absolute bottom-0 left-0 right-0 h-[2px]">
   </div>
-  <div class="container relative mx-auto">
-    <div class="items-center flex flex-wrap">
-      <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
-        <div>
-          <h1 class="text-white font-semibold text-5xl">
-            Manage Your Expenses with Ease.
-          </h1>
-          <p class="mt-4 text-lg text-gray-300">
-            Keep track of your spending, budget efficiently, and stay in control
-            of your finances
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
-    style="height: 70px">
-    <svg
-      class="absolute bottom-0 overflow-hidden"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="none"
-      version="1.1"
-      viewBox="0 0 2560 100"
-      x="0"
-      y="0">
-      <polygon
-        class="text-gray-300 fill-current"
-        points="2560 0 2560 100 0 100"></polygon>
-    </svg>
-  </div>
-</div>
-<section class="pb-20 bg-gray-300 -mt-24">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-wrap">
-      <div class="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-5 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-5 mb-5 shadow-lg rounded-full bg-red-400">
-              <i class="fas fa-award"></i>
-            </div>
-            <h6 class="text-xl font-semibold">Recognized for Excellence</h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              Highlighting our dedication to providing top-notch expense
-              tracking solutions. Share insights about our achievements and
-              excellence.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-5 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400">
-              <i class="fas fa-retweet"></i>
-            </div>
-            <h6 class="text-xl font-semibold">Free Revisions</h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              We update our app regularly. Visit often and discover new ways to
-              manage your expenses.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="pt-6 w-full md:w-4/12 px-4 text-center">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-8 shadow-lg rounded-lg">
-          <div class="px-4 py-7 flex-auto">
-            <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-green-400">
-              <i class="fas fa-fingerprint"></i>
-            </div>
-            <h6 class="text-xl font-semibold">Verified Security</h6>
-            <p class="mt-2 mb-4 text-gray-600">
-              We ensure the security of your financial data.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex flex-wrap items-center mt-32">
-      <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
-        <div
-          class="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100">
-          <mat-icon
-            aria-hidden="false"
-            aria-label="User"
-            class="material-icons text-xl">
-            person
-          </mat-icon>
-        </div>
-        <h3 class="text-3xl mb-2 font-semibold leading-normal">
-          Simplify Expense Tracking
-        </h3>
-        <p class="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
-          We make expense tracking a pleasure. No more guesswork—our tooltips
-          and guidance will help you manage your finances effortlessly.
+
+  <!-- These utilities are homepage-specific composition, layered on top of the
+       shared landing brand classes rather than baked into the shared stylesheet. -->
+  <div class="container mx-auto px-6 md:px-12 relative z-10">
+    <div class="flex items-center min-h-[92vh] py-24 gap-12">
+      <div class="w-full lg:w-7/12">
+        <p class="landing-eyebrow">Personal Finance · Made Simple</p>
+
+        <h1 class="landing-headline">
+          Know where<br>every euro<br>goes.
+        </h1>
+
+        <p class="landing-subhead">
+          Track spending, understand patterns, and stay in control -
+          without the spreadsheet chaos.
         </p>
-        <p class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700">
-          Explore our app's pre-built features and customize them according to
-          your preferences. Enable them easily with just a few clicks.
-        </p>
-        <a
-          href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/presentation"
-          class="font-bold text-gray-800 mt-8">
-          Explore Our Expense Tracking App!
-        </a>
-        <p class="text-xs md:text-sm text-gray-500">
-          Already have an account?
+
+        <div class="mt-10 flex flex-wrap items-center gap-5">
           <a
-            mat-button
-            class="text-blue-500"
+            class="landing-cta-btn"
             routerLink=""
             (click)="login.emit()">
-            Login
+            Sign in to your account
           </a>
-        </p>
+          <span class="landing-cta-hint">Free · No setup required</span>
+        </div>
       </div>
-      <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
-        <div
-          class="relative flex flex-col min-w-0 wrap-break-word bg-white w-full mb-6 shadow-lg rounded-lg bg-pink-600">
-          <img
-            alt="..."
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1051&amp;q=80"
-            class="w-full align-middle rounded-t-lg" />
-          <blockquote class="relative p-8 mb-4">
-            <svg
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 583 95"
-              class="absolute left-0 w-full block"
-              style="height: 95px; top: -94px">
-              <polygon
-                points="-30,95 583,95 583,65"
-                class="text-pink-600 fill-current"></polygon>
-            </svg>
-            <h4 class="text-xl font-bold text-white">
-              Effortless Expense Management
-            </h4>
-            <p class="text-md font-light mt-2 text-white">
-              Stay on top of your expenses effortlessly. Our app ensures a
-              smooth financial journey, just like the continuous process of the
-              Arctic Ocean.
-            </p>
-          </blockquote>
+
+      <!-- The preview card only appears from lg upwards so mobile keeps its focus on
+           the editorial headline and CTA instead of compressing both columns. -->
+      <div class="hidden lg:flex w-5/12 justify-end items-center">
+        <div class="landing-preview-card">
+          <p class="landing-preview-label text-[0.65rem] font-bold tracking-[0.14em] uppercase mb-1">
+            Balance this month
+          </p>
+
+          <div class="landing-preview-amount font-brand text-[2.4rem] font-bold tracking-[-0.03em] mb-5">
+            € 2,841.50
+          </div>
+
+          <div class="h-px bg-white/10 mb-3"></div>
+
+          <div class="landing-preview-muted flex justify-between items-center text-[0.82rem] py-1">
+            <span>Income</span>
+            <span class="landing-preview-income">+ € 4,200.00</span>
+          </div>
+
+          <div class="landing-preview-muted flex justify-between items-center text-[0.82rem] py-1">
+            <span>Expenses</span>
+            <span class="landing-preview-expense">- € 1,358.50</span>
+          </div>
+
+          <div class="flex justify-between items-center text-sm font-semibold text-white/88 border-t border-white/10 mt-1 pt-3">
+            <span>Net balance</span>
+            <span>€ 2,841.50</span>
+          </div>
+
+          <div
+            aria-hidden="true"
+            class="mt-5 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div
+              class="landing-progress-bar h-full rounded-full"
+              style="width: 32%">
+            </div>
+          </div>
+
+          <div
+            aria-hidden="true"
+            class="flex justify-between mt-1 text-[0.62rem] tracking-[0.06em] uppercase text-white/28">
+            <span>Spent</span>
+            <span>32%</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<section class="relative py-20">
-  <div
-    class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
-    style="height: 80px">
-    <svg
-      class="absolute bottom-0 overflow-hidden"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="none"
-      version="1.1"
-      viewBox="0 0 2560 100"
-      x="0"
-      y="0">
-      <polygon
-        class="text-white fill-current"
-        points="2560 0 2560 100 0 100"></polygon>
-    </svg>
+
+<section class="landing-features py-20">
+  <div class="container mx-auto px-6 md:px-12">
+    <p class="landing-features-eyebrow text-[0.68rem] font-bold tracking-[0.2em] uppercase mb-12">
+      What you get
+    </p>
+
+    <div class="landing-feature-row">
+      <span
+        aria-hidden="true"
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        01
+      </span>
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+          Total visibility
+        </h3>
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
+          Every transaction, categorised and searchable. Income, expenses,
+          recurrent costs - all in one place, always current.
+        </p>
+      </div>
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+    </div>
+
+    <div class="landing-feature-row">
+      <span
+        aria-hidden="true"
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        02
+      </span>
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+          Visual analytics
+        </h3>
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
+          Charts that tell you something. Understand patterns by category,
+          by month, by household member - at a glance.
+        </p>
+      </div>
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
+        <mat-icon>insert_chart_outlined</mat-icon>
+      </div>
+    </div>
+
+    <div class="landing-feature-row">
+      <span
+        aria-hidden="true"
+        class="landing-feature-ordinal font-brand text-[3.5rem] font-bold tracking-[-0.04em] leading-none shrink-0 w-20 text-right pt-1">
+        03
+      </span>
+      <div class="flex-1 min-w-[14rem]">
+        <h3 class="landing-feature-title font-brand text-[1.65rem] font-semibold tracking-[-0.02em] mb-2">
+          Built for households
+        </h3>
+        <p class="landing-feature-copy text-[0.975rem] leading-[1.75] max-w-[46rem]">
+          Invite family members, share accounts, split costs. Personal
+          finance that grows with your life, not just your solo income.
+        </p>
+      </div>
+      <div aria-hidden="true" class="landing-feature-icon shrink-0 flex items-start pt-1">
+        <mat-icon>group</mat-icon>
+      </div>
+    </div>
   </div>
-  <div class="container mx-auto px-4">
-    <div class="items-center flex flex-wrap">
-      <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
-        <img
-          alt="..."
-          class="max-w-full rounded-lg shadow-lg"
-          src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80" />
+</section>
+
+<section class="landing-cta-strip py-20 lg:py-24">
+  <div class="container mx-auto px-6 md:px-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <div>
+        <h2 class="landing-cta-headline">Ready to take control?</h2>
+        <p class="landing-cta-strip-subtitle text-base">
+          Get started in under a minute. No spreadsheets, no guesswork.
+        </p>
       </div>
-      <div class="w-full md:w-5/12 ml-auto mr-auto px-4">
-        <div class="md:pr-12">
-          <div
-            class="text-pink-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-pink-300">
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Rocket"
-              class="material-icons text-xl">
-              rocket
-            </mat-icon>
-          </div>
-          <h3 class="text-3xl font-semibold">
-            Streamlined Financial Management
-          </h3>
-          <p class="mt-4 text-lg leading-relaxed text-gray-600">
-            Our expense tracking app provides a hassle-free solution for
-            efficient financial management. Easily customize categories and
-            transactions to suit your needs.
-          </p>
-          <ul class="list-none mt-6">
-            <li class="py-2">
-              <div class="flex items-center">
-                <div>
-                  <span
-                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-pink-600 bg-pink-200 mr-3">
-                    <mat-icon
-                      aria-hidden="false"
-                      aria-label="Fingerprint"
-                      class="material-icons text-xl">
-                      fingerprint
-                    </mat-icon>
-                  </span>
-                </div>
-                <div>
-                  <h4 class="text-gray-600">Secure and Reliable</h4>
-                </div>
-              </div>
-            </li>
-            <li class="py-2">
-              <div class="flex items-center">
-                <div>
-                  <span
-                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-pink-600 bg-pink-200 mr-3">
-                    <mat-icon
-                      aria-hidden="false"
-                      aria-label="HTML5"
-                      class="material-icons text-xl">
-                      insert_chart_outlined
-                    </mat-icon>
-                  </span>
-                </div>
-                <div>
-                  <h4 class="text-gray-600">Visual Analytics</h4>
-                </div>
-              </div>
-            </li>
-            <li class="py-2">
-              <div class="flex items-center">
-                <div>
-                  <span
-                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-pink-600 bg-pink-200 mr-3">
-                    <mat-icon
-                      aria-hidden="false"
-                      aria-label="Expense Report"
-                      class="material-icons text-xl">
-                      description
-                    </mat-icon>
-                  </span>
-                </div>
-                <div>
-                  <h4 class="text-gray-600">Detailed Expense Reports</h4>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+
+      <a
+        class="landing-cta-btn landing-cta-btn--standalone"
+        routerLink=""
+        (click)="login.emit()">
+        Get started →
+      </a>
     </div>
   </div>
 </section>

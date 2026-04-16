@@ -1,0 +1,44 @@
+// Buttons — hover/focus motion effects and shadow enhancements.
+// These cannot be expressed as M3 tokens — transform and custom box-shadow
+// compositions are outside the token API surface.
+
+.mat-mdc-raised-button.mat-primary {
+  // Slightly expanded tracking improves readability of button labels at small
+  // sizes, where the default tracking can make short words feel cramped.
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  transition:
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover,
+  &:focus-visible {
+    // 1px upward lift gives tactile feedback without the button appearing to
+    // leave its natural position in the layout.
+    transform: translateY(-1px);
+    // color-mix derives the shadow colour from the button's own primary token
+    // so the glow is always on-brand regardless of the active theme.
+    box-shadow: 0 8px 16px color-mix(in srgb, var(--app-primary-strong) 22%, transparent);
+  }
+}
+
+.mat-mdc-raised-button.mat-warn {
+  transition: box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover,
+  &:focus-visible {
+    // Double shadow: an outer ring for a halo effect and an inner diffuse
+    // shadow for depth. Hardcoded red (194, 65, 45) matches the terracotta
+    // negative/warn colour — acceptable here as warn is the same across themes.
+    box-shadow: 0 0 0 2px rgba(194, 65, 45, 0.18), 0 2px 10px rgba(194, 65, 45, 0.1);
+  }
+}
+
+.mat-mdc-raised-button.mat-accent {
+  &:hover,
+  &:focus-visible {
+    // Same approach as primary but uses the accent token and a slightly lower
+    // opacity (18% vs 22%) since accent actions are secondary to primary ones.
+    box-shadow: 0 8px 16px color-mix(in srgb, var(--app-accent) 18%, transparent);
+  }
+}

@@ -20,7 +20,8 @@
   }
   <!-- Selected date range display: pushed to the right (lg:ml-4 lg:text-right) on large screens,
        stacked below with top spacing (mt-4) on small screens where lg:mt-0 doesn't apply -->
-  <div class="text-sm text-gray-300 mt-4 lg:mt-0 lg:ml-4 lg:text-right">
+  <!-- text-gray-500: was text-gray-300 which was nearly invisible on light backgrounds -->
+  <div class="text-sm text-gray-500 mt-4 lg:mt-0 lg:ml-4 lg:text-right">
     @if (model?.startDate) {
       <div>from: {{ model?.startDate?.format('DD/MM/YY') }}</div>
     }

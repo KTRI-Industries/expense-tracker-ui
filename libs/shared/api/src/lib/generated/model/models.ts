@@ -26,6 +26,7 @@ export * from './tenantDto';
 export * from './tenantWithUserDetails';
 export * from './transactionDto';
 export * from './uninviteUserCommand';
+export * from './updateCurrencyCommand';
 export * from './updateRecurrentTransactionCommand';
 export * from './updateTransactionCommand';
 export * from './userInfo';

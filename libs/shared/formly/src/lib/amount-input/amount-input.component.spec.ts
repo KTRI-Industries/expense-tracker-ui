@@ -1,4 +1,5 @@
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { getCurrencySymbol } from '@angular/common';
 import { AmountInputComponent } from './amount-input.component';
 import { FormlyModule } from '@ngx-formly/core';
 import { MatInput } from '@angular/material/input';
@@ -9,7 +10,7 @@ import '@testing-library/jest-dom';
 
 describe('AmountInputComponent', () => {
   let renderResult: RenderResult<AmountInputComponent>;
-  async function setup() {
+  async function setup(currencyCode?: string) {
     return await render(AmountInputComponent, {
       imports: [
         ReactiveFormsModule,
@@ -20,7 +21,7 @@ describe('AmountInputComponent', () => {
       providers: [provideNgxMask()],
       componentProperties: {
         field: {
-          props: { placeholder: 'Enter amount' },
+          props: { placeholder: 'Enter amount', currencyCode },
           formControl: new FormControl('[]'),
         } as any,
       },
@@ -57,6 +58,22 @@ describe('AmountInputComponent', () => {
 
     expect(renderResult.fixture.componentInstance.formControl.value).toEqual(
       100.54,
+    );
+  });
+
+  it('should fall back to the EUR prefix when no currencyCode is provided', async () => {
+    renderResult = await setup();
+
+    expect(renderResult.fixture.componentInstance.prefix()).toBe(
+      `${getCurrencySymbol('EUR', 'narrow')} `,
+    );
+  });
+
+  it('should derive the prefix from the provided currencyCode', async () => {
+    renderResult = await setup('USD');
+
+    expect(renderResult.fixture.componentInstance.prefix()).toBe(
+      `${getCurrencySymbol('USD', 'narrow')} `,
     );
   });
 });
