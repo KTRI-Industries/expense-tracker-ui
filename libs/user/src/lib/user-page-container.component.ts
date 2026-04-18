@@ -31,6 +31,15 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
         data-cy="tenants-tab">
         Accounts
       </a>
+      <a
+        mat-tab-link
+        routerLinkActive
+        #rla3="routerLinkActive"
+        [routerLink]="['/user-page/settings']"
+        [active]="rla3.isActive"
+        data-cy="settings-tab">
+        Settings
+      </a>
     </nav>
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 

@@ -5,6 +5,7 @@ export { AccountFeature, AccountSelectors };
 
 export * from './lib/+state/account.models';
 export * from './lib/account-list-container.component';
+export * from './lib/tenant-settings-container.component';
 export * from './lib/+state/account.actions';
 export * from './lib/+state/account.effects';
 

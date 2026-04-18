@@ -15,9 +15,11 @@ export class AuthService {
   private tenantApi = inject(TenantControllerService); // TODO better way to reference the generated code?
   private userApi = inject(UserControllerService);
 
-  generateTenant(email: string): Observable<TenantDto> {
+  generateTenant(email: string, currency?: string): Observable<TenantDto> {
     console.log(email);
-    return this.tenantApi.generateTenant();
+    return this.tenantApi.generateTenant(
+      currency ? { currency } : undefined,
+    );
   }
 
   retrieveTenantUsers(): Observable<Array<UserInfo>> {

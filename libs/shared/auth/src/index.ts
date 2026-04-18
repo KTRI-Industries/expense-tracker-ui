@@ -13,3 +13,4 @@ export * from './lib/app.guard';
 
 export * from './lib/passkey.service';
 export * from './lib/passkey-prompt-dialog/passkey-prompt-dialog.component';
+export * from './lib/onboarding-currency-dialog/onboarding-currency-dialog.component';

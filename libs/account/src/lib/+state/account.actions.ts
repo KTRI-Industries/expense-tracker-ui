@@ -27,5 +27,12 @@ export const AccountActions = createActionGroup({
     'Leave Account': props<{ tenantId: string }>(),
     'Leave Account Success': emptyProps(),
     'Leave Account Failure': props<{ error: Error }>(),
+
+    'Update Account Currency': props<{ tenantId: string; currency: string }>(),
+    'Update Account Currency Success': props<{
+      tenantId: string;
+      currency: string;
+    }>(),
+    'Update Account Currency Failure': props<{ error: Error }>(),
   },
 });

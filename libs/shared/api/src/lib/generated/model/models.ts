@@ -6,6 +6,7 @@ export * from './dashboardDto';
 export * from './disassociateTenantCommand';
 export * from './expenseByCategoryDto';
 export * from './featureFlagsResponse';
+export * from './generateTenantCommand';
 export * from './incomeExpensePerMonthDto';
 export * from './inviteUserCommand';
 export * from './invitedUserDto';

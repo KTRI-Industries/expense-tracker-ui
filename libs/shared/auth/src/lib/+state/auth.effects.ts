@@ -26,6 +26,7 @@ import {
   PasskeyPromptDialogComponent,
   PasskeyPromptResult,
 } from '../passkey-prompt-dialog/passkey-prompt-dialog.component';
+import { OnboardingCurrencyDialogComponent } from '../onboarding-currency-dialog/onboarding-currency-dialog.component';
 
 @Injectable()
 export class AuthEffects {
@@ -89,10 +90,29 @@ export class AuthEffects {
       withLatestFrom(this.store.select(selectUserProfile)),
       filter(([_, selectUserProfile]) => selectUserProfile?.tenantId == null),
       map(([_, selectUserProfile]) =>
-        AuthActions.generateNewTenant({
+        AuthActions.showOnboardingCurrency({
           email: selectUserProfile?.email ?? '',
         }),
       ),
+    ),
+  );
+
+  showOnboardingCurrency$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.showOnboardingCurrency),
+      exhaustMap(({ email }) => {
+        const dialogRef = this.dialog.open<
+          OnboardingCurrencyDialogComponent,
+          void,
+          string
+        >(OnboardingCurrencyDialogComponent);
+
+        return dialogRef.afterClosed().pipe(
+          map((currency) =>
+            AuthActions.generateNewTenant({ email, currency }),
+          ),
+        );
+      }),
     ),
   );
 
@@ -107,7 +127,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.generateNewTenant),
       exhaustMap((action) =>
-        this.authService.generateTenant(action.email).pipe(
+        this.authService.generateTenant(action.email, action.currency).pipe(
           map((tenant: TenantDto) =>
             AuthActions.generateNewTenantSuccess({ tenantId: tenant.id }),
           ),

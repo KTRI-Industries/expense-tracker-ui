@@ -88,6 +88,25 @@ export class AccountEffects {
     ),
   );
 
+  updateAccountCurrency$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.updateAccountCurrency),
+      switchMap(({ tenantId, currency }) =>
+        this.accountService.updateAccountCurrency(tenantId, currency).pipe(
+          map((tenant) =>
+            AccountActions.updateAccountCurrencySuccess({
+              tenantId: tenant.id,
+              currency: tenant.currency ?? currency,
+            }),
+          ),
+          catchError((error: Error) =>
+            of(AccountActions.updateAccountCurrencyFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
+
   retrieveAccountsAfterAccountChangeAction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -95,6 +114,7 @@ export class AccountEffects {
         AccountActions.rejectInviteSuccess,
         AccountActions.leaveAccountSuccess,
         AccountActions.setDefaultAccountSuccess,
+        AccountActions.updateAccountCurrencySuccess,
         AuthActions.generateNewTenantSuccess,
       ),
       map(() => AccountActions.retrieveAccounts()),

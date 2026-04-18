@@ -7,7 +7,10 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 import { userFeature } from './+state/user.reducer';
 import { UsersContainerComponent } from './users.container.component';
-import { AccountListContainerComponent } from '@expense-tracker-ui/account';
+import {
+  AccountListContainerComponent,
+  TenantSettingsContainerComponent,
+} from '@expense-tracker-ui/account';
 
 export const userRoutes: Route[] = [
   {
@@ -27,6 +30,10 @@ export const userRoutes: Route[] = [
       {
         path: 'tenants',
         component: AccountListContainerComponent,
+      },
+      {
+        path: 'settings',
+        component: TenantSettingsContainerComponent,
       },
     ],
   },

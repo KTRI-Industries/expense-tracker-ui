@@ -32,6 +32,8 @@ import { TenantDto } from '../model/tenantDto';
 import { TenantWithUserDetails } from '../model/tenantWithUserDetails';
 // @ts-ignore
 import { UpdateCurrencyCommand } from '../model/updateCurrencyCommand';
+// @ts-ignore
+import { GenerateTenantCommand } from '../model/generateTenantCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -124,10 +126,12 @@ export class TenantControllerService {
   }
 
   /**
+   * @param generateTenantCommand
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public generateTenant(
+    generateTenantCommand?: GenerateTenantCommand,
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
@@ -136,6 +140,7 @@ export class TenantControllerService {
     },
   ): Observable<TenantDto>;
   public generateTenant(
+    generateTenantCommand?: GenerateTenantCommand,
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
@@ -144,6 +149,7 @@ export class TenantControllerService {
     },
   ): Observable<HttpResponse<TenantDto>>;
   public generateTenant(
+    generateTenantCommand?: GenerateTenantCommand,
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
@@ -152,6 +158,7 @@ export class TenantControllerService {
     },
   ): Observable<HttpEvent<TenantDto>>;
   public generateTenant(
+    generateTenantCommand?: GenerateTenantCommand,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
@@ -195,6 +202,17 @@ export class TenantControllerService {
       localVarHttpContext = new HttpContext();
     }
 
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set(
+        'Content-Type',
+        httpContentTypeSelected,
+      );
+    }
+
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
       if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -214,6 +232,7 @@ export class TenantControllerService {
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
+        body: generateTenantCommand,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,

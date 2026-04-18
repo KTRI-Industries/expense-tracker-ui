@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>
+  <mat-icon>public</mat-icon>
+  Welcome — choose your currency
+</h2>
+<mat-dialog-content>
+  <p>
+    Pick the currency you will use to track expenses and income. You can change
+    this later in settings, but only before you record any transactions.
+  </p>
+  <mat-form-field class="currency-field" appearance="outline">
+    <mat-label>Currency</mat-label>
+    <mat-select
+      [ngModel]="selectedCurrency()"
+      (ngModelChange)="selectedCurrency.set($event)"
+      data-cy="onboarding-currency-select">
+      @for (c of currencies; track c.code) {
+        <mat-option [value]="c.code">{{ c.code }} — {{ c.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onContinue()"
+    data-cy="onboarding-currency-continue">
+    Continue
+  </button>
+</mat-dialog-actions>

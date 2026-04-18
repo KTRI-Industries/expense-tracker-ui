@@ -33,4 +33,8 @@ export class AccountService {
   rejectInvite(tenantId: string) {
     return this.userApi.rejectInvite({ tenantId });
   }
+
+  updateAccountCurrency(tenantId: string, currency: string) {
+    return this.tenantApi.updateTenantCurrency(tenantId, { currency });
+  }
 }

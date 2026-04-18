@@ -18,7 +18,8 @@ export const AuthActions = createActionGroup({
     }>(),
     'Retrieve User Profile Failure': props<{ error: Error }>(),
 
-    'Generate New Tenant': props<{ email: string }>(),
+    'Show Onboarding Currency': props<{ email: string }>(),
+    'Generate New Tenant': props<{ email: string; currency?: string }>(),
     'Generate New Tenant Success': props<{ tenantId: string }>(),
     'Generate New Tenant Failure': props<{ error: Error }>(),
 
